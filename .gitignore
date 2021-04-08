@@ -1,0 +1,10 @@
+
+.git
+.checkstyle
+.classpath
+.gradle
+.nb-gradle
+.idea
+.project
+.settings
+
