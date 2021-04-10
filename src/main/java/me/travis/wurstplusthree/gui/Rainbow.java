@@ -16,7 +16,7 @@ public class Rainbow {
         r = (rgb >>> 16) & 0xFF;
         g = (rgb >>> 8) & 0xFF;
         b = rgb & 0xFF;
-        hue += 0.0001f;
+        hue += 0.0004f;
         if (hue > 1) hue = 0;
     }
 

@@ -160,7 +160,8 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract int getMaxInPortalTime();
-/**Gopro on top*/
+
+    // please stop throwing warning please please please please
     @Overwrite
     public void move(MoverType type, double x, double y, double z) {
         Entity _this = (Entity)(Object)this;

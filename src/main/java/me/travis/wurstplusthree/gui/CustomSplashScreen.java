@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.manager.FontManager;
 import me.travis.wurstplusthree.util.Render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -10,19 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CustomSplashScreen extends GuiScreen {
 
-    private List<ResourceLocation> backgrounds = new ArrayList<>();
     private final ResourceLocation background = new ResourceLocation("textures/pitbull1.jpg");
-    private final ResourceLocation banner = new ResourceLocation("textures/banner.png");
     private int y;
     private int x;
-    private float xOffset;
-    private float yOffset;
+    private float watermarkX;
 
     public static void drawCompleteImage(float posX, float posY, float width, float height) {
         GL11.glPushMatrix();
@@ -45,8 +38,9 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     public void initGui() {
-        this.x = this.width / 2;
+        this.x = this.width / 4;
         this.y = this.height / 4 + 48;
+        this.watermarkX = this.width + 80;
         this.buttonList.add(new TextButton(0, this.x, this.y + 20, "singleplayer"));
         this.buttonList.add(new TextButton(1, this.x, this.y + 44, "the_fellas"));
         this.buttonList.add(new TextButton(2, this.x, this.y + 66, "settings"));
@@ -66,67 +60,56 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        if (CustomSplashScreen.isHovered(this.x - WurstplusThree.FONTMANAGER.getTextWidth("singleplayer") / 2, this.y + 20, WurstplusThree.FONTMANAGER.getTextWidth("singleplayer"), WurstplusThree.FONTMANAGER.getTextHeight(), mouseX, mouseY)) {
+        if (CustomSplashScreen.isHovered(this.x, this.y + 20, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("singleplayer"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.displayGuiScreen(new GuiWorldSelection(this));
-        } else if (CustomSplashScreen.isHovered(this.x - WurstplusThree.FONTMANAGER.getTextWidth("the_fellas") / 2, this.y + 44, WurstplusThree.FONTMANAGER.getTextWidth("the_fellas"), WurstplusThree.FONTMANAGER.getTextHeight(), mouseX, mouseY)) {
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 44, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("the_fellas"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.displayGuiScreen(new GuiMultiplayer(this));
-        } else if (CustomSplashScreen.isHovered(this.x - WurstplusThree.FONTMANAGER.getTextWidth("settings") / 2, this.y + 66, WurstplusThree.FONTMANAGER.getTextWidth("settings"), WurstplusThree.FONTMANAGER.getTextHeight(), mouseX, mouseY)) {
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 66, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("settings"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-        } else if (CustomSplashScreen.isHovered(this.x - WurstplusThree.FONTMANAGER.getTextWidth("log") / 2, this.y + 88, WurstplusThree.FONTMANAGER.getTextWidth("log"), WurstplusThree.FONTMANAGER.getTextHeight(), mouseX, mouseY)) {
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 88, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.shutdown();
         }
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.xOffset = -1.0f * (((float) mouseX - (float) this.width / 2.0f) / ((float) this.width / 32.0f));
-        this.yOffset = -1.0f * (((float) mouseY - (float) this.height / 2.0f) / ((float) this.height / 18.0f));
-        this.x = this.width / 2;
+        float xOffset = -1.0f * (((float) mouseX - (float) this.width / 2.0f) / ((float) this.width / 32.0f));
+        float yOffset = -1.0f * (((float) mouseY - (float) this.height / 2.0f) / ((float) this.height / 18.0f));
+        this.x = this.width / 4;
         this.y = this.height / 4 + 48;
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         // this.mc.getTextureManager().bindTexture(this.backgrounds.get(random.nextInt(this.backgrounds.size())));
         this.mc.getTextureManager().bindTexture(this.background);
-        CustomSplashScreen.drawCompleteImage(-16.0f + this.xOffset, -9.0f + this.yOffset, this.width + 32, this.height + 18);
-        // this.mc.getTextureManager().bindTexture(this.banner);
-        // CustomSplashScreen.drawCompleteImage(this.width / 2 - 225, this.height / 5 - 125, 450, 250);
+        CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
         String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001";
-        WurstplusThree.FONTMANAGER.drawStringWithShadow(watermark, (float) this.width - (float) WurstplusThree.FONTMANAGER.getTextWidth(watermark) * 1.1f, this.height - WurstplusThree.FONTMANAGER.getTextHeight() - 2, Color.WHITE.getRGB());
-        super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    public BufferedImage parseBackground(BufferedImage background) {
-        int height;
-        int width = 1920;
-        int srcWidth = background.getWidth();
-        int srcHeight = background.getHeight();
-        for (height = 1080; width < srcWidth || height < srcHeight; width *= 2, height *= 2) {
+        WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(watermark, watermarkX, this.height - WurstplusThree.GUI_FONT_MANAGER.getTextHeight() - 2, true);
+        watermarkX -= .2f;
+        if (watermarkX < -WurstplusThree.GUI_FONT_MANAGER.getTextWidth(watermark) - 10) {
+            this.watermarkX = this.width + 40;
         }
-        BufferedImage imgNew = new BufferedImage(width, height, 2);
-        Graphics g = imgNew.getGraphics();
-        g.drawImage(background, 0, 0, null);
-        g.dispose();
-        return imgNew;
+        WurstplusThree.GUI_FONT_MANAGER.drawStringBig("WurstPlus Three", (float) this.x, (float) this.y - 20, Color.white.getRGB(), true);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private static class TextButton extends GuiButton {
 
         public TextButton(int buttonId, int x, int y, String buttonText) {
-            super(buttonId, x, y, WurstplusThree.FONTMANAGER.getTextWidth(buttonText), WurstplusThree.FONTMANAGER.getTextHeight(), buttonText);
+            super(buttonId, x, y, WurstplusThree.MENU_FONT_MANAGER.getTextWidth(buttonText), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), buttonText);
         }
 
         public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
             if (this.visible) {
                 this.enabled = true;
-                this.hovered = (float) mouseX >= (float) this.x - (float) WurstplusThree.FONTMANAGER.getTextWidth(this.displayString) / 2.0f && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                WurstplusThree.FONTMANAGER.drawStringWithShadow(this.displayString, (float) this.x - (float) WurstplusThree.FONTMANAGER.getTextWidth(this.displayString) / 2.0f + 1f, this.y, Color.WHITE.getRGB());
+                this.hovered = (float) mouseX >= (float) this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                WurstplusThree.MENU_FONT_MANAGER.drawStringWithShadow(this.displayString, (float) this.x + 1f, this.y, Color.WHITE.getRGB());
                 if (this.hovered) {
-                    Render.drawLine(this.x - 1f - (float) WurstplusThree.FONTMANAGER.getTextWidth(this.displayString) / 2.0f, this.y + 2 + WurstplusThree.FONTMANAGER.getTextHeight(), this.x + 2.0f + (float) WurstplusThree.FONTMANAGER.getTextWidth(this.displayString) / 2.0f, this.y + 2 + WurstplusThree.FONTMANAGER.getTextHeight(), 1.0f, Color.WHITE.getRGB());
+                    Render.drawLine(this.x - 5f, this.y + 2 + WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), this.x - 5f, this.y - 2, 2f, Rainbow.rgb);
                 }
             }
         }
 
         public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-            return this.enabled && this.visible && (float) mouseX >= (float) this.x - (float) WurstplusThree.FONTMANAGER.getTextWidth(this.displayString) / 2.0f && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            return this.enabled && this.visible && (float) mouseX >= (float) this.x - (float) WurstplusThree.MENU_FONT_MANAGER.getTextWidth(this.displayString) / 2.0f && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
         }
     }
 

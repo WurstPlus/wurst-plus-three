@@ -6,7 +6,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+import java.util.Locale;
+
 public class Render implements Globals {
+
+    public static String getRandomFont() {
+        String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(Locale.ENGLISH);
+        return fonts[random.nextInt(fonts.length)];
+    }
 
     public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {
         float red = (float) (hex >> 16 & 0xFF) / 255.0f;

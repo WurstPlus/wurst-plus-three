@@ -7,4 +7,8 @@ import java.util.Random;
 public interface Globals {
     Minecraft mc = Minecraft.getMinecraft();
     Random random = new Random();
+
+    default public boolean nullCheck(){
+        return mc.player == null || mc.world == null;
+    }
 }
