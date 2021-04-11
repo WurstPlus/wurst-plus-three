@@ -1,7 +1,7 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.util.Render;
+import me.travis.wurstplusthree.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -87,7 +87,7 @@ public class CustomSplashScreen extends GuiScreen {
         if (watermarkX < -WurstplusThree.GUI_FONT_MANAGER.getTextWidth(watermark) - 10) {
             this.watermarkX = this.width + 40;
         }
-        WurstplusThree.GUI_FONT_MANAGER.drawStringBig("WurstPlus Three", (float) this.x, (float) this.y - 20, Color.white.getRGB(), true);
+        WurstplusThree.GUI_FONT_MANAGER.drawStringBig("WurstPlus 3", (float) this.x, (float) this.y - 20, Color.white.getRGB(), true);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -103,7 +103,7 @@ public class CustomSplashScreen extends GuiScreen {
                 this.hovered = (float) mouseX >= (float) this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 WurstplusThree.MENU_FONT_MANAGER.drawStringWithShadow(this.displayString, (float) this.x + 1f, this.y, Color.WHITE.getRGB());
                 if (this.hovered) {
-                    Render.drawLine(this.x - 5f, this.y + 2 + WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), this.x - 5f, this.y - 2, 2f, Rainbow.rgb);
+                    RenderUtil.drawLine(this.x - 5f, this.y + 2 + WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), this.x - 5f, this.y - 2, 2f, Rainbow.rgb);
                 }
             }
         }

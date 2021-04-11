@@ -23,6 +23,10 @@ public class EnumSetting extends Setting<String> implements com.lukflug.panelstu
         this.value = (this.modes.contains(value) ? value : this.value);
     }
 
+    public boolean is(String name) {
+        return name.equalsIgnoreCase(this.getValue());
+    }
+
     @Override
     public void increment() {
         value = modes.get((modes.indexOf(this.value) + 1) % modes.size());

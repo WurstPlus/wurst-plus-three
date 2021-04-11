@@ -9,6 +9,7 @@ import com.lukflug.panelstudio.settings.*;
 import com.lukflug.panelstudio.theme.*;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.ColourComponent;
+import me.travis.wurstplusthree.gui.components.KeybindComponent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.hack.client.Gui;
@@ -122,6 +123,22 @@ public class WurstplusGui extends MinecraftHUDGUI {
                 container.addComponent(new ColourComponent(theme, (ColourSetting) setting, colorToggle, new SettingsAnimation(Gui.INSTANCE.animationSpeed)));
             }
         }
+        container.addComponent(new KeybindComponent(theme.getComponentRenderer(), new KeybindSetting() {
+            @Override
+            public int getKey() {
+                return hack.getBind();
+            }
+
+            @Override
+            public void setKey(int key) {
+                hack.setBind(key);
+            }
+
+            @Override
+            public String getKeyName() {
+                return hack.getBindName();
+            }
+        }));
     }
 
 

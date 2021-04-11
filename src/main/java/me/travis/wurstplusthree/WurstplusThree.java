@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
 import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.hack.Hacks;
+import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.setting.Settings;
@@ -43,9 +44,18 @@ public class WurstplusThree {
     public static WurstplusGui GUI;
 
     // managers
-    // fonts
     public static MenuFont MENU_FONT_MANAGER;
     public static GuiFont GUI_FONT_MANAGER;
+
+    public static FriendManager FRIEND_MANAGER;
+    public static EnemyManager ENEMY_MANAGER;
+
+    public static PopManager POP_MANAGER;
+
+    public static ServerManager SERVER_MANAGER;
+
+    public static PositionManager POS_MANAGER;
+    public static RotationManager ROTATION_MANAGER;
 
     @Mod.Instance
     public static WurstplusThree INSTANCE;
@@ -74,6 +84,12 @@ public class WurstplusThree {
     public void loadManagers() {
         MENU_FONT_MANAGER = new MenuFont();
         GUI_FONT_MANAGER = new GuiFont();
+        FRIEND_MANAGER = new FriendManager();
+        ENEMY_MANAGER = new EnemyManager();
+        POP_MANAGER = new PopManager();
+        SERVER_MANAGER = new ServerManager();
+        POS_MANAGER = new PositionManager();
+        ROTATION_MANAGER = new RotationManager();
     }
 
 }

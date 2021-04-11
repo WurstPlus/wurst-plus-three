@@ -16,6 +16,7 @@ public class Hack implements Globals {
 
     private final String name;
     private final String description;
+    private String displayInfo;
     private final Category category;
     private int bind;
     private boolean isEnabled;
@@ -35,6 +36,7 @@ public class Hack implements Globals {
         this.hidden = hidden;
         this.bind = Keyboard.KEY_NONE;
         this.isEnabled = false;
+        this.displayInfo = "";
     }
 
     public void onEnable() {
@@ -113,6 +115,10 @@ public class Hack implements Globals {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public String getDisplayInfo() {
+        return this.displayInfo;
     }
 
     public int getBind() {

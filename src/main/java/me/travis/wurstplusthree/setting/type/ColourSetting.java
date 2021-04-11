@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.setting.type;
 import com.lukflug.panelstudio.settings.ColorSetting;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.util.Colour;
+import me.travis.wurstplusthree.util.elements.Colour;
 
 import java.awt.*;
 

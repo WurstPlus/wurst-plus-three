@@ -4,7 +4,14 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.combat.KillAura;
+import me.travis.wurstplusthree.hack.misc.FakePlayer;
+import me.travis.wurstplusthree.hack.player.ReverseStep;
 import me.travis.wurstplusthree.hack.player.Sprint;
+import me.travis.wurstplusthree.hack.render.AntiFog;
+import me.travis.wurstplusthree.hack.render.CrystalRender;
+import me.travis.wurstplusthree.hack.render.HoleESP;
+import me.travis.wurstplusthree.hack.render.Nametags;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
@@ -15,17 +22,24 @@ import java.util.List;
 
 public class Hacks implements Globals {
 
-    private List<Hack> hacks = new ArrayList<>();
+    private final List<Hack> hacks = new ArrayList<>();
 
     public Hacks() {
         // chat
         // client
-        this.hacks.add(Gui.INSTANCE);
+        this.hacks.add(new Gui());
         // combat
+        this.hacks.add(new KillAura());
         // misc
+        this.hacks.add(new FakePlayer());
         // player
         this.hacks.add(new Sprint());
+        this.hacks.add(new ReverseStep());
         // render
+        this.hacks.add(new AntiFog());
+        this.hacks.add(new Nametags());
+        this.hacks.add(new CrystalRender());
+        this.hacks.add(new HoleESP());
     }
 
     public List<Hack> getHacks() {

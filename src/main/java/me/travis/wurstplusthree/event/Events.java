@@ -1,16 +1,16 @@
 package me.travis.wurstplusthree.event;
 
+import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.command.Commands;
-import me.travis.wurstplusthree.event.events.Render2DEvent;
-import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.gui.Rainbow;
+import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.manager.ClientMessage;
-import me.travis.wurstplusthree.util.GLUProjection;
+import me.travis.wurstplusthree.util.elements.GLUProjection;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -24,8 +24,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Events implements Globals {
+
+    private Object EventManager;
 
     public Events() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -46,6 +50,21 @@ public class Events implements Globals {
     public void onTick(TickEvent.ClientTickEvent event) {
         if (!nullCheck()) {
             WurstplusThree.HACKS.onTick();
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
+        if (nullCheck()) {
+            return;
+        }
+        if (event.getStage() == 0) {
+            WurstplusThree.ROTATION_MANAGER.updateRotations();
+            WurstplusThree.POS_MANAGER.updatePosition();
+        }
+        if (event.getStage() == 1) {
+            WurstplusThree.ROTATION_MANAGER.restoreRotations();
+            WurstplusThree.POS_MANAGER.restorePosition();
         }
     }
 
@@ -101,6 +120,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         WurstplusThree.HACKS.onLogout();
+        WurstplusThree.POP_MANAGER.onLogout();
     }
 
     @SubscribeEvent
@@ -126,5 +146,23 @@ public class Events implements Globals {
             event.setMessage("");
         }
     }
+
+    @SubscribeEvent
+    public void onPacketReceive(PacketEvent.Receive event) {
+        if (event.getStage() != 0) {
+            return;
+        }
+        WurstplusThree.SERVER_MANAGER.onPacketReceived();
+        if (event.getPacket() instanceof SPacketEntityStatus) {
+            SPacketEntityStatus packet = event.getPacket();
+            if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
+                MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
+                WurstplusThree.POP_MANAGER.onTotemPop(player);
+            }
+        }
+    }
+
+
 
 }
