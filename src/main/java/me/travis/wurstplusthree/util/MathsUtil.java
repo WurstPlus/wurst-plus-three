@@ -25,4 +25,32 @@ public class MathsUtil implements Globals {
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
     }
 
+    public static double[] directionSpeed(double speed) {
+        float forward = mc.player.movementInput.moveForward;
+        float side = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
+        if (forward != 0.0f) {
+            if (side > 0.0f) {
+                yaw += (float) (forward > 0.0f ? -45 : 45);
+            } else if (side < 0.0f) {
+                yaw += (float) (forward > 0.0f ? 45 : -45);
+            }
+            side = 0.0f;
+            if (forward > 0.0f) {
+                forward = 1.0f;
+            } else if (forward < 0.0f) {
+                forward = -1.0f;
+            }
+        }
+        double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+        double posX = (double) forward * speed * cos + (double) side * speed * sin;
+        double posZ = (double) forward * speed * sin - (double) side * speed * cos;
+        return new double[]{posX, posZ};
+    }
+
+    public static double degToRad(double deg) {
+        return deg * 0.01745329238474369;
+    }
+
 }

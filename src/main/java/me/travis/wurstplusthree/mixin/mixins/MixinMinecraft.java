@@ -71,7 +71,7 @@ public abstract class MixinMinecraft {
 
     private void unload() {
         System.out.println("unloading wurst+3");
-        // WurstplusThree.onUnload();
+        WurstplusThree.unLoad();
         System.out.println("wurst+3 has been unloaded");
     }
 

@@ -8,26 +8,20 @@ import java.util.List;
 
 public class FriendManager implements Globals {
 
-    private final List<WurstplusPlayer> friends;
+    private List<WurstplusPlayer> friends;
 
     public FriendManager() {
          this.friends = new ArrayList<>();
     }
 
     public void addFriend(String name) {
-        this.friends.add(new WurstplusPlayer(name));
-    }
-
-    public void addFriend(WurstplusPlayer player) {
-        this.friends.add(player);
+        if (!this.isFriend(name)) {
+            this.friends.add(new WurstplusPlayer(name));
+        }
     }
 
     public void removeFriend(String name) {
         this.friends.removeIf(player -> player.getName().equalsIgnoreCase(name));
-    }
-
-    public void removeFriend(WurstplusPlayer player) {
-        this.friends.remove(player);
     }
 
     public boolean isFriend(String name) {
@@ -37,6 +31,26 @@ public class FriendManager implements Globals {
             }
         }
         return false;
+    }
+
+    public boolean hasFriends() {
+        return !this.friends.isEmpty();
+    }
+
+    public List<WurstplusPlayer> getFriends() {
+        return this.friends;
+    }
+
+    public void toggleFriend(String name) {
+        if (this.isFriend(name)) {
+            this.removeFriend(name);
+        } else {
+            this.addFriend(name);
+        }
+    }
+
+    public void setFriends(List<WurstplusPlayer> list) {
+        this.friends = list;
     }
 
 }

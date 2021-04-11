@@ -57,6 +57,8 @@ public class WurstplusThree {
     public static PositionManager POS_MANAGER;
     public static RotationManager ROTATION_MANAGER;
 
+    public static ConfigManager CONFIG_MANAGER;
+
     @Mod.Instance
     public static WurstplusThree INSTANCE;
 
@@ -79,6 +81,11 @@ public class WurstplusThree {
         HACKS = new Hacks();
         GUI = new WurstplusGui();
         this.loadManagers();
+        CONFIG_MANAGER.loadConfig();
+    }
+
+    public static void unLoad() {
+        CONFIG_MANAGER.saveConfig();
     }
 
     public void loadManagers() {
@@ -90,6 +97,7 @@ public class WurstplusThree {
         SERVER_MANAGER = new ServerManager();
         POS_MANAGER = new PositionManager();
         ROTATION_MANAGER = new RotationManager();
+        CONFIG_MANAGER = new ConfigManager();
     }
 
 }

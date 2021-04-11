@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
 import me.travis.wurstplusthree.event.events.PushEvent;
+import me.travis.wurstplusthree.hack.render.NoRender;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,9 +27,7 @@ public class MixinWorld {
         try {
             chunk.getEntitiesOfTypeWithinAABB(entityClass, aabb, listToFill, filter);
         }
-        catch (Exception exception) {
-            // empty catch block
-        }
+        catch (Exception ignored) {}
     }
 
     @Redirect(method={"handleMaterialAcceleration"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;isPushedByWater()Z"))
@@ -37,5 +36,14 @@ public class MixinWorld {
         MinecraftForge.EVENT_BUS.post((Event)event);
         return entity.isPushedByWater() && !event.isCanceled();
     }
+
+    @Inject(method={"checkLightFor"}, at={@At(value="HEAD")}, cancellable=true)
+    private void updateLightmapHook(EnumSkyBlock lightType, BlockPos pos, CallbackInfoReturnable<Boolean> info) {
+        if (lightType == EnumSkyBlock.SKY && NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.skylight.getValue()) {
+            info.setReturnValue(true);
+            info.cancel();
+        }
+    }
+
 }
 

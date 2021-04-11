@@ -135,7 +135,7 @@ public class Events implements Globals {
             try {
                 mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
                 if (event.getMessage().length() > 1) {
-                    WurstplusThree.COMMANDS.executeCommand(event.getMessage().substring(WurstplusThree.COMMANDS.getPrefix().length() - 1));
+                    WurstplusThree.COMMANDS.executeCommand(event.getMessage().substring(1));
                 } else {
                     ClientMessage.sendErrorMessage("enter a command");
                 }

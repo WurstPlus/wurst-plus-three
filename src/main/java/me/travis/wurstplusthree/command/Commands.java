@@ -1,9 +1,6 @@
 package me.travis.wurstplusthree.command;
 
-import me.travis.wurstplusthree.command.commands.BindCommand;
-import me.travis.wurstplusthree.command.commands.ListCommand;
-import me.travis.wurstplusthree.command.commands.PrefixCommand;
-import me.travis.wurstplusthree.command.commands.ToggleCommand;
+import me.travis.wurstplusthree.command.commands.*;
 import me.travis.wurstplusthree.manager.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 
@@ -21,10 +18,12 @@ public class Commands implements Globals {
         this.commands.add(new ListCommand());
         this.commands.add(new ToggleCommand());
         this.commands.add(new BindCommand());
+        this.commands.add(new FriendCommand());
+        this.commands.add(new EnemyCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
-        LinkedList<String> result = new LinkedList<String>();
+        LinkedList<String> result = new LinkedList<>();
         for (int i = 0; i < input.length; ++i) {
             if (i == indexToDelete) continue;
             result.add(input[i]);
@@ -40,17 +39,20 @@ public class Commands implements Globals {
     }
 
     public void executeCommand(String command) {
-        String[] parts = command.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-        String name = parts[0].substring(1);
-        String[] args = this.removeElement(parts, 0);
-        for (int i = 0; i < args.length; ++i) {
-            if (args[i] == null) continue;
-            args[i] = this.strip(args[i], "\"");
-        }
+        String[] split = command.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        String command1 = split[0];
+        String args = command.substring(command1.length()).trim();
         for (Command c : this.commands) {
-            if (!c.getName().equalsIgnoreCase(name)) continue;
-            c.execute(parts);
-            return;
+            try {
+                if (c.getName().equalsIgnoreCase(command1)) {
+                    c.execute(args.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
+                    return;
+                }
+            } catch (Exception e) {
+                ClientMessage.sendErrorMessage("fucked it while doing command");
+                e.printStackTrace();
+                return;
+            }
         }
         ClientMessage.sendErrorMessage("unknown command");
     }

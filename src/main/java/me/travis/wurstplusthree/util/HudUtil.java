@@ -1,0 +1,77 @@
+package me.travis.wurstplusthree.util;
+
+import com.mojang.realmsclient.gui.ChatFormatting;
+import me.travis.wurstplusthree.WurstplusThree;
+import net.minecraft.client.Minecraft;
+
+public class HudUtil implements Globals {
+
+    public static String getWelcomerLine() {
+        int time = TimeUtil.get_hour();
+        String line;
+
+        if (time >= 0 && time < 12) {
+            line = "Morning, " + ChatFormatting.GOLD + ChatFormatting.BOLD + mc.player.getName() + ChatFormatting.RESET + " you smell good today :)";
+        } else if (time >= 12 && time < 16) {
+            line = "Afternoon, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you're looking good today :)";
+        } else if (time >= 16 && time < 24) {
+            line = "Evening, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you smell good today :)";
+        } else {
+            line = "Welcome, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you're looking fine today :)";
+        }
+
+        return line;
+    }
+
+    public static String getPingLine() {
+        String line = "";
+        int ping = WurstplusThree.SERVER_MANAGER.getPing();
+        if (ping > 150) {
+            line += ChatFormatting.RED;
+        } else if (ping > 100) {
+            line += ChatFormatting.YELLOW;
+        } else {
+            line += ChatFormatting.GREEN;
+        }
+        return line + " " + ping;
+    }
+
+    public static String getTpsLine() {
+        String line = "";
+        float tps = WurstplusThree.SERVER_MANAGER.getTPS();
+        if (tps > 16) {
+            line += ChatFormatting.GREEN;
+        } else if (tps > 10) {
+            line += ChatFormatting.YELLOW;
+        } else {
+            line += ChatFormatting.RED;
+        }
+        return line + " " + tps;
+    }
+
+    public static String getFpsLine() {
+        String line = "";
+        int fps = Minecraft.getDebugFPS();
+        if (fps > 120) {
+            line += ChatFormatting.GREEN;
+        } else if (fps > 60) {
+            line += ChatFormatting.YELLOW;
+        } else {
+            line += ChatFormatting.RED;
+        }
+        return line + " " + fps;
+    }
+
+    public static String getAnaTimeLine() {
+        String line = "";
+        line += TimeUtil.get_hour() < 10 ? "0" + TimeUtil.get_hour() : TimeUtil.get_hour();
+        line += ":";
+        line += TimeUtil.get_minuite() < 10 ? "0" + TimeUtil.get_minuite() : TimeUtil.get_minuite();
+        line += ":";
+        line += TimeUtil.get_second() < 10 ? "0" + TimeUtil.get_second() : TimeUtil.get_second();
+        return line;
+    }
+
+
+}
+

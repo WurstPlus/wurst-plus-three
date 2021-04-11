@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
+import me.travis.wurstplusthree.hack.render.NoRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -66,5 +67,20 @@ public abstract class MixinEntityRenderer {
     public List<Entity> getEntitiesInAABBexcludingHook(WorldClient worldClient, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
         return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
     }
+
+    @Inject(method={"hurtCameraEffect"}, at={@At(value="HEAD")}, cancellable=true)
+    public void hurtCameraEffectHook(float ticks, CallbackInfo info) {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.hurtcam.getValue()) {
+            info.cancel();
+        }
+    }
+
+    @Inject(method={"updateLightmap"}, at={@At(value="HEAD")}, cancellable=true)
+    private void updateLightmap(float partialTicks, CallbackInfo info) {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.skylight.getValue()) {
+            info.cancel();
+        }
+    }
+
 }
 

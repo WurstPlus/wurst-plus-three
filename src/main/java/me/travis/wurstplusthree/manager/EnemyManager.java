@@ -8,26 +8,20 @@ import java.util.List;
 
 public class EnemyManager implements Globals {
 
-    private final List<WurstplusPlayer> enemies;
+    private List<WurstplusPlayer> enemies;
 
     public EnemyManager() {
         this.enemies = new ArrayList<>();
     }
 
     public void addEnemy(String name) {
-        this.enemies.add(new WurstplusPlayer(name));
-    }
-
-    public void addEnemy(WurstplusPlayer player) {
-        this.enemies.add(player);
+        if (!this.isEnemy(name)) {
+            this.enemies.add(new WurstplusPlayer(name));
+        }
     }
 
     public void removeEnemy(String name) {
         this.enemies.removeIf(player -> player.getName().equalsIgnoreCase(name));
-    }
-
-    public void removeEnemy(WurstplusPlayer player) {
-        this.enemies.remove(player);
     }
 
     public boolean isEnemy(String name) {
@@ -37,6 +31,18 @@ public class EnemyManager implements Globals {
             }
         }
         return false;
+    }
+
+    public boolean hasEnemies() {
+        return !this.enemies.isEmpty();
+    }
+
+    public List<WurstplusPlayer> getEnemies() {
+        return this.enemies;
+    }
+
+    public void setEnemies(List<WurstplusPlayer> list) {
+        this.enemies = list;
     }
 
 }
