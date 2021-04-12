@@ -63,7 +63,6 @@ public class KillAura extends Hack {
         this.target = this.getTarget();
         if (this.target == null) return;
         if (this.mode.is("32k")) {
-            InventoryUtil.switchToHotbarSlot(ItemSword.class, false);
             if (EntityUtil.holding32k(mc.player) && this.ticksPassed >= this.ttkDelay.getValue()) {
                 this.ticksPassed = 0;
                 for (EntityPlayer player : mc.world.playerEntities) {

@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.client;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.hack.Hack;
@@ -60,19 +61,22 @@ public class Hud extends Hack {
     }
 
     private void doBottomRight() {
-        List<Hack> hacks = WurstplusThree.HACKS.getSortedHacks(false);
-        int y = scaledResolution.getScaledHeight() - (11 * hacks.size()) + 2;
-        for (Hack hack : hacks) {
-            String name = hack.getFullArrayString();
-            drawString(name, this.getRightX(name, 2), y);
-            y += 11;
+        if (this.arrayList.getValue()) {
+            List<Hack> hacks = WurstplusThree.HACKS.getSortedHacks(false);
+            int y = scaledResolution.getScaledHeight() - (11 * hacks.size()) + 2;
+            for (Hack hack : hacks) {
+                String name = hack.getFullArrayString();
+                drawString(name, this.getRightX(name, 2), y);
+                y += 11;
+            }
         }
     }
 
     private void doTopleft() {
         int y = 10;
         if (watermark.getValue()) {
-            drawString(WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER, 10, y);
+            drawString(ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.RESET
+                    + " v" + WurstplusThree.MODVER, 10, y);
             y += 16;
         }
         if (fps.getValue()) {

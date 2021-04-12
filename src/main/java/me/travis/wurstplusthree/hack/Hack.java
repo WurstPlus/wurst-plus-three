@@ -16,7 +16,6 @@ public class Hack implements Globals {
 
     private final String name;
     private final String description;
-    private String displayInfo;
     private final Category category;
     private int bind;
     private boolean isEnabled;
@@ -36,7 +35,6 @@ public class Hack implements Globals {
         this.hidden = hidden;
         this.bind = Keyboard.KEY_NONE;
         this.isEnabled = false;
-        this.displayInfo = null;
     }
 
     public void onEnable() {
@@ -86,6 +84,7 @@ public class Hack implements Globals {
         if (this.isEnabled() && this.isListening()) {
             MinecraftForge.EVENT_BUS.register(this);
         }
+        ClientMessage.sendToggleMessage(this);
     }
 
     public void disable() {
@@ -94,6 +93,7 @@ public class Hack implements Globals {
         }
         this.isEnabled = false;
         this.onDisable();
+        ClientMessage.sendToggleMessage(this);
     }
 
     public void toggle() {
@@ -102,7 +102,6 @@ public class Hack implements Globals {
         } else {
             this.enable();
         }
-        ClientMessage.sendToggleMessage(this);
     }
 
     public void setEnabled(boolean enabled) {
@@ -122,7 +121,7 @@ public class Hack implements Globals {
     }
 
     public String getDisplayInfo() {
-        return this.displayInfo;
+        return null;
     }
 
     public int getBind() {
@@ -152,7 +151,7 @@ public class Hack implements Globals {
     }
 
     public String getFullArrayString() {
-        return this.name + (this.displayInfo != null ? "[" + this.displayInfo + "]" : "");
+        return this.name + (this.getDisplayInfo() != null ? "[" + this.getDisplayInfo() + "]" : "");
     }
 
     public Setting getSettingByName(String name) {

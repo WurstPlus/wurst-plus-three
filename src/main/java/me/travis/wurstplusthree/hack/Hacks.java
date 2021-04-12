@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.KillAura;
+import me.travis.wurstplusthree.hack.combat.Surround;
 import me.travis.wurstplusthree.hack.misc.FakePlayer;
 import me.travis.wurstplusthree.hack.misc.MCF;
 import me.travis.wurstplusthree.hack.player.*;
@@ -34,6 +35,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Hud());
         // combat
         this.hacks.add(new KillAura());
+        this.hacks.add(new Surround());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
@@ -43,6 +45,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Freecam());
         this.hacks.add(new NoKnockback());
         this.hacks.add(new Speed());
+        this.hacks.add(new Step());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());
