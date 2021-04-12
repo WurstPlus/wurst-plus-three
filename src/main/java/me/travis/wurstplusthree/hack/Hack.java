@@ -36,7 +36,7 @@ public class Hack implements Globals {
         this.hidden = hidden;
         this.bind = Keyboard.KEY_NONE;
         this.isEnabled = false;
-        this.displayInfo = "";
+        this.displayInfo = null;
     }
 
     public void onEnable() {
@@ -149,6 +149,10 @@ public class Hack implements Globals {
             }
         }
         return settings;
+    }
+
+    public String getFullArrayString() {
+        return this.name + (this.displayInfo != null ? "[" + this.displayInfo + "]" : "");
     }
 
     public Setting getSettingByName(String name) {

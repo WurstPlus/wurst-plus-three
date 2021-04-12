@@ -6,13 +6,13 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.HudUtil;
-import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+import java.util.List;
 
 public class Hud extends Hack {
 
@@ -29,6 +29,7 @@ public class Hud extends Hack {
     BooleanSetting tps = new BooleanSetting("Tps", false, this);
     BooleanSetting ping = new BooleanSetting("Ping", false, this);
     BooleanSetting clock = new BooleanSetting("Clock", true, this);
+    BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);
 
     BooleanSetting armour = new BooleanSetting("Armour", false, this);
 
@@ -50,11 +51,22 @@ public class Hud extends Hack {
 
         this.doTopleft();
         this.doTopRight();
+        this.doBottomRight();
 
         if (this.armour.getValue()) {
             this.renderArmorHUD(true);
         }
 
+    }
+
+    private void doBottomRight() {
+        List<Hack> hacks = WurstplusThree.HACKS.getSortedHacks(false);
+        int y = scaledResolution.getScaledHeight() - (11 * hacks.size()) + 2;
+        for (Hack hack : hacks) {
+            String name = hack.getFullArrayString();
+            drawString(name, this.getRightX(name, 2), y);
+            y += 11;
+        }
     }
 
     private void doTopleft() {

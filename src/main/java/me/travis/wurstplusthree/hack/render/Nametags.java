@@ -1,7 +1,5 @@
 package me.travis.wurstplusthree.hack.render;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -33,6 +31,8 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Nametags extends Hack {
 

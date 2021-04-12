@@ -1,11 +1,10 @@
 package me.travis.wurstplusthree.event;
 
-import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.manager.ClientMessage;
-import me.travis.wurstplusthree.util.elements.GLUProjection;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.elements.GLUProjection;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,8 +23,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Objects;
-import java.util.UUID;
 
 public class Events implements Globals {
 

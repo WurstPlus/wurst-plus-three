@@ -1,17 +1,16 @@
 package me.travis.wurstplusthree.hack;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
+import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.KillAura;
 import me.travis.wurstplusthree.hack.misc.FakePlayer;
 import me.travis.wurstplusthree.hack.misc.MCF;
-import me.travis.wurstplusthree.hack.player.Freecam;
-import me.travis.wurstplusthree.hack.player.NoKnockback;
-import me.travis.wurstplusthree.hack.player.ReverseStep;
-import me.travis.wurstplusthree.hack.player.Sprint;
+import me.travis.wurstplusthree.hack.player.*;
 import me.travis.wurstplusthree.hack.render.*;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,7 +18,9 @@ import net.minecraftforge.fml.common.eventhandler.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hacks implements Globals {
 
@@ -27,6 +28,7 @@ public class Hacks implements Globals {
 
     public Hacks() {
         // chat
+        this.hacks.add(new ClearChatbox());
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
@@ -40,6 +42,7 @@ public class Hacks implements Globals {
         this.hacks.add(new ReverseStep());
         this.hacks.add(new Freecam());
         this.hacks.add(new NoKnockback());
+        this.hacks.add(new Speed());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());
@@ -136,6 +139,22 @@ public class Hacks implements Globals {
             }
         }
         return hacks;
+    }
+
+    public List<Hack> getEnabledHacks() {
+        List<Hack> hacks = new ArrayList<>();
+        for (Hack hack : this.hacks) {
+            if (hack.isEnabled()) {
+                hacks.add(hack);
+            }
+        }
+        return hacks;
+    }
+
+    public List<Hack> getSortedHacks(boolean reverse) {
+        return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
+                        * (reverse ? -1 : 1))).collect(Collectors.toList());
     }
 
 }

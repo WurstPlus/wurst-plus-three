@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.gui.components;
 import com.lukflug.panelstudio.Context;
 import com.lukflug.panelstudio.settings.KeybindSetting;
 import com.lukflug.panelstudio.theme.Renderer;
-import me.travis.wurstplusthree.hack.Hack;
 import org.lwjgl.input.Keyboard;
 
 public class KeybindComponent extends com.lukflug.panelstudio.settings.KeybindComponent {

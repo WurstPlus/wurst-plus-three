@@ -1,6 +1,10 @@
 package me.travis.wurstplusthree.util;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +13,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
@@ -104,12 +110,54 @@ public class EntityUtil implements Globals {
             if (colorFriends && WurstplusThree.ENEMY_MANAGER.isEnemy(entity.getName())) {
                 color = new Color(1, 0.33f, 1.0f, alpha / 255.0f);
             }
-//            final Killaura killaura = Phobos.moduleManager.getModuleByClass(Killaura.class);
-//            if (killaura.info.getValue() && Killaura.target != null && Killaura.target.equals(entity)) {
-//                color = new Color(1.0f, 0.0f, 0.0f, alpha / 255.0f);
-//            }
         }
         return color;
+    }
+
+    public static void setTimer(float speed) {
+        mc.timer.tickLength = 50.0f / speed;
+    }
+
+    public static void resetTimer() {
+        mc.timer.tickLength = 50;
+    }
+
+    public static Block isColliding(double posX, double posY, double posZ) {
+        Block block = null;
+        if (mc.player != null) {
+            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(posX, posY, posZ) : mc.player.getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(posX, posY, posZ);
+            int y = (int) bb.minY;
+            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX) + 1; x++) {
+                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ) + 1; z++) {
+                    block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+                }
+            }
+        }
+        return block;
+    }
+
+    public static boolean isInLiquid() {
+        if (mc.player != null) {
+            if (mc.player.fallDistance >= 3.0f) {
+                return false;
+            }
+            boolean inLiquid = false;
+            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox() : mc.player.getEntityBoundingBox();
+            int y = (int) bb.minY;
+            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX) + 1; x++) {
+                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ) + 1; z++) {
+                    final Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+                    if (!(block instanceof BlockAir)) {
+                        if (!(block instanceof BlockLiquid)) {
+                            return false;
+                        }
+                        inLiquid = true;
+                    }
+                }
+            }
+            return inLiquid;
+        }
+        return false;
     }
 
 }

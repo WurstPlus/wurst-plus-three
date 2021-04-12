@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.command;
 
-import me.travis.wurstplusthree.manager.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 
 public abstract class Command implements Globals {

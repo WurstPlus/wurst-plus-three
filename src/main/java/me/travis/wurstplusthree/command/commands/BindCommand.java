@@ -1,13 +1,10 @@
 package me.travis.wurstplusthree.command.commands;
 
-import ca.weblite.objc.Client;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.manager.ClientMessage;
 import org.lwjgl.input.Keyboard;
-
-import java.util.Locale;
 
 public class BindCommand extends Command {
 

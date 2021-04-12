@@ -1,10 +1,12 @@
 package me.travis.wurstplusthree.manager;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
+import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
@@ -100,7 +102,11 @@ public class ConfigManager implements Globals {
         this.bindsDir = currentConfigDir + bindsFile;
         this.bindsPath = Paths.get(bindsDir);
 
-        // load_settings();
+        try {
+            this.loadSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -153,14 +159,19 @@ public class ConfigManager implements Globals {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
             String fileName = activeConfigFolder + hack.getName() + ".txt";
             Path filePath = Paths.get(fileName);
-            deleteFile(fileName);
+            this.deleteFile(fileName);
             verifyFile(filePath);
 
             File file = new File(fileName);
             BufferedWriter br = new BufferedWriter(new FileWriter(file));
 
             for (Setting setting : hack.getSettings()) {
-                br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
+                if (setting.getType().equalsIgnoreCase("colour")) {
+                    br.write(setting.getName() + ":" + setting.getValue() + ":" +
+                            ((ColourSetting) setting).getRainbow());
+                } else {
+                    br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
+                }
             }
 
             br.close();
@@ -172,6 +183,7 @@ public class ConfigManager implements Globals {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
             String file_name = activeConfigFolder + hack.getName() + ".txt";
             File file = new File(file_name);
+            if (!file.exists()) continue;
             FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
             DataInputStream di_stream = new DataInputStream(fi_stream);
             BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
@@ -190,6 +202,8 @@ public class ConfigManager implements Globals {
                         setting.setValue(Boolean.parseBoolean(value));
                         break;
                     case "colour":
+                        String rainbow = colune.split(":")[2];
+                        ((ColourSetting) setting).setRainbow(Boolean.parseBoolean(rainbow));
                         setting.setValue(getColourFromStringSetting(value));
                         break;
                     case "double":

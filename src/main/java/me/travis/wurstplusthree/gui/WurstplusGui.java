@@ -1,21 +1,25 @@
 package me.travis.wurstplusthree.gui;
 
-import com.lukflug.panelstudio.*;
+import com.lukflug.panelstudio.CollapsibleContainer;
+import com.lukflug.panelstudio.DraggableContainer;
+import com.lukflug.panelstudio.FixedComponent;
+import com.lukflug.panelstudio.SettingsAnimation;
 import com.lukflug.panelstudio.hud.HUDClickGUI;
-import com.lukflug.panelstudio.hud.HUDPanel;
 import com.lukflug.panelstudio.mc12.GLInterface;
 import com.lukflug.panelstudio.mc12.MinecraftHUDGUI;
 import com.lukflug.panelstudio.settings.*;
-import com.lukflug.panelstudio.theme.*;
+import com.lukflug.panelstudio.theme.ColorScheme;
+import com.lukflug.panelstudio.theme.GameSenseTheme;
+import com.lukflug.panelstudio.theme.SettingsColorScheme;
+import com.lukflug.panelstudio.theme.Theme;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.ColourComponent;
 import me.travis.wurstplusthree.gui.components.KeybindComponent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
+import me.travis.wurstplusthree.setting.type.*;
 
 import java.awt.*;
 

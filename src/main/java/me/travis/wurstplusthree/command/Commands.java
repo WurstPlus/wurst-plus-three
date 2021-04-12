@@ -15,7 +15,6 @@ public class Commands implements Globals {
 
     public Commands() {
         this.commands.add(new PrefixCommand());
-        this.commands.add(new ListCommand());
         this.commands.add(new ToggleCommand());
         this.commands.add(new BindCommand());
         this.commands.add(new FriendCommand());

@@ -9,12 +9,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil implements Globals {
 
