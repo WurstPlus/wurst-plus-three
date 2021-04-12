@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 
 public class Render3DEvent
-        extends EventStage {
+        extends Event {
     private final float partialTicks;
 
     public Render3DEvent(float partialTicks) {

@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.gui;
+package me.travis.wurstplusthree.gui.components;
 
 import java.awt.*;
 

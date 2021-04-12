@@ -1,10 +1,10 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 import net.minecraft.client.gui.ScaledResolution;
 
 public class Render2DEvent
-        extends EventStage {
+        extends Event {
     public float partialTicks;
     public ScaledResolution scaledResolution;
 

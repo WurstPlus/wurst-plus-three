@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 
 public class KeyEvent
-        extends EventStage {
+        extends Event {
     public boolean info;
     public boolean pressed;
 

@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.command.commands;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
-import me.travis.wurstplusthree.manager.ClientMessage;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 
 public class FriendCommand extends Command {

@@ -2,14 +2,14 @@ package me.travis.wurstplusthree.event;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public class EventStage
-        extends Event {
+public class Event
+        extends net.minecraftforge.fml.common.eventhandler.Event {
     private int stage;
 
-    public EventStage() {
+    public Event() {
     }
 
-    public EventStage(int stage) {
+    public Event(int stage) {
         this.stage = stage;
     }
 

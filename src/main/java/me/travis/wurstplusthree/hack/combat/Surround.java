@@ -25,7 +25,7 @@ public class Surround extends Hack {
         super("Surround", "Surrounds u", Category.COMBAT, false, false);
     }
 
-    BooleanSetting roate = new BooleanSetting("Rotate", true, this);
+    BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting hybrid = new BooleanSetting("Hybrid", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", true, this);
     BooleanSetting center = new BooleanSetting("Center", false, this);
@@ -144,7 +144,7 @@ public class Surround extends Hack {
                 break;
             }
 
-            if (try_to_place && BlockUtil.placeBlock(targetPos, findObiInHotbar(), roate.getValue(), roate.getValue(), swing)) {
+            if (try_to_place && BlockUtil.placeBlock(targetPos, findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
                 blocks_placed++;
             }
 

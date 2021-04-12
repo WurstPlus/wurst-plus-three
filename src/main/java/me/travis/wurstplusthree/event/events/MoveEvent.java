@@ -1,12 +1,12 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 import net.minecraft.entity.MoverType;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class MoveEvent
-        extends EventStage {
+        extends Event {
     private MoverType type;
     private double x;
     private double y;

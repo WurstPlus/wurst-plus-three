@@ -1,12 +1,12 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class StepEvent
-        extends EventStage {
+        extends Event {
     private final Entity entity;
     private float height;
 

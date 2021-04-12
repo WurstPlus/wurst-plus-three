@@ -1,13 +1,13 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.EventStage;
+import me.travis.wurstplusthree.event.Event;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class RenderEntityModelEvent
-        extends EventStage {
+        extends Event {
     public ModelBase modelBase;
     public Entity entity;
     public float limbSwing;
