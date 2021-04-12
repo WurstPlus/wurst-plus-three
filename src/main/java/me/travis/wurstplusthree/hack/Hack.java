@@ -105,6 +105,10 @@ public class Hack implements Globals {
         ClientMessage.sendToggleMessage(this);
     }
 
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
+    }
+
     public boolean isListening() {
         return isListening >= -1;
     }
@@ -145,6 +149,15 @@ public class Hack implements Globals {
             }
         }
         return settings;
+    }
+
+    public Setting getSettingByName(String name) {
+        for (Setting setting : this.getSettings()) {
+            if (setting.getName().equalsIgnoreCase(name)) {
+                return setting;
+            }
+        }
+        return null;
     }
 
     public enum Category {

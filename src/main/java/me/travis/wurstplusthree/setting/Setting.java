@@ -25,10 +25,14 @@ public class Setting<T> {
         return this.value;
     }
 
+    public String getType() {return "";}
+
     public Hack getParent() {
         return this.parent;
     }
 
-
+    public void setValue(T value) {
+        this.value = value;
+    }
 
 }

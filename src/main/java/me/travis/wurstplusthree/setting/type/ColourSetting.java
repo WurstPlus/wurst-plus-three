@@ -42,4 +42,9 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
     }
+
+    @Override
+    public String getType() {
+        return "colour";
+    }
 }

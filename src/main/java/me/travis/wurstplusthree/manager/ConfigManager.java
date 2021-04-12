@@ -3,7 +3,10 @@ package me.travis.wurstplusthree.manager;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 
 import java.io.*;
@@ -16,53 +19,53 @@ import java.util.ArrayList;
 public class ConfigManager implements Globals {
 
     // FOLDERS
-    private final String MAIN_FOLDER = "Wurstplus3/";
-    private final String CONFIGS_FOLDER = MAIN_FOLDER + "configs/";
-    private String ACTIVE_CONFIG_FOLDER = CONFIGS_FOLDER + "default/";
+    private final String mainFolder = "Wurstplus3/";
+    private final String configsFolder = mainFolder + "configs/";
+    private String activeConfigFolder = configsFolder + "default/";
 
     // STATIC FILES
-    private final String CLIENT_FILE = "client.json";
-    private final String CONFIG_FILE = "config.txt";
-    private final String DRAWN_FILE = "drawn.txt";
-    private final String EZ_FILE = "ez.txt";
-    private final String ENEMIES_FILE = "enemies.json";
-    private final String FRIENDS_FILE = "friends.json";
-    private final String HUD_FILE = "hud.json";
-    private final String BINDS_FILE = "binds.txt";
+    private final String clientFile = "client.json";
+    private final String configFile = "config.txt";
+    private final String drawnFile = "drawn.txt";
+    private final String ezFile = "ez.txt";
+    private final String enemiesFile = "enemies.json";
+    private final String friendsFile = "friends.json";
+    private final String hudFile = "hud.json";
+    private final String bindsFile = "binds.txt";
 
     // DIRS
-    private final String CLIENT_DIR = MAIN_FOLDER + CLIENT_FILE;
-    private final String CONFIG_DIR = MAIN_FOLDER + CONFIG_FILE;
-    private final String DRAWN_DIR = MAIN_FOLDER + DRAWN_FILE;
-    private final String EZ_DIR = MAIN_FOLDER + EZ_FILE;
-    private final String ENEMIES_DIR = MAIN_FOLDER + ENEMIES_FILE;
-    private final String FRIENDS_DIR = MAIN_FOLDER + FRIENDS_FILE;
-    private final String HUD_DIR = MAIN_FOLDER + HUD_FILE;
+    private final String clientDir = mainFolder + clientFile;
+    private final String configDir = mainFolder + configFile;
+    private final String drawnDir = mainFolder + drawnFile;
+    private final String ezDir = mainFolder + ezFile;
+    private final String enemiesDir = mainFolder + enemiesFile;
+    private final String friendsDir = mainFolder + friendsFile;
 
-    private String CURRENT_CONFIG_DIR = MAIN_FOLDER + CONFIGS_FOLDER + ACTIVE_CONFIG_FOLDER;
-    private String BINDS_DIR = CURRENT_CONFIG_DIR + BINDS_FILE;
+    private String currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
+    private String bindsDir = currentConfigDir + bindsFile;
 
     // FOLDER PATHS
-    private final Path MAIN_FOLDER_PATH = Paths.get(MAIN_FOLDER);
-    private final Path CONFIGS_FOLDER_PATH = Paths.get(CONFIGS_FOLDER);
-    private Path ACTIVE_CONFIG_FOLDER_PATH = Paths.get(ACTIVE_CONFIG_FOLDER);
+    private final Path mainFolderPath = Paths.get(mainFolder);
+    private final Path configsFolderPath = Paths.get(configsFolder);
+    private Path activeConfigFolderPath = Paths.get(activeConfigFolder);
 
     // FILE PATHS
-    private final Path CLIENT_PATH = Paths.get(CLIENT_DIR);
-    private final Path CONFIG_PATH = Paths.get(CONFIG_DIR);
-    private final Path DRAWN_PATH = Paths.get(DRAWN_DIR);
-    private final Path EZ_PATH = Paths.get(EZ_DIR);
-    private final Path ENEMIES_PATH = Paths.get(ENEMIES_DIR);
-    private final Path FRIENDS_PATH = Paths.get(FRIENDS_DIR);
-    private final Path HUD_PATH = Paths.get(HUD_DIR);
+    private final Path clientPath = Paths.get(clientDir);
+    private final Path configPath = Paths.get(configDir);
+    private final Path drawnPath = Paths.get(drawnDir);
+    private final Path ezPath = Paths.get(ezDir);
+    private final Path enemiesPath = Paths.get(enemiesDir);
+    private final Path friendsPath = Paths.get(friendsDir);
 
-    private Path BINDS_PATH = Paths.get(BINDS_DIR);
-    private Path CURRENT_CONFIG_PATH = Paths.get(CURRENT_CONFIG_DIR);
+    private Path bindsPath = Paths.get(bindsDir);
+    private Path currentConfigPath = Paths.get(currentConfigDir);
 
     public void loadConfig() {
         try {
             this.loadEnemies();
             this.loadFriends();
+            this.loadSettings();
+            this.loadBinds();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,29 +73,32 @@ public class ConfigManager implements Globals {
 
     public void saveConfig() {
         try {
-            this.verifyDir(MAIN_FOLDER_PATH);
-            this.verifyDir(CONFIGS_FOLDER_PATH);
-            this.verifyDir(ACTIVE_CONFIG_FOLDER_PATH);
+            this.verifyDir(mainFolderPath);
+            this.verifyDir(configsFolderPath);
+            this.verifyDir(activeConfigFolderPath);
+
             this.saveEnemies();
             this.saveFriends();
+            this.saveSettings();
+            this.saveBinds();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public boolean setActiveConfigFolder(String folder) {
-        if (folder.equals(this.ACTIVE_CONFIG_FOLDER)) {
+        if (folder.equals(this.activeConfigFolder)) {
             return false;
         }
 
-        this.ACTIVE_CONFIG_FOLDER = CONFIGS_FOLDER + folder;
-        this.ACTIVE_CONFIG_FOLDER_PATH = Paths.get(ACTIVE_CONFIG_FOLDER);
+        this.activeConfigFolder = configsFolder + folder;
+        this.activeConfigFolderPath = Paths.get(activeConfigFolder);
 
-        this.CURRENT_CONFIG_DIR = MAIN_FOLDER + CONFIGS_FOLDER + ACTIVE_CONFIG_FOLDER;
-        this.CURRENT_CONFIG_PATH = Paths.get(CURRENT_CONFIG_DIR);
+        this.currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
+        this.currentConfigPath = Paths.get(currentConfigDir);
 
-        this.BINDS_DIR = CURRENT_CONFIG_DIR + BINDS_FILE;
-        this.BINDS_PATH = Paths.get(BINDS_DIR);
+        this.bindsDir = currentConfigDir + bindsFile;
+        this.bindsPath = Paths.get(bindsDir);
 
         // load_settings();
         return true;
@@ -105,14 +111,14 @@ public class ConfigManager implements Globals {
         String json = gson.toJson(WurstplusThree.FRIEND_MANAGER.getFriends());
         OutputStreamWriter file;
 
-        file = new OutputStreamWriter(new FileOutputStream(FRIENDS_DIR), StandardCharsets.UTF_8);
+        file = new OutputStreamWriter(new FileOutputStream(friendsDir), StandardCharsets.UTF_8);
         file.write(json);
         file.close();
     }
 
     private void loadFriends() throws IOException {
         Gson gson = new Gson();
-        Reader reader = Files.newBufferedReader(Paths.get(FRIENDS_DIR));
+        Reader reader = Files.newBufferedReader(Paths.get(friendsDir));
 
         WurstplusThree.FRIEND_MANAGER.setFriends(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>(){}.getType()));
 
@@ -127,18 +133,116 @@ public class ConfigManager implements Globals {
 
         OutputStreamWriter file;
 
-        file = new OutputStreamWriter(new FileOutputStream(ENEMIES_DIR), StandardCharsets.UTF_8);
+        file = new OutputStreamWriter(new FileOutputStream(enemiesDir), StandardCharsets.UTF_8);
         file.write(json);
         file.close();
     }
 
     private void loadEnemies() throws IOException {
         Gson gson = new Gson();
-        Reader reader = Files.newBufferedReader(Paths.get(ENEMIES_DIR));
+        Reader reader = Files.newBufferedReader(Paths.get(enemiesDir));
 
         WurstplusThree.ENEMY_MANAGER.setEnemies(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>(){}.getType()));
 
         reader.close();
+    }
+
+    // LOAD & SAVE SETTINGS
+
+    private void saveSettings() throws IOException {
+        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
+            String fileName = activeConfigFolder + hack.getName() + ".txt";
+            Path filePath = Paths.get(fileName);
+            deleteFile(fileName);
+            verifyFile(filePath);
+
+            File file = new File(fileName);
+            BufferedWriter br = new BufferedWriter(new FileWriter(file));
+
+            for (Setting setting : hack.getSettings()) {
+                br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
+            }
+
+            br.close();
+
+        }
+    }
+
+    private void loadSettings() throws IOException {
+        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
+            String file_name = activeConfigFolder + hack.getName() + ".txt";
+            File file = new File(file_name);
+            FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream di_stream = new DataInputStream(fi_stream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String colune = line.trim();
+                String name = colune.split(":")[0];
+                String value = colune.split(":")[1];
+
+                Setting setting = hack.getSettingByName(name);
+                if (setting == null) continue;
+                switch (setting.getType()) {
+                    case "boolean":
+                        setting.setValue(Boolean.parseBoolean(value));
+                        break;
+                    case "colour":
+                        setting.setValue(getColourFromStringSetting(value));
+                        break;
+                    case "double":
+                        setting.setValue(Double.parseDouble(value));
+                        break;
+                    case "enum":
+                        setting.setValue(value);
+                        break;
+                    case "int":
+                        setting.setValue(Integer.parseInt(value));
+                        break;
+                }
+            }
+
+            br.close();
+        }
+    }
+
+    // LOAD & SAVE BINDS
+
+    private void saveBinds() throws IOException {
+        final String file_name = activeConfigFolder + "BINDS.txt";
+        final Path file_path = Paths.get(file_name);
+
+        this.deleteFile(file_name);
+        this.verifyFile(file_path);
+        final File file = new File(file_name);
+        final BufferedWriter br = new BufferedWriter(new FileWriter(file));
+        for (Hack module : WurstplusThree.HACKS.getHacks()) {
+            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + "\r\n");
+        }
+        br.close();
+    }
+
+    private void loadBinds() throws IOException {
+        final String file_name = activeConfigFolder + "BINDS.txt";
+        final File file = new File(file_name);
+        final FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
+        final DataInputStream di_stream = new DataInputStream(fi_stream);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
+        String line;
+        while ((line = br.readLine()) != null) {
+            try {
+                final String colune = line.trim();
+                final String tag = colune.split(":")[0];
+                final String bind = colune.split(":")[1];
+                final String active = colune.split(":")[2];
+                Hack hack = WurstplusThree.HACKS.getHackByName(tag);
+                hack.setBind(Integer.parseInt(bind));
+                hack.setEnabled(Boolean.parseBoolean(active));
+            } catch (Exception ignored) {}
+        }
+        br.close();
     }
 
     public boolean deleteFile(final String path) throws IOException {
@@ -156,6 +260,41 @@ public class ConfigManager implements Globals {
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
+    }
+
+    private Colour getColourFromStringSetting(String string) {
+        StringBuilder r = new StringBuilder();
+        StringBuilder g = new StringBuilder();
+        StringBuilder b = new StringBuilder();
+
+        boolean listener = false;
+        int count = 0;
+
+        for (char c : string.toCharArray()) {
+            if (listener) {
+                if (!Character.isDigit(c)) {
+                    listener = false;
+                    continue;
+                }
+                switch (count) {
+                    case 1:
+                        r.append(c);
+                        break;
+                    case 2:
+                        g.append(c);
+                        break;
+                    case 3:
+                        b.append(c);
+                        break;
+                }
+            }
+            if (c == '=') {
+                listener = true;
+                count++;
+            }
+        }
+
+        return new Colour(Integer.parseInt(r.toString()), Integer.parseInt(g.toString()), Integer.parseInt(b.toString()));
     }
 
 }

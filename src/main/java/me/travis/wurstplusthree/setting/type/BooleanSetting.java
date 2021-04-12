@@ -23,4 +23,8 @@ public class BooleanSetting extends Setting<Boolean> implements Toggleable {
         return value;
     }
 
+    @Override
+    public String getType() {
+        return "boolean";
+    }
 }

@@ -53,4 +53,8 @@ public class NoRender extends Hack {
         }
     }
 
+    @Override
+    public void onLogout() {
+        this.disable();
+    }
 }

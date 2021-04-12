@@ -51,4 +51,9 @@ public class DoubleSetting extends Setting<Double> implements NumberSetting {
     public int getPrecision() {
         return 2;
     }
+
+    @Override
+    public String getType() {
+        return "double";
+    }
 }

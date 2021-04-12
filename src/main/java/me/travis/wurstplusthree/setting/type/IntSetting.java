@@ -52,4 +52,9 @@ public class IntSetting extends Setting<Integer> implements NumberSetting {
     public int getPrecision() {
         return 0;
     }
+
+    @Override
+    public String getType() {
+        return "int";
+    }
 }

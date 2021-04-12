@@ -9,6 +9,7 @@ import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketEntity;
 import net.minecraft.network.play.server.SPacketEntityStatus;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -47,10 +48,11 @@ public class NoKnockback extends Hack {
         if (event.getStage() == 0 && mc.player != null) {
             Entity entity;
             SPacketEntityStatus packet;
-            if (event.getPacket() instanceof SPacketEntity &&
-                    ((SPacketEntity) event.getPacket()).getEntity(mc.world).getEntityId() == mc.player.entityId) {
-                event.setCanceled(true);
-                return;
+            if (event.getPacket() instanceof SPacketEntityVelocity) {
+                if (((SPacketEntityVelocity) event.getPacket()).getEntityID() == mc.player.entityId) {
+                    event.setCanceled(true);
+                    return;
+                }
             }
             if (event.getPacket() instanceof SPacketEntityStatus && this.bobbers.getValue()
                     && (packet = event.getPacket()).getOpCode() == 31

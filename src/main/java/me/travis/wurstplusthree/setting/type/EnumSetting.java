@@ -41,4 +41,8 @@ public class EnumSetting extends Setting<String> implements com.lukflug.panelstu
         return this.value;
     }
 
+    @Override
+    public String getType() {
+        return "enum";
+    }
 }
