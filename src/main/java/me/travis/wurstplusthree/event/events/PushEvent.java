@@ -1,12 +1,12 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class PushEvent
-        extends Event {
+        extends EventStage {
     public Entity entity;
     public double x;
     public double y;

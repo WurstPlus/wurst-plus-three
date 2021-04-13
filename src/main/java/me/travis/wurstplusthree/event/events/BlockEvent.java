@@ -1,13 +1,13 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class BlockEvent
-        extends Event {
+        extends EventStage {
     public BlockPos pos;
     public EnumFacing facing;
 

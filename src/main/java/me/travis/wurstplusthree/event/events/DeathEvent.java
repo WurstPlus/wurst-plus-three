@@ -1,10 +1,10 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class DeathEvent
-        extends Event {
+        extends EventStage {
     public EntityPlayer player;
 
     public DeathEvent(EntityPlayer player) {

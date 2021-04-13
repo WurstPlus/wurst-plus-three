@@ -1,10 +1,10 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.util.math.BlockPos;
 
 public class BlockBreakingEvent
-        extends Event {
+        extends EventStage {
     public BlockPos pos;
     public int breakingID;
     public int breakStage;

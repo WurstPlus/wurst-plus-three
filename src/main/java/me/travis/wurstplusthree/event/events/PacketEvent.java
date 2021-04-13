@@ -1,11 +1,11 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 public class PacketEvent
-        extends Event {
+        extends EventStage {
     private final Packet<?> packet;
 
     public PacketEvent(int stage, Packet<?> packet) {

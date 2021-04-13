@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.command.commands;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.util.ClientMessage;
+import me.travis.wurstplusthree.manager.ClientMessage;
 
 public class ToggleCommand extends Command {
 

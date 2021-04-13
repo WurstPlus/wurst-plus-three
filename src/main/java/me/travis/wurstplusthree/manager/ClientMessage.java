@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.util;
+package me.travis.wurstplusthree.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;

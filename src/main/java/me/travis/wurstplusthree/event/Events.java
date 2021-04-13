@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.event;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
-import me.travis.wurstplusthree.util.ClientMessage;
+import me.travis.wurstplusthree.manager.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
 import net.minecraft.client.gui.ScaledResolution;

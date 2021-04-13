@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;

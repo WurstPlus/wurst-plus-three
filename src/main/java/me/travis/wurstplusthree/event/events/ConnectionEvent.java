@@ -1,12 +1,12 @@
 package me.travis.wurstplusthree.event.events;
 
-import me.travis.wurstplusthree.event.Event;
+import me.travis.wurstplusthree.event.EventStage;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.UUID;
 
 public class ConnectionEvent
-        extends Event {
+        extends EventStage {
     private final UUID uuid;
     private final EntityPlayer entity;
     private final String name;

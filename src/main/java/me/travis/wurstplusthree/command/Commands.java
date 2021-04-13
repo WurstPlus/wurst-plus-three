@@ -1,7 +1,7 @@
 package me.travis.wurstplusthree.command;
 
 import me.travis.wurstplusthree.command.commands.*;
-import me.travis.wurstplusthree.util.ClientMessage;
+import me.travis.wurstplusthree.manager.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 
 import java.util.ArrayList;
