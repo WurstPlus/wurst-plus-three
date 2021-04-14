@@ -18,7 +18,6 @@ import org.lwjgl.opengl.Display;
 /**
  * @author travis - began work on 8th april 2021
  */
-
 @Mod(modid = "wurstplusthree", name = "Wurst+3", version = "0.0.1")
 public class WurstplusThree {
 

@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.command.commands;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
-import me.travis.wurstplusthree.manager.ClientMessage;
+import me.travis.wurstplusthree.util.ClientMessage;
 
 public class PrefixCommand extends Command {
 

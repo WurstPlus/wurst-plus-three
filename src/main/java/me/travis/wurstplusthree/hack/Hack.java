@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.hack;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.manager.ClientMessage;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;

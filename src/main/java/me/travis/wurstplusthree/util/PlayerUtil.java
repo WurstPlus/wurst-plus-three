@@ -6,6 +6,7 @@ import com.mojang.util.UUIDTypeAdapter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.BlockPos;
 
@@ -41,6 +42,16 @@ public class PlayerUtil implements Globals {
     public static String convertStreamToString(final InputStream is) {
         final Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "/";
+    }
+
+    public static boolean isInHole() {
+
+        BlockPos player_block = getPlayerPos();
+
+        return mc.world.getBlockState(player_block.east()).getBlock() != Blocks.AIR
+                && mc.world.getBlockState(player_block.west()).getBlock() != Blocks.AIR
+                && mc.world.getBlockState(player_block.north()).getBlock() != Blocks.AIR
+                && mc.world.getBlockState(player_block.south()).getBlock() != Blocks.AIR;
     }
 
     public static String requestIDs(final String data) {

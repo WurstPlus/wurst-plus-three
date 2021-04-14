@@ -25,6 +25,10 @@ public class MathsUtil implements Globals {
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
     }
 
+    public static double square(float input) {
+        return input * input;
+    }
+
     public static double[] directionSpeed(double speed) {
         float forward = mc.player.movementInput.moveForward;
         float side = mc.player.movementInput.moveStrafe;

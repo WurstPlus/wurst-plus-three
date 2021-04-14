@@ -91,7 +91,8 @@ public class Nametags extends Hack {
                 renderNametag(player, pX, pY, pZ);
             }
         }
-
+        GlStateManager.disableDepth();
+        GlStateManager.enableDepth();
     }
 
     public void renderNametag(EntityPlayer player, double x, double y, double z) {
@@ -196,7 +197,7 @@ public class Nametags extends Hack {
                     ItemStack armourStack = player.inventory.armorInventory.get(index);
                     if (armourStack.getItem() != Items.AIR) {
                         ItemStack renderStack1 = armourStack.copy();
-                        renderDurabilityText(player, renderStack1, xOffset);
+                        renderDurabilityText(renderStack1, xOffset);
                         xOffset += 16;
                     }
                 }
@@ -205,16 +206,15 @@ public class Nametags extends Hack {
                 GlStateManager.enableTexture2D();
             }
         }
+        GlStateManager.disableDepth();
+        GlStateManager.enableDepth();
         nametagRenderer.resetCaps();
         GlStateManager.resetColor();
         glColor4f(1F, 1F, 1F, 1F);
-        // enchant fix
-        GlStateManager.disableDepth();
-        GlStateManager.enableDepth();
         glPopMatrix();
     }
 
-    private void renderDurabilityText(EntityPlayer player, ItemStack stack, int x) {
+    private void renderDurabilityText(ItemStack stack, int x) {
         if (stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemSword
                 || stack.getItem() instanceof ItemTool) {
             float green = ((float) stack.getMaxDamage() - (float) stack.getItemDamage()) / (float) stack.getMaxDamage();

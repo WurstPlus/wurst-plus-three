@@ -9,6 +9,7 @@ import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class NoKnockback extends Hack {
@@ -60,6 +61,12 @@ public class NoKnockback extends Hack {
                     event.setCanceled(true);
                 }
             }
+            if (event.getPacket() instanceof SPacketExplosion) {
+                SPacketExplosion velocity_ = event.getPacket();
+                velocity_.motionX *= 0;
+                velocity_.motionY *= 0;
+                velocity_.motionZ *= 0;
+            }
         }
     }
 
@@ -75,4 +82,8 @@ public class NoKnockback extends Hack {
         }
     }
 
+    @Override
+    public void onLogout() {
+        this.disable();
+    }
 }
