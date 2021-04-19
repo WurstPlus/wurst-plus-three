@@ -49,29 +49,29 @@ public class MixinRenderEnderCrystal {
             if (CrystalRender.INSTANCE.xqz.getValue() && CrystalRender.INSTANCE.throughwalls.getValue()) {
                 Color visibleColor;
                 Color hiddenColor = EntityUtil.getColor(entity, CrystalRender.INSTANCE.hiddenColour.getValue().getRed(), CrystalRender.INSTANCE.hiddenColour.getValue().getGreen(), CrystalRender.INSTANCE.hiddenColour.getValue().getBlue(), CrystalRender.INSTANCE.hiddenColour.getValue().getAlpha(), true);
-                visibleColor = EntityUtil.getColor(entity, CrystalRender.INSTANCE.colour.getValue().getRed(), CrystalRender.INSTANCE.colour.getValue().getGreen(), CrystalRender.INSTANCE.colour.getValue().getBlue(), CrystalRender.INSTANCE.colour.getValue().getAlpha(), true);
+                visibleColor = EntityUtil.getColor(entity, CrystalRender.INSTANCE.colour.getValue().getRed(), CrystalRender.INSTANCE.colour.getValue().getGreen(), CrystalRender.INSTANCE.colour.getValue().getBlue(), CrystalRender.INSTANCE.alpha.getValue(), true);
                 if (CrystalRender.INSTANCE.throughwalls.getValue()) {
                     GL11.glDisable((int)2929);
                     GL11.glDepthMask((boolean)false);
                 }
                 GL11.glEnable((int)10754);
-                GL11.glColor4f((float)((float)hiddenColor.getRed() / 255.0f), (float)((float)hiddenColor.getGreen() / 255.0f), (float)hiddenColor.getBlue() / 255.0f, (float)CrystalRender.INSTANCE.colour.getValue().getAlpha() / 255.0f);
+                GL11.glColor4f((float)((float)hiddenColor.getRed() / 255.0f), (float)((float)hiddenColor.getGreen() / 255.0f), (float)hiddenColor.getBlue() / 255.0f, (float)CrystalRender.INSTANCE.alpha.getValue() / 255.0f);
                 model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
                 if (CrystalRender.INSTANCE.throughwalls.getValue()) {
                     GL11.glEnable((int)2929);
                     GL11.glDepthMask((boolean)true);
                 }
-                GL11.glColor4f((float)visibleColor.getRed() / 255.0f, (float)visibleColor.getGreen() / 255.0f, (float)visibleColor.getBlue() / 255.0f, (float)CrystalRender.INSTANCE.colour.getValue().getAlpha() / 255.0f);
+                GL11.glColor4f((float)visibleColor.getRed() / 255.0f, (float)visibleColor.getGreen() / 255.0f, (float)visibleColor.getBlue() / 255.0f, (float)CrystalRender.INSTANCE.alpha.getValue() / 255.0f);
                 model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             } else {
                 Color visibleColor;
-                visibleColor = EntityUtil.getColor(entity, CrystalRender.INSTANCE.colour.getValue().getRed(), CrystalRender.INSTANCE.colour.getValue().getGreen(), CrystalRender.INSTANCE.colour.getValue().getBlue(), CrystalRender.INSTANCE.colour.getValue().getAlpha(), true);
+                visibleColor = EntityUtil.getColor(entity, CrystalRender.INSTANCE.colour.getValue().getRed(), CrystalRender.INSTANCE.colour.getValue().getGreen(), CrystalRender.INSTANCE.colour.getValue().getBlue(), CrystalRender.INSTANCE.alpha.getValue(), true);
                 if (CrystalRender.INSTANCE.throughwalls.getValue()) {
                     GL11.glDisable(2929);
                     GL11.glDepthMask(false);
                 }
                 GL11.glEnable(10754);
-                GL11.glColor4f(((float)visibleColor.getRed() / 255.0f), ((float)visibleColor.getGreen() / 255.0f), ((float)visibleColor.getBlue() / 255.0f), (float)((float)CrystalRender.INSTANCE.colour.getValue().getAlpha() / 255.0f));
+                GL11.glColor4f(((float)visibleColor.getRed() / 255.0f), ((float)visibleColor.getGreen() / 255.0f), ((float)visibleColor.getBlue() / 255.0f), (float)CrystalRender.INSTANCE.alpha.getValue() / 255.0f);
                 model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
                 if (CrystalRender.INSTANCE.throughwalls.getValue()) {
                     GL11.glEnable(2929);

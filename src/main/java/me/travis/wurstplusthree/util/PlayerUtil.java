@@ -3,10 +3,14 @@ package me.travis.wurstplusthree.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.util.UUIDTypeAdapter;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEnderChest;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.BlockPos;
 
@@ -37,6 +41,44 @@ public class PlayerUtil implements Globals {
 
     public static BlockPos getPlayerPos() {
         return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
+    }
+
+    public static double[] forward(final double speed) {
+        float forward = mc.player.movementInput.moveForward;
+        float side = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
+        if (forward != 0.0f) {
+            if (side > 0.0f) {
+                yaw += ((forward > 0.0f) ? -45 : 45);
+            } else if (side < 0.0f) {
+                yaw += ((forward > 0.0f) ? 45 : -45);
+            }
+            side = 0.0f;
+            if (forward > 0.0f) {
+                forward = 1.0f;
+            } else if (forward < 0.0f) {
+                forward = -1.0f;
+            }
+        }
+        final double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        final double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+        final double posX = forward * speed * cos + side * speed * sin;
+        final double posZ = forward * speed * sin - side * speed * cos;
+        return new double[]{posX, posZ};
+    }
+
+    public static int findObiInHotbar() {
+        for (int i = 0; i < 9; ++i) {
+            final ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBlock) {
+                final Block block = ((ItemBlock) stack.getItem()).getBlock();
+                if (block instanceof BlockEnderChest)
+                    return i;
+                else if (block instanceof BlockObsidian)
+                    return i;
+            }
+        }
+        return -1;
     }
 
     public static String convertStreamToString(final InputStream is) {
@@ -94,30 +136,6 @@ public class PlayerUtil implements Globals {
             baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
         }
         return baseSpeed;
-    }
-
-    public static double[] forward(final double speed) {
-        float forward = mc.player.movementInput.moveForward;
-        float side = mc.player.movementInput.moveStrafe;
-        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
-        if (forward != 0.0f) {
-            if (side > 0.0f) {
-                yaw += ((forward > 0.0f) ? -45 : 45);
-            } else if (side < 0.0f) {
-                yaw += ((forward > 0.0f) ? 45 : -45);
-            }
-            side = 0.0f;
-            if (forward > 0.0f) {
-                forward = 1.0f;
-            } else if (forward < 0.0f) {
-                forward = -1.0f;
-            }
-        }
-        final double sin = Math.sin(Math.toRadians(yaw + 90.0f));
-        final double cos = Math.cos(Math.toRadians(yaw + 90.0f));
-        final double posX = forward * speed * cos + side * speed * sin;
-        final double posZ = forward * speed * sin - side * speed * cos;
-        return new double[]{posX, posZ};
     }
 
     public static class lookUpUUID implements Runnable {

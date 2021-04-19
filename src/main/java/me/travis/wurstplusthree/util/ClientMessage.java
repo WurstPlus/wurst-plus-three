@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.util;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentBase;
 

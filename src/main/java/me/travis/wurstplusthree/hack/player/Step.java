@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.player;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.StepEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
@@ -19,7 +20,7 @@ public class Step extends Hack {
 
     @SubscribeEvent
     public void onStep(StepEvent event) {
-        if (mc.player.onGround && !mc.player.isInsideOfMaterial(Material.WATER) && !mc.player.isInsideOfMaterial(Material.LAVA) && mc.player.collidedVertically && mc.player.fallDistance == 0.0f && !mc.gameSettings.keyBindJump.pressed && !mc.player.isOnLadder()) {
+        if (mc.player.onGround && !mc.player.isInsideOfMaterial(Material.WATER) && !mc.player.isInsideOfMaterial(Material.LAVA) && mc.player.collidedVertically && mc.player.fallDistance == 0.0f && !mc.gameSettings.keyBindJump.pressed && !mc.player.isOnLadder() && !WurstplusThree.HACKS.ishackEnabled("Speed")) {
             event.setHeight(this.height.getValue());
             double rheight = mc.player.getEntityBoundingBox().minY - mc.player.posY;
             if (rheight >= 0.625) {

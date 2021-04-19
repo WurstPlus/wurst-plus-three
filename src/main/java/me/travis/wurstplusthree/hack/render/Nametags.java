@@ -43,12 +43,12 @@ public class Nametags extends Hack {
         INSTANCE = this;
     }
 
-    public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    public BooleanSetting customFont = new BooleanSetting("Custom Font", true, this);
     public BooleanSetting simple = new BooleanSetting("Simplfy", false, this);
     public BooleanSetting gameMode = new BooleanSetting("Gamemode", false, this);
     public BooleanSetting armour = new BooleanSetting("Armour", true, this);
     public BooleanSetting durability = new BooleanSetting("Durability", true, this);
-    public BooleanSetting popCounter = new BooleanSetting("TotemPops", true, this);
+    public BooleanSetting popCounter = new BooleanSetting("Totem Pops", true, this);
     public BooleanSetting invisibles = new BooleanSetting("Invisibles", false, this);
     public IntSetting distance = new IntSetting("Distance", 250, 0, 500, this);
     public DoubleSetting scale = new DoubleSetting("Scale", 0.05, 0.01, 0.1, this);
@@ -56,10 +56,10 @@ public class Nametags extends Hack {
 
     public BooleanSetting outline = new BooleanSetting("Outline", true, this);
     public DoubleSetting outlineWidth = new DoubleSetting("Width", 1.5, 0.1, 3.0, this);
-    public ColourSetting outlineColour = new ColourSetting("OutlineColour", new Colour(20, 20, 255, 150), this);
+    public ColourSetting outlineColour = new ColourSetting("Outline Colour", new Colour(255, 80, 0, 150), this);
 
-    public ColourSetting outlineColourFriend = new ColourSetting("FriendColour", new Colour(20, 255, 20, 150), this);
-    public ColourSetting outlineColourEnemy = new ColourSetting("EnemyColour", new Colour(255, 20, 20, 150), this);
+    public ColourSetting outlineColourFriend = new ColourSetting("Friend Colour", new Colour(20, 20, 255, 150), this);
+    public ColourSetting outlineColourEnemy = new ColourSetting("Enemy Colour", new Colour(255, 20, 20, 150), this);
 
     private final NametagRenderer nametagRenderer = new NametagRenderer();
     private final ICamera camera = new Frustum();
@@ -75,22 +75,27 @@ public class Nametags extends Hack {
 
         camera.setPosition(cx, cy, cz);
 
-        for (EntityPlayer player : mc.world.playerEntities) {
-            if (!player.isEntityAlive() || player == mc.getRenderViewEntity() ||
-                    player.getDistance(mc.player) > this.distance.getValue() ||
-                    !camera.isBoundingBoxInFrustum(player.getEntityBoundingBox())) continue;
-            NetworkPlayerInfo npi = mc.player.connection.getPlayerInfo(player.getGameProfile().getId());
-            double pX = player.lastTickPosX + (player.posX - player.lastTickPosX) * mc.timer.renderPartialTicks
-                    - mc.renderManager.renderPosX;
-            double pY = player.lastTickPosY + (player.posY - player.lastTickPosY) * mc.timer.renderPartialTicks
-                    - mc.renderManager.renderPosY;
-            double pZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * mc.timer.renderPartialTicks
-                    - mc.renderManager.renderPosZ;
-            if (this.getShortGamemode(npi.getGameType().getName()).equalsIgnoreCase("SP") && !invisibles.getValue()) continue;
-            if (!player.getName().startsWith("Body #")) {
-                renderNametag(player, pX, pY, pZ);
+        try {
+            for (EntityPlayer player : mc.world.playerEntities) {
+                if (!player.isEntityAlive() || player == mc.getRenderViewEntity() ||
+                        player.getDistance(mc.player) > this.distance.getValue() ||
+                        !camera.isBoundingBoxInFrustum(player.getEntityBoundingBox())) continue;
+                NetworkPlayerInfo npi = mc.player.connection.getPlayerInfo(player.getGameProfile().getId());
+                double pX = player.lastTickPosX + (player.posX - player.lastTickPosX) * mc.timer.renderPartialTicks
+                        - mc.renderManager.renderPosX;
+                double pY = player.lastTickPosY + (player.posY - player.lastTickPosY) * mc.timer.renderPartialTicks
+                        - mc.renderManager.renderPosY;
+                double pZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * mc.timer.renderPartialTicks
+                        - mc.renderManager.renderPosZ;
+                if (this.getShortGamemode(npi.getGameType().getName()).equalsIgnoreCase("SP") && !invisibles.getValue()) continue;
+                if (!player.getName().startsWith("Body #")) {
+                    renderNametag(player, pX, pY, pZ);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         GlStateManager.disableDepth();
         GlStateManager.enableDepth();
     }
@@ -103,14 +108,14 @@ public class Nametags extends Hack {
         boolean isFriend = WurstplusThree.FRIEND_MANAGER.isFriend(player.getName());
         boolean isEnemy = WurstplusThree.ENEMY_MANAGER.isEnemy(player.getName());
         String name = ((isFriend || isEnemy) && player.isSneaking() ? SECTIONSIGN + "9" : SECTIONSIGN + "r")
-                + (isFriend ? ChatFormatting.GREEN :
-                isEnemy ? ChatFormatting.RED : "")
+                + (isFriend ? ChatFormatting.AQUA :
+                isEnemy ? ChatFormatting.RED : ChatFormatting.GOLD)
                 + player.getName() + ChatFormatting.RESET
                 + (gameMode.getValue() ? " [" + getShortGamemode(npi.getGameType().getName()) + "]" : "")
                 + " " + SECTIONSIGN + getPing(npi.getResponseTime()) + npi.getResponseTime() + "ms"
                 + " " + SECTIONSIGN + getHealth(player.getHealth() + player.getAbsorptionAmount())
                 + MathHelper.ceil(player.getHealth() + player.getAbsorptionAmount())
-                + (popCounter.getValue() ? SECTIONSIGN + this.getPop(WurstplusThree.POP_MANAGER.getTotemPops(player))
+                + (popCounter.getValue() ? " " + SECTIONSIGN + this.getPop(WurstplusThree.POP_MANAGER.getTotemPops(player))
                 + SECTIONSIGN + "r" : "");
         name = name.replace(".0", "");
         float distance = mc.player.getDistance(player);
@@ -371,13 +376,13 @@ public class Nametags extends Hack {
 
     public String getPop(int pops) {
         if (pops > 10) {
-            return "c";
+            return "c" + pops;
         }
         else if (pops > 4) {
-            return "e";
+            return "e" + pops;
         }
         else {
-            return "a";
+            return "a" + pops;
         }
     }
 

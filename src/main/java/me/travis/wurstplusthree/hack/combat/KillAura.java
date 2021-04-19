@@ -9,10 +9,8 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.DamageUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.InventoryUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemSword;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
@@ -20,7 +18,7 @@ import java.util.Arrays;
 public class KillAura extends Hack {
 
     public KillAura() {
-        super("KillAura", "hits people", Category.COMBAT, false, false);
+        super("Kill Aura", "hits people", Category.COMBAT, false, false);
     }
 
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);

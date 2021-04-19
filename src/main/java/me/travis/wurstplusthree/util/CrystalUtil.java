@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,8 +19,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class CrystalUtil implements Globals {
@@ -46,9 +45,8 @@ public class CrystalUtil implements Globals {
         return calculateDamage((double) pos.getX() + 0.5, pos.getY() + 1, (double) pos.getZ() + 0.5, entity);
     }
 
-    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
-        float doubleExplosionSize = 12.0f;
-        double distancedsize = entity.getDistance(posX, posY, posZ) / (double) doubleExplosionSize;
+    private static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
+        double distancedsize = entity.getDistance(posX, posY, posZ) / 12.0;
         Vec3d vec3d = new Vec3d(posX, posY, posZ);
         double blockDensity = 0.0;
         try {
@@ -57,7 +55,7 @@ public class CrystalUtil implements Globals {
             e.printStackTrace();
         }
         double v = (1.0 - distancedsize) * blockDensity;
-        float damage = (int) ((v * v + v) / 2.0 * 7.0 * (double) doubleExplosionSize + 1.0);
+        float damage = (int) ((v * v + v) / 2.0 * 7.0 * 12.0 + 1.0);
         double finald = 1.0;
         if (entity instanceof EntityLivingBase) {
             finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
@@ -74,8 +72,8 @@ public class CrystalUtil implements Globals {
             int k = 0;
             try {
                 k = EnchantmentHelper.getEnchantmentModifierDamage(ep.getArmorInventoryList(), ds);
-            } catch (Exception exception) {
-                // empty catch block
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             float f = MathHelper.clamp((float) k, 0.0f, 20.0f);
             damage *= 1.0f - f / 25.0f;
@@ -128,27 +126,45 @@ public class CrystalUtil implements Globals {
         return circleblocks;
     }
 
-    public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck, boolean oneDot15) {
+    public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck, boolean onepointThirteen) {
         BlockPos boost = blockPos.add(0, 1, 0);
         BlockPos boost2 = blockPos.add(0, 2, 0);
         try {
-            if (BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.BEDROCK && BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN) {
-                return false;
-            }
-            if (!oneDot15 && BlockUtil.mc.world.getBlockState(boost2).getBlock() != Blocks.AIR || BlockUtil.mc.world.getBlockState(boost).getBlock() != Blocks.AIR) {
-                return false;
-            }
-            for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost))) {
-                if (entity.isDead || specialEntityCheck && entity instanceof EntityEnderCrystal) continue;
-                return false;
-            }
-            if (!oneDot15) {
-                for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2))) {
-                    if (entity.isDead || specialEntityCheck && entity instanceof EntityEnderCrystal) continue;
+            if (!onepointThirteen) {
+                if (mc.world.getBlockState(blockPos).getBlock() != Blocks.BEDROCK && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN) {
+                    return false;
+                }
+                if (mc.world.getBlockState(boost).getBlock() != Blocks.AIR || mc.world.getBlockState(boost2).getBlock() != Blocks.AIR) {
+                    return false;
+                }
+                if (!specialEntityCheck) {
+                    return mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+                }
+                for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost))) {
+                    if (entity instanceof EntityEnderCrystal) continue;
+                    return false;
+                }
+                for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2))) {
+                    if (entity instanceof EntityEnderCrystal) continue;
+                    return false;
+                }
+            } else {
+                if (mc.world.getBlockState(blockPos).getBlock() != Blocks.BEDROCK && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN) {
+                    return false;
+                }
+                if (mc.world.getBlockState(boost).getBlock() != Blocks.AIR) {
+                    return false;
+                }
+                if (!specialEntityCheck) {
+                    return mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
+                }
+                for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost))) {
+                    if (entity instanceof EntityEnderCrystal) continue;
                     return false;
                 }
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

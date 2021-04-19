@@ -1,12 +1,15 @@
 package me.travis.wurstplusthree.hack.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import io.netty.util.internal.MathUtil;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.HudUtil;
+import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,6 +34,9 @@ public class Hud extends Hack {
     BooleanSetting ping = new BooleanSetting("Ping", false, this);
     BooleanSetting clock = new BooleanSetting("Clock", true, this);
     BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);
+    BooleanSetting helper = new BooleanSetting("Helper", true, this);
+    BooleanSetting playerStats = new BooleanSetting("Stats", true, this);
+    BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);
 
     BooleanSetting armour = new BooleanSetting("Armour", false, this);
 
@@ -47,12 +53,22 @@ public class Hud extends Hack {
 
         if (welcomer.getValue()) {
             String line = HudUtil.getWelcomerLine();
-            this.drawStringCenterX(line, 20);
+            if (clock.getValue()) {
+                String clock = HudUtil.getAnaTimeLine() + " | " + HudUtil.getDate();
+                this.drawStringCenterX(clock, 8);
+            }
+            this.drawStringCenterX(line, 26);
+        }
+
+        if (this.lagNot.getValue() && WurstplusThree.SERVER_MANAGER.isServerNotResponding()) {
+            this.drawStringCenterX(ChatFormatting.RED + "Server is not responding " + Math.round(WurstplusThree.SERVER_MANAGER.serverRespondingTime() / 1000.0f), 56);
         }
 
         this.doTopleft();
         this.doTopRight();
         this.doBottomRight();
+        this.doHelper();
+        this.doPlayerStats();
 
         if (this.armour.getValue()) {
             this.renderArmorHUD(true);
@@ -70,6 +86,41 @@ public class Hud extends Hack {
                 y += 11;
             }
         }
+    }
+
+    private void doPlayerStats() {
+        if (!this.playerStats.getValue()) return;
+        int y = 65;
+        String hp = (EntityUtil.getHealth(mc.player) <= 10 ? ChatFormatting.RED : ChatFormatting.GREEN) + "" + EntityUtil.getHealth(mc.player);
+        String mx = "X : " + Math.round(mc.player.motionX);
+        String my = "Y : " + Math.round(mc.player.motionY);
+        String mz = "Z : " + Math.round(mc.player.motionY);
+        this.drawString(hp, 10, y);
+        y += 12;
+        this.drawString(mx, 10, y);
+        y += 12;
+        this.drawString(my, 10, y);
+        y += 12;
+        this.drawString(mz, 10, y);
+    }
+
+    private void doHelper() {
+        if (!this.helper.getValue()) return;
+        int y = 200;
+        String ca = (WurstplusThree.HACKS.ishackEnabled("Crystal Aura") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
+        String holefill = (WurstplusThree.HACKS.ishackEnabled("Hole Fill") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
+        String trap = (WurstplusThree.HACKS.ishackEnabled("Trap") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
+        String surround = (WurstplusThree.HACKS.ishackEnabled("Surround") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
+        String ka = (WurstplusThree.HACKS.ishackEnabled("Kill Aura") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
+        this.drawString("CA " + ca, 10, y);
+        y += 12;
+        this.drawString("HF " + holefill, 10, y);
+        y += 12;
+        this.drawString("AT " + trap, 10, y);
+        y += 12;
+        this.drawString("SR " + surround, 10, y);
+        y += 12;
+        this.drawString("KA " + ka, 10, y);
     }
 
     private void doTopleft() {
@@ -95,11 +146,7 @@ public class Hud extends Hack {
 
     private void doTopRight() {
         int y = 10;
-        if (clock.getValue()) {
-            String clock = HudUtil.getAnaTimeLine();
-            drawString(clock, this.getRightX(clock, 10), y);
-            y += 12;
-        }
+
     }
 
     private int getRightX(String string, int x) {

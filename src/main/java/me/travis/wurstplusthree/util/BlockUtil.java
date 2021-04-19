@@ -1,8 +1,10 @@
 package me.travis.wurstplusthree.util;
 
-import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -26,17 +28,101 @@ public class BlockUtil implements Globals {
     public static List<Block> emptyBlocks = Arrays.asList(Blocks.AIR, Blocks.FLOWING_LAVA, Blocks.LAVA, Blocks.FLOWING_WATER, Blocks.WATER, Blocks.VINE, Blocks.SNOW_LAYER, Blocks.TALLGRASS, Blocks.FIRE);
     public static List<Block> rightclickableBlocks = Arrays.asList(Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.WHITE_SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX, Blocks.LIME_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.GRAY_SHULKER_BOX, Blocks.SILVER_SHULKER_BOX, Blocks.CYAN_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.BLUE_SHULKER_BOX, Blocks.BROWN_SHULKER_BOX, Blocks.GREEN_SHULKER_BOX, Blocks.RED_SHULKER_BOX, Blocks.BLACK_SHULKER_BOX, Blocks.ANVIL, Blocks.WOODEN_BUTTON, Blocks.STONE_BUTTON, Blocks.UNPOWERED_COMPARATOR, Blocks.UNPOWERED_REPEATER, Blocks.POWERED_REPEATER, Blocks.POWERED_COMPARATOR, Blocks.OAK_FENCE_GATE, Blocks.SPRUCE_FENCE_GATE, Blocks.BIRCH_FENCE_GATE, Blocks.JUNGLE_FENCE_GATE, Blocks.DARK_OAK_FENCE_GATE, Blocks.ACACIA_FENCE_GATE, Blocks.BREWING_STAND, Blocks.DISPENSER, Blocks.DROPPER, Blocks.LEVER, Blocks.NOTEBLOCK, Blocks.JUKEBOX, Blocks.BEACON, Blocks.BED, Blocks.FURNACE, Blocks.OAK_DOOR, Blocks.SPRUCE_DOOR, Blocks.BIRCH_DOOR, Blocks.JUNGLE_DOOR, Blocks.ACACIA_DOOR, Blocks.DARK_OAK_DOOR, Blocks.CAKE, Blocks.ENCHANTING_TABLE, Blocks.DRAGON_EGG, Blocks.HOPPER, Blocks.REPEATING_COMMAND_BLOCK, Blocks.COMMAND_BLOCK, Blocks.CHAIN_COMMAND_BLOCK, Blocks.CRAFTING_TABLE);
 
+    public enum ValidResult {
+        NoEntityCollision,
+        AlreadyBlockThere,
+        NoNeighbors,
+        Ok,
+    }
+
+    private static boolean hasNeighbour(final BlockPos blockPos) {
+        for (final EnumFacing side : EnumFacing.values()) {
+            final BlockPos neighbour = blockPos.offset(side);
+            if (!mc.world.getBlockState(neighbour).getMaterial().isReplaceable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkForNeighbours(final BlockPos blockPos) {
+        if (!hasNeighbour(blockPos)) {
+            for (final EnumFacing side : EnumFacing.values()) {
+                final BlockPos neighbour = blockPos.offset(side);
+                if (hasNeighbour(neighbour)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public static ValidResult valid(BlockPos pos) {
+        // There are no entities to block placement,
+        if (!mc.world.checkNoEntityCollision(new AxisAlignedBB(pos)))
+            return ValidResult.NoEntityCollision;
+
+        if (!checkForNeighbours(pos))
+            return ValidResult.NoNeighbors;
+
+        IBlockState l_State = mc.world.getBlockState(pos);
+
+        if (l_State.getBlock() == Blocks.AIR)
+        {
+            final BlockPos[] l_Blocks =
+                    { pos.north(), pos.south(), pos.east(), pos.west(), pos.up(), pos.down() };
+
+            for (BlockPos l_Pos : l_Blocks)
+            {
+                IBlockState l_State2 = mc.world.getBlockState(l_Pos);
+
+                if (l_State2.getBlock() == Blocks.AIR)
+                    continue;
+
+                for (final EnumFacing side : EnumFacing.values())
+                {
+                    final BlockPos neighbor = pos.offset(side);
+
+                    if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false))
+                    {
+                        return ValidResult.Ok;
+                    }
+                }
+            }
+
+            return ValidResult.NoNeighbors;
+        }
+
+        return ValidResult.AlreadyBlockThere;
+    }
+
     public static boolean rayTracePlaceCheck(BlockPos pos, boolean shouldCheck, float height) {
-        return !shouldCheck || BlockUtil.mc.world.rayTraceBlocks(new Vec3d(BlockUtil.mc.player.posX, BlockUtil.mc.player.posY + (double) BlockUtil.mc.player.getEyeHeight(), BlockUtil.mc.player.posZ), new Vec3d(pos.getX(), (float) pos.getY() + height, pos.getZ()), false, true, false) == null;
+        return !shouldCheck || mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX(), (float) pos.getY() + height, pos.getZ()), false, true, false) == null;
     }
 
     public static void placeCrystalOnBlock(BlockPos pos, EnumHand hand, boolean swing) {
-        RayTraceResult result = BlockUtil.mc.world.rayTraceBlocks(new Vec3d(BlockUtil.mc.player.posX, BlockUtil.mc.player.posY + (double) BlockUtil.mc.player.getEyeHeight(), BlockUtil.mc.player.posZ), new Vec3d((double) pos.getX() + 0.5, (double) pos.getY() - 0.5, (double) pos.getZ() + 0.5));
+        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ), new Vec3d((double) pos.getX() + 0.5, (double) pos.getY() - 0.5, (double) pos.getZ() + 0.5));
         EnumFacing facing = result == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
-        BlockUtil.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, facing, hand, 0.0f, 0.0f, 0.0f));
+        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, facing, hand, 0.0f, 0.0f, 0.0f));
         if (swing) {
-            BlockUtil.mc.player.connection.sendPacket(new CPacketAnimation(hand));
+            mc.player.connection.sendPacket(new CPacketAnimation(hand));
         }
+    }
+
+    public static boolean isValidBlock(BlockPos pos) {
+        Block block = BlockUtil.mc.world.getBlockState(pos).getBlock();
+        return !(block instanceof BlockLiquid) && block.getMaterial(null) != Material.AIR;
+    }
+
+    public static boolean isScaffoldPos(BlockPos pos) {
+        return mc.world.isAirBlock(pos) || mc.world.getBlockState(pos).getBlock() == Blocks.SNOW_LAYER || mc.world.getBlockState(pos).getBlock() == Blocks.TALLGRASS || mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid;
+    }
+
+    public static boolean canBreak(BlockPos pos) {
+        IBlockState blockState = mc.world.getBlockState(pos);
+        Block block = blockState.getBlock();
+        return block.getBlockHardness(blockState, mc.world, pos) != -1.0f;
     }
 
     public static boolean placeBlock(BlockPos pos, int slot, boolean rotate, boolean rotateBack, EnumSetting setting) {

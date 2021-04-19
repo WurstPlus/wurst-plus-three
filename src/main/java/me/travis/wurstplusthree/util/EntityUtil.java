@@ -4,7 +4,6 @@ import me.travis.wurstplusthree.WurstplusThree;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +36,30 @@ public class EntityUtil implements Globals {
         if (swingArm) {
             mc.player.swingArm(EnumHand.MAIN_HAND);
         }
+    }
+
+    public static Vec3d getInterpolatedRenderPos(Entity entity, float partialTicks) {
+        return EntityUtil.getInterpolatedPos(entity, partialTicks).subtract(EntityUtil.mc.getRenderManager().renderPosX, EntityUtil.mc.getRenderManager().renderPosY, EntityUtil.mc.getRenderManager().renderPosZ);
+    }
+
+    public static Vec3d getInterpolatedPos(Entity entity, float partialTicks) {
+        return new Vec3d(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ).add(EntityUtil.getInterpolatedAmount(entity, partialTicks));
+    }
+
+    public static Vec3d getInterpolatedAmount(Entity entity, float partialTicks) {
+        return EntityUtil.getInterpolatedAmount(entity, partialTicks, partialTicks, partialTicks);
+    }
+
+    public static Vec3d getInterpolatedAmount(Entity entity, double x, double y, double z) {
+        return new Vec3d((entity.posX - entity.lastTickPosX) * x, (entity.posY - entity.lastTickPosY) * y, (entity.posZ - entity.lastTickPosZ) * z);
+    }
+
+    public static boolean isLiving(final Entity entity) {
+        return entity instanceof EntityLivingBase;
+    }
+
+    public static BlockPos getPlayerPosWithEntity() {
+        return new BlockPos((EntityUtil.mc.player.getRidingEntity() != null) ? EntityUtil.mc.player.getRidingEntity().posX : EntityUtil.mc.player.posX, (EntityUtil.mc.player.getRidingEntity() != null) ? EntityUtil.mc.player.getRidingEntity().posY : EntityUtil.mc.player.posY, (EntityUtil.mc.player.getRidingEntity() != null) ? EntityUtil.mc.player.getRidingEntity().posZ : EntityUtil.mc.player.posZ);
     }
 
     public static Vec3d interpolateEntity(final Entity entity, final float time) {

@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
+import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,7 +25,7 @@ public class CrystalRender extends Hack {
     public static CrystalRender INSTANCE;
 
     public CrystalRender() {
-        super("CrystalRender", "Changes how crystal renders", Category.RENDER, false, false);
+        super("Crystal Render", "Changes how crystal renders", Category.RENDER, false, false);
         INSTANCE = this;
     }
 
@@ -36,7 +37,11 @@ public class CrystalRender extends Hack {
     public BooleanSetting xqz = new BooleanSetting("XQZ", false, this);
 
     public ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 150), this);
+    public ColourSetting wireColour = new ColourSetting("Wireframe Colour", new Colour(0, 0, 0, 150), this);
     public ColourSetting hiddenColour = new ColourSetting("Hidden Colour", new Colour(255, 255, 255, 150), this);
+
+    public IntSetting alpha = new IntSetting("Alpha", 100, 0, 255, this);
+    public IntSetting wireAlpha = new IntSetting("Wire Alpha", 180, 0, 255, this);
 
     public DoubleSetting width = new DoubleSetting("Width", 3.0, 0.1, 5.0, this);
     public DoubleSetting scale = new DoubleSetting("Scale", 1.0, 0.1, 3.0, this);
@@ -76,10 +81,8 @@ public class CrystalRender extends Hack {
         if (event.getStage() != 0 || !(event.entity instanceof EntityEnderCrystal) || !this.wireframe.getValue()) {
             return;
         }
-        Color colour = EntityUtil.getColor(event.entity, this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha(), false);
-        boolean fancyGraphics = mc.gameSettings.fancyGraphics;
+        Color colour = EntityUtil.getColor(event.entity, this.wireColour.getValue().getRed(), this.wireColour.getValue().getGreen(), this.wireColour.getValue().getBlue(), wireAlpha.getValue(), false);
         mc.gameSettings.fancyGraphics = false;
-        float gamma = mc.gameSettings.gammaSetting;
         mc.gameSettings.gammaSetting = 10000.0f;
         GL11.glPushMatrix();
         GL11.glPushAttrib(1048575);
@@ -92,7 +95,7 @@ public class CrystalRender extends Hack {
         GL11.glEnable(2848);
         GL11.glEnable(3042);
         GlStateManager.blendFunc(770, 771);
-        GlStateManager.color((float) colour.getRed() / 255.0f, (float) colour.getGreen() / 255.0f, (float) colour.getBlue() / 255.0f, (float) colour.getAlpha() / 255.0f);
+        GlStateManager.color((float) colour.getRed() / 255.0f, (float) colour.getGreen() / 255.0f, (float) colour.getBlue() / 255.0f, (float) wireAlpha.getValue() / 255.0f);
         GlStateManager.glLineWidth(this.width.getValue().floatValue());
         event.modelBase.render(event.entity, event.limbSwing, event.limbSwingAmount, event.age, event.headYaw, event.headPitch, event.scale);
         GL11.glPopAttrib();

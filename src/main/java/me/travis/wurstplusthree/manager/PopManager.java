@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PopManager implements Globals {
 
     private Map<EntityPlayer, Integer> popList = new ConcurrentHashMap<>();
-    private List<String> toAnnouce = new ArrayList<>();
+    public final List<String> toAnnouce = new ArrayList<>();
 
     public void onTotemPop(EntityPlayer player) {
         this.popTotem(player);
@@ -33,7 +33,7 @@ public class PopManager implements Globals {
     }
 
     public void clearList() {
-        this.popList = new ConcurrentHashMap<EntityPlayer, Integer>();
+        this.popList = new ConcurrentHashMap<>();
     }
 
     public void resetPops(EntityPlayer player) {
@@ -53,13 +53,15 @@ public class PopManager implements Globals {
     }
 
     private String getDeathString(EntityPlayer player, int pops) {
-        return "LMAO " + player.getName() + " just fucking DIED after popping " + ChatFormatting.GREEN + ChatFormatting.BOLD
-                + pops + ChatFormatting.RESET + (pops == 1 ? "totem" : "totems");
+        return "LMAO " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " just fucking DIED after popping "
+                + ChatFormatting.GREEN + ChatFormatting.BOLD
+                + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
     }
 
     private String getPopString(EntityPlayer player, int pops) {
-        return "shitter known as " + player.getName() + " has now popped " + ChatFormatting.RED + ChatFormatting.BOLD
-                + pops + ChatFormatting.RESET + (pops == 1 ? "totem" : "totems");
+        return "shitter known as " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " has now popped "
+                + ChatFormatting.RED + ChatFormatting.BOLD
+                + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
     }
 
 }

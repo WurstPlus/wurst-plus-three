@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.ProcessRightClickBlockEvent;
+import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,14 +28,17 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value={PlayerControllerMP.class})
 public class MixinPlayerControllerMP {
-//    @Redirect(method={"onPlayerDamageBlock"}, at=@At(value="INVOKE", target="Lnet/minecraft/block/state/IBlockState;getPlayerRelativeBlockHardness(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)F"))
-//    public float getPlayerRelativeBlockHardnessHook(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
-//        return state.getPlayerRelativeBlockHardness(player, worldIn, pos) * (TpsSync.getInstance().isOn() && TpsSync.getInstance().mining.getValue() != false ? 1.0f / WurstplusThree.serverManager.getTpsFactor() : 1.0f);
-//    }
+    @Inject(method={"resetBlockRemoving"}, at={@At(value="HEAD")}, cancellable=true)
+    public void resetBlockRemovingHook(CallbackInfo info) {
+        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.reset.getValue()) {
+            info.cancel();
+        }
+    }
 
     @Inject(method={"clickBlock"}, at={@At(value="HEAD")}, cancellable=true)
     private void clickBlockHook(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> info) {

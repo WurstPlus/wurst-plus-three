@@ -19,15 +19,15 @@ public class NoRender extends Hack {
         INSTANCE = this;
     }
 
-    public BooleanSetting armour = new BooleanSetting("Armour", false, this);
+    public BooleanSetting armour = new BooleanSetting("Armour", true, this);
     public BooleanSetting fire = new BooleanSetting("Fire", true, this);
     public BooleanSetting blind = new BooleanSetting("Blind", true, this);
     public BooleanSetting nausea = new BooleanSetting("Nausea", true, this);
-    public BooleanSetting hurtcam = new BooleanSetting("HurtCam", true, this);
-    public BooleanSetting skylight = new BooleanSetting("SkyLight", true, this);
+    public BooleanSetting hurtcam = new BooleanSetting("Hurt Cam", true, this);
+    public BooleanSetting skylight = new BooleanSetting("Sky Light", false, this);
     public BooleanSetting bossbar = new BooleanSetting("Bossbar", false, this);
     public BooleanSetting weather = new BooleanSetting("Weather", false, this);
-    public BooleanSetting time = new BooleanSetting("ChangeTime", false, this);
+    public BooleanSetting time = new BooleanSetting("Change Time", false, this);
     public IntSetting newTime = new IntSetting("Time", 0, 0, 23000, this);
 
     @Override
@@ -53,8 +53,13 @@ public class NoRender extends Hack {
         }
     }
 
+    // retarded fix idk why it needs it
     @Override
-    public void onLogout() {
-        this.disable();
+    public void onLogin() {
+        if (this.isEnabled()) {
+            this.disable();
+            this.enable();
+        }
     }
+
 }

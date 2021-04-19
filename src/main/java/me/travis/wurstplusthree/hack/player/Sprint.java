@@ -13,11 +13,11 @@ public class Sprint extends Hack {
         super("Sprint", "Sprints Automatically", Category.PLAYER, false, false);
     }
 
-    public EnumSetting mode = new EnumSetting("mode", "legit", Arrays.asList("legit", "rage"), this);
+    public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);
 
     @SubscribeEvent
     public void onMove(MoveEvent event) {
-        if (event.getStage() == 1 && this.mode.is("rage") && (mc.player.movementInput.moveForward != 0f ||
+        if (event.getStage() == 1 && this.mode.is("Rage") && (mc.player.movementInput.moveForward != 0f ||
                 mc.player.moveStrafing != 0f)) {
             event.setCanceled(true);
         }
@@ -25,7 +25,7 @@ public class Sprint extends Hack {
 
     @Override
     public void onUpdate() {
-        if (mode.is("legit")) {
+        if (mode.is("Legit")) {
             if (mc.gameSettings.keyBindForward.isKeyDown()) {
                 mc.player.setSprinting(true);
             }

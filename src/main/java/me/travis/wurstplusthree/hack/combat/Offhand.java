@@ -20,8 +20,8 @@ public class Offhand extends Hack {
     }
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
-    BooleanSetting gapHole = new BooleanSetting("GapInHole", true, this);
-    IntSetting TotemHp = new IntSetting("TotemHP", 16, 0, 36, this);
+    BooleanSetting gapHole = new BooleanSetting("Gap In Hole", true, this);
+    IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
 
     private boolean switching;
     private int lastSlot;
@@ -41,7 +41,7 @@ public class Offhand extends Hack {
             return;
         }
 
-        if (PlayerUtil.isInHole() && gapHole.getValue() && !WurstplusThree.HACKS.ishackEnabled("CrystalAura")) {
+        if (PlayerUtil.isInHole() && gapHole.getValue() && !WurstplusThree.HACKS.ishackEnabled("Crystal Aura")) {
             this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
             return;
         }

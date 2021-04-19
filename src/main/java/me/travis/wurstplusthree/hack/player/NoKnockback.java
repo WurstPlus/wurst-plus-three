@@ -1,22 +1,30 @@
 package me.travis.wurstplusthree.hack.player;
 
+import me.travis.wurstplusthree.event.events.KeyEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.PushEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
+import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 public class NoKnockback extends Hack {
 
     public NoKnockback() {
-        super("NoKnockback", "makes u stay in place", Category.PLAYER, false, false);
+        super("No Knockback", "makes u stay in place", Category.PLAYER, false, false);
     }
+
+    private static final KeyBinding[] keys = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};
 
     public BooleanSetting noPush = new BooleanSetting("NoPush", true, this);
     public BooleanSetting bobbers = new BooleanSetting("Bobbers", true, this);
@@ -31,6 +39,16 @@ public class NoKnockback extends Hack {
             Blocks.FROSTED_ICE.setDefaultSlipperiness(0.6f);
             Blocks.PACKED_ICE.setDefaultSlipperiness(0.6f);
         }
+        if (mc.currentScreen instanceof GuiOptions || mc.currentScreen instanceof GuiVideoSettings || mc.currentScreen instanceof GuiScreenOptionsSounds || mc.currentScreen instanceof GuiContainer || mc.currentScreen instanceof GuiIngameMenu) {
+            for (KeyBinding bind : keys) {
+                KeyBinding.setKeyBindState(bind.getKeyCode(), Keyboard.isKeyDown(bind.getKeyCode()));
+            }
+        } else if (mc.currentScreen == null) {
+            for (KeyBinding bind : keys) {
+                if (Keyboard.isKeyDown(bind.getKeyCode())) continue;
+                KeyBinding.setKeyBindState(bind.getKeyCode(), false);
+            }
+        }
     }
 
     @Override
@@ -39,6 +57,13 @@ public class NoKnockback extends Hack {
             Blocks.ICE.setDefaultSlipperiness(0.98f);
             Blocks.FROSTED_ICE.setDefaultSlipperiness(0.98f);
             Blocks.PACKED_ICE.setDefaultSlipperiness(0.98f);
+        }
+    }
+
+    @SubscribeEvent
+    public void onKeyEvent(KeyEvent event) {
+        if (event.getStage() == 0 && !(mc.currentScreen instanceof GuiChat)) {
+            event.info = event.pressed;
         }
     }
 
@@ -82,8 +107,20 @@ public class NoKnockback extends Hack {
         }
     }
 
+    @SubscribeEvent
+    public void onInput(InputUpdateEvent event) {
+        if (mc.player.isHandActive() && !mc.player.isRiding()) {
+            event.getMovementInput().moveStrafe *= 5.0f;
+            event.getMovementInput().moveForward *= 5.0f;
+        }
+    }
+
+    // retarded fix idk why it needs it
     @Override
-    public void onLogout() {
-        this.disable();
+    public void onLogin() {
+        if (this.isEnabled()) {
+            this.disable();
+            this.enable();
+        }
     }
 }

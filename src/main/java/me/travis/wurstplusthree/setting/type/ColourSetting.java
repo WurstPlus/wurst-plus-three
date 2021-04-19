@@ -13,8 +13,6 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
 
     public ColourSetting(String name, Colour value, Hack parent) {
         super(name, value, parent);
-
-        this.rainbow = rainbow;
     }
 
     @Override

@@ -5,14 +5,11 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.hack.chat.ClearChatbox;
+import me.travis.wurstplusthree.hack.chat.TotemPopCounter;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
-import me.travis.wurstplusthree.hack.combat.CrystalAura;
-import me.travis.wurstplusthree.hack.combat.KillAura;
-import me.travis.wurstplusthree.hack.combat.Offhand;
-import me.travis.wurstplusthree.hack.combat.Surround;
-import me.travis.wurstplusthree.hack.misc.FakePlayer;
-import me.travis.wurstplusthree.hack.misc.MCF;
+import me.travis.wurstplusthree.hack.combat.*;
+import me.travis.wurstplusthree.hack.misc.*;
 import me.travis.wurstplusthree.hack.player.*;
 import me.travis.wurstplusthree.hack.render.*;
 import me.travis.wurstplusthree.util.Globals;
@@ -32,6 +29,7 @@ public class Hacks implements Globals {
     public Hacks() {
         // chat
         this.hacks.add(new ClearChatbox());
+        this.hacks.add(new TotemPopCounter());
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
@@ -40,9 +38,15 @@ public class Hacks implements Globals {
         this.hacks.add(new Surround());
         this.hacks.add(new CrystalAura());
         this.hacks.add(new Offhand());
+        this.hacks.add(new Trap());
+        this.hacks.add(new HoleFill());
+        this.hacks.add(new Crits());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
+        this.hacks.add(new InstantBreak());
+        this.hacks.add(new Blink());
+        this.hacks.add(new Replenish());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
@@ -50,12 +54,24 @@ public class Hacks implements Globals {
         this.hacks.add(new NoKnockback());
         this.hacks.add(new Speed());
         this.hacks.add(new Step());
+        this.hacks.add(new Scaffold());
+        this.hacks.add(new FastUtil());
+        this.hacks.add(new ArmourMend());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());
         this.hacks.add(new CrystalRender());
         this.hacks.add(new HoleESP());
         this.hacks.add(new NoRender());
+        this.hacks.add(new CameraClip());
+        this.hacks.add(new Fov());
+        this.hacks.add(new HandColour());
+        this.hacks.add(new Chams());
+        this.hacks.add(new LogSpots());
+        this.hacks.add(new Tracers());
+        this.hacks.add(new SmallShield());
+        this.hacks.add(new TargetDetails());
+        this.hacks.add(new Esp());
     }
 
     public List<Hack> getHacks() {
@@ -145,6 +161,7 @@ public class Hacks implements Globals {
                 hacks.add(hack);
             }
         }
+        hacks.sort(Comparator.comparing(Hack::getName));
         return hacks;
     }
 

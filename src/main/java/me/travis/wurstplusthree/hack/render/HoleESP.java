@@ -3,14 +3,19 @@ package me.travis.wurstplusthree.hack.render;
 import com.google.common.collect.Sets;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.*;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
+import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.EnumSetting;
+import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.HoleUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
+import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +33,7 @@ public class HoleESP extends Hack {
     BooleanSetting hideOwn = new BooleanSetting("Hide Own", false, this);
     ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0), this);
     ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0), this);
+    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
 
     private final ConcurrentHashMap<BlockPos, Colour> holes = new ConcurrentHashMap<>();
 
@@ -118,7 +124,7 @@ public class HoleESP extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(hole, color, true, color, 2f, outline, solid, 200, true, 0, false, false, false, false, 200);
+        RenderUtil.drawBoxESP(hole, color, true, color, 2f, outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
 
     }
 

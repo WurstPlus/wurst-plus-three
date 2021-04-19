@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.util;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -23,6 +24,25 @@ public class MathsUtil implements Globals {
         double difZ = to.z - from.z;
         double dist = MathHelper.sqrt(difX * difX + difZ * difZ);
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
+    }
+
+    public static Vec3d extrapolatePlayerPosition(EntityPlayer player, int ticks) {
+        Vec3d lastPos = new Vec3d(player.lastTickPosX, player.lastTickPosY, player.lastTickPosZ);
+        Vec3d currentPos = new Vec3d(player.posX, player.posY, player.posZ);
+        double distance = square((float) player.motionX) + square((float) player.motionY) + square((float) player.motionZ);
+        Vec3d tempVec = calculateLine(lastPos, currentPos, distance * (double) ticks);
+        return new Vec3d(tempVec.x, player.posY, tempVec.z);
+    }
+
+    public static Vec3d calculateLine(Vec3d x1, Vec3d x2, double distance) {
+        double length = Math.sqrt(square((float) (x2.x - x1.x)) + square((float) (x2.y - x1.y)) + square((float) (x2.z - x1.z)));
+        double unitSlopeX = (x2.x - x1.x) / length;
+        double unitSlopeY = (x2.y - x1.y) / length;
+        double unitSlopeZ = (x2.z - x1.z) / length;
+        double x = x1.x + unitSlopeX * distance;
+        double y = x1.y + unitSlopeY * distance;
+        double z = x1.z + unitSlopeZ * distance;
+        return new Vec3d(x, y, z);
     }
 
     public static double square(float input) {

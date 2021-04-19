@@ -1,15 +1,19 @@
 package me.travis.wurstplusthree.event;
 
+import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
+import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
+import net.minecraft.network.play.server.SPacketPlayerListItem;
+import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -23,10 +27,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Events implements Globals {
 
     private Object EventManager;
+
+    private final Timer logoutTimer = new Timer();
 
     public Events() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -157,6 +165,32 @@ public class Events implements Globals {
                 MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
                 WurstplusThree.POP_MANAGER.onTotemPop(player);
             }
+        } else if (event.getPacket() instanceof SPacketPlayerListItem && !nullCheck() && this.logoutTimer.passedS(1.0)) {
+            SPacketPlayerListItem packet = event.getPacket();
+            if (!SPacketPlayerListItem.Action.ADD_PLAYER.equals(packet.getAction()) && !SPacketPlayerListItem.Action.REMOVE_PLAYER.equals(packet.getAction())) {
+                return;
+            }
+            packet.getEntries().stream().filter(Objects::nonNull).filter(data -> !Strings.isNullOrEmpty(data.getProfile().getName()) || data.getProfile().getId() != null).forEach(data -> {
+                UUID id = data.getProfile().getId();
+                switch (packet.getAction()) {
+                    case ADD_PLAYER: {
+                        String name = data.getProfile().getName();
+                        MinecraftForge.EVENT_BUS.post(new ConnectionEvent(0, id, name));
+                        break;
+                    }
+                    case REMOVE_PLAYER: {
+                        EntityPlayer entity = mc.world.getPlayerEntityByUUID(id);
+                        if (entity != null) {
+                            String logoutName = entity.getName();
+                            MinecraftForge.EVENT_BUS.post(new ConnectionEvent(1, entity, id, logoutName));
+                            break;
+                        }
+                        MinecraftForge.EVENT_BUS.post(new ConnectionEvent(2, id, null));
+                    }
+                }
+            });
+        } else if (event.getPacket() instanceof SPacketTimeUpdate) {
+            WurstplusThree.SERVER_MANAGER.update();
         }
     }
 

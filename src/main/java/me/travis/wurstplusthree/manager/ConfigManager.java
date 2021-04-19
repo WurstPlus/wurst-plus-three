@@ -168,7 +168,7 @@ public class ConfigManager implements Globals {
             for (Setting setting : hack.getSettings()) {
                 if (setting.getType().equalsIgnoreCase("colour")) {
                     br.write(setting.getName() + ":" + setting.getValue() + ":" +
-                            ((ColourSetting) setting).getRainbow());
+                            ((ColourSetting) setting).getRainbow() + "\r\n");
                 } else {
                     br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
                 }
@@ -253,7 +253,9 @@ public class ConfigManager implements Globals {
                 final String active = colune.split(":")[2];
                 Hack hack = WurstplusThree.HACKS.getHackByName(tag);
                 hack.setBind(Integer.parseInt(bind));
-                hack.setEnabled(Boolean.parseBoolean(active));
+                if (Boolean.parseBoolean(active)) {
+                    hack.enable();
+                }
             } catch (Exception ignored) {}
         }
         br.close();

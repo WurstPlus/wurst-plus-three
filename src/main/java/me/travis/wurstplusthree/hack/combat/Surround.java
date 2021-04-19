@@ -5,14 +5,10 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEnderChest;
-import net.minecraft.block.BlockObsidian;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -82,7 +78,7 @@ public class Surround extends Hack {
     }
 
     private boolean disableCheck() {
-        if (this.findObiInHotbar() == -1 || nullCheck()) {
+        if (PlayerUtil.findObiInHotbar() == -1 || nullCheck()) {
             this.disable();
             return true;
         }
@@ -144,7 +140,7 @@ public class Surround extends Hack {
                 break;
             }
 
-            if (try_to_place && BlockUtil.placeBlock(targetPos, findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
+            if (try_to_place && BlockUtil.placeBlock(targetPos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
                 blocks_placed++;
             }
 
@@ -153,20 +149,6 @@ public class Surround extends Hack {
         }
 
         this.tickRuns++;
-    }
-
-    private int findObiInHotbar() {
-        for (int i = 0; i < 9; ++i) {
-            final ItemStack stack = mc.player.inventory.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBlock) {
-                final Block block = ((ItemBlock) stack.getItem()).getBlock();
-                if (block instanceof BlockEnderChest)
-                    return i;
-                else if (block instanceof BlockObsidian)
-                    return i;
-            }
-        }
-        return -1;
     }
 
     public Vec3d getCenter(double posX, double posY, double posZ) {

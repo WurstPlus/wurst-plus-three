@@ -38,7 +38,7 @@ public class ColourComponent extends ColorComponent {
         public void handleButton(Context context, int button) {
             super.handleButton(context, button);
             if (button == Interface.LBUTTON && context.isClicked()) {
-                setting.setValue(Gui.INSTANCE.enabledColor.getColor());
+                setting.setValue(Gui.INSTANCE.enabledColor.getValue());
                 setting.setRainbow(Gui.INSTANCE.enabledColor.getRainbow());
             }
         }

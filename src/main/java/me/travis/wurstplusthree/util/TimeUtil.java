@@ -16,6 +16,8 @@ public class TimeUtil implements Globals {
         return Calendar.getInstance().get(Calendar.MONTH);
     }
 
+    public static int get_year() {return Calendar.getInstance().get(Calendar.YEAR);}
+
     public static int get_minuite() {
         return Calendar.getInstance().get(Calendar.MINUTE);
     }
@@ -23,5 +25,6 @@ public class TimeUtil implements Globals {
     public static int get_second() {
         return Calendar.getInstance().get(Calendar.SECOND);
     }
+
 
 }
