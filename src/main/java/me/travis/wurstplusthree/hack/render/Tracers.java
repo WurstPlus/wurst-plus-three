@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class Tracers extends Hack {
 
     public Tracers() {
@@ -34,7 +36,6 @@ public class Tracers extends Hack {
             float[] colour = this.getColorByDistance(entity);
             this.drawLineToEntity(entity, colour[0], colour[1], colour[2], colour[3]);
         });
-
         GlStateManager.popMatrix();
     }
 
@@ -61,26 +62,30 @@ public class Tracers extends Hack {
 
     public void drawLineFromPosToPos(double posx, double posy, double posz, double posx2, double posy2, double posz2, double up, float red, float green, float blue, float opacity) {
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glLineWidth(this.width.getValue().floatValue());
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glColor4f(red, green, blue, opacity);
-        GlStateManager.disableLighting();
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
         GL11.glLoadIdentity();
+        final boolean bobbing = mc.gameSettings.viewBobbing;
+        mc.gameSettings.viewBobbing = false;
         mc.entityRenderer.orientCamera(mc.getRenderPartialTicks());
-        GL11.glBegin(1);
-        GL11.glVertex3d(posx, posy, posz);
-        GL11.glVertex3d(posx2, posy2, posz2);
-        GL11.glVertex3d(posx2, posy2, posz2);
+        GL11.glBegin(GL11.GL_LINES); {
+            GL11.glVertex3d(posx, posy, posz);
+            GL11.glVertex3d(posx2, posy2, posz2);
+        }
         GL11.glEnd();
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-        GL11.glColor3d(1.0, 1.0, 1.0);
-        GlStateManager.enableLighting();
+        GL11.glDisable(GL11.GL_BLEND);
+        glDisable(GL_LINE_SMOOTH);
+        GL11.glColor3d(1d, 1d, 1d);
+        mc.gameSettings.viewBobbing = bobbing;
     }
 
     public float[] getColorByDistance(Entity entity) {

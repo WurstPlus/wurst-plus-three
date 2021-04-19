@@ -147,9 +147,9 @@ public class CrystalAura extends Hack {
                     miniumDamage = this.minHpBreak.getValue();
                 }
 
-                double targetDamage = CrystalUtil.calculateDamage(pos, target);
+                double targetDamage = CrystalUtil.calculateDamage(new EntityEnderCrystal(mc.world, pos.getX(), pos.getY(), pos.getZ()), target);
                 if (targetDamage < miniumDamage && EntityUtil.getHealth(target) - targetDamage > 0) continue;
-                double selfDamage = CrystalUtil.calculateDamage(pos, mc.player);
+                double selfDamage = CrystalUtil.calculateDamage(new EntityEnderCrystal(mc.world, pos.getX(), pos.getY(), pos.getZ()), mc.player);
                 if (selfDamage > maxSelfDamage.getValue()) continue;
                 if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) continue;
 

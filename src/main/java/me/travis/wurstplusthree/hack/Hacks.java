@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
+import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.chat.TotemPopCounter;
 import me.travis.wurstplusthree.hack.client.Gui;
@@ -30,6 +31,7 @@ public class Hacks implements Globals {
         // chat
         this.hacks.add(new ClearChatbox());
         this.hacks.add(new TotemPopCounter());
+        this.hacks.add(new AutoEz());
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
@@ -72,6 +74,7 @@ public class Hacks implements Globals {
         this.hacks.add(new SmallShield());
         this.hacks.add(new TargetDetails());
         this.hacks.add(new Esp());
+        this.hacks.add(new ExtraTab());
     }
 
     public List<Hack> getHacks() {
