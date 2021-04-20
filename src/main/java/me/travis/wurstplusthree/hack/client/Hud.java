@@ -37,6 +37,7 @@ public class Hud extends Hack {
     BooleanSetting helper = new BooleanSetting("Helper", true, this);
     BooleanSetting playerStats = new BooleanSetting("Stats", true, this);
     BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);
+    BooleanSetting coords = new BooleanSetting("Coords", true, this);
 
     BooleanSetting armour = new BooleanSetting("Armour", false, this);
 
@@ -69,6 +70,7 @@ public class Hud extends Hack {
         this.doBottomRight();
         this.doHelper();
         this.doPlayerStats();
+        this.doBottomLeft();
 
         if (this.armour.getValue()) {
             this.renderArmorHUD(true);
@@ -112,15 +114,17 @@ public class Hud extends Hack {
         String trap = (WurstplusThree.HACKS.ishackEnabled("Trap") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
         String surround = (WurstplusThree.HACKS.ishackEnabled("Surround") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
         String ka = (WurstplusThree.HACKS.ishackEnabled("Kill Aura") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
-        this.drawString("CA " + ca, 10, y);
+        this.drawString("Totems " + HudUtil.getTotems(), 10, y);
         y += 12;
-        this.drawString("HF " + holefill, 10, y);
+        this.drawString("CAura " + ca, 10, y);
         y += 12;
-        this.drawString("AT " + trap, 10, y);
+        this.drawString("HoleFill " + holefill, 10, y);
         y += 12;
-        this.drawString("SR " + surround, 10, y);
+        this.drawString("Trap " + trap, 10, y);
         y += 12;
-        this.drawString("KA " + ka, 10, y);
+        this.drawString("Surround " + surround, 10, y);
+        y += 12;
+        this.drawString("KAura " + ka, 10, y);
     }
 
     private void doTopleft() {
@@ -144,9 +148,22 @@ public class Hud extends Hack {
         }
     }
 
+    private void doBottomLeft() {
+        if (!this.coords.getValue()) return;
+        String x = "[" + (int) (mc.player.posX) + "]";
+        String y = "[" + (int) (mc.player.posY) + "]";
+        String z = "[" + (int) (mc.player.posZ) + "]";
+
+        String x_nether = "[" + Math.round(mc.player.dimension != -1 ? (mc.player.posX / 8) : (mc.player.posX * 8)) + "]";
+        String z_nether = "[" + Math.round(mc.player.dimension != -1 ? (mc.player.posZ / 8) : (mc.player.posZ * 8)) + "]";
+
+        String line = "XYZ " + x + y + z + " XZ " + x_nether + z_nether;
+
+        drawString(line, 7, scaledResolution.getScaledHeight() - 11);
+    }
+
     private void doTopRight() {
         int y = 10;
-
     }
 
     private int getRightX(String string, int x) {

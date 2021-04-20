@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
@@ -232,6 +233,7 @@ public class ConfigManager implements Globals {
         this.verifyFile(file_path);
         final File file = new File(file_name);
         final BufferedWriter br = new BufferedWriter(new FileWriter(file));
+        br.write(Commands.prefix + "\r\n");
         for (Hack module : WurstplusThree.HACKS.getHacks()) {
             br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + "\r\n");
         }
@@ -244,18 +246,25 @@ public class ConfigManager implements Globals {
         final FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
         final DataInputStream di_stream = new DataInputStream(fi_stream);
         final BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
+        boolean flag = true;
         String line;
         while ((line = br.readLine()) != null) {
             try {
-                final String colune = line.trim();
-                final String tag = colune.split(":")[0];
-                final String bind = colune.split(":")[1];
-                final String active = colune.split(":")[2];
-                Hack hack = WurstplusThree.HACKS.getHackByName(tag);
-                hack.setBind(Integer.parseInt(bind));
-                if (Boolean.parseBoolean(active)) {
-                    hack.enable();
+                if (flag) {
+                    Commands.prefix = line;
+                    flag = false;
+                } else {
+                    final String colune = line.trim();
+                    final String tag = colune.split(":")[0];
+                    final String bind = colune.split(":")[1];
+                    final String active = colune.split(":")[2];
+                    Hack hack = WurstplusThree.HACKS.getHackByName(tag);
+                    hack.setBind(Integer.parseInt(bind));
+                    if (Boolean.parseBoolean(active)) {
+                        hack.enable();
+                    }
                 }
+
             } catch (Exception ignored) {}
         }
         br.close();

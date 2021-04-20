@@ -10,12 +10,13 @@ import java.util.List;
 
 public class Commands implements Globals {
 
-    private String prefix = ".";
+    public static String prefix = ".";
     private final List<Command> commands = new ArrayList<>();
 
     public Commands() {
         this.commands.add(new FriendCommand());
         this.commands.add(new EnemyCommand());
+        this.commands.add(new PrefixCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {

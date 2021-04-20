@@ -3,6 +3,8 @@ package me.travis.wurstplusthree.util;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class HudUtil implements Globals {
 
@@ -21,6 +23,17 @@ public class HudUtil implements Globals {
         }
 
         return line;
+    }
+
+    public static String getTotems() {
+        String totems = "";
+        int totemCount = mc.player.inventory.mainInventory.stream().filter(stack -> stack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum() +(mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING ? 1 : 0);
+        if (totemCount > 2) {
+            totems += ChatFormatting.GREEN;
+        } else {
+            totems += ChatFormatting.RED;
+        }
+        return totems + totemCount;
     }
 
     public static String getPingLine() {
