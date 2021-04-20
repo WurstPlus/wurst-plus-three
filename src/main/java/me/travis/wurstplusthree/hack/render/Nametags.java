@@ -39,7 +39,7 @@ public class Nametags extends Hack {
     public static Nametags INSTANCE;
 
     public Nametags() {
-        super("Nametags", "makes name above player", Category.RENDER, false, false);
+        super("Nametags", "makes name above player", Category.RENDER, false);
         INSTANCE = this;
     }
 

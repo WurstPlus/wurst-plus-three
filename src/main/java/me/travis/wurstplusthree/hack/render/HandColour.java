@@ -10,7 +10,7 @@ public class HandColour extends Hack {
     public static HandColour INSTANCE;
 
     public HandColour() {
-        super("Hand Colour", "colours hands", Category.RENDER, false, false);
+        super("Hand Colour", "colours hands", Category.RENDER, false);
         INSTANCE = this;
     }
 

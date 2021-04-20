@@ -21,7 +21,7 @@ import org.lwjgl.input.Keyboard;
 public class NoKnockback extends Hack {
 
     public NoKnockback() {
-        super("No Knockback", "makes u stay in place", Category.PLAYER, false, false);
+        super("No Knockback", "makes u stay in place", Category.PLAYER, false);
     }
 
     private static final KeyBinding[] keys = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};

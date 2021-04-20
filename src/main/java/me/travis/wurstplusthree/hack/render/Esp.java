@@ -24,7 +24,7 @@ import java.awt.*;
 public class Esp extends Hack {
 
     public Esp() {
-        super("Esp", "esp", Category.RENDER, false, false);
+        super("Esp", "esp", Category.RENDER, false);
     }
 
     BooleanSetting items = new BooleanSetting("Items", true, this);

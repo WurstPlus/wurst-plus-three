@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AntiFog extends Hack {
 
     public AntiFog() {
-        super("Anti Fog" ,"removes fog", Category.RENDER, false, false);
+        super("Anti Fog" ,"removes fog", Category.RENDER,  false);
     }
 
     public BooleanSetting clear = new BooleanSetting("Remove Fog", true, this);

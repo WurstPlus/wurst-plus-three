@@ -19,7 +19,7 @@ public class AutoEz extends Hack {
     public static AutoEz INSTANCE;
 
     public AutoEz() {
-        super("Auto Ez", "you just got nae nae'd by wurst plus THREE (kill me)", Category.CHAT, false, false);
+        super("Auto Ez", "you just got nae nae'd by wurst plus THREE (kill me)", Category.CHAT, false);
         INSTANCE = this;
     }
 

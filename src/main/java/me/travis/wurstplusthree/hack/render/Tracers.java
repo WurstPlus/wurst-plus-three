@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Tracers extends Hack {
 
     public Tracers() {
-        super("Tracers", "draws lines", Category.RENDER, false, false);
+        super("Tracers", "draws lines", Category.RENDER, false);
     }
 
     DoubleSetting width = new DoubleSetting("Width", 2.0, 0.0, 10.0, this);

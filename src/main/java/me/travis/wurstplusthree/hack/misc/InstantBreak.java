@@ -38,7 +38,7 @@ public class InstantBreak extends Hack {
     public static InstantBreak INSTANCE;
 
     public InstantBreak() {
-        super("Instant Break", "Breaks blocks", Category.MISC, false, false);
+        super("Instant Break", "Breaks blocks", Category.MISC, false);
 
         INSTANCE = this;
     }

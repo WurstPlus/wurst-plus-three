@@ -19,7 +19,6 @@ public class Hack implements Globals {
     private final Category category;
     private int bind;
     private boolean isEnabled;
-    private boolean hidden;
     /**
      * -1 = not
      * 0 = always
@@ -27,12 +26,11 @@ public class Hack implements Globals {
      */
     private int isListening;
 
-    public Hack(String name, String desc, Category cat, boolean hidden, boolean shouldAlwaysListen) {
+    public Hack(String name, String desc, Category cat, boolean shouldAlwaysListen) {
         this.name = name;
         this.description = desc;
         this.category = cat;
         this.isListening = (shouldAlwaysListen ? 0 : 1);
-        this.hidden = hidden;
         this.bind = Keyboard.KEY_NONE;
         this.isEnabled = false;
     }

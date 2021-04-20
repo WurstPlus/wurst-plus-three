@@ -9,7 +9,7 @@ import net.minecraft.item.ItemExpBottle;
 public class FastUtil extends Hack {
 
     public FastUtil() {
-        super("FastUtil", "util but fast", Category.PLAYER, false, false);
+        super("FastUtil", "util but fast", Category.PLAYER, false);
     }
 
     BooleanSetting xp = new BooleanSetting("XP", true, this);

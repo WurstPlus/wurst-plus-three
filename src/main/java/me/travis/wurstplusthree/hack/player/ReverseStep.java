@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
 public class ReverseStep extends Hack {
 
     public ReverseStep() {
-        super("Reverse Step", "pulls u down down down", Category.PLAYER, false, false);
+        super("Reverse Step", "pulls u down down down", Category.PLAYER, false);
     }
 
     DoubleSetting height = new DoubleSetting("Height", 2.0, 0.0, 10.0, this);

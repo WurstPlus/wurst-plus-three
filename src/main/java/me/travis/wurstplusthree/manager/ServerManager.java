@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ServerManager extends Hack {
 
     public ServerManager() {
-        super("ServerManager", "Manages Server", Category.MISC, true, true);
+        super("ServerManager", "Manages Server", null, true);
     }
 
     private final float[] tpsCounts = new float[10];

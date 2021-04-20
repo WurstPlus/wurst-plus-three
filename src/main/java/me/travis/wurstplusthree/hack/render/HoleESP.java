@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HoleESP extends Hack {
 
     public HoleESP() {
-        super("HoleESP", "Shows Holes", Category.RENDER, false, false);
+        super("Hole ESP", "Shows Holes", Category.RENDER, false);
     }
 
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);

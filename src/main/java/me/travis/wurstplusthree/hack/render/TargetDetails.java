@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class TargetDetails extends Hack {
 
     public TargetDetails() {
-        super("Target Details", "shows status of dude", Category.RENDER, false, false);
+        super("Target Details", "shows status of dude", Category.RENDER, false);
     }
 
     BooleanSetting showFucked = new BooleanSetting("Fucked", true, this);

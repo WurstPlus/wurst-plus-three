@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class Offhand extends Hack {
 
     public Offhand() {
-        super("Offhand", "puts things in ur offhand", Category.COMBAT, false, false);
+        super("Offhand", "puts things in ur offhand", Category.COMBAT, false);
     }
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);

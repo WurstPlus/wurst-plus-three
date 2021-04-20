@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class Surround extends Hack {
 
     public Surround() {
-        super("Surround", "Surrounds u", Category.COMBAT, false, false);
+        super("Surround", "Surrounds u", Category.COMBAT, false);
     }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

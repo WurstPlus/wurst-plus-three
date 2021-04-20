@@ -11,7 +11,7 @@ public class Chams extends Hack {
     public static Chams INSTANCE;
 
     public Chams() {
-        super("Chams", "Chams", Category.RENDER, false, false);
+        super("Chams", "Chams", Category.RENDER, false);
         INSTANCE = this;
     }
 

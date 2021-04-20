@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class KillAura extends Hack {
 
     public KillAura() {
-        super("Kill Aura", "hits people", Category.COMBAT, false, false);
+        super("Kill Aura", "hits people", Category.COMBAT, false);
     }
 
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);

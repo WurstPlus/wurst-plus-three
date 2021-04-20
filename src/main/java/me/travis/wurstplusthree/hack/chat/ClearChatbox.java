@@ -7,7 +7,7 @@ public class ClearChatbox extends Hack {
     public static ClearChatbox INSTANCE;
 
     public ClearChatbox() {
-        super("Clear Chatbox", "makes chat clear", Category.CHAT, false, false);
+        super("Clear Chatbox", "makes chat clear", Category.CHAT, false);
         INSTANCE = this;
     }
 

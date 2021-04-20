@@ -12,7 +12,7 @@ public class ExtraTab extends Hack {
     public static ExtraTab INSTANCE;
 
     public ExtraTab() {
-        super("Extra Tab", "this one doesnt crash ur game promise", Category.RENDER, false, false);
+        super("Extra Tab", "this one doesnt crash ur game promise", Category.RENDER, false);
         INSTANCE = this;
     }
 

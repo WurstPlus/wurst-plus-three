@@ -8,7 +8,7 @@ public class CameraClip extends Hack {
     public static CameraClip INSTANCE;
 
     public CameraClip() {
-        super("Camera Clip", "f5 mode", Category.RENDER, false, false);
+        super("Camera Clip", "f5 mode", Category.RENDER,  false);
         INSTANCE = this;
     }
 

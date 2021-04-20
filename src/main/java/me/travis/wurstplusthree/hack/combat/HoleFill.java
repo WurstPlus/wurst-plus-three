@@ -18,7 +18,7 @@ import java.util.List;
 public class HoleFill extends Hack {
 
     public HoleFill() {
-        super("Hole Fill", "fills holes", Category.COMBAT, false, false);
+        super("Hole Fill", "fills holes", Category.COMBAT, false);
     }
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);

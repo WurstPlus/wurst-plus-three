@@ -7,7 +7,7 @@ public class MultiTask extends Hack {
     public static MultiTask INSTANCE;
 
     public MultiTask() {
-        super("MultiTask", "eat n shit", Category.PLAYER, false, false);
+        super("MultiTask", "eat n shit", Category.PLAYER, false);
         INSTANCE = this;
     }
 

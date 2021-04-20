@@ -21,7 +21,7 @@ import java.util.List;
 public class Hud extends Hack {
 
     public Hud() {
-        super("HUD", "Handles Hud Elements", Category.CLIENT, false, false);
+        super("HUD", "Handles Hud Elements", Category.CLIENT, false);
 
         this.enable();
     }
@@ -218,14 +218,13 @@ public class Hud extends Hack {
                 continue;
             }
             int dmg = 0;
-            final int itemDurability = is.getMaxDamage() - is.getItemDamage();
-            final float green = (is.getMaxDamage() - (float) is.getItemDamage()) / is.getMaxDamage();
-            final float red = 1.0f - green;
-            if (percent) {
-                dmg = 100 - (int) (red * 100.0f);
-            } else {
-                dmg = itemDurability;
-            }
+            float green = (is.getMaxDamage() - (float) is.getItemDamage()) / is.getMaxDamage();
+            float red = 1.0f - green;
+            dmg = 100 - (int) (red * 100.0f);
+            if (red > 1f) red = 1f;
+            if (green > 1f) green = 1f;
+            if (red < 0f) red = 0f;
+            if (green < 0f) green = 0f;
             this.drawString(dmg+"", x + 8 - this.getStringWidth(dmg+"") / 2, y - 9, (new Color(red, green, 0)).getRGB());
         }
         GlStateManager.enableDepth();

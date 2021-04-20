@@ -14,9 +14,6 @@ public class Commands implements Globals {
     private final List<Command> commands = new ArrayList<>();
 
     public Commands() {
-        this.commands.add(new PrefixCommand());
-        this.commands.add(new ToggleCommand());
-        this.commands.add(new BindCommand());
         this.commands.add(new FriendCommand());
         this.commands.add(new EnemyCommand());
     }

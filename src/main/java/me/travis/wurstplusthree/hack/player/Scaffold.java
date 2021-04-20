@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Scaffold extends Hack {
 
     public Scaffold() {
-        super("Scaffold", "place block @ feet", Category.PLAYER, false, false);
+        super("Scaffold", "place block @ feet", Category.PLAYER, false);
     }
 
     private final Timer timer = new Timer();

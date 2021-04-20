@@ -23,7 +23,7 @@ import java.util.List;
 public class Trap extends Hack {
 
     public Trap() {
-        super("Trap", "traps people", Category.COMBAT, false, false);
+        super("Trap", "traps people", Category.COMBAT, false);
     }
 
     EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet"),this);

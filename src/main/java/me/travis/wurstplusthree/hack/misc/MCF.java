@@ -12,7 +12,7 @@ public class MCF extends Hack {
     private boolean isButtonDown = false;
 
     public MCF() {
-        super("MiddleClickFriend", "MiddleClick adds friend", Category.MISC, false, false);
+        super("Middle Click Friend", "MiddleClick adds friend", Category.MISC, false);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Sprint extends Hack {
 
     public Sprint() {
-        super("Sprint", "Sprints Automatically", Category.PLAYER, false, false);
+        super("Sprint", "Sprints Automatically", Category.PLAYER, false);
     }
 
     public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);

@@ -25,7 +25,7 @@ public class CrystalRender extends Hack {
     public static CrystalRender INSTANCE;
 
     public CrystalRender() {
-        super("Crystal Render", "Changes how crystal renders", Category.RENDER, false, false);
+        super("Crystal Render", "Changes how crystal renders", Category.RENDER, false);
         INSTANCE = this;
     }
 

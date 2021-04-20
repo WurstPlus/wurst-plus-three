@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Crits extends Hack {
 
     public Crits() {
-        super("Crits", "does critical hits", Category.COMBAT, false, false);
+        super("Crits", "does critical hits", Category.COMBAT, false);
     }
 
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);

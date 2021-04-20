@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class Speed extends Hack {
 
     public Speed() {
-        super("Speed", "Makes u go faster", Category.PLAYER, false, false);
+        super("Speed", "Makes u go faster", Category.PLAYER, false);
     }
 
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);

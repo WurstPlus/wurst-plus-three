@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Freecam extends Hack {
 
     public Freecam() {
-        super("Freecam", "lets u see freely", Category.PLAYER, false, false);
+        super("Freecam", "lets u see freely", Category.PLAYER, false);
     }
 
     public DoubleSetting speed = new DoubleSetting("Speed", 0.5, 0.1, 5.0, this);
