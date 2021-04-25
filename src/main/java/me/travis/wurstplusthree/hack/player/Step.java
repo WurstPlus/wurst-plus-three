@@ -20,6 +20,7 @@ public class Step extends Hack {
 
     @SubscribeEvent
     public void onStep(StepEvent event) {
+        if (nullCheck()) return;
         if (mc.player.onGround && !mc.player.isInsideOfMaterial(Material.WATER) && !mc.player.isInsideOfMaterial(Material.LAVA) && mc.player.collidedVertically && mc.player.fallDistance == 0.0f && !mc.gameSettings.keyBindJump.pressed && !mc.player.isOnLadder() && !WurstplusThree.HACKS.ishackEnabled("Speed")) {
             event.setHeight(this.height.getValue());
             double rheight = mc.player.getEntityBoundingBox().minY - mc.player.posY;

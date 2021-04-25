@@ -26,6 +26,11 @@ public class MathsUtil implements Globals {
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
     }
 
+    public static int floor(double value) {
+        int i = (int)value;
+        return value < (double)i ? i - 1 : i;
+    }
+
     public static Vec3d extrapolatePlayerPosition(EntityPlayer player, int ticks) {
         Vec3d lastPos = new Vec3d(player.lastTickPosX, player.lastTickPosY, player.lastTickPosZ);
         Vec3d currentPos = new Vec3d(player.posX, player.posY, player.posZ);

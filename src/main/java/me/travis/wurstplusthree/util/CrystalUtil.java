@@ -99,7 +99,7 @@ public class CrystalUtil implements Globals {
     }
 
     public static List<BlockPos> getSphere(BlockPos pos, float r, int h, boolean hollow, boolean sphere, int plus_y) {
-        ArrayList<BlockPos> circleblocks = new ArrayList<BlockPos>();
+        ArrayList<BlockPos> circleblocks = new ArrayList<>();
         int cx = pos.getX();
         int cy = pos.getY();
         int cz = pos.getZ();
@@ -124,6 +124,10 @@ public class CrystalUtil implements Globals {
             ++x;
         }
         return circleblocks;
+    }
+
+    public static boolean canSeePos(BlockPos pos) {
+        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX(), pos.getY(), pos.getZ()), false, true, false) == null;
     }
 
     public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck, boolean onepointThirteen) {

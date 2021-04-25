@@ -4,18 +4,21 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentBase;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.HoverEvent;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientMessage implements Globals {
 
-    private static String opener = ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.WHITE + " : " + ChatFormatting.RESET;
+    private static final String opener = ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.WHITE + " : " + ChatFormatting.RESET;
 
-    public static void sendToggleMessage(Hack hack) {
+    public static void sendToggleMessage(Hack hack, boolean enabled) {
         if (hack.getName().equalsIgnoreCase("gui")) return;
-        ChatFormatting open = (hack.isEnabled() ? ChatFormatting.GREEN : ChatFormatting.RED);
+        ChatFormatting open = (enabled ? ChatFormatting.GREEN : ChatFormatting.RED);
         if (hack.getName().equalsIgnoreCase("crystal aura")) {
             if (open == ChatFormatting.GREEN) {
                 sendMessage("we " + open + "gaming");
@@ -38,6 +41,13 @@ public class ClientMessage implements Globals {
     private static void sendClientMessage(String message) {
         if (mc.player != null) {
             mc.player.sendMessage(new ChatMessage(message));
+        }
+    }
+
+    public static void sendOverwriteClientMessage(String message) {
+        if (mc.player != null) {
+            final ITextComponent itc = new TextComponentString(opener + message).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Travis Fitzroy"))));
+            mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(itc, 5936);
         }
     }
 

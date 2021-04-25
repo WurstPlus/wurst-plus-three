@@ -56,7 +56,11 @@ public class CustomChat extends Hack {
             String originalMessage = ((SPacketChat) event.getPacket()).chatComponent.getFormattedText();
             String message = this.getTimeString(originalMessage);
             if (nameHighlight.getValue()) {
-                message = message.replace(mc.player.getName(), ChatFormatting.GOLD + mc.player.getName() + ChatFormatting.RESET);
+                try {
+                    message = message.replace(mc.player.getName(), ChatFormatting.GOLD + mc.player.getName() + ChatFormatting.RESET);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             ((SPacketChat) event.getPacket()).chatComponent = new TextComponentString(message);
         }

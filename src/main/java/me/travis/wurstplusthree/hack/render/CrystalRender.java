@@ -69,9 +69,13 @@ public class CrystalRender extends Hack {
         if (event.getPacket() instanceof SPacketDestroyEntities) {
             SPacketDestroyEntities packet = event.getPacket();
             for (int id : packet.getEntityIDs()) {
-                Entity entity = mc.world.getEntityByID(id);
-                if (entity instanceof EntityEnderCrystal) {
-                    this.scaleMap.remove(entity);
+                try {
+                    Entity entity = mc.world.getEntityByID(id);
+                    if (entity instanceof EntityEnderCrystal) {
+                        this.scaleMap.remove(entity);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

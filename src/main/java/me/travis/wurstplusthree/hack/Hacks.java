@@ -4,11 +4,11 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
-import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.hack.chat.TotemPopCounter;
+import me.travis.wurstplusthree.hack.combat.Bot;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.*;
@@ -35,9 +35,11 @@ public class Hacks implements Globals {
         this.hacks.add(new TotemPopCounter());
         this.hacks.add(new AutoEz());
         this.hacks.add(new CustomChat());
+        // this.hacks.add(new Burrow());
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
+        // this.hacks.add(new Bot());
         // combat
         this.hacks.add(new KillAura());
         this.hacks.add(new Surround());
@@ -52,6 +54,7 @@ public class Hacks implements Globals {
         this.hacks.add(new InstantBreak());
         this.hacks.add(new Blink());
         this.hacks.add(new Replenish());
+        this.hacks.add(new EntityMine());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
@@ -62,6 +65,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Scaffold());
         this.hacks.add(new FastUtil());
         this.hacks.add(new ArmourMend());
+        this.hacks.add(new XCarry());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());

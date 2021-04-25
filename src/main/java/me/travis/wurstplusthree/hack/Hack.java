@@ -82,7 +82,7 @@ public class Hack implements Globals {
         if (this.isEnabled() && this.isListening()) {
             MinecraftForge.EVENT_BUS.register(this);
         }
-        ClientMessage.sendToggleMessage(this);
+        ClientMessage.sendToggleMessage(this, true);
     }
 
     public void disable() {
@@ -91,7 +91,7 @@ public class Hack implements Globals {
         }
         this.isEnabled = false;
         this.onDisable();
-        ClientMessage.sendToggleMessage(this);
+        ClientMessage.sendToggleMessage(this, false);
     }
 
     public void toggle() {

@@ -15,7 +15,7 @@ public class TotemPopCounter extends Hack {
         if (nullCheck()) return;
         if (!WurstplusThree.POP_MANAGER.toAnnouce.isEmpty()) {
             for (String string : WurstplusThree.POP_MANAGER.toAnnouce) {
-                ClientMessage.sendMessage(string);
+                ClientMessage.sendOverwriteClientMessage(string);
             }
             WurstplusThree.POP_MANAGER.toAnnouce.clear();
         }

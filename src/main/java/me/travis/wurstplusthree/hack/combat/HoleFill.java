@@ -35,22 +35,18 @@ public class HoleFill extends Hack {
     @Override
     public void onUpdate() {
         this.holes.clear();
-
         this.findNewHoles();
 
-        BlockPos pos_to_fill = null;
+        BlockPos posToFill = null;
 
         for (BlockPos pos : new ArrayList<>(holes)) {
-
             if (pos == null) continue;
-
             BlockUtil.ValidResult result = BlockUtil.valid(pos);
-
             if (result != BlockUtil.ValidResult.Ok) {
                 holes.remove(pos);
                 continue;
             }
-            pos_to_fill = pos;
+            posToFill = pos;
             break;
         }
 
@@ -58,10 +54,9 @@ public class HoleFill extends Hack {
             this.disable();
             return;
         }
-
-        if (pos_to_fill != null) {
-            if (BlockUtil.placeBlock(pos_to_fill, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
-                holes.remove(pos_to_fill);
+        if (posToFill != null) {
+            if (BlockUtil.placeBlock(posToFill, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
+                holes.remove(posToFill);
             }
         }
 

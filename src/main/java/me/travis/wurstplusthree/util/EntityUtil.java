@@ -4,9 +4,11 @@ import me.travis.wurstplusthree.WurstplusThree;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,6 +38,57 @@ public class EntityUtil implements Globals {
         if (swingArm) {
             mc.player.swingArm(EnumHand.MAIN_HAND);
         }
+    }
+
+    public static void attackEntity(final Entity entity, final boolean packet) {
+        if (packet) {
+            mc.player.connection.sendPacket(new CPacketUseEntity(entity));
+        } else {
+            mc.playerController.attackEntity(mc.player, entity);
+        }
+    }
+
+    public static BlockPos getFlooredPos(Entity e) {
+        return new BlockPos(Math.floor(e.posX), Math.floor(e.posY), Math.floor(e.posZ));
+    }
+
+    public static boolean isInHole(Entity entity) {
+        return EntityUtil.isBlockValid(new BlockPos(entity.posX, entity.posY, entity.posZ));
+    }
+
+    public static boolean isBlockValid(BlockPos blockPos) {
+        return EntityUtil.isBedrockHole(blockPos) || EntityUtil.isObbyHole(blockPos) || EntityUtil.isBothHole(blockPos);
+    }
+
+    public static boolean isObbyHole(BlockPos blockPos) {
+        BlockPos[] touchingBlocks;
+        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+            IBlockState touchingState = EntityUtil.mc.world.getBlockState(pos);
+            if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.OBSIDIAN) continue;
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isBedrockHole(BlockPos blockPos) {
+        BlockPos[] touchingBlocks;
+        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+            IBlockState touchingState = EntityUtil.mc.world.getBlockState(pos);
+            if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.BEDROCK) continue;
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isBothHole(BlockPos blockPos) {
+        BlockPos[] touchingBlocks;
+        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+            IBlockState touchingState = EntityUtil.mc.world.getBlockState(pos);
+            if (touchingState.getBlock() != Blocks.AIR && (touchingState.getBlock() == Blocks.BEDROCK || touchingState.getBlock() == Blocks.OBSIDIAN))
+                continue;
+            return false;
+        }
+        return true;
     }
 
     public static Vec3d getInterpolatedRenderPos(Entity entity, float partialTicks) {

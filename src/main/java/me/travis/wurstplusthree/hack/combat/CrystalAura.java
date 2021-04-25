@@ -19,11 +19,12 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
+
 
 public class CrystalAura extends Hack {
 
@@ -56,10 +58,12 @@ public class CrystalAura extends Hack {
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"),this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", true, this);
+    EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
     BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this); // SKIDERS, THIS IS THE THING THAT MAKES IT FAST
+    BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
     BooleanSetting predictPlace = new BooleanSetting("Predict Place", true, this);
     IntSetting predictTicks = new IntSetting("Predict Ticks", 2, 0, 10, this);
 
@@ -84,6 +88,7 @@ public class CrystalAura extends Hack {
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     ColourSetting renderColour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);
+    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
@@ -92,13 +97,14 @@ public class CrystalAura extends Hack {
     private BlockPos renderBlock = null;
 
     private double renderDamageVal = 0;
-    private double lastCrystalDamage = 0;
 
     private float yaw;
     private float pitch;
 
     private boolean alreadyAttacking = false;
     private boolean placeTimeoutFlag = false;
+    private boolean hasPacketBroke = false;
+    private boolean listeningForPacketBroke = false;
     private boolean isRotating;
     private boolean didAnything;
 
@@ -125,52 +131,75 @@ public class CrystalAura extends Hack {
             p.yaw = yaw;
             p.pitch = pitch;
         }
-    }
-
-    private boolean isTargetGood(EntityPlayer target, EntityEnderCrystal crystal) {
-        if (!target.isEntityAlive() || target == mc.player) return false;
-        if (WurstplusThree.FRIEND_MANAGER.isFriend(target.getName())) return false;
-        if (target.getDistance(mc.player) > 13) return false;
-        if (stopFPWhenSword.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD) return false;
-
-        EntityPlayer player = target;
-
-        if (this.predictPlace.getValue()) {
-            player = this.newTarget(player);
+        CPacketUseEntity packet;
+        if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
+            if (this.listeningForPacketBroke) {
+                this.hasPacketBroke = true;
+                this.listeningForPacketBroke = false;
+            }
+            if (this.fastMode.is("Ghost")) {
+                Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).setDead();
+                mc.world.removeEntityFromWorld(packet.entityId);
+            }
+            EntityEnderCrystal crystal = (EntityEnderCrystal) packet.getEntityFromWorld(mc.world);
+            if (this.predictPlace.getValue()) {
+                if (crystal != null) {
+                    for (EntityPlayer player : mc.world.playerEntities) {
+                        if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
+                            BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
+                        }
+                    }
+                }
+            }
         }
-
-        int miniumDamage;
-        if (EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue() ||
-                CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) {
-            miniumDamage = 2;
-        } else {
-            miniumDamage = this.minHpBreak.getValue();
-        }
-
-        double targetDamage = CrystalUtil.calculateDamage(crystal, player);
-        if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return false;
-        double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player);
-        if (selfDamage > maxSelfDamage.getValue()) return false;
-        return !(EntityUtil.getHealth(mc.player) - selfDamage <= 0) || !this.antiSuicide.getValue();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketReceive(PacketEvent.Receive event) {
         SPacketSpawnObject packet;
-        if (this.predictCrystal.getValue() && event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
+        if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
+            this.hasPacketBroke = false;
             for (EntityPlayer target : mc.world.playerEntities) {
-                if (this.isTargetGood(target, new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()))) {
-                    CPacketUseEntity predict = new CPacketUseEntity();
-                    predict.entityId = packet.getEntityID();
-                    predict.action = CPacketUseEntity.Action.ATTACK;
-                    mc.player.connection.sendPacket(predict);
-                    return;
+                if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
+                    if (this.predictCrystal.getValue()) {
+                        // break
+                        CPacketUseEntity predict = new CPacketUseEntity();
+                        predict.entityId = packet.getEntityID();
+                        predict.action = CPacketUseEntity.Action.ATTACK;
+                        mc.player.connection.sendPacket(predict);
+                        if (!this.swing.is("None")) {
+                            BlockUtil.swingArm(swing);
+                        }
+                        this.listeningForPacketBroke = true;
+                    }
+                    if (this.predictBlock.getValue()) {
+                        // place
+                        BlockPos pos = new BlockPos(packet.getX(), packet.getY(), packet.getZ()).down();
+                        EnumFacing side = BlockUtil.getFirstFacing(pos);
+                        if (side == null) break;
+                        BlockPos neighbour = pos.offset(side);
+                        EnumFacing opposite = side.getOpposite();
+                        Vec3d vec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
+                        boolean offhandCheck = false;
+                        if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
+                            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
+                                if (this.findCrystalsHotbar() == -1) return;
+                                mc.player.inventory.currentItem = this.findCrystalsHotbar();
+                            }
+                        } else {
+                            offhandCheck = true;
+                        }
+                        CPacketPlayerTryUseItemOnBlock predict2 = new CPacketPlayerTryUseItemOnBlock(pos, opposite, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND,
+                        (float) (vec.x - (double) pos.getX()), (float) (vec.y - (double) pos.getY()), (float) (vec.z - (double) pos.getZ()));
+                        mc.player.connection.sendPacket(predict2);
+                    }
+                    break;
                 }
             }
         }
         if (event.getPacket() instanceof SPacketDestroyEntities) {
-            SPacketDestroyEntities packet4 = event.getPacket();
-            for (int id : packet4.getEntityIDs()) {
+            SPacketDestroyEntities packet_ = event.getPacket();
+            for (int id : packet_.getEntityIDs()) {
                 try {
                     Entity entity = mc.world.getEntityByID(id);
                     if (!(entity instanceof EntityEnderCrystal)) continue;
@@ -201,7 +230,7 @@ public class CrystalAura extends Hack {
         if (this.place.getValue() && placeDelayCounter > placeTimeout) {
             this.placeCrystal();
         }
-        if (this.breaK.getValue() && breakDelayCounter > breakTimeout) {
+        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !hasPacketBroke) {
             this.breakCrystal();
         }
 
@@ -268,61 +297,29 @@ public class CrystalAura extends Hack {
         }
         didAnything = true;
         setYawPitch(crystal);
-        EntityUtil.attackEntity(crystal, this.attackPacket.getValue(), true);
-        if (fastMode.is("Ghost")) {
-            crystal.setDead();
-            attemptedCrystals.add(crystal);
+        EntityUtil.attackEntity(crystal, this.attackPacket.getValue());
+        if (!this.swing.is("None")) {
+            BlockUtil.swingArm(swing);
         }
         breakDelayCounter = 0;
     }
 
     private EntityEnderCrystal getBestCrystal() {
         double bestDamage = 0;
-        double miniumDamage;
         EntityEnderCrystal bestCrystal = null;
         for (Entity e : mc.world.loadedEntityList) {
             if (!(e instanceof EntityEnderCrystal)) continue;
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
-            if (mc.player.getDistance(crystal) > (mc.player.canEntityBeSeen(crystal) ? breakRange.getValue()
-                    : breakRangeWall.getValue())) continue;
-            if (this.raytrace.getValue() && !mc.player.canEntityBeSeen(crystal)) continue;
-            if (crystal.isDead) continue;
-            if (attemptedCrystals.contains(crystal)) continue;
             for (EntityPlayer target : mc.world.playerEntities) {
-                if (!target.isEntityAlive() || target == mc.player) continue;
-                if (WurstplusThree.FRIEND_MANAGER.isFriend(target.getName())) continue;
-                if (target.getDistance(mc.player) > 13) continue;
-                if (stopFPWhenSword.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD) continue;
-
-                EntityPlayer player = target;
-
-                if (this.predictPlace.getValue()) {
-                    player = this.newTarget(player);
-                }
-
-                if (EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue() ||
-                        CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) {
-                    miniumDamage = 2;
-                } else {
-                    miniumDamage = this.minHpBreak.getValue();
-                }
-
-                double targetDamage = CrystalUtil.calculateDamage(crystal, player);
-                if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) continue;
-                double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player);
-                if (selfDamage > maxSelfDamage.getValue()) continue;
-                if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) continue;
-
+                double targetDamage = this.isCrystalGood(crystal, target);
+                if (targetDamage == 0) continue;
                 if (targetDamage > bestDamage) {
                     bestDamage = targetDamage;
-                    this.ezTarget = player;
+                    this.ezTarget = target;
                     bestCrystal = crystal;
                 }
             }
         }
-
-        this.lastCrystalDamage = bestDamage;
-
         return bestCrystal;
     }
 
@@ -336,42 +333,15 @@ public class CrystalAura extends Hack {
             placeTimeoutFlag = false;
             return null;
         }
-
         double bestDamage = 0;
-        double miniumDamage;
         BlockPos bestPos = null;
 
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            if (!target.isEntityAlive() || target == mc.player) continue;
-            if (WurstplusThree.FRIEND_MANAGER.isFriend(target.getName())) continue;
-            if (target.getDistance(mc.player) > 13) continue;
-            if (stopFPWhenSword.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD) continue;
-
-            EntityPlayer player = target;
-
-            if (this.predictPlace.getValue()) {
-                player = this.newTarget(player);
-            }
-
             for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
-                if (!BlockUtil.rayTracePlaceCheck(blockPos, this.raytrace.getValue() && mc.player.getDistanceSq(blockPos)
-                        > MathsUtil.square(this.placeRangeWall.getValue().floatValue()), 1.0f))
-                    continue;
-
-                if (EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue() ||
-                        CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) {
-                    miniumDamage = 2;
-                } else {
-                    miniumDamage = this.minHpPlace.getValue();
-                }
-
-                double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
-                if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) continue;
-                double selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player);
-                if (selfDamage > maxSelfDamage.getValue()) continue;
-                if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) continue;
+                double targetDamage = isBlockGood(blockPos, target);
+                if (targetDamage == 0) continue;
 
                 if (chainMode.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
@@ -379,7 +349,7 @@ public class CrystalAura extends Hack {
                     if (targetDamage > bestDamage) {
                         bestDamage = targetDamage;
                         bestPos = blockPos;
-                        ezTarget = player;
+                        ezTarget = target;
                     }
                 }
 
@@ -390,7 +360,11 @@ public class CrystalAura extends Hack {
             validPos.sort(Comparator.comparing(CrystalPos::getDamage));
             Collections.reverse(validPos);
             if (validPos.size() <= chainCount) {
-                if (validPos.isEmpty()) return null;
+                if (validPos.isEmpty()) {
+                    renderDamageVal = 0;
+                    renderBlock = null;
+                    return null;
+                }
                 CrystalPos pos = validPos.get(0);
                 renderDamageVal = pos.getDamage();
                 renderBlock = pos.getPos();
@@ -411,6 +385,95 @@ public class CrystalAura extends Hack {
         }
 
         return bestPos;
+    }
+
+    private double isCrystalGood(EntityEnderCrystal crystal, EntityPlayer target) {
+        if (this.isPlayerValid(target)) {
+            EntityPlayer player = target;
+            if (this.predictPlace.getValue()) {
+                player = this.newTarget(target);
+            }
+
+            if (this.raytrace.getValue() && !mc.player.canEntityBeSeen(crystal)) return 0;
+            if (mc.player.canEntityBeSeen(crystal)) {
+                if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
+                    return 0;
+                }
+            } else {
+                if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRangeWall.getValue().floatValue())) {
+                    return 0;
+                }
+            }
+            if (crystal.isDead) return 0;
+            if (attemptedCrystals.contains(crystal)) return 0;
+
+            // set min damage to 2 if we want to kill the dude fast
+            int miniumDamage;
+            if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+                miniumDamage = EntityUtil.isInHole(player) ? 0 : 2;
+            } else {
+                miniumDamage = this.minHpPlace.getValue();
+            }
+
+            double targetDamage = CrystalUtil.calculateDamage(crystal, player);
+            if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
+            double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player);
+            if (selfDamage > maxSelfDamage.getValue()) return 0;
+            if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
+
+            return targetDamage;
+        }
+
+        return 0;
+    }
+
+    private double isBlockGood(BlockPos blockPos, EntityPlayer target) {
+        if (this.isPlayerValid(target)) {
+            EntityPlayer player = target;
+            if (this.predictPlace.getValue()) {
+                player = this.newTarget(target);
+            }
+
+            // if raytracing and cannot see block
+            if (!CrystalUtil.canSeePos(blockPos) && raytrace.getValue()) return 0;
+            // if cannot see pos use wall range, else use normal
+            if (!CrystalUtil.canSeePos(blockPos)) {
+                if (mc.player.getDistanceSq(blockPos) > MathsUtil.square(this.placeRangeWall.getValue().floatValue())) {
+                    return 0;
+                }
+            } else {
+                if (mc.player.getDistanceSq(blockPos) > MathsUtil.square(this.placeRange.getValue().floatValue())) {
+                    return 0;
+                }
+            }
+
+            // set min damage to 2 if we want to kill the dude fast
+            int miniumDamage;
+            if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+                miniumDamage = EntityUtil.isInHole(player) ? 0 : 2;
+            } else {
+                miniumDamage = this.minHpPlace.getValue();
+            }
+
+            double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
+            if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
+            double selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player);
+            if (selfDamage > maxSelfDamage.getValue()) return 0;
+            if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
+
+            return targetDamage;
+        }
+
+        return 0;
+    }
+
+    private boolean isPlayerValid(EntityPlayer player) {
+        if (!player.isEntityAlive() || player == mc.player) return false;
+        if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return false;
+        if (player.getDistance(mc.player) > 13) return false;
+        return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
     }
 
     private EntityOtherPlayerMP newTarget(EntityPlayer currentTarget) {
@@ -474,7 +537,7 @@ public class CrystalAura extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(renderBlock, renderColour.getValue(), true, renderColour.getValue(), width.getValue(), outline, solid, 200, true, 0, false, false, false, false, 200);
+        RenderUtil.drawBoxESP(renderBlock, renderColour.getValue(), true, renderColour.getValue(), width.getValue(), outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
 
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int)this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
@@ -490,5 +553,7 @@ public class CrystalAura extends Hack {
         ezTarget = null;
         chainCount = chainStep.getValue();
         this.attemptedCrystals.clear();
+        this.hasPacketBroke = false;
+        listeningForPacketBroke = false;
     }
 }
