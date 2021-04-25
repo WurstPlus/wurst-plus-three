@@ -33,6 +33,7 @@ public class ServerManager extends Hack {
     }
 
     public void update() {
+        //if(!mc.world.isRemote){return;}
         float tps;
         long currentTime = System.currentTimeMillis();
         if (this.lastUpdate == -1L) {

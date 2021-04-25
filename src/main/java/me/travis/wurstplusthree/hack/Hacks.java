@@ -48,6 +48,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Trap());
         this.hacks.add(new HoleFill());
         this.hacks.add(new Crits());
+        this.hacks.add(new Burrow());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());

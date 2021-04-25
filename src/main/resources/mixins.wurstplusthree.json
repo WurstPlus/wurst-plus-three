@@ -50,7 +50,6 @@
     "MixinWorld",
     "accessors.IC00Handshake",
     "accessors.IContainer",
-    "accessors.IEntityLivingBase",
     "accessors.IServerAddress",
     "accessors.ISPacketSetSlot"
   ]

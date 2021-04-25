@@ -93,7 +93,7 @@ public class Blink extends Hack {
 
     @Override
     public void onDisable() {
-        if (!nullCheck()) {
+        if (!nullCheck() && this.entity != null) {
             Blink.mc.world.removeEntity(this.entity);
             while (!this.packets.isEmpty()) {
                 Blink.mc.player.connection.sendPacket(this.packets.poll());
