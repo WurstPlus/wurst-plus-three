@@ -63,14 +63,14 @@ public class Burrow extends Hack {
         if (instant.getValue()) {
             this.setTimer(50f);
         }
-        if (type.getValue().equals("Normal")) {
+        if (type.is("Normal")) {
             mc.player.jump();
         }
     }
 
     @Override
     public void onUpdate() {
-        if (type.getType().equals("Normal")) {
+        if (type.is("Normal")) {
             if (mc.player.posY > (oldPos.getY() + 1.04)) {
                 int old = mc.player.inventory.currentItem;
                 this.switchToSlot(swapBlock);
@@ -78,7 +78,6 @@ public class Burrow extends Hack {
                 this.switchToSlot(old);
                 mc.player.motionY = force.value;
                 this.disable();
-                return;
             }
         } else {
             mc.player.connection.sendPacket(
@@ -127,21 +126,6 @@ public class Burrow extends Hack {
             );
             this.disable();
         }
-
-        /*
-        BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-        if (mc.world.getBlockState(pos.down()).getBlock() == Blocks.AIR) {
-            int old = mc.player.inventory.currentItem;
-            this.switchToSlot(PlayerUtil.findObiInHotbar());
-            BlockUtil.placeBlock(pos.down(), EnumHand.MAIN_HAND, rotate.getValue(), true, false);
-            this.switchToSlot(old);
-        }
-        if (mc.world.getBlockState(pos.down()).getBlock() == Blocks.OBSIDIAN) {
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY - 1.3, mc.player.posZ, false));
-            mc.player.setPosition(mc.player.posX, mc.player.posY - 1.3, mc.player.posZ);
-            this.disable();
-        }
-         */
     }
 
     @Override

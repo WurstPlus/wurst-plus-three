@@ -133,10 +133,6 @@ public class CrystalAura extends Hack {
         }
         CPacketUseEntity packet;
         if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
-            if (this.listeningForPacketBroke) {
-                this.hasPacketBroke = true;
-                this.listeningForPacketBroke = false;
-            }
             if (this.fastMode.is("Ghost")) {
                 Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).setDead();
                 mc.world.removeEntityFromWorld(packet.entityId);
@@ -170,7 +166,7 @@ public class CrystalAura extends Hack {
                         if (!this.swing.is("None")) {
                             BlockUtil.swingArm(swing);
                         }
-                        this.listeningForPacketBroke = true;
+                        this.hasPacketBroke = true;
                     }
                     if (this.predictBlock.getValue()) {
                         // place
