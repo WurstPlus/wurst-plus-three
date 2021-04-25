@@ -83,6 +83,7 @@ public class Hacks implements Globals {
         this.hacks.add(new TargetDetails());
         this.hacks.add(new Esp());
         this.hacks.add(new ExtraTab());
+        this.hacks.add(new BreakHighlight());
     }
 
     public List<Hack> getHacks() {

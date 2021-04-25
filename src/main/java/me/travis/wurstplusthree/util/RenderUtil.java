@@ -118,6 +118,7 @@ public class RenderUtil implements Globals {
 
     public static void drawBox(AxisAlignedBB bb, boolean check, double height, Colour color, int sides) {
         drawBox(bb, check, height, color, color.getAlpha(), sides);
+
     }
 
     public static void drawBox(AxisAlignedBB bb, boolean check, double height, Colour color, int alpha, int sides) {
@@ -536,6 +537,17 @@ public class RenderUtil implements Globals {
         GlStateManager.enableAlpha();
     }
 
+    public static void drawBox(AxisAlignedBB bb, Colour color, int alpha, int sides) {
+        GlStateManager.disableAlpha();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        color.glColor();
+        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        doVerticies(bb, color, alpha, bufferbuilder, sides, false);
+        tessellator.draw();
+        GlStateManager.enableAlpha();
+    }
+
     public static void drawBoundingBox(BlockPos bp, double height, float width, Colour color) {
         drawBoundingBox(getBoundingBox(bp, 1, height, 1), width, color, color.getAlpha());
     }
@@ -581,7 +593,7 @@ public class RenderUtil implements Globals {
     }
 
     private static void doVerticies(AxisAlignedBB axisAlignedBB, Colour color, int alpha, BufferBuilder bufferbuilder, int sides, boolean five) {
-        if ((sides & GeometryUtil.Quad.EAST) != 0) {
+        if ((sides & GeometryUtil.Quad.EAST) != 0 || sides == -1) {
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.maxY, axisAlignedBB.minZ, color, alpha, bufferbuilder);
@@ -589,7 +601,7 @@ public class RenderUtil implements Globals {
             if (five)
                 colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
         }
-        if ((sides & GeometryUtil.Quad.WEST) != 0) {
+        if ((sides & GeometryUtil.Quad.WEST) != 0|| sides == -1) {
             colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.maxY, axisAlignedBB.maxZ, color, alpha, bufferbuilder);
@@ -597,7 +609,7 @@ public class RenderUtil implements Globals {
             if (five)
                 colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
         }
-        if ((sides & GeometryUtil.Quad.NORTH) != 0) {
+        if ((sides & GeometryUtil.Quad.NORTH) != 0 || sides == -1) {
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.maxY, axisAlignedBB.minZ, color, alpha, bufferbuilder);
@@ -605,7 +617,7 @@ public class RenderUtil implements Globals {
             if (five)
                 colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
         }
-        if ((sides & GeometryUtil.Quad.SOUTH) != 0) {
+        if ((sides & GeometryUtil.Quad.SOUTH) != 0 || sides == -1) {
             colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.maxY, axisAlignedBB.maxZ, color, alpha, bufferbuilder);
@@ -613,7 +625,7 @@ public class RenderUtil implements Globals {
             if (five)
                 colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
         }
-        if ((sides & GeometryUtil.Quad.UP) != 0) {
+        if ((sides & GeometryUtil.Quad.UP) != 0 || sides == -1) {
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.maxY, axisAlignedBB.minZ, color, alpha, bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.maxY, axisAlignedBB.minZ, color, alpha, bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.maxY, axisAlignedBB.maxZ, color, alpha, bufferbuilder);
@@ -621,7 +633,7 @@ public class RenderUtil implements Globals {
             if (five)
                 colorVertex(axisAlignedBB.maxX, axisAlignedBB.maxY, axisAlignedBB.minZ, color, alpha, bufferbuilder);
         }
-        if ((sides & GeometryUtil.Quad.DOWN) != 0) {
+        if ((sides & GeometryUtil.Quad.DOWN) != 0 || sides == -1) {
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.minZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.maxX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);
             colorVertex(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.maxZ, color, color.getAlpha(), bufferbuilder);

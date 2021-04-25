@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -9,17 +8,11 @@ import me.travis.wurstplusthree.util.*;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Timer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
