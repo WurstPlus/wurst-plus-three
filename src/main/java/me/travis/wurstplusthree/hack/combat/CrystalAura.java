@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -93,7 +94,7 @@ public class CrystalAura extends Hack {
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
-    private EntityPlayer ezTarget = null;
+    public EntityPlayer ezTarget = null;
     private BlockPos renderBlock = null;
 
     private double renderDamageVal = 0;
@@ -104,7 +105,6 @@ public class CrystalAura extends Hack {
     private boolean alreadyAttacking = false;
     private boolean placeTimeoutFlag = false;
     private boolean hasPacketBroke = false;
-    private boolean listeningForPacketBroke = false;
     private boolean isRotating;
     private boolean didAnything;
 
@@ -316,6 +316,9 @@ public class CrystalAura extends Hack {
                 }
             }
         }
+        if (this.ezTarget != null) {
+            AutoEz.INSTANCE.targets.put(this.ezTarget.getName(), 20);
+        }
         return bestCrystal;
     }
 
@@ -350,6 +353,10 @@ public class CrystalAura extends Hack {
                 }
 
             }
+        }
+
+        if (this.ezTarget != null) {
+            AutoEz.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
 
         if (chainMode.getValue()) {
@@ -409,7 +416,7 @@ public class CrystalAura extends Hack {
                     (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0 : 2;
             } else {
-                miniumDamage = this.minHpPlace.getValue();
+                miniumDamage = this.minHpBreak.getValue();
             }
 
             double targetDamage = CrystalUtil.calculateDamage(crystal, player);
@@ -550,6 +557,5 @@ public class CrystalAura extends Hack {
         chainCount = chainStep.getValue();
         this.attemptedCrystals.clear();
         this.hasPacketBroke = false;
-        listeningForPacketBroke = false;
     }
 }
