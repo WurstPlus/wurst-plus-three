@@ -23,7 +23,9 @@ public class HoleFill extends Hack {
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
+    BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
+
 
     private final List<BlockPos> holes = new ArrayList<>();
 
@@ -38,6 +40,12 @@ public class HoleFill extends Hack {
         this.findNewHoles();
 
         BlockPos posToFill = null;
+        if(holes.isEmpty() && toggle.getValue()){
+            this.disable();
+            return;
+        }else {
+            this.findNewHoles();
+        }
 
         for (BlockPos pos : new ArrayList<>(holes)) {
             if (pos == null) continue;
