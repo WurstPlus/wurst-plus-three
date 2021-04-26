@@ -34,8 +34,11 @@ import java.util.*;
 
 public class CrystalAura extends Hack {
 
+    public static CrystalAura INSTANCE;
+
     public CrystalAura() {
         super("Crystal Aura", "the goods", Category.COMBAT, false);
+        INSTANCE = this;
     }
 
     BooleanSetting place = new BooleanSetting("Place", true, this);
@@ -155,21 +158,25 @@ public class CrystalAura extends Hack {
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
-            for (EntityPlayer target : mc.world.playerEntities) {
-                if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
-                    if (this.predictCrystal.getValue()) {
-                        CPacketUseEntity predict = new CPacketUseEntity();
-                        predict.entityId = packet.getEntityID();
-                        predict.action = CPacketUseEntity.Action.ATTACK;
-                        mc.player.connection.sendPacket(predict);
-                        if (!this.swing.is("None")) {
-                            BlockUtil.swingArm(swing);
+            try { // minecraft may update player list during us looping through it
+                for (EntityPlayer target : mc.world.playerEntities) {
+                    if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
+                        if (this.predictCrystal.getValue()) {
+                            CPacketUseEntity predict = new CPacketUseEntity();
+                            predict.entityId = packet.getEntityID();
+                            predict.action = CPacketUseEntity.Action.ATTACK;
+                            mc.player.connection.sendPacket(predict);
+                            if (!this.swing.is("None")) {
+                                BlockUtil.swingArm(swing);
+                            }
+                            // TODO : THIS SOMETIMES FLAGS EVEN THOUGH THE CRYSTAL WASN'T BROKEN CAUSING THE BREAK FOR THE CA TO GET STUCK
+                            this.hasPacketBroke = true;
                         }
-                        // TODO : THIS SOMETIMES FLAGS EVEN THOUGH THE CRYSTAL WASN'T BROKEN CAUSING THE BREAK FOR THE CA TO GET STUCK
-                        this.hasPacketBroke = true;
+                        break;
                     }
-                    break;
                 }
+            } catch (ConcurrentModificationException e) {
+                e.printStackTrace();
             }
         }
         if (event.getPacket() instanceof SPacketDestroyEntities) {

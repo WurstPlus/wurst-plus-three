@@ -39,6 +39,7 @@ public class Burrow extends Hack {
     int swapBlock = -1;
     Vec3d centerBlock = Vec3d.ZERO;
     BlockPos oldPos;
+    boolean flag;
 
     @Override
     public void onEnable() {
@@ -46,8 +47,16 @@ public class Burrow extends Hack {
             this.disable();
             return;
         }
+
+        flag = false;
+        if (CrystalAura.INSTANCE.isEnabled()) {
+            flag = true;
+            CrystalAura.INSTANCE.disable();
+        }
+
         mc.player.motionX = 0;
         mc.player.motionZ = 0;
+
         centerBlock = this.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
         if (centerBlock != Vec3d.ZERO && center.getValue()) {
             double x_diff = Math.abs(centerBlock.x - mc.player.posX);
@@ -61,6 +70,7 @@ public class Burrow extends Hack {
                 mc.player.motionZ = motion_z / 2;
             }
         }
+
         oldPos = PlayerUtil.getPlayerPos();
         switch (block.getValue()) {
             case "All":
@@ -156,6 +166,9 @@ public class Burrow extends Hack {
     public void onDisable(){
         if(instant.getValue() && !nullCheck()){
             this.setTimer(1f);
+        }
+        if (flag) {
+            CrystalAura.INSTANCE.enable();
         }
     }
 
