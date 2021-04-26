@@ -32,7 +32,7 @@ public class CrystalUtil implements Globals {
             float armourPercent = ((float) (stack.getMaxDamage() - stack.getItemDamage()) /
                     (float) stack.getMaxDamage()) * 100f;
 
-            if (percent >= armourPercent) return true;
+            if (percent >= armourPercent && stack.stackSize < 2) return true;
         }
         return false;
     }

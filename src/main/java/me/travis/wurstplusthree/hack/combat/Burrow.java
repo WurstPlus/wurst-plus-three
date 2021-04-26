@@ -46,11 +46,9 @@ public class Burrow extends Hack {
             this.disable();
             return;
         }
-        if (center.getValue()) {
-            mc.player.motionX = 0;
-            mc.player.motionZ = 0;
-            centerBlock = this.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
-        }
+        mc.player.motionX = 0;
+        mc.player.motionZ = 0;
+        centerBlock = this.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
         if (centerBlock != Vec3d.ZERO && center.getValue()) {
             double x_diff = Math.abs(centerBlock.x - mc.player.posX);
             double z_diff = Math.abs(centerBlock.z - mc.player.posZ);
