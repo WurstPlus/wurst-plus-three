@@ -17,6 +17,7 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Timer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -32,9 +33,11 @@ public class Burrow extends Hack {
     EnumSetting type = new EnumSetting("Type", "Packet", Arrays.asList("Packet", "Normal"), this);
     EnumSetting block = new EnumSetting("Block", "All", Arrays.asList("All", "EChest", "Chest"), this);
     DoubleSetting force = new DoubleSetting("Force", 1.5, 0.0, 10.0, this);
+    BooleanSetting center = new BooleanSetting("Center", false, this);
     BooleanSetting bypass = new BooleanSetting("Bypass", false, this);
 
     int swapBlock = -1;
+    Vec3d centerBlock = Vec3d.ZERO;
     BlockPos oldPos;
 
     @Override
@@ -42,6 +45,23 @@ public class Burrow extends Hack {
         if (nullCheck()) {
             this.disable();
             return;
+        }
+        if (center.getValue()) {
+            mc.player.motionX = 0;
+            mc.player.motionZ = 0;
+            centerBlock = this.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+        }
+        if (centerBlock != Vec3d.ZERO && center.getValue()) {
+            double x_diff = Math.abs(centerBlock.x - mc.player.posX);
+            double z_diff = Math.abs(centerBlock.z - mc.player.posZ);
+            if (x_diff <= 0.1 && z_diff <= 0.1) {
+                centerBlock = Vec3d.ZERO;
+            } else {
+                double motion_x = centerBlock.x - mc.player.posX;
+                double motion_z = centerBlock.z - mc.player.posZ;
+                mc.player.motionX = motion_x / 2;
+                mc.player.motionZ = motion_z / 2;
+            }
         }
         oldPos = PlayerUtil.getPlayerPos();
         switch (block.getValue()) {
@@ -141,7 +161,7 @@ public class Burrow extends Hack {
         }
     }
 
-    public void switchToSlot(final int slot) {
+    private void switchToSlot(final int slot) {
         mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
         mc.player.inventory.currentItem = slot;
         mc.playerController.updateController();
@@ -157,5 +177,13 @@ public class Burrow extends Hack {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Vec3d getCenter(double posX, double posY, double posZ) {
+        double x = Math.floor(posX) + 0.5D;
+        double y = Math.floor(posY);
+        double z = Math.floor(posZ) + 0.5D ;
+
+        return new Vec3d(x, y, z);
     }
 }

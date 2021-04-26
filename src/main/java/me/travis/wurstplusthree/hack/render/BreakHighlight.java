@@ -116,4 +116,9 @@ public class BreakHighlight extends Hack {
         }
         return rbb;
     }
+
+    @Override
+    public void onLogout() {
+        breakingBlockList.clear();
+    }
 }
