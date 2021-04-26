@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.render;
 
-import jdk.nashorn.internal.ir.Block;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;

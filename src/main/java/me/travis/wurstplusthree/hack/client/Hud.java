@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.hack.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import io.netty.util.internal.MathUtil;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.hack.Hack;
@@ -9,7 +8,6 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.HudUtil;
-import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;

@@ -8,7 +8,6 @@ import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.hack.chat.TotemPopCounter;
-import me.travis.wurstplusthree.hack.combat.Bot;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.*;

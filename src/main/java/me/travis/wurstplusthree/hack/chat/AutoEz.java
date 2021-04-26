@@ -24,7 +24,7 @@ public class AutoEz extends Hack {
     }
 
     private int delayCount;
-    public final ConcurrentHashMap targets = new ConcurrentHashMap();
+    public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
 
     @Override
     public void onEnable() {
@@ -46,7 +46,7 @@ public class AutoEz extends Hack {
             }
         }
         targets.forEach((name, timeout) -> {
-            if ((int)timeout <= 0) {
+            if (timeout <= 0) {
                 targets.remove(name);
             } else {
                 targets.put(name, (int)timeout - 1);
@@ -58,7 +58,7 @@ public class AutoEz extends Hack {
     @SubscribeEvent
     public void onAttackEntity(AttackEntityEvent event) {
         if (event.getTarget() instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(event.getEntityPlayer().getName())) {
-            this.targets.put(event.getTarget(), 20);
+            this.targets.put(event.getTarget().getName(), 20);
         }
     }
 
@@ -66,15 +66,15 @@ public class AutoEz extends Hack {
     public void onSendAttackPacket(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).getName())) {
-            this.targets.put(packet.getEntityFromWorld(mc.world), 20);
+            this.targets.put(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).getName(), 20);
         }
     }
 
     @SubscribeEvent
     public void onEntityDeath(DeathEvent event) {
-        if (this.targets.containsKey(event.player)) {
+        if (this.targets.containsKey(event.player.getName())) {
             this.announceDeath();
-            this.targets.remove(event.player);
+            this.targets.remove(event.player.getName());
         }
     }
 

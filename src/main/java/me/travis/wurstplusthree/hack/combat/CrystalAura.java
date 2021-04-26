@@ -21,11 +21,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketSpawnObject;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -33,7 +31,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
-
 
 public class CrystalAura extends Hack {
 
@@ -63,7 +60,7 @@ public class CrystalAura extends Hack {
 
     BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
-    BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this); // SKIDERS, THIS IS THE THING THAT MAKES IT FAST
+    BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
     BooleanSetting predictPlace = new BooleanSetting("Predict Place", true, this);
     IntSetting predictTicks = new IntSetting("Predict Ticks", 2, 0, 10, this);
@@ -84,12 +81,14 @@ public class CrystalAura extends Hack {
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
 
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
+    IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
 
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
-    ColourSetting renderColour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);
-    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
+    ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
+    ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
+    IntSetting alpha = new IntSetting("Alpha", 90, 0, 255, this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
@@ -102,12 +101,13 @@ public class CrystalAura extends Hack {
     private float yaw;
     private float pitch;
 
-    private boolean alreadyAttacking = false;
-    private boolean placeTimeoutFlag = false;
-    private boolean hasPacketBroke = false;
+    private boolean alreadyAttacking;
+    private boolean placeTimeoutFlag;
+    private boolean hasPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
 
+    private int currentChainCounter;
     private int chainCount;
     private int placeTimeout;
     private int breakTimeout;
@@ -138,7 +138,7 @@ public class CrystalAura extends Hack {
                 mc.world.removeEntityFromWorld(packet.entityId);
             }
             EntityEnderCrystal crystal = (EntityEnderCrystal) packet.getEntityFromWorld(mc.world);
-            if (this.predictPlace.getValue()) {
+            if (this.predictBlock.getValue()) {
                 if (crystal != null) {
                     for (EntityPlayer player : mc.world.playerEntities) {
                         if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
@@ -158,7 +158,6 @@ public class CrystalAura extends Hack {
             for (EntityPlayer target : mc.world.playerEntities) {
                 if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
                     if (this.predictCrystal.getValue()) {
-                        // break
                         CPacketUseEntity predict = new CPacketUseEntity();
                         predict.entityId = packet.getEntityID();
                         predict.action = CPacketUseEntity.Action.ATTACK;
@@ -166,28 +165,8 @@ public class CrystalAura extends Hack {
                         if (!this.swing.is("None")) {
                             BlockUtil.swingArm(swing);
                         }
+                        // TODO : THIS SOMETIMES FLAGS EVEN THOUGH THE CRYSTAL WASN'T BROKEN CAUSING THE BREAK FOR THE CA TO GET STUCK
                         this.hasPacketBroke = true;
-                    }
-                    if (this.predictBlock.getValue()) {
-                        // place
-                        BlockPos pos = new BlockPos(packet.getX(), packet.getY(), packet.getZ()).down();
-                        EnumFacing side = BlockUtil.getFirstFacing(pos);
-                        if (side == null) break;
-                        BlockPos neighbour = pos.offset(side);
-                        EnumFacing opposite = side.getOpposite();
-                        Vec3d vec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
-                        boolean offhandCheck = false;
-                        if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
-                            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
-                                if (this.findCrystalsHotbar() == -1) return;
-                                mc.player.inventory.currentItem = this.findCrystalsHotbar();
-                            }
-                        } else {
-                            offhandCheck = true;
-                        }
-                        CPacketPlayerTryUseItemOnBlock predict2 = new CPacketPlayerTryUseItemOnBlock(pos, opposite, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND,
-                        (float) (vec.x - (double) pos.getX()), (float) (vec.y - (double) pos.getY()), (float) (vec.z - (double) pos.getZ()));
-                        mc.player.connection.sendPacket(predict2);
                     }
                     break;
                 }
@@ -234,8 +213,10 @@ public class CrystalAura extends Hack {
             ezTarget = null;
             isRotating = false;
             chainCount = chainStep.getValue();
+            currentChainCounter = 0;
         }
 
+        currentChainCounter++;
         breakDelayCounter++;
         placeDelayCounter++;
 
@@ -342,7 +323,7 @@ public class CrystalAura extends Hack {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
 
-                if (chainMode.getValue()) {
+                if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
                 } else {
                     if (targetDamage > bestDamage) {
@@ -359,7 +340,15 @@ public class CrystalAura extends Hack {
             AutoEz.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
 
-        if (chainMode.getValue()) {
+        /*
+        a while ago someone told me that the reason crystals don't do max damage is bc NCP blocks
+        crystal damage after so much has been done in a short time frame, but it works in a sort
+        of counter way so that if you take less damage than before the counter will reset and youll
+        be taking full damage again.. this basically does that (no idea how well it works in practice
+        bc i feel chinese every time i turn it on)
+         */
+        if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
+            currentChainCounter = 0;
             validPos.sort(Comparator.comparing(CrystalPos::getDamage));
             Collections.reverse(validPos);
             if (validPos.size() <= chainCount) {
@@ -411,10 +400,10 @@ public class CrystalAura extends Hack {
             if (attemptedCrystals.contains(crystal)) return 0;
 
             // set min damage to 2 if we want to kill the dude fast
-            int miniumDamage;
+            double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
                     (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
-                miniumDamage = EntityUtil.isInHole(player) ? 0 : 2;
+                miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
             } else {
                 miniumDamage = this.minHpBreak.getValue();
             }
@@ -452,10 +441,10 @@ public class CrystalAura extends Hack {
             }
 
             // set min damage to 2 if we want to kill the dude fast
-            int miniumDamage;
+            double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
                     (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
-                miniumDamage = EntityUtil.isInHole(player) ? 0 : 2;
+                miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
             } else {
                 miniumDamage = this.minHpPlace.getValue();
             }
@@ -540,7 +529,7 @@ public class CrystalAura extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(renderBlock, renderColour.getValue(), true, renderColour.getValue(), width.getValue(), outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
+        RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), true, renderBoxColour.getValue(), width.getValue(), outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
 
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int)this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
@@ -555,7 +544,10 @@ public class CrystalAura extends Hack {
         isRotating = false;
         ezTarget = null;
         chainCount = chainStep.getValue();
-        this.attemptedCrystals.clear();
-        this.hasPacketBroke = false;
+        attemptedCrystals.clear();
+        hasPacketBroke = false;
+        placeTimeoutFlag = false;
+        alreadyAttacking = false;
+        currentChainCounter = 0;
     }
 }

@@ -1,6 +1,8 @@
 package me.travis.wurstplusthree.command;
 
-import me.travis.wurstplusthree.command.commands.*;
+import me.travis.wurstplusthree.command.commands.EnemyCommand;
+import me.travis.wurstplusthree.command.commands.FriendCommand;
+import me.travis.wurstplusthree.command.commands.PrefixCommand;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 
