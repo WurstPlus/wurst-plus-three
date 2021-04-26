@@ -31,6 +31,7 @@ public class Burrow extends Hack {
     EnumSetting type = new EnumSetting("Type", "Packet", Arrays.asList("Packet", "Normal"), this);
     EnumSetting block = new EnumSetting("Block", "All", Arrays.asList("All", "EChest", "Chest"), this);
     DoubleSetting force = new DoubleSetting("Force", 1.5, 0.0, 10.0, this);
+    BooleanSetting bypass = new BooleanSetting("Bypass", false, this);
 
     int swapBlock = -1;
     BlockPos oldPos;
@@ -129,6 +130,12 @@ public class Burrow extends Hack {
         if(instant.getValue() && !nullCheck()){
             this.setTimer(1f);
         }
+        if(bypass.getValue()) {
+            mc.player.setSneaking(true);
+            mc.playerController.updateController();
+            mc.player.setSneaking(false);
+            mc.playerController.updateController();
+        }
     }
 
     public void switchToSlot(final int slot) {
@@ -147,8 +154,5 @@ public class Burrow extends Hack {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
