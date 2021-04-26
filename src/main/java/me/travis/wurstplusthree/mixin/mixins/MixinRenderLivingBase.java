@@ -30,7 +30,7 @@ extends Render<T> {
     @Redirect(method={"renderModel"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void renderModelHook(ModelBase modelBase, Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         Color visibleColor;
-        if (Chams.INSTANCE.isEnabled() && entityIn instanceof EntityPlayer && Chams.INSTANCE.coloured.getValue() && !Chams.INSTANCE.textured.getValue().booleanValue()) {
+        if (Chams.INSTANCE.isEnabled() && entityIn instanceof EntityPlayer && Chams.INSTANCE.coloured.getValue() && !Chams.INSTANCE.textured.getValue()) {
             if (!Chams.INSTANCE.textured.getValue()) {
                 GL11.glPushAttrib((int)1048575);
                 GL11.glDisable((int)3008);
@@ -68,7 +68,7 @@ extends Render<T> {
                 GL11.glEnable((int)3008);
                 GL11.glPopAttrib();
             }
-        } else if (Chams.INSTANCE.textured.getValue()) {
+        } else if (Chams.INSTANCE.textured.getValue() && Chams.INSTANCE.isEnabled()) {
             GL11.glDisable((int)2929);
             GL11.glDepthMask((boolean)false);
             visibleColor = Chams.INSTANCE.colour.getValue();

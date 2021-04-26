@@ -29,7 +29,6 @@ public class CrystalRender extends Hack {
         INSTANCE = this;
     }
 
-    public BooleanSetting animateScale = new BooleanSetting("Animate Scale", false, this);
     public BooleanSetting chams = new BooleanSetting("Chams", false, this);
     public BooleanSetting glint = new BooleanSetting("Glint", false, this);
     public BooleanSetting wireframe = new BooleanSetting("Wireframe", false, this);
