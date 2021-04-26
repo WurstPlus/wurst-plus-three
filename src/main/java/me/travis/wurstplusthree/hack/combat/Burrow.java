@@ -11,6 +11,7 @@ import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
@@ -121,6 +122,14 @@ public class Burrow extends Hack {
                             false
                     )
             );
+            if(bypass.getValue() && !mc.player.isSneaking()) {
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
+                mc.player.setSneaking(true);
+                mc.playerController.updateController();
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+                mc.player.setSneaking(false);
+                mc.playerController.updateController();
+            }
             this.disable();
         }
     }
@@ -129,12 +138,6 @@ public class Burrow extends Hack {
     public void onDisable(){
         if(instant.getValue() && !nullCheck()){
             this.setTimer(1f);
-        }
-        if(bypass.getValue()) {
-            mc.player.setSneaking(true);
-            mc.playerController.updateController();
-            mc.player.setSneaking(false);
-            mc.playerController.updateController();
         }
     }
 

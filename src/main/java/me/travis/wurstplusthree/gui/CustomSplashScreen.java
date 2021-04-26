@@ -4,6 +4,8 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ElytraSound;
+import net.minecraft.client.audio.GuardianSound;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
