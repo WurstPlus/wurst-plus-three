@@ -14,7 +14,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Madmegsox1
@@ -29,28 +31,36 @@ public class BreakHighlight extends Hack {
     ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255), this);
     ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0), this);
     IntSetting alpha = new IntSetting("Alpha", 90, 0, 255, this);
-    HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap();
+    HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
 
     @SubscribeEvent
     public void damageBlockEvent(BlockBreakingEvent event){
         if(breakingBlockList.isEmpty()){
-            breakingBlockList.putIfAbsent(event.breakingID, new Pair(event.breakStage, event.pos));
-        }else {
-            for(int i : breakingBlockList.keySet()){
-                Pair<Integer, BlockPos> current = breakingBlockList.get(i);
-                if(event.breakingID != i){
-                    breakingBlockList.put(event.breakingID, new Pair(event.breakStage, event.pos));
-                } else if(event.breakStage > current.getKey()){
-                    breakingBlockList.remove(i);
-                    breakingBlockList.put(event.breakingID, new Pair(event.breakStage, event.pos));
-                }
-                else if(event.breakingID == i && event.pos != current.getValue()){
-                    breakingBlockList.remove(i);
-                }
-                else if(event.breakingID == i && event.breakStage < current.getKey()){
-                    breakingBlockList.remove(i);
+            breakingBlockList.putIfAbsent(event.breakingID, new Pair<>(event.breakStage, event.pos));
+        } else {
+            HashMap<Integer, Pair<Integer, BlockPos>> shitToAdd = new HashMap<>();
+            List<Integer> idsToRemove = new ArrayList<>();
+            for (int id : breakingBlockList.keySet()) {
+                Pair<Integer, BlockPos> pair = breakingBlockList.get(id);
+                if (event.breakingID != id) {
+                    shitToAdd.put(event.breakingID, new Pair<>(event.breakStage, event.pos));
+                } else {
+                    if (event.breakStage > pair.getKey()) {
+                        idsToRemove.add(event.breakingID);
+                        shitToAdd.put(event.breakingID, new Pair<>(event.breakStage, event.pos));
+                    }
+                    if (event.breakingID == id && event.pos != pair.getValue()) {
+                        idsToRemove.add(id);
+                    }
+                    if (event.breakingID == id && event.breakStage < pair.getKey()) {
+                        idsToRemove.add(id);
+                    }
                 }
             }
+            for (int id : idsToRemove) {
+                breakingBlockList.remove(id);
+            }
+            breakingBlockList.putAll(shitToAdd);
         }
     }
 
