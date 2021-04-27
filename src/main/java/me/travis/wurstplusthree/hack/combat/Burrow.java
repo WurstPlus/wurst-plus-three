@@ -4,10 +4,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.util.BlockUtil;
-import me.travis.wurstplusthree.util.InventoryUtil;
-import me.travis.wurstplusthree.util.MappingUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
+import me.travis.wurstplusthree.util.*;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
@@ -47,7 +44,6 @@ public class Burrow extends Hack {
             this.disable();
             return;
         }
-
         flag = false;
         if (CrystalAura.INSTANCE.isEnabled()) {
             flag = true;

@@ -3,12 +3,15 @@ package me.travis.wurstplusthree.gui;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
+import me.travis.wurstplusthree.util.SoundUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ElytraSound;
 import net.minecraft.client.audio.GuardianSound;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -41,6 +44,8 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     public void initGui() {
+        //mc.soundHandler.playSound(SoundUtil.sound);
+        //WurstplusThree.LOGGER.info(mc.soundHandler.isSoundPlaying(SoundUtil.sound));
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;
         this.watermarkX = this.width + 80;
