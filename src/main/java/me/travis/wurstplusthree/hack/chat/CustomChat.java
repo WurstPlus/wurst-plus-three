@@ -48,6 +48,7 @@ public class CustomChat extends Hack {
     public static GuiChat guiChatSmooth;
     public static GuiNewChat guiChat;
 
+    // has to be minecraft.getminecraft() bc module is from china town 
     @Override
     public void onEnable() {
         if(nullCheck()) return;
