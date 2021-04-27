@@ -1,9 +1,8 @@
 package me.travis.wurstplusthree.util;
 
+import io.netty.util.internal.MathUtil;
 import me.travis.wurstplusthree.WurstplusThree;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,6 +27,67 @@ public class EntityUtil implements Globals {
 
     public static boolean canEntityFeetBeSeen(final Entity entityIn) {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posX + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(entityIn.posX, entityIn.posY, entityIn.posZ), false, true, false) == null;
+    }
+
+    public static boolean isSafe(Entity entity, int height, boolean floor) {
+        return EntityUtil.getUnsafeBlocks(entity, height, floor).size() == 0;
+    }
+
+    public static List<Vec3d> getUnsafeBlocks(Entity entity, int height, boolean floor) {
+        return EntityUtil.getUnsafeBlocksFromVec3d(entity.getPositionVector(), height, floor);
+    }
+
+    public static List<Vec3d> getUnsafeBlocksFromVec3d(Vec3d pos, int height, boolean floor) {
+        ArrayList<Vec3d> vec3ds = new ArrayList<Vec3d>();
+        for (Vec3d vector : EntityUtil.getOffsets(height, floor)) {
+            BlockPos targetPos = new BlockPos(pos).add(vector.x, vector.y, vector.z);
+            Block block = EntityUtil.mc.world.getBlockState(targetPos).getBlock();
+            if (!(block instanceof BlockAir) && !(block instanceof BlockLiquid) && !(block instanceof BlockTallGrass) && !(block instanceof BlockFire) && !(block instanceof BlockDeadBush) && !(block instanceof BlockSnow))
+                continue;
+            vec3ds.add(vector);
+        }
+        return vec3ds;
+    }
+
+    public static BlockPos getRoundedBlockPos(Entity entity) {
+        return new BlockPos(MathsUtil.roundVec(entity.getPositionVector(), 0));
+    }
+
+    public static boolean stopSneaking(boolean isSneaking) {
+        if (isSneaking && EntityUtil.mc.player != null) {
+            EntityUtil.mc.player.connection.sendPacket(new CPacketEntityAction(EntityUtil.mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+        }
+        return false;
+    }
+
+    public static Vec3d[] getUnsafeBlockArrayFromVec3d(Vec3d pos, int height, boolean floor) {
+        List<Vec3d> list = EntityUtil.getUnsafeBlocksFromVec3d(pos, height, floor);
+        Vec3d[] array = new Vec3d[list.size()];
+        return list.toArray(array);
+    }
+
+    public static Vec3d[] getUnsafeBlockArray(Entity entity, int height, boolean floor) {
+        List<Vec3d> list = EntityUtil.getUnsafeBlocks(entity, height, floor);
+        Vec3d[] array = new Vec3d[list.size()];
+        return list.toArray(array);
+    }
+
+    public static Vec3d[] getOffsets(int y, boolean floor) {
+        List<Vec3d> offsets = EntityUtil.getOffsetList(y, floor);
+        Vec3d[] array = new Vec3d[offsets.size()];
+        return offsets.toArray(array);
+    }
+
+    public static List<Vec3d> getOffsetList(int y, boolean floor) {
+        ArrayList<Vec3d> offsets = new ArrayList<>();
+        offsets.add(new Vec3d(-1.0, y, 0.0));
+        offsets.add(new Vec3d(1.0, y, 0.0));
+        offsets.add(new Vec3d(0.0, y, -1.0));
+        offsets.add(new Vec3d(0.0, y, 1.0));
+        if (floor) {
+            offsets.add(new Vec3d(0.0, y - 1, 0.0));
+        }
+        return offsets;
     }
 
     public static void attackEntity(final Entity entity, final boolean packet, final boolean swingArm) {

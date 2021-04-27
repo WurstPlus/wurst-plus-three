@@ -1,8 +1,12 @@
 package me.travis.wurstplusthree.util;
 
+import io.netty.util.internal.MathUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class MathsUtil implements Globals {
 
@@ -24,6 +28,19 @@ public class MathsUtil implements Globals {
         double difZ = to.z - from.z;
         double dist = MathHelper.sqrt(difX * difX + difZ * difZ);
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
+    }
+
+    public static Vec3d roundVec(Vec3d vec3d, int places) {
+        return new Vec3d(MathsUtil.round(vec3d.x, places), MathsUtil.round(vec3d.y, places), MathsUtil.round(vec3d.z, places));
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.FLOOR);
+        return bd.doubleValue();
     }
 
     public static int floor(double value) {

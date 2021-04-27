@@ -36,6 +36,14 @@ public class InventoryUtil implements Globals {
         }
     }
 
+    public static boolean isBlock(Item item, Class c) {
+        if (item instanceof ItemBlock) {
+            Block block = ((ItemBlock) item).getBlock();
+            return c.isInstance(block);
+        }
+        return false;
+    }
+
     public static Map<Integer, ItemStack> getInventoryAndHotbarSlots() {
         return InventoryUtil.getInventorySlots(9, 44);
     }

@@ -1,13 +1,13 @@
 package me.travis.wurstplusthree.util;
 
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -32,6 +32,10 @@ public class BlockUtil implements Globals {
         AlreadyBlockThere,
         NoNeighbors,
         Ok,
+    }
+
+    public static Vec3d[] getHelpingBlocks(Vec3d vec3d) {
+        return new Vec3d[]{new Vec3d(vec3d.x, vec3d.y - 1.0, vec3d.z), new Vec3d(vec3d.x != 0.0 ? vec3d.x * 2.0 : vec3d.x, vec3d.y, vec3d.x != 0.0 ? vec3d.z : vec3d.z * 2.0), new Vec3d(vec3d.x == 0.0 ? vec3d.x + 1.0 : vec3d.x, vec3d.y, vec3d.x == 0.0 ? vec3d.z : vec3d.z + 1.0), new Vec3d(vec3d.x == 0.0 ? vec3d.x - 1.0 : vec3d.x, vec3d.y, vec3d.x == 0.0 ? vec3d.z : vec3d.z - 1.0), new Vec3d(vec3d.x, vec3d.y + 1.0, vec3d.z)};
     }
 
     private static boolean hasNeighbour(final BlockPos blockPos) {
@@ -133,8 +137,44 @@ public class BlockUtil implements Globals {
         return block.getBlockHardness(blockState, mc.world, pos) != -1.0f;
     }
 
+    public static int isPositionPlaceable(BlockPos pos, boolean rayTrace) {
+        return BlockUtil.isPositionPlaceable(pos, rayTrace, true);
+    }
+
+    public static int isPositionPlaceable(BlockPos pos, boolean rayTrace, boolean entityCheck) {
+        Block block = BlockUtil.mc.world.getBlockState(pos).getBlock();
+        if (!(block instanceof BlockAir || block instanceof BlockLiquid || block instanceof BlockTallGrass || block instanceof BlockFire || block instanceof BlockDeadBush || block instanceof BlockSnow)) {
+            return 0;
+        }
+        if (!BlockUtil.rayTracePlaceCheck(pos, rayTrace, 0.0f)) {
+            return -1;
+        }
+        if (entityCheck) {
+            for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos))) {
+                if (entity instanceof EntityItem || entity instanceof EntityXPOrb) continue;
+                return 1;
+            }
+        }
+        for (EnumFacing side : BlockUtil.getPossibleSides(pos)) {
+            if (!BlockUtil.canBeClicked(pos.offset(side))) continue;
+            return 3;
+        }
+        return 2;
+    }
+
+    public static boolean canBeClicked(BlockPos pos) {
+        return BlockUtil.getBlock(pos).canCollideCheck(BlockUtil.getState(pos), false);
+    }
+
+    private static Block getBlock(BlockPos pos) {
+        return BlockUtil.getState(pos).getBlock();
+    }
+
+    private static IBlockState getState(BlockPos pos) {
+        return BlockUtil.mc.world.getBlockState(pos);
+    }
+
     public static boolean placeBlock(BlockPos pos, EnumHand hand, boolean rotate, boolean packet, boolean isSneaking) {
-        boolean sneaking = false;
         EnumFacing side = getFirstFacing(pos);
         if (side == null) {
             return isSneaking;
@@ -149,7 +189,6 @@ public class BlockUtil implements Globals {
         if (!mc.player.isSneaking()) {
             mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
             mc.player.setSneaking(true);
-            sneaking = true;
         }
 
         if (rotate) {
@@ -159,7 +198,7 @@ public class BlockUtil implements Globals {
         rightClickBlock(neighbour, hitVec, hand, opposite, packet);
         mc.player.swingArm(EnumHand.MAIN_HAND);
         mc.rightClickDelayTimer = 4; //?
-        return sneaking || isSneaking;
+        return true;
     }
 
     public static List<EnumFacing> getPossibleSides(BlockPos pos) {
