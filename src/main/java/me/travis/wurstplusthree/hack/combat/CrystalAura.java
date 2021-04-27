@@ -63,6 +63,8 @@ public class CrystalAura extends Hack {
 
     BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
+
+    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
     BooleanSetting predictPlace = new BooleanSetting("Predict Place", true, this);
@@ -109,7 +111,6 @@ public class CrystalAura extends Hack {
     private boolean hasPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
-    private boolean shouldListen;
 
     private int currentChainCounter;
     private int chainCount;
@@ -157,7 +158,6 @@ public class CrystalAura extends Hack {
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketReceive(PacketEvent.Receive event) {
         SPacketSpawnObject packet;
-        shouldListen = false;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
             try { // minecraft may update player list during us looping through it
@@ -172,7 +172,9 @@ public class CrystalAura extends Hack {
                                 BlockUtil.swingArm(swing);
                             }
                             // TODO : THIS SOMETIMES FLAGS EVEN THOUGH THE CRYSTAL WASN'T BROKEN CAUSING THE BREAK FOR THE CA TO GET STUCK
-                            this.hasPacketBroke = true;
+                            if (packetSafe.getValue()) {
+                                this.hasPacketBroke = true;
+                            }
                         }
                         break;
                     }
@@ -313,7 +315,7 @@ public class CrystalAura extends Hack {
     }
 
     private BlockPos getBestBlock() {
-        if (getBestCrystal() != null && !fastMode.is("Ignore")) {
+        if (getBestCrystal() != null && fastMode.is("Off")) {
             placeTimeoutFlag = true;
             return null;
         }
