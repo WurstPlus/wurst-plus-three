@@ -33,7 +33,6 @@ public class HoleESP extends Hack {
     BooleanSetting hideOwn = new BooleanSetting("Hide Own", false, this);
     ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0), this);
     ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0), this);
-    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
 
     private final ConcurrentHashMap<BlockPos, Colour> holes = new ConcurrentHashMap<>();
 
@@ -83,11 +82,10 @@ public class HoleESP extends Hack {
                     return;
 
                 Colour colour;
-
                 if (holeSafety == HoleUtil.BlockSafety.UNBREAKABLE) {
-                    colour = new Colour(bedrockColor.getValue(), 255);
+                    colour = bedrockColor.getValue();
                 } else {
-                    colour = new Colour(obsidianColor.getValue(), 255);
+                    colour = obsidianColor.getValue();
                 }
 
                 if (customHoles.is("Custom") && (holeType == HoleUtil.HoleType.CUSTOM || holeType == HoleUtil.HoleType.DOUBLE)) {
@@ -124,7 +122,7 @@ public class HoleESP extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(hole, color, true, color, 2f, outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
+        RenderUtil.drawBoxESP(hole, color, color, 2f, outline, solid, true);
 
     }
 

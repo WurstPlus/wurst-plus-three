@@ -31,8 +31,7 @@ public class Esp extends Hack {
     BooleanSetting orbs = new BooleanSetting("Orbs", true, this);
     BooleanSetting bottles = new BooleanSetting("Bottles", true, this);
     BooleanSetting pearl = new BooleanSetting("Pearl", true, this);
-    ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50), this);
-    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
+    ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50, 150), this);
 
     @Override
     public void onRender3D(Render3DEvent event) {
@@ -54,14 +53,14 @@ public class Esp extends Hack {
                 GL11.glEnable(2848);
                 GL11.glHint(3154, 4354);
                 GL11.glLineWidth(1.0f);
-                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.alpha.getValue() / 255.0f);
+                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.colour.getValue().getAlpha() / 255.0f);
                 GL11.glDisable(2848);
                 GlStateManager.depthMask(true);
                 GlStateManager.enableDepth();
                 GlStateManager.enableTexture2D();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
-                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.alpha.getValue()), 1.0f);
+                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
             }
@@ -81,14 +80,14 @@ public class Esp extends Hack {
                 GL11.glEnable(2848);
                 GL11.glHint(3154, 4354);
                 GL11.glLineWidth(1.0f);
-                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.alpha.getValue() / 255.0f);
+                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.colour.getValue().getAlpha() / 255.0f);
                 GL11.glDisable(2848);
                 GlStateManager.depthMask(true);
                 GlStateManager.enableDepth();
                 GlStateManager.enableTexture2D();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
-                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.alpha.getValue()), 1.0f);
+                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
             }
@@ -108,14 +107,14 @@ public class Esp extends Hack {
                 GL11.glEnable(2848);
                 GL11.glHint(3154, 4354);
                 GL11.glLineWidth(1.0f);
-                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.alpha.getValue() / 255.0f);
+                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.colour.getValue().getAlpha() / 255.0f);
                 GL11.glDisable(2848);
                 GlStateManager.depthMask(true);
                 GlStateManager.enableDepth();
                 GlStateManager.enableTexture2D();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
-                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.alpha.getValue()), 1.0f);
+                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
             }
@@ -135,14 +134,14 @@ public class Esp extends Hack {
                 GL11.glEnable(2848);
                 GL11.glHint(3154, 4354);
                 GL11.glLineWidth(1.0f);
-                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.alpha.getValue() / 255.0f);
+                RenderGlobal.renderFilledBox(bb, (float) this.colour.getValue().getRed() / 255.0f, (float) this.colour.getValue().getGreen() / 255.0f, (float) this.colour.getValue().getBlue() / 255.0f, (float) this.colour.getValue().getAlpha() / 255.0f);
                 GL11.glDisable(2848);
                 GlStateManager.depthMask(true);
                 GlStateManager.enableDepth();
                 GlStateManager.enableTexture2D();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
-                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.alpha.getValue()), 1.0f);
+                RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
             }

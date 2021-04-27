@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextFormatting;
 public class ColourComponent extends ColorComponent {
 
     public ColourComponent(Theme theme, ColourSetting setting, Toggleable colorToggle, Animation animation) {
-        super(TextFormatting.BOLD + setting.getName(), null, theme.getContainerRenderer(), animation, theme.getComponentRenderer(), setting, false, true, colorToggle);
+        super(TextFormatting.BOLD + setting.getName(), null, theme.getContainerRenderer(), animation, theme.getComponentRenderer(), setting, true, true, colorToggle);
 
         if (setting != Gui.INSTANCE.enabledColor) addComponent(new SyncButton(theme.getComponentRenderer()));
     }

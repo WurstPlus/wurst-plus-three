@@ -30,7 +30,6 @@ public class TargetDetails extends Hack {
 
     ColourSetting fuckedColour = new ColourSetting("Fucked Colour", new Colour(255, 20, 20, 150), this);
     ColourSetting burrowedColour = new ColourSetting("Burrowed Colour", new Colour(20, 255, 255, 150), this);
-    IntSetting alpha = new IntSetting("Alpha", 180, 0, 255, this);
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
 
     private final ArrayList<BlockPos> fuckedBlocks = new ArrayList<>();
@@ -85,7 +84,7 @@ public class TargetDetails extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(pos, color, true, color, 2f, outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
+        RenderUtil.drawBoxESP(pos, color, color, 2f, outline, solid, true);
     }
 
     private void renderFuckedBlock(BlockPos pos) {
@@ -109,7 +108,7 @@ public class TargetDetails extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(pos, color, true, color, 2f, outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
+        RenderUtil.drawBoxESP(pos, color, color, 2f, outline, solid, true);
     }
 
     private void getFuckedPlayers() {

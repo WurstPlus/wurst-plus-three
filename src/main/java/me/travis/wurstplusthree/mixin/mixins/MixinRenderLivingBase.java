@@ -46,18 +46,18 @@ extends Render<T> {
                     GL11.glDisable((int)2929);
                     GL11.glDepthMask((boolean)false);
                     GL11.glEnable((int)10754);
-                    GL11.glColor4f((float)((float)hiddenColor.getRed() / 255.0f), (float)((float)hiddenColor.getGreen() / 255.0f), (float)((float)hiddenColor.getBlue() / 255.0f), (float)((float)Chams.INSTANCE.alpha.getValue().intValue() / 255.0f));
+                    GL11.glColor4f((float)((float)hiddenColor.getRed() / 255.0f), (float)((float)hiddenColor.getGreen() / 255.0f), (float)((float)hiddenColor.getBlue() / 255.0f), (float)hiddenColor.getAlpha() / 255.0f);
                     modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
                     GL11.glEnable((int)2929);
                     GL11.glDepthMask((boolean)true);
-                    GL11.glColor4f((float)((float)visibleColor2.getRed() / 255.0f), (float)((float)visibleColor2.getGreen() / 255.0f), (float)((float)visibleColor2.getBlue() / 255.0f), (float)((float)Chams.INSTANCE.alpha.getValue().intValue() / 255.0f));
+                    GL11.glColor4f((float)((float)visibleColor2.getRed() / 255.0f), (float)((float)visibleColor2.getGreen() / 255.0f), (float)((float)visibleColor2.getBlue() / 255.0f), (float)((float)hiddenColor.getAlpha() / 255.0f));
                     modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
                 } else {
                     visibleColor = Chams.INSTANCE.colour.getValue();
                     GL11.glDisable((int)2929);
                     GL11.glDepthMask((boolean)false);
                     GL11.glEnable((int)10754);
-                    GL11.glColor4f((float)((float)visibleColor.getRed() / 255.0f), (float)((float)visibleColor.getGreen() / 255.0f), (float)((float)visibleColor.getBlue() / 255.0f), (float)((float)Chams.INSTANCE.alpha.getValue().intValue() / 255.0f));
+                    GL11.glColor4f((float)((float)visibleColor.getRed() / 255.0f), (float)((float)visibleColor.getGreen() / 255.0f), (float)((float)visibleColor.getBlue() / 255.0f), (float)((float)visibleColor.getAlpha() / 255.0f));
                     modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
                     GL11.glEnable((int)2929);
                     GL11.glDepthMask((boolean)true);
@@ -72,7 +72,7 @@ extends Render<T> {
             GL11.glDisable((int)2929);
             GL11.glDepthMask((boolean)false);
             visibleColor = Chams.INSTANCE.colour.getValue();
-            GL11.glColor4f((float)((float)visibleColor.getRed() / 255.0f), (float)((float)visibleColor.getGreen() / 255.0f), (float)((float)visibleColor.getBlue() / 255.0f), (float)((float)Chams.INSTANCE.alpha.getValue().intValue() / 255.0f));
+            GL11.glColor4f((float)((float)visibleColor.getRed() / 255.0f), (float)((float)visibleColor.getGreen() / 255.0f), (float)((float)visibleColor.getBlue() / 255.0f), (float)((float)visibleColor.getAlpha() / 255.0f));
             modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GL11.glEnable((int)2929);
             GL11.glDepthMask((boolean)true);

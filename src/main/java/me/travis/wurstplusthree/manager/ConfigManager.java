@@ -168,8 +168,10 @@ public class ConfigManager implements Globals {
 
             for (Setting setting : hack.getSettings()) {
                 if (setting.getType().equalsIgnoreCase("colour")) {
-                    br.write(setting.getName() + ":" + setting.getValue() + ":" +
-                            ((ColourSetting) setting).getRainbow() + "\r\n");
+                    ColourSetting color = (ColourSetting) setting;
+                    br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
+                            + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
+                            + color.getRainbow() + "\r\n");
                 } else {
                     br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
                 }
@@ -203,9 +205,17 @@ public class ConfigManager implements Globals {
                         setting.setValue(Boolean.parseBoolean(value));
                         break;
                     case "colour":
-                        String rainbow = colune.split(":")[2];
-                        ((ColourSetting) setting).setRainbow(Boolean.parseBoolean(rainbow));
-                        setting.setValue(getColourFromStringSetting(value));
+                        try {
+                            int red = Integer.parseInt(value);
+                            int green = Integer.parseInt(colune.split(":")[2]);
+                            int blue = Integer.parseInt(colune.split(":")[3]);
+                            int alpha = Integer.parseInt(colune.split(":")[4]);
+                            boolean rainbow = Boolean.parseBoolean(colune.split(":")[5]);
+                            ((ColourSetting) setting).setRainbow(rainbow);
+                            setting.setValue(new Colour(red, green, blue, alpha));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "double":
                         setting.setValue(Double.parseDouble(value));
@@ -285,41 +295,6 @@ public class ConfigManager implements Globals {
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
-    }
-
-    private Colour getColourFromStringSetting(String string) {
-        StringBuilder r = new StringBuilder();
-        StringBuilder g = new StringBuilder();
-        StringBuilder b = new StringBuilder();
-
-        boolean listener = false;
-        int count = 0;
-
-        for (char c : string.toCharArray()) {
-            if (listener) {
-                if (!Character.isDigit(c)) {
-                    listener = false;
-                    continue;
-                }
-                switch (count) {
-                    case 1:
-                        r.append(c);
-                        break;
-                    case 2:
-                        g.append(c);
-                        break;
-                    case 3:
-                        b.append(c);
-                        break;
-                }
-            }
-            if (c == '=') {
-                listener = true;
-                count++;
-            }
-        }
-
-        return new Colour(Integer.parseInt(r.toString()), Integer.parseInt(g.toString()), Integer.parseInt(b.toString()));
     }
 
 }

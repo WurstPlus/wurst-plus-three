@@ -28,9 +28,8 @@ public class BreakHighlight extends Hack {
     public BreakHighlight(){
         super("Break Highlight", "Highlights where people are breaking", Category.RENDER, false);
     }
-    ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255), this);
-    ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0), this);
-    IntSetting alpha = new IntSetting("Alpha", 90, 0, 255, this);
+    ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255, 200), this);
+    ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0, 200), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
 
     @SubscribeEvent
@@ -74,9 +73,9 @@ public class BreakHighlight extends Hack {
                 AxisAlignedBB bb = mc.world.getBlockState(pos).getSelectedBoundingBox(mc.world, pos);
                 bb = calcBB(bb, state);
                 if(player == mc.player){
-                    RenderUtil.drawBBBox(bb, self.getValue(), this.alpha.getValue());
+                    RenderUtil.drawBBBox(bb, self.getValue(), self.getValue().getAlpha());
                 }else {
-                    RenderUtil.drawBBBox(bb, other.getValue(), this.alpha.getValue());
+                    RenderUtil.drawBBBox(bb, other.getValue(), other.getValue().getAlpha());
                 }
             }
         }

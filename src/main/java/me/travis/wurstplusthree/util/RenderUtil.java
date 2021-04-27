@@ -129,12 +129,12 @@ public class RenderUtil implements Globals {
         }
     }
 
-    public static void drawBoxESP(BlockPos pos, Color color, boolean secondC, Color secondColor, float lineWidth, boolean outline, boolean box, int boxAlpha, boolean air) {
+    public static void drawBoxESP(BlockPos pos, Color color, Color secondColor, float lineWidth, boolean outline, boolean box, boolean air) {
         if (box) {
-            drawBox(pos, new Color(color.getRed(), color.getGreen(), color.getBlue(), boxAlpha));
+            drawBox(pos, color);
         }
         if (outline) {
-            drawBlockOutline(pos, secondC ? secondColor : color, lineWidth, air);
+            drawBlockOutline(pos, secondColor, lineWidth, air);
         }
     }
 
@@ -286,9 +286,9 @@ public class RenderUtil implements Globals {
         drawGradientBlockOutline(iblockstate.getSelectedBoundingBox(RenderUtil.mc.world, pos).grow(0.002f).offset(-interp.x, -interp.y, -interp.z).expand(0.0, height, 0.0), startColor, endColor, linewidth);
     }
 
-    public static void drawBlockOutline(BlockPos pos, Color color, float linewidth, boolean air, double height, boolean gradient, boolean invert, int alpha) {
+    public static void drawBlockOutline(BlockPos pos, Color color, float linewidth, boolean air, double height, boolean gradient, boolean invert) {
         if (gradient) {
-            Color endColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+            Color endColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
             drawGradientBlockOutline(pos, invert ? endColor : color, invert ? color : endColor, linewidth, height);
             return;
         }
@@ -299,12 +299,12 @@ public class RenderUtil implements Globals {
         }
     }
 
-    public static void drawBoxESP(BlockPos pos, Color color, boolean secondC, Color secondColor, float lineWidth, boolean outline, boolean box, int boxAlpha, boolean air, double height, boolean gradientBox, boolean gradientOutline, boolean invertGradientBox, boolean invertGradientOutline, int gradientAlpha) {
+    public static void drawBoxESP(BlockPos pos, Color color, Color secondColor, float lineWidth, boolean outline, boolean box, boolean air, double height, boolean gradientBox, boolean gradientOutline, boolean invertGradientBox, boolean invertGradientOutline, int gradientAlpha) {
         if (box) {
-            drawBox(pos, new Color(color.getRed(), color.getGreen(), color.getBlue(), boxAlpha), height, gradientBox, invertGradientBox, gradientAlpha);
+            drawBox(pos, new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()), height, gradientBox, invertGradientBox, gradientAlpha);
         }
         if (outline) {
-            drawBlockOutline(pos, secondC ? secondColor : color, lineWidth, air, height, gradientOutline, invertGradientOutline, gradientAlpha);
+            drawBlockOutline(pos, secondColor, lineWidth, air, height, gradientOutline, invertGradientOutline);
         }
     }
 

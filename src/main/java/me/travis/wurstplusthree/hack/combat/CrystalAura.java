@@ -109,6 +109,7 @@ public class CrystalAura extends Hack {
     private boolean hasPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
+    private boolean shouldListen;
 
     private int currentChainCounter;
     private int chainCount;
@@ -156,6 +157,7 @@ public class CrystalAura extends Hack {
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketReceive(PacketEvent.Receive event) {
         SPacketSpawnObject packet;
+        shouldListen = false;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
             try { // minecraft may update player list during us looping through it
@@ -536,7 +538,7 @@ public class CrystalAura extends Hack {
             solid   = false;
         }
 
-        RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), true, renderBoxColour.getValue(), width.getValue(), outline, solid, alpha.getValue(), true, 0, false, false, false, false, alpha.getValue());
+        RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true);
 
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int)this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");

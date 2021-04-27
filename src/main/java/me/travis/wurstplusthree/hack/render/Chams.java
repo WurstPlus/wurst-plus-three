@@ -21,6 +21,5 @@ public class Chams extends Hack {
 
     public ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 150), this);
     public ColourSetting hiddenColour = new ColourSetting("Hidden Colour", new Colour(255, 255, 255, 150), this);
-    public DoubleSetting alpha = new DoubleSetting("Alpha", 200.0, 0.0, 255.0, this);
 
 }

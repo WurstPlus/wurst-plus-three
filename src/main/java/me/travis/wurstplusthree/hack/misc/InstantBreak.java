@@ -111,7 +111,7 @@ public class InstantBreak extends Hack {
         if (this.render.getValue() && this.currentPos != null) {
             Color color = new Color(this.timer.passedMs((int) (2000.0f * WurstplusThree.SERVER_MANAGER.getTpsFactor())) ? 0 :
                     255, this.timer.passedMs((int) (2000.0f * WurstplusThree.SERVER_MANAGER.getTpsFactor())) ? 255 : 0, 0, 255);
-            RenderUtil.drawBoxESP(this.currentPos, color, false, color, 2, true, this.box.getValue(), 200, false);
+            RenderUtil.drawBoxESP(this.currentPos, color, color, 2, true, this.box.getValue(), true);
         }
     }
 

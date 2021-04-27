@@ -36,8 +36,8 @@ public class MixinRenderPlayer {
             GL11.glEnable((int)10754);
             OpenGlHelper.setLightmapTextureCoords((int)OpenGlHelper.lightmapTexUnit, (float)240.0f, (float)240.0f);
             Color color = HandColour.INSTANCE.colour.getValue();
-            GL11.glColor4f((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)((float)color.getBlue() / 255.0f),
-                    (float)((float)HandColour.INSTANCE.alpha.getValue().intValue() / 255.0f));
+            GL11.glColor4f((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)color.getBlue() / 255.0f,
+                    (float)color.getAlpha() / 255.0f);
         }
     }
 
@@ -67,7 +67,7 @@ public class MixinRenderPlayer {
             OpenGlHelper.setLightmapTextureCoords((int)OpenGlHelper.lightmapTexUnit, (float)240.0f, (float)240.0f);
             Color color = HandColour.INSTANCE.colour.getValue();
             GL11.glColor4f((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)((float)color.getBlue() / 255.0f),
-                    (float)((float)HandColour.INSTANCE.alpha.getValue().intValue() / 255.0f));
+                    (float)((float)color.getAlpha() / 255.0f));
         }
     }
 
