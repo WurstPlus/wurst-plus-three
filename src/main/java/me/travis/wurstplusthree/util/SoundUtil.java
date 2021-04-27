@@ -8,21 +8,30 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class SoundUtil {
+public class SoundUtil implements Globals {
     public static final ISound sound;
+    private static final List<String> songs = Arrays.asList(
+            "sounds/sound.ogg",
+            "sounds/sound2.ogg",
+            "sounds/sound3.ogg"
+    );
+    private static final ResourceLocation loc = new ResourceLocation(songs.get(random.nextInt(songs.size())));
     static {
         sound = new ISound() {
             @Override
             public ResourceLocation getSoundLocation() {
-                return new ResourceLocation("sounds/sound.ogg");
+                return loc;
                 //return null;
             }
 
             @Nullable
             @Override
             public SoundEventAccessor createAccessor(SoundHandler soundHandler) {
-                return new SoundEventAccessor(new ResourceLocation("sounds/sound.ogg"), "Pitbull");
+                return new SoundEventAccessor(loc, "Pitbull");
                 //return null;
             }
 
