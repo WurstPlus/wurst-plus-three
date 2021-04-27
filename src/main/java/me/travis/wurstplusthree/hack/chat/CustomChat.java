@@ -2,15 +2,24 @@ package me.travis.wurstplusthree.hack.chat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.gui.chat.GuiChat;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
+import me.travis.wurstplusthree.setting.type.DoubleSetting;
+import me.travis.wurstplusthree.setting.type.EnumSetting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class CustomChat extends Hack {
@@ -28,6 +37,32 @@ public class CustomChat extends Hack {
     public BooleanSetting timeStamps = new BooleanSetting("Time Stamps", true, this);
     public BooleanSetting suffix = new BooleanSetting("Suffix", false, this);
     public BooleanSetting infinite = new BooleanSetting("Infinite", true, this);
+    public BooleanSetting smoothChat = new BooleanSetting("SmoothChat", false, this);
+    public DoubleSetting xOffset = new DoubleSetting("XOffset", 0.0, 0.0, 600.0,this);
+    public DoubleSetting yOffset = new DoubleSetting("YOffset", 0.0, 0.0, 30.0, this);
+    public DoubleSetting vSpeed = new DoubleSetting("VSpeed", 30.0, 1.0, 100.0, this);
+    public DoubleSetting vLength = new DoubleSetting("VLength",10.0, 5.0, 100.0, this);
+    public DoubleSetting vIncrements = new DoubleSetting("VIncrements", 1.0, 1.0, 5.0, this);
+    public EnumSetting type = new EnumSetting("Type", "Horizontal",Arrays.asList("Horizontal", "Vertical"), this);
+
+    public static GuiChat guiChatSmooth;
+    public static GuiNewChat guiChat;
+
+    @Override
+    public void onEnable(){
+        if(nullCheck())return;
+        //MinecraftForge.EVENT_BUS.unregister(this);
+        guiChatSmooth = new GuiChat(Minecraft.getMinecraft());
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChatSmooth, "persistantChatGUI");
+    }
+
+    @Override
+    public void onDisable(){
+        if(nullCheck())return;
+        //MinecraftForge.EVENT_BUS.unregister(this);
+        guiChat= new GuiNewChat(Minecraft.getMinecraft());
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChat, "persistantChatGUI");
+    }
 
     @SubscribeEvent
     public void onPacketSend(PacketEvent.Send event) {

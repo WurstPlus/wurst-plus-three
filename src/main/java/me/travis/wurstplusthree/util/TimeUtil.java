@@ -25,6 +25,4 @@ public class TimeUtil implements Globals {
     public static int get_second() {
         return Calendar.getInstance().get(Calendar.SECOND);
     }
-
-
 }
