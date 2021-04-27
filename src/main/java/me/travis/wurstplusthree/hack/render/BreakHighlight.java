@@ -32,6 +32,11 @@ public class BreakHighlight extends Hack {
     ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0, 200), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
 
+    @Override
+    public void onEnable(){
+        breakingBlockList.clear();
+    }
+
     @SubscribeEvent
     public void damageBlockEvent(BlockBreakingEvent event){
         if(breakingBlockList.isEmpty()){

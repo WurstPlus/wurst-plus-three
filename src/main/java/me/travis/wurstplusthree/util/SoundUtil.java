@@ -28,7 +28,7 @@ public class SoundUtil {
 
             @Override
             public Sound getSound() {
-                return new Sound("sound", 1, 0, 0, Sound.Type.SOUND_EVENT, false);
+                return new Sound("sound", 1, 1, 1, Sound.Type.SOUND_EVENT, false);
                 //return null;
             }
 
@@ -54,7 +54,7 @@ public class SoundUtil {
 
             @Override
             public float getPitch() {
-                return 0;
+                return 1;
             }
 
             @Override
