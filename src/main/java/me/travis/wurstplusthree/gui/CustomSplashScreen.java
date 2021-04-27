@@ -44,8 +44,10 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     public void initGui() {
-        //mc.soundHandler.playSound(SoundUtil.sound);
-        //WurstplusThree.LOGGER.info(mc.soundHandler.isSoundPlaying(SoundUtil.sound));
+        if (!mc.soundHandler.isSoundPlaying(SoundUtil.sound)) {
+            mc.soundHandler.playSound(SoundUtil.sound);
+        }
+        WurstplusThree.LOGGER.info(mc.soundHandler.isSoundPlaying(SoundUtil.sound));
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;
         this.watermarkX = this.width + 80;
