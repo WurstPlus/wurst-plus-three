@@ -33,7 +33,7 @@ public class Hud extends Hack {
     BooleanSetting clock = new BooleanSetting("Clock", true, this);
     BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);
     BooleanSetting helper = new BooleanSetting("Helper", true, this);
-    BooleanSetting playerStats = new BooleanSetting("Stats", true, this);
+    BooleanSetting playerStats = new BooleanSetting("Stats", false, this);
     BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);
     BooleanSetting coords = new BooleanSetting("Coords", true, this);
 

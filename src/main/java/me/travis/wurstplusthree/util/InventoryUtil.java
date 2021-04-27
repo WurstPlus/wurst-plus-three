@@ -79,7 +79,7 @@ public class InventoryUtil implements Globals {
         for (int i = 9; i < 45; ++i) {
             boolean cursed;
             ItemArmor armor;
-            ItemStack s = Minecraft.getMinecraft().player.inventoryContainer.getSlot(i).getStack();
+            ItemStack s = mc.player.inventoryContainer.getSlot(i).getStack();
             if (s.getItem() == Items.AIR || !(s.getItem() instanceof ItemArmor) || (armor = (ItemArmor) s.getItem()).getEquipmentSlot() != type)
                 continue;
             float currentDamage = armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, s);

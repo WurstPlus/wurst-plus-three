@@ -1,10 +1,12 @@
 package me.travis.wurstplusthree.gui.chat;
 
 import com.google.common.collect.Lists;
+import jdk.nashorn.internal.objects.Global;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.util.AnimationUtil;
-import me.travis.wurstplusthree.util.Timer;
+import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,18 +27,15 @@ import java.util.List;
  * @since 27/04/2021
  */
 @SideOnly(Side.CLIENT)
-public class GuiChat extends GuiNewChat {
+public class GuiChat extends GuiNewChat implements Globals {
     private static final Logger LOGGER = WurstplusThree.LOGGER;
     private final Minecraft mc;
     private final Timer messageTimer = new Timer();
 
-
     private final List<String> sentMessages = Lists.newArrayList();
-
-
     private final List<ChatLine> chatLines = Lists.newArrayList();
-
     private final List<ChatLine> drawnChatLines = Lists.newArrayList();
+
     private int scrollPos;
     private boolean isScrolled;
     public static float percentComplete = 0.0F;

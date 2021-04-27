@@ -93,7 +93,6 @@ public class CrystalAura extends Hack {
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
-    IntSetting alpha = new IntSetting("Alpha", 90, 0, 255, this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
