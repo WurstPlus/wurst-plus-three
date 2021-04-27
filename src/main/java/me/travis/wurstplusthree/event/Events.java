@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.SoundUtil;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -14,10 +15,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -193,7 +196,4 @@ public class Events implements Globals {
             WurstplusThree.SERVER_MANAGER.update();
         }
     }
-
-
-
 }
