@@ -49,19 +49,19 @@ public class CustomChat extends Hack {
     public static GuiNewChat guiChat;
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
         if(nullCheck()) return;
         MinecraftForge.EVENT_BUS.unregister(this);
-        guiChatSmooth = new GuiChat(mc);
-        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChatSmooth, "persistantChatGUI");
+        guiChatSmooth = new GuiChat(Minecraft.getMinecraft());
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChatSmooth, "persistantChatGUI");
     }
 
     @Override
-    public void onDisable(){
+    public void onDisable() {
         if(nullCheck()) return;
         MinecraftForge.EVENT_BUS.unregister(this);
-        guiChat = new GuiNewChat(mc);
-        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChat, "persistantChatGUI");
+        guiChat = new GuiNewChat(Minecraft.getMinecraft());
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChat, "persistantChatGUI");
     }
 
     @SubscribeEvent
