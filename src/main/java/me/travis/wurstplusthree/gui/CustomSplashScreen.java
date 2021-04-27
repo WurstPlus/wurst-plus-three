@@ -44,6 +44,8 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     public void initGui() {
+        mc.gameSettings.enableVsync = false;
+        mc.gameSettings.limitFramerate = 200;
         if (!mc.soundHandler.isSoundPlaying(SoundUtil.sound)) {
             mc.soundHandler.playSound(SoundUtil.sound);
         }
