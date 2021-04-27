@@ -15,13 +15,20 @@ import java.util.List;
 public class SoundUtil implements Globals {
     public static final ISound sound;
     private static final List<String> songs = Arrays.asList(
-            "sounds/sound.ogg",
-            "sounds/sound2.ogg",
-            "sounds/sound3.ogg"
+            "sound",
+            "sound2",
+            "sound3"
     );
-    private static final ResourceLocation loc = new ResourceLocation(songs.get(random.nextInt(songs.size())));
+
+    private static final String song = songs.get(random.nextInt(songs.size()));
+    private static final ResourceLocation loc = new ResourceLocation("sounds/" + song + ".ogg");
+
     static {
         sound = new ISound() {
+
+            private final int pitch = 1;
+            private final int volume = 1;
+
             @Override
             public ResourceLocation getSoundLocation() {
                 return loc;
@@ -32,13 +39,11 @@ public class SoundUtil implements Globals {
             @Override
             public SoundEventAccessor createAccessor(SoundHandler soundHandler) {
                 return new SoundEventAccessor(loc, "Pitbull");
-                //return null;
             }
 
             @Override
             public Sound getSound() {
-                return new Sound("sound", 1, 1, 1, Sound.Type.SOUND_EVENT, false);
-                //return null;
+                return new Sound(song, volume, pitch, 1, Sound.Type.SOUND_EVENT, false);
             }
 
             @Override
@@ -53,17 +58,17 @@ public class SoundUtil implements Globals {
 
             @Override
             public int getRepeatDelay() {
-                return 10;
+                return 2;
             }
 
             @Override
             public float getVolume() {
-                return 1;
+                return volume;
             }
 
             @Override
             public float getPitch() {
-                return 1;
+                return pitch;
             }
 
             @Override
