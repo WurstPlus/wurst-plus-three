@@ -2,7 +2,9 @@ package me.travis.wurstplusthree.gui.chat;
 
 import com.google.common.collect.Lists;
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
+import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.util.AnimationUtil;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Timer;
@@ -160,7 +162,20 @@ public class GuiChat extends GuiNewChat implements Globals {
 
 
     public void printChatMessage(ITextComponent chatComponent) {
-        printChatMessageWithOptionalDeletion(chatComponent, 0);
+        if(Minecraft.getMinecraft().player != null) {
+            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpooferCommand.name != null) {
+                String toChange = chatComponent.getFormattedText();
+                toChange = toChange.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpooferCommand.name);
+                ITextComponent toSend = new TextComponentString(toChange);
+                printChatMessageWithOptionalDeletion(toSend, 0);
+            }
+            else {
+                printChatMessageWithOptionalDeletion(chatComponent, 0);
+            }
+        }
+        else {
+            printChatMessageWithOptionalDeletion(chatComponent, 0);
+        }
     }
 
     public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId) {

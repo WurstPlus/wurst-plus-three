@@ -66,6 +66,7 @@ public class Hacks implements Globals {
         this.hacks.add(new ArmourMend());
         this.hacks.add(new XCarry());
         this.hacks.add(new Jesus());
+        this.hacks.add(new PlayerSpoofer());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());

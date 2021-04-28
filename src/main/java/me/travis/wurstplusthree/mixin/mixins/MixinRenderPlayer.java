@@ -1,13 +1,17 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.hack.render.HandColour;
 import me.travis.wurstplusthree.hack.render.Nametags;
+import me.travis.wurstplusthree.util.SkinStorageManipulationer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -80,6 +84,16 @@ public class MixinRenderPlayer {
             GL11.glEnable((int)3008);
             GL11.glPopAttrib();
         }
+    }
+
+    @Overwrite
+    public ResourceLocation getEntityTexture(AbstractClientPlayer entity){
+        if(PlayerSpoofer.INSTANCE.isEnabled() && entity == Minecraft.getMinecraft().player){
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            return new ResourceLocation(SkinStorageManipulationer.getTexture().toString());
+        }
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        return entity.getLocationSkin();
     }
 
 }

@@ -20,6 +20,7 @@ public class Commands implements Globals {
         this.commands.add(new TestCommand());
         this.commands.add(new ToggleCommand());
         this.commands.add(new BindCommand());
+        this.commands.add(new PlayerSpooferCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {

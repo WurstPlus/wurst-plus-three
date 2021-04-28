@@ -1,5 +1,8 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
+import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +24,17 @@ public abstract class MixinFontRenderer {
 
     @Redirect(method={"renderString(Ljava/lang/String;FFIZ)I"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/gui/FontRenderer;renderStringAtPos(Ljava/lang/String;Z)V"))
     public void renderStringAtPosHook(FontRenderer renderer, String text, boolean shadow) {
-        this.renderStringAtPos(text, shadow);
+        if(Minecraft.getMinecraft().player != null) {
+            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpooferCommand.name != null) {
+                this.renderStringAtPos(text.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpooferCommand.name), shadow);
+            }
+            else {
+                this.renderStringAtPos(text, shadow);
+            }
+        }
+        else {
+            this.renderStringAtPos(text, shadow);
+        }
     }
 }
 

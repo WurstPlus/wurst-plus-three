@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
+import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,13 +15,13 @@ public class HudUtil implements Globals {
         String line;
 
         if (time >= 0 && time < 12) {
-            line = "Morning, " + ChatFormatting.GOLD + ChatFormatting.BOLD + mc.player.getName() + ChatFormatting.RESET + " you smell good today :)";
+            line = "Morning, " + ChatFormatting.GOLD + ChatFormatting.BOLD + ((!PlayerSpoofer.INSTANCE.isEnabled() || PlayerSpooferCommand.name == null) ? mc.player.getName() : PlayerSpooferCommand.name) + ChatFormatting.RESET + " you smell good today :)";
         } else if (time >= 12 && time < 16) {
-            line = "Afternoon, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you're looking good today :)";
+            line = "Afternoon, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  ((!PlayerSpoofer.INSTANCE.isEnabled() || PlayerSpooferCommand.name == null) ? mc.player.getName() : PlayerSpooferCommand.name) + ChatFormatting.RESET + " you're looking good today :)";
         } else if (time >= 16 && time < 24) {
-            line = "Evening, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you smell good today :)";
+            line = "Evening, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  ((!PlayerSpoofer.INSTANCE.isEnabled() || PlayerSpooferCommand.name == null) ? mc.player.getName() : PlayerSpooferCommand.name) + ChatFormatting.RESET + " you smell good today :)";
         } else {
-            line = "Welcome, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  mc.player.getName() + ChatFormatting.RESET + " you're looking fine today :)";
+            line = "Welcome, " + ChatFormatting.GOLD + ChatFormatting.BOLD +  ((!PlayerSpoofer.INSTANCE.isEnabled() || PlayerSpooferCommand.name == null) ? mc.player.getName() : PlayerSpooferCommand.name) + ChatFormatting.RESET + " you're looking fine today :)";
         }
 
         return line;
