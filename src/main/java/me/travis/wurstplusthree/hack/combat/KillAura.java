@@ -26,7 +26,6 @@ public class KillAura extends Hack {
     public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting raytrace = new BooleanSetting("Walls", true, this);
-    public BooleanSetting packet = new BooleanSetting("Packet", false, this);
     public BooleanSetting swingArm = new BooleanSetting("Swing", true, this);
     public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this);
 
@@ -70,7 +69,7 @@ public class KillAura extends Hack {
             }
         } else {
             if (!this.shouldWait()) {
-                EntityUtil.attackEntity(this.target, this.packet.getValue(), this.swingArm.getValue());
+                EntityUtil.attackEntity(this.target, false, this.swingArm.getValue());
             }
         }
     }
