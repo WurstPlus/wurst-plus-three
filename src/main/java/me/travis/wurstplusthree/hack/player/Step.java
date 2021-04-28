@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Step extends Hack {
 
     public Step() {
-        super("Step", "Steps up things", Category.PLAYER, false);
+        super("Step", "steps up things", Category.PLAYER, false);
     }
 
     BooleanSetting vanilla = new BooleanSetting("Vanilla", false, this);

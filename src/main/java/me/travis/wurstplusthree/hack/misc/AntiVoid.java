@@ -18,7 +18,7 @@ import static me.travis.wurstplusthree.util.PlayerUtil.getPlayerPos;
 
 public class AntiVoid extends Hack{
     public AntiVoid(){
-        super("AntiVoid", "stops dumb ppl falling into the void", Category.MISC, false);
+        super("AntiVoid", "stops dumb ppl (you) falling into the void", Category.MISC, false);
     }
 
 

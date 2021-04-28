@@ -23,7 +23,7 @@ import java.awt.*;
 public class Esp extends Hack {
 
     public Esp() {
-        super("Esp", "esp", Category.RENDER, false);
+        super("Esp", "draws box around shit", Category.RENDER, false);
     }
 
     BooleanSetting items = new BooleanSetting("Items", true, this);

@@ -19,7 +19,7 @@ import java.util.List;
 public class Hud extends Hack {
 
     public Hud() {
-        super("HUD", "Handles Hud Elements", Category.CLIENT, false);
+        super("HUD", "hud elements", Category.CLIENT, false);
 
         this.enable();
     }

@@ -21,7 +21,7 @@ public class Jesus extends Hack {
     public static Jesus INSTANCE;
 
     public Jesus() {
-        super("Jesus", "Walks on water", Category.PLAYER, false);
+        super("Jesus", "its jebus, say hello jebus SHGDFYGSDKJHFGSDHJ", Category.PLAYER, false);
 
         INSTANCE = this;
     }

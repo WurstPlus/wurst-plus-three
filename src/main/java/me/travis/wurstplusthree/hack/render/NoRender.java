@@ -15,7 +15,7 @@ public class NoRender extends Hack {
     public static NoRender INSTANCE;
 
     public NoRender() {
-        super("No Render", "Stops redner", Category.RENDER, false);
+        super("No Render", "stops rendering things", Category.RENDER, false);
 
         INSTANCE = this;
     }

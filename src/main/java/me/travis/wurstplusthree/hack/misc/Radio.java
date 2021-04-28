@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 public class Radio extends Hack {
 
     public Radio() {
-        super("Radio", "Plays the best music", Category.MISC, false);
+        super("Radio", "plays the best music", Category.MISC, false);
     }
 
     BooleanSetting playButton = new BooleanSetting("Play", false, this);

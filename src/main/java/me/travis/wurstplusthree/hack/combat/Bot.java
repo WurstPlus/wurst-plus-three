@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.util.BotUtil;
 public class Bot extends Hack {
 
     public Bot() {
-        super("Bot", "Pvp bot", Category.COMBAT, false);
+        super("Bot", "pvp bot", Category.COMBAT, false);
     }
 
     private MovementStage currentMovementStage;

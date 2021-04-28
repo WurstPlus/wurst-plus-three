@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class LogSpots extends Hack {
 
     public LogSpots() {
-        super("Log Spots", "Logouts", Category.RENDER, false);
+        super("Log Spots", "shows ez logs", Category.RENDER, false);
     }
 
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);

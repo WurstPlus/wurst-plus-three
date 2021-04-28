@@ -25,7 +25,7 @@ import java.util.Arrays;
 public class Burrow extends Hack {
 
     public Burrow() {
-        super("Burrow", "wank", Category.COMBAT, false);
+        super("Burrow", "fills ur lower-half with a block", Category.COMBAT, false);
     }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

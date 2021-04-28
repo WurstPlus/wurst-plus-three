@@ -9,7 +9,7 @@ public class HandColour extends Hack {
     public static HandColour INSTANCE;
 
     public HandColour() {
-        super("Hand Colour", "colours hands", Category.RENDER, false);
+        super("Hand Colour", "colours hands (only 9 months late jumpy)", Category.RENDER, false);
         INSTANCE = this;
     }
 

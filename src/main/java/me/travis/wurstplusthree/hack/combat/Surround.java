@@ -22,7 +22,7 @@ import java.util.Set;
 public class Surround extends Hack {
 
     public Surround() {
-        super("Surround", "Surrounds u", Category.COMBAT, false);
+        super("Surround", "surrounds u", Category.COMBAT, false);
     }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

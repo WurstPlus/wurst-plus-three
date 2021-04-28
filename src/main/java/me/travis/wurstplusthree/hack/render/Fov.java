@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.setting.type.IntSetting;
 public class Fov extends Hack {
 
     public Fov() {
-        super("Fov", "Fov", Category.RENDER, false);
+        super("Fov", "tabbott mode", Category.RENDER, false);
     }
 
     IntSetting fov = new IntSetting("Fov", 130, 90, 179, this);

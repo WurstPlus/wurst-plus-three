@@ -24,7 +24,7 @@ public class CrystalRender extends Hack {
     public static CrystalRender INSTANCE;
 
     public CrystalRender() {
-        super("Crystal Render", "Changes how crystal renders", Category.RENDER, false);
+        super("Crystal Render", "changes how crystal renders", Category.RENDER, false);
         INSTANCE = this;
     }
 
@@ -50,7 +50,11 @@ public class CrystalRender extends Hack {
                 if (!this.scaleMap.containsKey(crystal)) {
                     this.scaleMap.put((EntityEnderCrystal) crystal, 3.125E-4f);
                 } else {
-                    this.scaleMap.put((EntityEnderCrystal) crystal, this.scaleMap.get(crystal) + 3.125E-4f);
+                    try { // this just crashed my game so its time to 'fix' it
+                        this.scaleMap.put((EntityEnderCrystal) crystal, this.scaleMap.get(crystal) + 3.125E-4f);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (!(this.scaleMap.get(crystal) >= 0.0625f * this.scale.getValue()))
                     continue;

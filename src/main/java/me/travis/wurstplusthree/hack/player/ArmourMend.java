@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ArmourMend extends Hack {
 
     public ArmourMend() {
-        super("Armour Mend", "Mends armour", Category.PLAYER, false);
+        super("Armour Mend", "mends armour", Category.PLAYER, false);
     }
 
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);

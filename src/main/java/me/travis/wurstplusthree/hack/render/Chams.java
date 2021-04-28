@@ -10,7 +10,7 @@ public class Chams extends Hack {
     public static Chams INSTANCE;
 
     public Chams() {
-        super("Chams", "Chams", Category.RENDER, false);
+        super("Chams", "draws people as colours/through walls", Category.RENDER, false);
         INSTANCE = this;
     }
 

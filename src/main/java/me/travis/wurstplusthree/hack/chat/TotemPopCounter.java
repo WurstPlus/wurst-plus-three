@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.util.ClientMessage;
 public class TotemPopCounter extends Hack {
 
     public TotemPopCounter() {
-        super("Totem Pop Counter", "Counts totems", Category.CHAT, false);
+        super("Totem Pop Counter", "counts totems that people have popped", Category.CHAT, false);
     }
 
     @Override

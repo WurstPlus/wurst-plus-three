@@ -25,7 +25,7 @@ import java.util.List;
 
 public class BreakHighlight extends Hack {
     public BreakHighlight(){
-        super("Break Highlight", "Highlights where people are breaking", Category.RENDER, false);
+        super("Break Highlight", "highlights where people are breaking", Category.RENDER, false);
     }
     ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255, 200), this);
     ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0, 200), this);

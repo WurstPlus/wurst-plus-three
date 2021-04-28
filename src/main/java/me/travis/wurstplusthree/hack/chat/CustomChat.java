@@ -25,7 +25,7 @@ public class CustomChat extends Hack {
     public static CustomChat INSTANCE;
 
     public CustomChat() {
-        super("Custom Chat", "customises chat", Category.CHAT, false);
+        super("Custom Chat", "lets you customise chat", Category.CHAT, false);
         INSTANCE = this;
     }
 

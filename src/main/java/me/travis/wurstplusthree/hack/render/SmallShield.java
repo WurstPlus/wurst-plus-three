@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.hack.Hack;
 public class SmallShield extends Hack {
 
     public SmallShield() {
-        super("Small Shield", "small", Category.RENDER, false);
+        super("Small Shield", "trvsf moment", Category.RENDER, false);
     }
 
     @Override

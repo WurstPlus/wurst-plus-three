@@ -23,7 +23,7 @@ public class Blink extends Hack {
     public static Blink INSTANCE;
 
     public Blink() {
-        super("Blink", "stop packets", Category.MISC, false);
+        super("Blink", "allows u to move without being seen", Category.MISC, false);
         INSTANCE = this;
     }
 

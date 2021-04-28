@@ -15,7 +15,7 @@ import java.util.Map;
 public class Replenish extends Hack {
 
     public Replenish() {
-        super("Replenish", "!", Category.MISC, false);
+        super("Replenish", "replenishes items in ur hotbar", Category.MISC, false);
     }
 
     private int delay_step = 0;

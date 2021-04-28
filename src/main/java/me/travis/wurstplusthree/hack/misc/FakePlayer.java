@@ -13,7 +13,7 @@ import java.util.UUID;
 public class FakePlayer extends Hack {
 
     public FakePlayer() {
-        super("Fake Player", "Makes a fake player", Category.MISC, false);
+        super("Fake Player", "spawns a dripped out fake player", Category.MISC, false);
     }
 
     final private ItemStack[] armour = new ItemStack[] {

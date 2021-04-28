@@ -25,7 +25,7 @@ public class Gui extends Hack {
     public EnumSetting scrolling = new EnumSetting("Scrolling", "Screen", Arrays.asList("Screen", "Container"), this);
 
     public Gui() {
-        super("GUI", "Displays a skidded GUI", Category.CLIENT, true);
+        super("GUI", "displays a skidded GUI", Category.CLIENT, true);
         this.setBind(Keyboard.KEY_RSHIFT);
         INSTANCE = this;
     }
