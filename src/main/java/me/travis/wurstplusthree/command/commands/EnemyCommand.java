@@ -9,7 +9,7 @@ import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 public class EnemyCommand extends Command {
 
     public EnemyCommand() {
-        super("Enemy");
+        super("Enemy", "E");
     }
 
     @Override
@@ -21,14 +21,18 @@ public class EnemyCommand extends Command {
         if (message.length == 1) {
             if (message[0].equalsIgnoreCase("list")) {
                 if (WurstplusThree.ENEMY_MANAGER.hasEnemies()) {
+                    ClientMessage.sendMessage(ChatFormatting.BOLD + "Listing enemies");
                     for (WurstplusPlayer player : WurstplusThree.ENEMY_MANAGER.getEnemies()) {
                         ClientMessage.sendMessage(player.getName());
                     }
                 } else {
-                    ClientMessage.sendMessage("u got no enemies");
+                    ClientMessage.sendMessage("u got no enemies :)");
                 }
+            } else if (message[0].equalsIgnoreCase("clear")) {
+                WurstplusThree.ENEMY_MANAGER.clear();
+                ClientMessage.sendMessage("Cleared enemies list");
             } else {
-                ClientMessage.sendErrorMessage("what");
+                ClientMessage.sendErrorMessage("Enemy <add/del/list/clear>");
             }
             return;
         }

@@ -41,6 +41,10 @@ public class EnemyManager implements Globals {
         return this.enemies;
     }
 
+    public void clear() {
+        this.enemies.clear();
+    }
+
     public void setEnemies(List<WurstplusPlayer> list) {
         this.enemies = list;
     }

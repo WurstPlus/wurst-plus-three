@@ -32,7 +32,6 @@ public class SoundUtil implements Globals {
             @Override
             public ResourceLocation getSoundLocation() {
                 return loc;
-                //return null;
             }
 
             @Nullable

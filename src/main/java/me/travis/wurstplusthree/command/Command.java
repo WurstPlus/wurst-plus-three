@@ -2,29 +2,35 @@ package me.travis.wurstplusthree.command;
 
 import me.travis.wurstplusthree.util.Globals;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class Command implements Globals {
 
-    protected String name;
-    protected String[] commands;
+    protected List<String> names;
 
     public Command(String name) {
-        this.name = name;
-        this.commands = new String[]{""};
+        this.names = Collections.singletonList(name);
     }
 
-    public Command(String name, String[] commands) {
-        this.name = name;
-        this.commands = commands;
+    public Command(String... names) {
+        this.names = Arrays.asList(names.clone());
     }
 
     public abstract void execute(String[] message);
 
-    public String getName() {
-        return this.name;
+    public List<String> getNames() {
+        return this.names;
     }
 
-    public String[] getCommands() {
-        return this.commands;
+    public boolean isName(String name) {
+        for (String name_ : this.names) {
+            if (name_.equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

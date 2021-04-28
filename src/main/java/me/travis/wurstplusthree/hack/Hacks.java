@@ -111,11 +111,6 @@ public class Hacks implements Globals {
         return this.getHackByName(name).isEnabled();
     }
 
-    public void onLoad() {
-        this.hacks.stream().filter(Hack::isListening).forEach(((EventBus) MinecraftForge.EVENT_BUS)::register);
-        this.hacks.forEach(Hack::onLoad);
-    }
-
     public void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onUpdate);
     }
@@ -145,7 +140,7 @@ public class Hacks implements Globals {
         this.hacks.forEach(Hack::onUnload);
     }
 
-    public void onUnloadPost() {
+    public void unloadAll() {
         for (Hack hack : this.hacks) {
             hack.disable();
         }

@@ -42,7 +42,7 @@ public class CrystalUtil implements Globals {
     }
 
     public static float calculateDamage(BlockPos pos, Entity entity) {
-        return calculateDamage((double) pos.getX() + 0.5, pos.getY() + 1, (double) pos.getZ() + 0.5, entity);
+        return calculateDamage(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity);
     }
 
     private static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
@@ -93,7 +93,7 @@ public class CrystalUtil implements Globals {
     }
 
     public static List<BlockPos> possiblePlacePositions(float placeRange, boolean specialEntityCheck, boolean oneDot15) {
-        NonNullList positions = NonNullList.create();
+        NonNullList<BlockPos> positions = NonNullList.create();
         positions.addAll(getSphere(PlayerUtil.getPlayerPos(), placeRange, (int) placeRange, false, true, 0).stream().filter(pos -> canPlaceCrystal(pos, specialEntityCheck, oneDot15)).collect(Collectors.toList()));
         return positions;
     }

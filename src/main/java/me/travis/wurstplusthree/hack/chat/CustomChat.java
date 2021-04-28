@@ -48,19 +48,16 @@ public class CustomChat extends Hack {
     public static GuiChat guiChatSmooth;
     public static GuiNewChat guiChat;
 
-    // has to be minecraft.getminecraft() bc module is from china town 
     @Override
     public void onEnable() {
-        if(nullCheck()) return;
-        guiChatSmooth = new GuiChat(Minecraft.getMinecraft());
-        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChatSmooth, "field_73840_e");
+        guiChatSmooth = new GuiChat(mc);
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChatSmooth, "field_73840_e");
     }
 
     @Override
     public void onDisable() {
-        if(nullCheck()) return;
-        guiChat = new GuiNewChat(Minecraft.getMinecraft());
-        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (Minecraft.getMinecraft()).ingameGUI, guiChat, "field_73840_e");
+        guiChat = new GuiNewChat(mc);
+        ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChat, "field_73840_e");
     }
 
     @SubscribeEvent

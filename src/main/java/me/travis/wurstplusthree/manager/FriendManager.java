@@ -49,6 +49,10 @@ public class FriendManager implements Globals {
         }
     }
 
+    public void clear() {
+        this.friends.clear();
+    }
+
     public void setFriends(List<WurstplusPlayer> list) {
         this.friends = list;
     }

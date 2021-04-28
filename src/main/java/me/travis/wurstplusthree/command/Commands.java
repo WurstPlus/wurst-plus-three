@@ -1,8 +1,6 @@
 package me.travis.wurstplusthree.command;
 
-import me.travis.wurstplusthree.command.commands.EnemyCommand;
-import me.travis.wurstplusthree.command.commands.FriendCommand;
-import me.travis.wurstplusthree.command.commands.PrefixCommand;
+import me.travis.wurstplusthree.command.commands.*;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 
@@ -19,6 +17,9 @@ public class Commands implements Globals {
         this.commands.add(new FriendCommand());
         this.commands.add(new EnemyCommand());
         this.commands.add(new PrefixCommand());
+        this.commands.add(new TestCommand());
+        this.commands.add(new ToggleCommand());
+        this.commands.add(new BindCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
@@ -43,7 +44,7 @@ public class Commands implements Globals {
         String args = command.substring(command1.length()).trim();
         for (Command c : this.commands) {
             try {
-                if (c.getName().equalsIgnoreCase(command1)) {
+                if (c.isName(command1)) {
                     c.execute(args.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
                     return;
                 }
@@ -56,24 +57,16 @@ public class Commands implements Globals {
         ClientMessage.sendErrorMessage("unknown command");
     }
 
-    public Command getCommandByName(String name) {
-        for (Command command : this.commands) {
-            if (!command.getName().equals(name)) continue;
-            return command;
-        }
-        return null;
-    }
-
     public List<Command> getCommands() {
         return this.commands;
     }
 
     public String getPrefix() {
-        return this.prefix;
+        return prefix;
     }
 
     public void setPrefix(String prefix) {
-        this.prefix = prefix;
+        Commands.prefix = prefix;
     }
 
 }

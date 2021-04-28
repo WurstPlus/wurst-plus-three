@@ -43,12 +43,16 @@ public class CustomSplashScreen extends GuiScreen {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY < y + height;
     }
 
-    public void initGui() {
-        mc.gameSettings.enableVsync = false;
-        mc.gameSettings.limitFramerate = 200;
+    private void playMusic() {
         if (!mc.soundHandler.isSoundPlaying(SoundUtil.sound)) {
             mc.soundHandler.playSound(SoundUtil.sound);
         }
+    }
+
+    public void initGui() {
+        mc.gameSettings.enableVsync = false;
+        mc.gameSettings.limitFramerate = 200;
+        this.playMusic();
         WurstplusThree.LOGGER.info(mc.soundHandler.isSoundPlaying(SoundUtil.sound));
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;

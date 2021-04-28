@@ -5,11 +5,12 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
+import scala.actors.threadpool.Arrays;
 
 public class FriendCommand extends Command {
 
     public FriendCommand() {
-        super("Friend");
+        super("Friend", "F");
     }
 
     @Override
@@ -21,14 +22,18 @@ public class FriendCommand extends Command {
         if (message.length == 1) {
             if (message[0].equalsIgnoreCase("list")) {
                 if (WurstplusThree.FRIEND_MANAGER.hasFriends()) {
+                    ClientMessage.sendMessage(ChatFormatting.BOLD + "Listing friends");
                     for (WurstplusPlayer player : WurstplusThree.FRIEND_MANAGER.getFriends()) {
                         ClientMessage.sendMessage(player.getName());
                     }
                 } else {
-                    ClientMessage.sendMessage("u got no friends");
+                    ClientMessage.sendMessage("u got no friends :(");
                 }
+            } else if (message[0].equalsIgnoreCase("clear")) {
+                WurstplusThree.FRIEND_MANAGER.clear();
+                ClientMessage.sendMessage("Cleared friends list");
             } else {
-                ClientMessage.sendErrorMessage("what");
+                ClientMessage.sendErrorMessage("Friend <add/del/list/clear>");
             }
             return;
         }
@@ -53,7 +58,7 @@ public class FriendCommand extends Command {
                 }
                 break;
             default:
-                ClientMessage.sendErrorMessage("friend <add/del/list>");
+                ClientMessage.sendErrorMessage("friend <add/del/list/clear>");
         }
     }
 }
