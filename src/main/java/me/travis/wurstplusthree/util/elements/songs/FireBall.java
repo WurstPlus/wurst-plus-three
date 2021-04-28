@@ -65,17 +65,17 @@ public class FireBall implements Globals {
 
             @Override
             public float getXPosF() {
-                return 1;
+                return mc.player != null ? (float) mc.player.posX : 0;
             }
 
             @Override
             public float getYPosF() {
-                return 0;
+                return mc.player != null ? (float) mc.player.posY: 0;
             }
 
             @Override
             public float getZPosF() {
-                return 0;
+                return mc.player != null ? (float) mc.player.posZ : 0;
             }
 
             @Override
