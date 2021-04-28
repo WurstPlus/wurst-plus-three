@@ -20,7 +20,7 @@ public class FireBall implements Globals {
         sound = new ISound() {
 
             private final int pitch = 1;
-            private final int volume = 1;
+            private final int volume = 1000000;
 
             @Override
             public ResourceLocation getSoundLocation() {
