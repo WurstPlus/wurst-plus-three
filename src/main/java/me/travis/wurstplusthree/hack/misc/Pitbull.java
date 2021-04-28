@@ -8,13 +8,12 @@ import me.travis.wurstplusthree.hack.Hack;
  */
 
 public class Pitbull extends Hack {
-    public Pitbull(){
-        super("Pitbull", "makes everyones skin pitbull",  Category.MISC, false);
-    }
+
     public static Pitbull INSTANCE;
 
-    @Override
-    public void onEnable(){
+    public Pitbull(){
+        super("Pitbull", "makes everyones skin pitbull",  Category.MISC, false);
         INSTANCE = this;
     }
+
 }
