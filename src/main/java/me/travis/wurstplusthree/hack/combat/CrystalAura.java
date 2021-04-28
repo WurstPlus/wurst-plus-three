@@ -472,7 +472,7 @@ public class CrystalAura extends Hack {
     }
 
     private boolean isPlayerValid(EntityPlayer player) {
-        if (!player.isEntityAlive() || player == mc.player) return false;
+        if (player.getHealth() + player.getAbsorptionAmount() <= 0 || player == mc.player) return false;
         if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return false;
         if (player.getDistanceSq(mc.player) > 13 * 13) return false;
         return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;

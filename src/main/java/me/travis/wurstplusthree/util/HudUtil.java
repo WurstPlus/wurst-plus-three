@@ -51,7 +51,7 @@ public class HudUtil implements Globals {
 
     public static String getTpsLine() {
         String line = "";
-        float tps = WurstplusThree.SERVER_MANAGER.getTPS();
+        double tps = MathsUtil.round(WurstplusThree.SERVER_MANAGER.getTPS(), 1);
         if (tps > 16) {
             line += ChatFormatting.GREEN;
         } else if (tps > 10) {

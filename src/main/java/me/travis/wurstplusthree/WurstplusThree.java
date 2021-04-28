@@ -85,7 +85,6 @@ public class WurstplusThree {
 
     public static void unLoad() {
         CONFIG_MANAGER.saveConfig();
-        HACKS.unloadAll();
     }
 
     public void loadManagers() {
