@@ -7,6 +7,7 @@ import me.travis.wurstplusthree.setting.type.IntSetting;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.network.play.server.SPacketUpdateBossInfo;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class NoRender extends Hack {
@@ -28,6 +29,8 @@ public class NoRender extends Hack {
     public BooleanSetting bossbar = new BooleanSetting("Bossbar", false, this);
     public BooleanSetting weather = new BooleanSetting("Weather", false, this);
     public BooleanSetting time = new BooleanSetting("Change Time", false, this);
+    public BooleanSetting block = new BooleanSetting("Block", true , this);
+    public BooleanSetting water = new BooleanSetting("Water", true, this);
     public IntSetting newTime = new IntSetting("Time", 0, 0, 23000, this);
 
     @Override
@@ -41,6 +44,16 @@ public class NoRender extends Hack {
         }
         if (weather.getValue())
             mc.world.setRainStrength(0f);
+    }
+
+    @SubscribeEvent
+    public void renderBlockEvent(RenderBlockOverlayEvent event){
+        if(block.getValue() && event.getOverlayType() == RenderBlockOverlayEvent.OverlayType.BLOCK){
+            event.setCanceled(true);
+        }
+        if(water.getValue() && event.getOverlayType() == RenderBlockOverlayEvent.OverlayType.WATER){
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent

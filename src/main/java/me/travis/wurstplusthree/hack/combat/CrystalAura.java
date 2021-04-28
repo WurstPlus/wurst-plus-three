@@ -57,7 +57,7 @@ public class CrystalAura extends Hack {
     IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this);
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 4, 0, 36, this);
 
-    EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"),this);
+    EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", true, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -70,7 +70,7 @@ public class CrystalAura extends Hack {
     BooleanSetting predictPlace = new BooleanSetting("Predict Place", true, this);
     IntSetting predictTicks = new IntSetting("Predict Ticks", 2, 0, 10, this);
 
-    EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost"),this);
+    EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost"), this);
 
     BooleanSetting thirteen = new BooleanSetting("1.13", false, this);
 
@@ -89,7 +89,7 @@ public class CrystalAura extends Hack {
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
 
-    EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
+    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
@@ -118,7 +118,7 @@ public class CrystalAura extends Hack {
     private int breakDelayCounter;
     private int placeDelayCounter;
 
-    @SubscribeEvent(priority =  EventPriority.HIGH, receiveCanceled = true)
+    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotateMode.is("Full")) {
             if (this.isRotating) {
@@ -128,7 +128,7 @@ public class CrystalAura extends Hack {
         }
     }
 
-    @SubscribeEvent(priority =  EventPriority.HIGH, receiveCanceled = true)
+    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketSend(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
             final CPacketPlayer p = event.getPacket();
@@ -479,8 +479,10 @@ public class CrystalAura extends Hack {
     }
 
     private EntityOtherPlayerMP newTarget(EntityPlayer currentTarget) {
-        if (!(currentTarget.motionX > 0.08 || currentTarget.motionX < -0.08)) return (EntityOtherPlayerMP) currentTarget;
-        if (!(currentTarget.motionZ > 0.08 || currentTarget.motionZ < -0.08)) return (EntityOtherPlayerMP) currentTarget;
+        if (!(currentTarget.motionX > 0.08 || currentTarget.motionX < -0.08))
+            return (EntityOtherPlayerMP) currentTarget;
+        if (!(currentTarget.motionZ > 0.08 || currentTarget.motionZ < -0.08))
+            return (EntityOtherPlayerMP) currentTarget;
         currentTarget.getUniqueID();
         GameProfile profile = new GameProfile(currentTarget.getUniqueID(), currentTarget.getName());
         EntityOtherPlayerMP newTarget = new EntityOtherPlayerMP(mc.world, profile);
@@ -523,26 +525,24 @@ public class CrystalAura extends Hack {
 
         boolean outline = false;
         boolean solid = false;
-
-        if (mode.is("Pretty")) {
-            outline = true;
-            solid   = true;
+        switch (mode.getValue()) {
+            case "Pretty":
+                outline = true;
+                solid = true;
+                break;
+            case "Solid":
+                outline = false;
+                solid = true;
+                break;
+            case "Outline":
+                outline = true;
+                solid = false;
+                break;
         }
-
-        if (mode.is("Solid")) {
-            outline = false;
-            solid   = true;
-        }
-
-        if (mode.is("Outline")) {
-            outline = true;
-            solid   = false;
-        }
-
         RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true);
 
         if (renderDamage.getValue()) {
-            RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int)this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
+            RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
         }
     }
 
