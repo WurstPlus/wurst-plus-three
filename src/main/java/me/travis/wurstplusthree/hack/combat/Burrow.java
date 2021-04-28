@@ -32,7 +32,7 @@ public class Burrow extends Hack {
     BooleanSetting instant = new BooleanSetting("Instant", true, this);
     EnumSetting type = new EnumSetting("Type", "Packet", Arrays.asList("Packet", "Normal"), this);
     EnumSetting block = new EnumSetting("Block", "All", Arrays.asList("All", "EChest", "Chest"), this);
-    DoubleSetting force = new DoubleSetting("Force", 1.5, 0.0, 10.0, this);
+    DoubleSetting force = new DoubleSetting("Force", 1.5, -5.0, 10.0, this);
     BooleanSetting center = new BooleanSetting("Center", false, this);
     BooleanSetting bypass = new BooleanSetting("Bypass", false, this);
 

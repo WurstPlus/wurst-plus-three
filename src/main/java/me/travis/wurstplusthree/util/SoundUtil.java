@@ -14,9 +14,9 @@ import java.util.List;
 public class SoundUtil implements Globals {
     public static final ISound sound;
     private static final List<String> songs = Arrays.asList(
-            "sound",
-            "sound2",
-            "sound3"
+            "sound-c",
+            "sound2-c",
+            "sound3-c"
     );
 
     private static final String song = songs.get(random.nextInt(songs.size()));

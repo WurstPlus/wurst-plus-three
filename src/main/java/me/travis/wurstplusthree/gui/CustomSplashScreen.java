@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.net.URI;
 
 public class CustomSplashScreen extends GuiScreen {
 
@@ -53,10 +54,11 @@ public class CustomSplashScreen extends GuiScreen {
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;
         this.watermarkX = this.width + 80;
-        this.buttonList.add(new TextButton(0, this.x, this.y + 20, "singleplayer"));
+        this.buttonList.add(new TextButton(0, this.x, this.y + 22, "singleplayer"));
         this.buttonList.add(new TextButton(1, this.x, this.y + 44, "the_fellas"));
         this.buttonList.add(new TextButton(2, this.x, this.y + 66, "settings"));
-        this.buttonList.add(new TextButton(2, this.x, this.y + 88, "log"));
+        this.buttonList.add(new TextButton(2, this.x, this.y + 88, "discord"));
+        this.buttonList.add(new TextButton(2, this.x, this.y + 110, "log"));
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
@@ -78,7 +80,15 @@ public class CustomSplashScreen extends GuiScreen {
             this.mc.displayGuiScreen(new GuiMultiplayer(this));
         } else if (CustomSplashScreen.isHovered(this.x, this.y + 66, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("settings"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-        } else if (CustomSplashScreen.isHovered(this.x, this.y + 88, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 88, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("discord"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
+            try {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI("https://discord.gg/hvnZePKQHx"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 110, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.shutdown();
         }
     }
@@ -90,10 +100,9 @@ public class CustomSplashScreen extends GuiScreen {
         this.y = this.height / 4 + 48;
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
-        // this.mc.getTextureManager().bindTexture(this.backgrounds.get(random.nextInt(this.backgrounds.size())));
         this.mc.getTextureManager().bindTexture(this.background);
         CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
-        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001";
+        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882";
         WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(watermark, watermarkX, this.height - WurstplusThree.GUI_FONT_MANAGER.getTextHeight() - 2, true);
         watermarkX -= .05f;
         if (watermarkX < -WurstplusThree.GUI_FONT_MANAGER.getTextWidth(watermark) - 10) {
