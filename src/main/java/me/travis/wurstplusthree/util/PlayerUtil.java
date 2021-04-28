@@ -20,10 +20,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerUtil implements Globals {
 
@@ -37,6 +34,25 @@ public class PlayerUtil implements Globals {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plusY) {
+        List<BlockPos> circleblocks = new ArrayList<>();
+        int cx = loc.getX();
+        int cy = loc.getY();
+        int cz = loc.getZ();
+        for (int x = cx - (int) r; x <= cx + r; x++) {
+            for (int z = cz - (int) r; z <= cz + r; z++) {
+                for (int y = (sphere ? cy - (int) r : cy - h); y < (sphere ? cy + r : cy + h); y++) {
+                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
+                    if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
+                        BlockPos l = new BlockPos(x, y + plusY, z);
+                        circleblocks.add(l);
+                    }
+                }
+            }
+        }
+        return circleblocks;
     }
 
     public static BlockPos getPlayerPos() {
