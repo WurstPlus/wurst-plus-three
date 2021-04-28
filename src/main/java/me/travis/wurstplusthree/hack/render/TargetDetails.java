@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.CrystalUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.RenderUtil;

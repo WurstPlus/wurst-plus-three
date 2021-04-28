@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
-import scala.actors.threadpool.Arrays;
 
 public class FriendCommand extends Command {
 

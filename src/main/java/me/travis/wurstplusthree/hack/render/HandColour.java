@@ -2,7 +2,6 @@ package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
 public class HandColour extends Hack {

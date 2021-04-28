@@ -16,7 +16,6 @@ import me.travis.wurstplusthree.hack.player.*;
 import me.travis.wurstplusthree.hack.render.*;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;

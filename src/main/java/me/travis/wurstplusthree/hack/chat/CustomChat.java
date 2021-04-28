@@ -7,14 +7,12 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

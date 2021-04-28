@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import io.netty.util.internal.MathUtil;
 import me.travis.wurstplusthree.WurstplusThree;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;

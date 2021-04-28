@@ -5,13 +5,9 @@ import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.SoundUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ElytraSound;
-import net.minecraft.client.audio.GuardianSound;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.gui.chat;
 
 import com.google.common.collect.Lists;
-import jdk.nashorn.internal.objects.Global;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.util.AnimationUtil;

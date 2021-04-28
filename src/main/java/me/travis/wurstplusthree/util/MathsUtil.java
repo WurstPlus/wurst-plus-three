@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import io.netty.util.internal.MathUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

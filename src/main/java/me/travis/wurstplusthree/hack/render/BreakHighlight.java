@@ -4,7 +4,6 @@ import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.Pair;
