@@ -53,6 +53,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Blink());
         this.hacks.add(new Replenish());
         this.hacks.add(new EntityMine());
+        this.hacks.add(new AntiVoid());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
