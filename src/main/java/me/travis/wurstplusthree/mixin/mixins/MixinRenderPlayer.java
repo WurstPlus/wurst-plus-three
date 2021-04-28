@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.hack.misc.Pitbull;
 import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.hack.render.HandColour;
 import me.travis.wurstplusthree.hack.render.Nametags;
@@ -91,6 +92,10 @@ public class MixinRenderPlayer {
         if(PlayerSpoofer.INSTANCE.isEnabled() && entity == Minecraft.getMinecraft().player){
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             return new ResourceLocation(SkinStorageManipulationer.getTexture().toString());
+        }
+        else if(Pitbull.INSTANCE.isEnabled() && entity != Minecraft.getMinecraft().player){
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            return new ResourceLocation("textures/pitbull.png");
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         return entity.getLocationSkin();
