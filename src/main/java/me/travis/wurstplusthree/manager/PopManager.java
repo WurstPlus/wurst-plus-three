@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -53,15 +54,27 @@ public class PopManager implements Globals {
     }
 
     private String getDeathString(EntityPlayer player, int pops) {
-        return "LMAO " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " just fucking DIED after popping "
-                + ChatFormatting.GREEN + ChatFormatting.BOLD
-                + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
+        if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
+            return "DUDE! you just let " + ChatFormatting.AQUA + player.getName() + ChatFormatting.RESET + " DIE after popping "
+                    + ChatFormatting.GREEN + ChatFormatting.BOLD
+                    + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
+        } else {
+            return "LMAO " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " just fucking DIED after popping "
+                    + ChatFormatting.GREEN + ChatFormatting.BOLD
+                    + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
+        }
     }
 
     private String getPopString(EntityPlayer player, int pops) {
-        return "shitter known as " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " has now popped "
-                + ChatFormatting.RED + ChatFormatting.BOLD
-                + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
+        if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
+            return "ur pal " + ChatFormatting.AQUA + player.getName() + ChatFormatting.RESET + " has now popped "
+                    + ChatFormatting.RED + ChatFormatting.BOLD
+                    + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems") + " go help them";
+        } else {
+            return "shitter known as " + ChatFormatting.RED + player.getName() + ChatFormatting.RESET + " has now popped "
+                    + ChatFormatting.RED + ChatFormatting.BOLD
+                    + pops + ChatFormatting.RESET + (pops == 1 ? " totem" : " totems");
+        }
     }
 
 }

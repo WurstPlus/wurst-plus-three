@@ -2,7 +2,6 @@ package me.travis.wurstplusthree.gui.chat;
 
 import com.google.common.collect.Lists;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.util.AnimationUtil;
@@ -47,7 +46,7 @@ public class GuiChat extends GuiNewChat implements Globals {
 
     public GuiChat(Minecraft mcIn) {
         super(mcIn);
-        this.mc = mcIn;
+        mc = mcIn;
     }
 
     public static void updatePercentage(long diff) {
@@ -160,12 +159,11 @@ public class GuiChat extends GuiNewChat implements Globals {
         }
     }
 
-
     public void printChatMessage(ITextComponent chatComponent) {
-        if(Minecraft.getMinecraft().player != null) {
-            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpooferCommand.name != null) {
+        if (mc.player != null) {
+            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpoofer.INSTANCE.name != null) {
                 String toChange = chatComponent.getFormattedText();
-                toChange = toChange.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpooferCommand.name);
+                toChange = toChange.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpoofer.INSTANCE.name);
                 ITextComponent toSend = new TextComponentString(toChange);
                 printChatMessageWithOptionalDeletion(toSend, 0);
             }

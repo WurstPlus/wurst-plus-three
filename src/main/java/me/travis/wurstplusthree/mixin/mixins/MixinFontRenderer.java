@@ -25,8 +25,8 @@ public abstract class MixinFontRenderer {
     @Redirect(method={"renderString(Ljava/lang/String;FFIZ)I"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/gui/FontRenderer;renderStringAtPos(Ljava/lang/String;Z)V"))
     public void renderStringAtPosHook(FontRenderer renderer, String text, boolean shadow) {
         if(Minecraft.getMinecraft().player != null) {
-            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpooferCommand.name != null) {
-                this.renderStringAtPos(text.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpooferCommand.name), shadow);
+            if (PlayerSpoofer.INSTANCE.isEnabled() && PlayerSpoofer.INSTANCE.name != null) {
+                this.renderStringAtPos(text.replace(PlayerSpoofer.INSTANCE.getOldName(), PlayerSpoofer.INSTANCE.name), shadow);
             }
             else {
                 this.renderStringAtPos(text, shadow);

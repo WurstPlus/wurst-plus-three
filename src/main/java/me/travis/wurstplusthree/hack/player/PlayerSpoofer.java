@@ -18,28 +18,31 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class PlayerSpoofer extends Hack {
+
+    public static PlayerSpoofer INSTANCE;
+
     public PlayerSpoofer() {
         super("PlayerSpoofer", "spoofs you name and skin", Category.PLAYER, false);
+        INSTANCE = this;
     }
 
+    public String name = "travis";
     public File tmp;
-    public static PlayerSpoofer INSTANCE;
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             this.tmp = new File("Wurstplus3"+ File.separator + "tmp");
             if (!this.tmp.exists()) {
                 this.tmp.mkdirs();
             }
             Gson gson = new Gson();
-            if (PlayerSpooferCommand.name == null) {
+            if (name == null) {
                 ClientMessage.sendErrorMessage("Please set the player name!");
                 this.disable();
             }
-            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + PlayerSpooferCommand.name);
+            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
             Reader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             Map<?, ?> map = (Map<?, ?>) gson.fromJson(reader, Map.class);
             ConcurrentHashMap<String, String> valsMap = new ConcurrentHashMap<>();
@@ -63,11 +66,13 @@ public class PlayerSpoofer extends Hack {
     public void onDisable() {
         deleteSkinChangerFiles();
     }
+
     public void deleteSkinChangerFiles() {
         for (File file : mc.gameDir.listFiles()) {
             if (!file.isDirectory() && file.getName().contains("-skinchanger")) file.delete();
         }
     }
+
     public String getOldName(){
         return mc.getSession().getUsername();
     }
