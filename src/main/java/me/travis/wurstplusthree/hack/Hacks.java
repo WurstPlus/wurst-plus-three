@@ -54,6 +54,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Replenish());
         this.hacks.add(new EntityMine());
         this.hacks.add(new AntiVoid());
+        this.hacks.add(new Radio());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
