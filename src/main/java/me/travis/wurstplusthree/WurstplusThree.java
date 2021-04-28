@@ -58,6 +58,8 @@ public class WurstplusThree {
 
     public static ConfigManager CONFIG_MANAGER;
 
+    public static SongManager SONG_MANAGER;
+
     @Mod.Instance
     public static WurstplusThree INSTANCE;
 
@@ -97,6 +99,7 @@ public class WurstplusThree {
         POS_MANAGER = new PositionManager();
         ROTATION_MANAGER = new RotationManager();
         CONFIG_MANAGER = new ConfigManager();
+        SONG_MANAGER = new SongManager();
     }
 
 }

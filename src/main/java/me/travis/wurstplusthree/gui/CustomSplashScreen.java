@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.gui;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
-import me.travis.wurstplusthree.util.SoundUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -41,8 +40,8 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     private void playMusic() {
-        if (!mc.soundHandler.isSoundPlaying(SoundUtil.sound)) {
-            mc.soundHandler.playSound(SoundUtil.sound);
+        if (!mc.soundHandler.isSoundPlaying(WurstplusThree.SONG_MANAGER.getMenuSong())) {
+            mc.soundHandler.playSound(WurstplusThree.SONG_MANAGER.getMenuSong());
         }
     }
 
@@ -50,7 +49,6 @@ public class CustomSplashScreen extends GuiScreen {
         mc.gameSettings.enableVsync = false;
         mc.gameSettings.limitFramerate = 200;
         this.playMusic();
-        WurstplusThree.LOGGER.info(mc.soundHandler.isSoundPlaying(SoundUtil.sound));
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;
         this.watermarkX = this.width + 80;

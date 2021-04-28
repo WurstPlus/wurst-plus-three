@@ -1,5 +1,6 @@
-package me.travis.wurstplusthree.util;
+package me.travis.wurstplusthree.util.elements.songs;
 
+import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.Sound;
 import net.minecraft.client.audio.SoundEventAccessor;
@@ -8,18 +9,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
 
-public class SoundUtil implements Globals {
+public class DontStop implements Globals {
+
     public static final ISound sound;
-    private static final List<String> songs = Arrays.asList(
-            "sound-c",
-            "sound2-c",
-            "sound3-c"
-    );
-
-    private static final String song = songs.get(random.nextInt(songs.size()));
+    private static final String song = "dontstop";
     private static final ResourceLocation loc = new ResourceLocation("sounds/" + song + ".ogg");
 
     static {
@@ -90,5 +84,5 @@ public class SoundUtil implements Globals {
             }
         };
     }
-}
 
+}
