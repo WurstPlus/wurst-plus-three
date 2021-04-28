@@ -103,4 +103,12 @@ public class CustomChat extends Hack {
         return message;
     }
 
+    // ching chong
+    @Override
+    public void onLogin() {
+        if (this.isEnabled()) {
+            this.disable();
+            this.enable();
+        }
+    }
 }

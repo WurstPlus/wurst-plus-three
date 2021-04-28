@@ -33,7 +33,6 @@ public class Hacks implements Globals {
         this.hacks.add(new TotemPopCounter());
         this.hacks.add(new AutoEz());
         this.hacks.add(new CustomChat());
-        // this.hacks.add(new Burrow());
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
@@ -65,6 +64,7 @@ public class Hacks implements Globals {
         this.hacks.add(new FastUtil());
         this.hacks.add(new ArmourMend());
         this.hacks.add(new XCarry());
+        this.hacks.add(new Jesus());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());
