@@ -138,8 +138,8 @@ public class TargetDetails extends Hack {
     }
 
     private boolean isBurrowed(EntityPlayer player) {
-        BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
-        return mc.world.getBlockState(pos).getBlock() != Blocks.AIR;
+        BlockPos pos = new BlockPos(Math.floor(player.posX), Math.floor(player.posY+0.2), Math.floor(player.posZ));
+        return mc.world.getBlockState(pos).getBlock() == Blocks.ENDER_CHEST || mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(pos).getBlock() == Blocks.CHEST;
     }
 
 }
