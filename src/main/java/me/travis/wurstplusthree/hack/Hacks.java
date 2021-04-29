@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
 import me.travis.wurstplusthree.hack.chat.TotemPopCounter;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.*;
 import me.travis.wurstplusthree.hack.misc.*;
@@ -38,6 +39,8 @@ public class Hacks implements Globals {
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
+        this.hacks.add(new GuiRewrite());
+        // this.hacks.add(new Bot());
         // combat
         // TODO : ANVIL AURA
         // TODO : PISTON AURA
