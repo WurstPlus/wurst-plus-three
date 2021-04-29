@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.misc.Pitbull;
+import me.travis.wurstplusthree.hack.render.Pitbull;
 import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.hack.render.HandColour;
 import me.travis.wurstplusthree.hack.render.Nametags;
