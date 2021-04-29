@@ -34,6 +34,7 @@ import java.util.*;
 
 public class CrystalAura extends Hack {
 
+    // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {

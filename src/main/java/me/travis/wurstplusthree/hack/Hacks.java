@@ -38,6 +38,10 @@ public class Hacks implements Globals {
         this.hacks.add(new Hud());
         // this.hacks.add(new Bot());
         // combat
+        // TODO : ANVIL AURA
+        // TODO : PISTON AURA
+        // TODO : BED AURA
+        // TODO : AUTO 32K
         this.hacks.add(new KillAura());
         this.hacks.add(new Surround());
         this.hacks.add(new CrystalAura());

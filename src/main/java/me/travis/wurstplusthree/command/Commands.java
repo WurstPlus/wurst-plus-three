@@ -13,6 +13,8 @@ public class Commands implements Globals {
     public static String prefix = ".";
     private final List<Command> commands = new ArrayList<>();
 
+    // TODO : SETTINGS COMMAND
+    // TODO : CLEAR CHAT COMMAND
     public Commands() {
         this.commands.add(new FriendCommand());
         this.commands.add(new EnemyCommand());
