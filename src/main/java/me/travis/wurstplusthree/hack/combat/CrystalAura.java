@@ -56,7 +56,7 @@ public class CrystalAura extends Hack {
 
     IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this);
     IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this);
-    IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 4, 0, 36, this);
+    IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", true, this);
@@ -137,7 +137,8 @@ public class CrystalAura extends Hack {
             p.pitch = pitch;
         }
         CPacketUseEntity packet;
-        if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
+        if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK
+                && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
             if (this.fastMode.is("Ghost")) {
                 Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).setDead();
                 mc.world.removeEntityFromWorld(packet.entityId);

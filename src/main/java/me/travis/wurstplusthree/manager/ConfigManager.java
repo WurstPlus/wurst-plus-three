@@ -35,11 +35,13 @@ public class ConfigManager implements Globals {
     private final String friendsFile = "friends.json";
     private final String hudFile = "hud.json";
     private final String bindsFile = "binds.txt";
+    private final String fontFile = "font.txt";
 
     // DIRS
     private final String clientDir = mainFolder + clientFile;
     private final String configDir = mainFolder + configFile;
     private final String drawnDir = mainFolder + drawnFile;
+    private final String fontDir = mainFolder + fontFile;
     private final String ezDir = mainFolder + ezFile;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
@@ -56,6 +58,7 @@ public class ConfigManager implements Globals {
     private final Path clientPath = Paths.get(clientDir);
     private final Path configPath = Paths.get(configDir);
     private final Path drawnPath = Paths.get(drawnDir);
+    private final Path fontPath = Paths.get(fontDir);
     private final Path ezPath = Paths.get(ezDir);
     private final Path enemiesPath = Paths.get(enemiesDir);
     private final Path friendsPath = Paths.get(friendsDir);
@@ -70,6 +73,7 @@ public class ConfigManager implements Globals {
             this.loadSettings();
             this.loadBinds();
             this.loadDrawn();
+            this.loadFont();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,6 +90,7 @@ public class ConfigManager implements Globals {
             this.saveSettings();
             this.saveBinds();
             this.saveDrawn();
+            this.saveFont();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -294,6 +299,27 @@ public class ConfigManager implements Globals {
         for (String hackName : Files.readAllLines(drawnPath)) {
             WurstplusThree.HACKS.addDrawHack(WurstplusThree.HACKS.getHackByName(hackName));
         }
+    }
+
+    private void saveFont() throws IOException {
+        FileWriter writer = new FileWriter(fontDir);
+        writer.write(WurstplusThree.GUI_FONT_MANAGER.fontName + System.lineSeparator());
+        writer.write(WurstplusThree.GUI_FONT_MANAGER.fontSize + System.lineSeparator());
+        writer.close();
+    }
+
+    private void loadFont() throws IOException {
+        boolean flag = true;
+        for (String line : Files.readAllLines(fontPath)) {
+            if (flag) {
+                WurstplusThree.GUI_FONT_MANAGER.fontName = line;
+                flag = false;
+            } else {
+                WurstplusThree.GUI_FONT_MANAGER.fontSize = Integer.parseInt(line);
+                return;
+            }
+        }
+        WurstplusThree.GUI_FONT_MANAGER.setFont();
     }
 
     public boolean deleteFile(final String path) throws IOException {

@@ -28,8 +28,6 @@ public class HoleFill extends Hack {
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
-    // TODO : TARGET BLOCKS NEARER PLAYERS FIRST
-
     private final List<BlockPos> holes = new ArrayList<>();
 
     @Override

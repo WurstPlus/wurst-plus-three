@@ -30,6 +30,7 @@ public class Hacks implements Globals {
 
     public Hacks() {
         // chat
+        // TODO : NICE TOTEM DICKHEAD
         this.hacks.add(new ClearChatbox());
         this.hacks.add(new TotemPopCounter());
         this.hacks.add(new AutoEz());

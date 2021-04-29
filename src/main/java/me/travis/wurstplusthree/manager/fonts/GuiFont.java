@@ -3,53 +3,78 @@ package me.travis.wurstplusthree.manager.fonts;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.gui.font.CustomFont;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.RenderUtil;
 
 import java.awt.*;
+import java.util.Locale;
 
 public class GuiFont implements Globals {
 
-    private CustomFont menuFont = new CustomFont(new Font("Tahoma", 0, 16), true, false);
-    private CustomFont headerFont = new CustomFont(new Font("Tahoma", 1, 41), true, false);
+    private final String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(Locale.ENGLISH);
+    public String fontName = "Tahoma";
+    public int fontSize = 16;
 
-    public void setMenuFontSize(int size) {
-        menuFont = new CustomFont(new Font("Tahoma", 0, size), true, false);
+    private CustomFont font = new CustomFont(new Font(fontName, Font.PLAIN, fontSize), true, false);
+
+    public void setFont() {
+        this.font = new CustomFont(new Font(fontName, Font.PLAIN, fontSize), true, false);
+    }
+
+    public void reset() {
+        this.fontName = "Tahoma";
+        this.fontSize = 16;
+        this.setFont();
+    }
+
+    public boolean setFont(String fontName) {
+        for (String font : fonts) {
+            if (fontName.equalsIgnoreCase(font)) {
+                this.fontName = font;
+                this.setFont();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setFontSize(int size) {
+        this.fontSize = size;
+        this.setFont();
+    }
+
+    public String setRandomFont() {
+        this.fontName = RenderUtil.getRandomFont();
+        this.setFont();
+        return fontName;
     }
 
     public void drawStringWithShadow(String string, float x, float y, int colour) {
         this.drawString(string, x, y, colour, true);
     }
 
-    public float drawStringBig(String string, float x, float y, int colour, boolean shadow) {
-        if (shadow) {
-            return this.headerFont.drawStringWithShadow(string, x, y, colour);
-        } else {
-            return this.headerFont.drawString(string, x, y, colour);
-        }
-    }
-
     public float drawString(String string, float x, float y, int colour, boolean shadow) {
         if (shadow) {
-            return this.menuFont.drawStringWithShadow(string, x, y, colour);
+            return this.font.drawStringWithShadow(string, x, y, colour);
         } else {
-            return this.menuFont.drawString(string, x, y, colour);
+            return this.font.drawString(string, x, y, colour);
         }
     }
 
     public float drawStringRainbow(String string, float x, float y, boolean shadow) {
         Rainbow.updateRainbow();
         if (shadow) {
-            return this.menuFont.drawStringWithShadow(string, x, y, Rainbow.rgb);
+            return this.font.drawStringWithShadow(string, x, y, Rainbow.rgb);
         } else {
-            return this.menuFont.drawString(string, x, y, Rainbow.rgb);
+            return this.font.drawString(string, x, y, Rainbow.rgb);
         }
     }
 
     public int getTextHeight() {
-        return this.menuFont.getStringHeight();
+        return this.font.getStringHeight();
     }
 
     public int getTextWidth(String string) {
-        return this.menuFont.getStringWidth(string);
+        return this.font.getStringWidth(string);
     }
 
 }

@@ -8,7 +8,8 @@ import java.awt.*;
 
 public class MenuFont implements Globals {
 
-    private CustomFont menuFont = new CustomFont(new Font("Tahoma", 1, 21), true, false);
+    private final CustomFont menuFont = new CustomFont(new Font("Tahoma", Font.BOLD, 21), true, false);
+    private final CustomFont headerFont = new CustomFont(new Font("Tahoma", Font.BOLD, 41), true, false);
 
     public void drawStringWithShadow(String string, float x, float y, int colour) {
         this.drawString(string, x, y, colour, true);
@@ -19,6 +20,14 @@ public class MenuFont implements Globals {
             return this.menuFont.drawStringWithShadow(string, x, y, colour);
         } else {
             return this.menuFont.drawString(string, x, y, colour);
+        }
+    }
+
+    public float drawStringBig(String string, float x, float y, int colour, boolean shadow) {
+        if (shadow) {
+            return this.headerFont.drawStringWithShadow(string, x, y, colour);
+        } else {
+            return this.headerFont.drawString(string, x, y, colour);
         }
     }
 

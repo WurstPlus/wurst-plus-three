@@ -106,7 +106,7 @@ public class CustomSplashScreen extends GuiScreen {
         if (watermarkX < -WurstplusThree.GUI_FONT_MANAGER.getTextWidth(watermark) - 10) {
             this.watermarkX = this.width + 40;
         }
-        WurstplusThree.GUI_FONT_MANAGER.drawStringBig("WurstPlus 3", (float) this.x, (float) this.y - 20, Color.white.getRGB(), true);
+        WurstplusThree.MENU_FONT_MANAGER.drawStringBig("WurstPlus 3", (float) this.x, (float) this.y - 20, Color.white.getRGB(), true);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
