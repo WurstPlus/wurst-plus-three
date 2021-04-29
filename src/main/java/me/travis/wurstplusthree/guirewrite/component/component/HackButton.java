@@ -74,8 +74,22 @@ public class HackButton extends Component {
         offset = newOff;
         int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
         for (Component comp : this.subcomponents) {
-            comp.setOff(opY);
-            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+            if(comp instanceof ColorComponent){
+                if(((ColorComponent) comp).isOpen()){
+                    opY += (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+                    comp.setOff(opY);
+                    continue;
+                }
+                else {
+                    comp.setOff(opY);
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    continue;
+                }
+            }else {
+                comp.setOff(opY);
+                opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                continue;
+            }
         }
     }
 
@@ -99,7 +113,6 @@ public class HackButton extends Component {
                     if(comp instanceof ColorComponent) {
                         if (((ColorComponent) comp).isOpen()) {
                             subCompLength += 5;
-                            opY += (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5;
                         }
                         else {
                             subCompLength++;
@@ -116,7 +129,15 @@ public class HackButton extends Component {
     @Override
     public int getHeight() {
         if (this.isOpen) {
-            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * (this.subcomponents.size() + 1));
+            int val = 0;
+            for(Component c : subcomponents){
+                if(c instanceof ColorComponent){
+                    if(((ColorComponent) c).isOpen()) {
+                        val += 4;
+                    }
+                }
+            }
+            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * (this.subcomponents.size() + 1 + val));
         }
         return WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
     }

@@ -76,7 +76,8 @@ public class ColorComponent extends Component {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button){
         if(isMouseOnButton(mouseX, mouseY) && parent.isOpen&&button == 1) {
-            isOpen = !isOpen;
+            setOpen(!isOpen);
+            this.parent.parent.refresh();
         }
         for(Component c : colorComponents){
             c.mouseClicked(mouseX, mouseY, button);
@@ -100,6 +101,10 @@ public class ColorComponent extends Component {
     public boolean isMouseOnButton(int x, int y) {
         return x > this.parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.MODULE_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
     }
+    public void setOpen(boolean v){
+        this.isOpen = v;
+    }
+
     public boolean isOpen(){
         return this.isOpen;
     }
