@@ -42,12 +42,12 @@ public class ColorSliderComponent extends Component {
 
     @Override
     public void renderComponent() {
-        Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.hovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
-        RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING,
+        Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.hovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
+        RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING,
                 (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()),
                 (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(GuiRewrite.INSTANCE.rainbowDelay.getValue(), GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()));
 
-        RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET + 1, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getColor().hashCode());
+        // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET + 1, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getColor().hashCode());
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.cName + " " + ChatFormatting.GRAY + this.cValue, parent.parent.getX() + WurstplusGuiNew.COLOR_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
     }
 
@@ -62,12 +62,12 @@ public class ColorSliderComponent extends Component {
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
 
-        int widthTest = WurstplusGuiNew.WIDTH - (WurstplusGuiNew.MODULE_WIDTH_OFFSET * 2);
+        int widthTest = WurstplusGuiNew.WIDTH - (WurstplusGuiNew.SETTING_WIDTH_OFFSET * 2);
         double diff = Math.min(widthTest, Math.max(0, mouseX - this.x));
         int min = 0;
         int max = 255;
 
-        renderWidth = (widthTest) * (float) (cValue - min) / (max - min) + WurstplusGuiNew.MODULE_WIDTH_OFFSET;
+        renderWidth = (widthTest) * (float) (cValue - min) / (max - min) + WurstplusGuiNew.SETTING_WIDTH_OFFSET;
 
         if (dragging) {
             if (diff == 0) {
@@ -86,7 +86,6 @@ public class ColorSliderComponent extends Component {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        //WurstplusThree.LOGGER.info("D " + isMouseOnButtonD(mouseX, mouseY) + " I " + isMouseOnButtonI(mouseX, mouseY));
         if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             dragging = true;
         }
@@ -96,15 +95,15 @@ public class ColorSliderComponent extends Component {
     }
 
     public boolean isMouseOnButtonD(int x, int y) {
-        return x > this.x + WurstplusGuiNew.MODULE_WIDTH_OFFSET && x < this.x + (parent.parent.getWidth() / 2 + 1) - WurstplusGuiNew.MODULE_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
+        return x > this.x + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.x + (parent.parent.getWidth() / 2 + 1) - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
     }
 
     public boolean isMouseOnButtonI(int x, int y) {
-        return x > this.x + parent.parent.getWidth() / 2 + WurstplusGuiNew.MODULE_WIDTH_OFFSET && x < this.x + parent.parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
+        return x > this.x + parent.parent.getWidth() / 2 + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.x + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.MODULE_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
     }
 
     private static double roundToPlace(double value, int places) {

@@ -24,6 +24,7 @@ public class WurstplusGuiNew extends GuiScreen{
     public static final int HEIGHT = 16;
     public static final int MODULE_WIDTH_OFFSET = 2;
     public static final int MODULE_SPACING = 1;
+    public static final int SETTING_WIDTH_OFFSET = 5;
 
     public static final int FONT_HEIGHT = 4;
     public static final int MODULE_FONT_INDENT = 6;
@@ -37,12 +38,12 @@ public class WurstplusGuiNew extends GuiScreen{
 
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
-        int startX = 5;
+        int startX = 10;
         for (Hack.Category category : Hack.Category.values()) {
             CategoryComponent categoryComponent = new CategoryComponent(category);
             categoryComponent.setX(startX);
             categoryComponents.add(categoryComponent);
-            startX += categoryComponent.getWidth() + 2;
+            startX += categoryComponent.getWidth() + 10;
         }
     }
 
