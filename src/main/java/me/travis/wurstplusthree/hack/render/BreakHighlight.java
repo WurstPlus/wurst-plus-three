@@ -38,6 +38,7 @@ public class BreakHighlight extends Hack {
 
     @SubscribeEvent
     public void damageBlockEvent(BlockBreakingEvent event){
+        if (mc.world.getBlockState(event.pos).getBlock() == Blocks.BEDROCK) return;
         if(breakingBlockList.isEmpty()){
             breakingBlockList.putIfAbsent(event.breakingID, new Pair<>(event.breakStage, event.pos));
         } else {

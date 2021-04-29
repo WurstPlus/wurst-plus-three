@@ -6,15 +6,13 @@ import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.BoolComponent;
+import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ColorComponent;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ModeComponent;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.SliderComponent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
@@ -29,36 +27,47 @@ public class HackButton extends Component {
 
     public Hack mod;
     public CategoryComponent parent;
-    private ArrayList<Component> subcomponents;
+    private final ArrayList<Component> subcomponents;
     public boolean isOpen;
     private boolean isHovered;
     public int offset;
     public int subCompLength = 0;
+    public int opY;
 
-    public HackButton(Hack mod, CategoryComponent parent, int offset){
+    public ArrayList<Component> getChildren() {
+        ArrayList<Component> children = new ArrayList<>();
+        for (Component component : this.subcomponents) {
+            if (component.getParent() == this) {
+                children.add(component);
+            }
+        }
+        return children;
+    }
+
+    public HackButton(Hack mod, CategoryComponent parent, int offset) {
         this.mod = mod;
         this.parent = parent;
         this.offset = offset;
 
-        this.subcomponents = new ArrayList<Component>();
+        this.subcomponents = new ArrayList<>();
         this.isOpen = false;
-        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-        if(WurstplusThree.SETTINGS.getSettingFromHack(mod) != null){
-            for(Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)){
-                if(s instanceof BooleanSetting){
+        opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
+            for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
+                if (s instanceof BooleanSetting) {
                     this.subcomponents.add(new BoolComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                }
-                else if(s instanceof EnumSetting){
-                    this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod,opY));
+                } else if (s instanceof EnumSetting) {
+                    this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                }
-                else if(s instanceof IntSetting){
+                } else if (s instanceof IntSetting) {
                     this.subcomponents.add(new SliderComponent((IntSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                }
-                else if(s instanceof DoubleSetting){
+                } else if (s instanceof DoubleSetting) {
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                } else if (s instanceof ColourSetting) {
+                    this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
                 }
             }
@@ -77,23 +86,30 @@ public class HackButton extends Component {
     }
 
     @Override
-    public void renderComponent(){
+    public void renderComponent() {
         subCompLength = 0;
         if (mod.isEnabled()) {
-            RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET,this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING,
+            RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING,
                     parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING,
                     (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()),
                     (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(GuiRewrite.INSTANCE.rainbowDelay.getValue(), GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()));
-        }
-        else {
+        } else {
             RenderUtil2D.drawRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
         }
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_INDENT,parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_INDENT, parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
                     comp.renderComponent();
-                    subCompLength++;
+                    if (comp instanceof ColorComponent) {
+                        if (((ColorComponent) comp).isOpen()) {
+                            subCompLength += 5;
+                        } else {
+                            subCompLength++;
+                        }
+                    } else {
+                        subCompLength++;
+                    }
                 }
             }
         }
@@ -102,7 +118,15 @@ public class HackButton extends Component {
     @Override
     public int getHeight() {
         if (this.isOpen) {
-            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * (this.subcomponents.size() + 1));
+            int val = 0;
+            for (Component c : subcomponents) {
+                if (c instanceof ColorComponent) {
+                    if (((ColorComponent) c).isOpen()) {
+                        val += 4;
+                    }
+                }
+            }
+            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * (this.subcomponents.size() + 1 + val));
         }
         return WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
     }
@@ -116,6 +140,7 @@ public class HackButton extends Component {
             }
         }
     }
+
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && button == 0) {
@@ -150,5 +175,9 @@ public class HackButton extends Component {
             return true;
         }
         return false;
+    }
+
+    public void addOpY(int v) {
+        opY += v;
     }
 }

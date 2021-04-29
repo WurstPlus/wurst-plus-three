@@ -59,7 +59,7 @@ public class CrystalAura extends Hack {
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
-    BooleanSetting raytrace = new BooleanSetting("Raytrace", true, this);
+    BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
     BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);

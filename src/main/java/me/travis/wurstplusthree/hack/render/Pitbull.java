@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.hack.misc;
+package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.hack.Hack;
 
