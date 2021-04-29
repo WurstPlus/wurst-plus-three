@@ -25,6 +25,7 @@ public class Commands implements Globals {
         this.commands.add(new PlayerSpooferCommand());
         this.commands.add(new HelpCommand());
         this.commands.add(new ListCommand());
+        this.commands.add(new DrawnCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {

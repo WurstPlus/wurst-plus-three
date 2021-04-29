@@ -126,4 +126,9 @@ public class HoleESP extends Hack {
 
     }
 
+    @Override
+    public String getDisplayInfo() {
+        return "" + holes.size();
+    }
+
 }

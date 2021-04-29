@@ -560,4 +560,10 @@ public class CrystalAura extends Hack {
         alreadyAttacking = false;
         currentChainCounter = 0;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return this.ezTarget != null ? this.ezTarget.getName() : null;
+    }
+
 }

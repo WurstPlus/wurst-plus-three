@@ -76,4 +76,9 @@ public class PlayerSpoofer extends Hack {
     public String getOldName(){
         return mc.getSession().getUsername();
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return this.name;
+    }
 }

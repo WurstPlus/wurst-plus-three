@@ -196,4 +196,10 @@ public class Burrow extends Hack {
 
         return new Vec3d(x, y, z);
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return this.type.getValueName();
+    }
+
 }

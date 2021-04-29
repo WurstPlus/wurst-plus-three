@@ -21,7 +21,6 @@ public class AntiVoid extends Hack{
         super("AntiVoid", "stops dumb ppl (you) falling into the void", Category.MISC, false);
     }
 
-
     private ConcurrentSet<BlockPos> voidHoles;
 
     public void onUpdate(){

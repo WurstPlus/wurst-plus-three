@@ -15,6 +15,7 @@ public class Radio extends Hack {
     BooleanSetting skipButton = new BooleanSetting("Skip", false, this);
     BooleanSetting shuffleButton = new BooleanSetting("Shuffle", false, this);
 
+    // TODO : FIX THIS
     @Override
     public void onUpdate() {
         if (this.playButton.getValue()) {

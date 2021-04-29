@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class Hacks implements Globals {
 
     private final List<Hack> hacks = new ArrayList<>();
+    private List<Hack> drawnHacks = new ArrayList<>();
 
     public Hacks() {
         // chat
@@ -36,7 +37,6 @@ public class Hacks implements Globals {
         // client
         this.hacks.add(new Gui());
         this.hacks.add(new Hud());
-        // this.hacks.add(new Bot());
         // combat
         // TODO : ANVIL AURA
         // TODO : PISTON AURA
@@ -95,6 +95,23 @@ public class Hacks implements Globals {
 
     public List<Hack> getHacks() {
         return this.hacks;
+    }
+
+    public List<Hack> getDrawnHacks() {
+        return this.drawnHacks;
+    }
+
+    public boolean isDrawHack(Hack hack) {
+        return this.drawnHacks.contains(hack);
+    }
+
+    public void addDrawHack(Hack hack) {
+        this.drawnHacks.add(hack);
+    }
+
+    public void removeDrawnHack(Hack hack) {
+        if (!isDrawHack(hack)) return;
+        this.drawnHacks.remove(hack);
     }
 
     public Hack getHackByName(String name) {
@@ -189,10 +206,16 @@ public class Hacks implements Globals {
         return hacks;
     }
 
-    public List<Hack> getSortedHacks(boolean reverse) {
-        return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
-                WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
-                        * (reverse ? -1 : 1))).collect(Collectors.toList());
+    public List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
+        if (customFont) {
+            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                    WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
+                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+        } else {
+            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                    mc.fontRenderer.getStringWidth(hack.getFullArrayString())
+                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+        }
     }
 
 }

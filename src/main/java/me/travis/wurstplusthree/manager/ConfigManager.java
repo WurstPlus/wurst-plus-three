@@ -69,6 +69,7 @@ public class ConfigManager implements Globals {
             this.loadFriends();
             this.loadSettings();
             this.loadBinds();
+            this.loadDrawn();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,6 +85,7 @@ public class ConfigManager implements Globals {
             this.saveFriends();
             this.saveSettings();
             this.saveBinds();
+            this.saveDrawn();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -278,6 +280,20 @@ public class ConfigManager implements Globals {
             } catch (Exception ignored) {}
         }
         br.close();
+    }
+
+    private void saveDrawn() throws IOException {
+        FileWriter writer = new FileWriter(drawnDir);
+        for (Hack hack : WurstplusThree.HACKS.getDrawnHacks()) {
+            writer.write(hack.getName() + System.lineSeparator());
+        }
+        writer.close();
+    }
+
+    private void loadDrawn() throws IOException {
+        for (String hackName : Files.readAllLines(drawnPath)) {
+            WurstplusThree.HACKS.addDrawHack(WurstplusThree.HACKS.getHackByName(hackName));
+        }
     }
 
     public boolean deleteFile(final String path) throws IOException {

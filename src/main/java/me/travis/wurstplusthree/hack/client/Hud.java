@@ -78,9 +78,10 @@ public class Hud extends Hack {
 
     private void doBottomRight() {
         if (this.arrayList.getValue()) {
-            List<Hack> hacks = WurstplusThree.HACKS.getSortedHacks(false);
-            int y = scaledResolution.getScaledHeight() - (11 * hacks.size()) + 2;
+            List<Hack> hacks = WurstplusThree.HACKS.getSortedHacks(false, this.customFont.getValue());
+            int y = scaledResolution.getScaledHeight() - (11 * hacks.size()) + 2 + (11 * WurstplusThree.HACKS.getDrawnHacks().size());
             for (Hack hack : hacks) {
+                if (WurstplusThree.HACKS.isDrawHack(hack)) continue;
                 String name = hack.getFullArrayString();
                 drawString(name, this.getRightX(name, 2), y);
                 y += 11;

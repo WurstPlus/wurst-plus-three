@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -149,7 +150,7 @@ public class Hack implements Globals {
     }
 
     public String getFullArrayString() {
-        return this.name + (this.getDisplayInfo() != null ? "[" + this.getDisplayInfo() + "]" : "");
+        return this.name + (this.getDisplayInfo() != null ? ChatFormatting.GOLD + "[" + this.getDisplayInfo().toUpperCase() + "]" : "");
     }
 
     public Setting getSettingByName(String name) {
