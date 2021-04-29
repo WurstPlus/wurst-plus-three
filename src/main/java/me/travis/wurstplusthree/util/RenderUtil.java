@@ -37,22 +37,13 @@ public class RenderUtil implements Globals {
         return fonts[random.nextInt(fonts.length)];
     }
 
-    // TODO : ADD TRIANGLE TO NAMETAGS LIKE CSGO
-    public static void drawTriangle(float x, float y, float size, float widthDiv, float heightDiv, float outlineWidth, int color) {
+    public static void drawTriangleOutline(float x, float y, float size, float widthDiv, float heightDiv, float outlineWidth, int color) {
         boolean blend = GL11.glIsEnabled(3042);
         GL11.glEnable(3042);
         GL11.glDisable(3553);
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(2848);
         GL11.glPushMatrix();
-//        RenderUtil.hexColor(color);
-//        GL11.glBegin(7);
-//        GL11.glVertex2d(x, y);
-//        GL11.glVertex2d(x - size / widthDiv, y - size);
-//        GL11.glVertex2d(x, y - size / heightDiv);
-//        GL11.glVertex2d(x + size / widthDiv, y - size);
-//        GL11.glVertex2d(x, y);
-//        GL11.glEnd();
         GL11.glLineWidth(outlineWidth);
         RenderUtil.hexColor(color);
         GL11.glBegin(2);

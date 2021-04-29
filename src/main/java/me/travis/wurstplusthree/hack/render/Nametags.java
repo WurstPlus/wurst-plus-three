@@ -51,7 +51,7 @@ public class Nametags extends Hack {
     public BooleanSetting popCounter = new BooleanSetting("Totem Pops", true, this);
     public BooleanSetting invisibles = new BooleanSetting("Invisibles", false, this);
     public IntSetting distance = new IntSetting("Distance", 250, 0, 500, this);
-    public IntSetting arrowPos = new IntSetting("Arrow Pos", 30, 0, 50, this);
+    public IntSetting arrowPos = new IntSetting("Arrow Pos", 28, 0, 50, this);
     public DoubleSetting scale = new DoubleSetting("Scale", 0.05, 0.01, 0.1, this);
     public DoubleSetting height = new DoubleSetting("Height", 2.5, 0.5, 5.0, this);
 
@@ -146,7 +146,7 @@ public class Nametags extends Hack {
             RenderUtil.drawOutlineLine(-width - 2, 10, width + 1, 20, outlineWidth.getValue(), outlineColor);
         }
         if (!far) {
-            RenderUtil.drawTriangle(width - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(name) / 2f, arrowPos.getValue(), 5, 2, 1, outlineWidth.getValue().floatValue(), outlineColor);
+            RenderUtil.drawTriangleOutline(width - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(name) / 2f, arrowPos.getValue(), 5, 2, 1, outlineWidth.getValue().floatValue(), outlineColor);
         }
         if (customFont.getValue()) {
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, -width, 13, -1);
