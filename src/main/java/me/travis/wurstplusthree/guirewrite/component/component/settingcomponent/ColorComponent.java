@@ -7,7 +7,9 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import me.travis.wurstplusthree.util.elements.Colour;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -36,10 +38,10 @@ public class ColorComponent extends Component {
         this.isOpen = false;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
-        this.r = new ColorSliderComponent(parent, offset, "Red", set.getColor().getRed());
-        this.g = new ColorSliderComponent(parent, offset , "Green", set.getColor().getGreen());
-        this.b = new ColorSliderComponent(parent, offset, "Blue", set.getColor().getBlue());
-        this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getColor().getBlue());
+        this.r = new ColorSliderComponent(parent, offset, "Red", set.getColor().getRed(), this);
+        this.g = new ColorSliderComponent(parent, offset , "Green", set.getColor().getGreen(), this);
+        this.b = new ColorSliderComponent(parent, offset, "Blue", set.getColor().getBlue(), this);
+        this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getColor().getBlue(), this);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
         parent.addOpY( WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
@@ -67,7 +69,7 @@ public class ColorComponent extends Component {
                     continue;
                 }
                 if (flag) {
-                    component.setOff((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
+                    component.setOff(offset + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
                 }
             }
         }
@@ -98,6 +100,7 @@ public class ColorComponent extends Component {
     public void updateComponent(int mouseX, int mouseY){
         for(Component c : colorComponents){
             c.updateComponent(mouseX, mouseY);
+            set.setValue(new Colour(r.getValue(), g.getValue(), b.getValue(), a.getValue()));
         }
     }
 

@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.render;
 
+import me.travis.wurstplusthree.event.events.PerspectiveEvent;
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -36,6 +37,7 @@ public class ViewModel extends Hack {
     DoubleSetting offScaleX = new DoubleSetting("offScaleX", 1.0, -5.0, 10.0, this);
     DoubleSetting offScaleY = new DoubleSetting("offScaleY", 1.0, -5.0, 10.0, this);
     DoubleSetting offScaleZ = new DoubleSetting("offScaleZ", 1.0, -5.0, 10.0, this);
+    DoubleSetting aspect = new DoubleSetting("Aspect",  mc.displayWidth / mc.displayHeight + 0.0, 0.0 ,3.0, this);
 
     // Like look at all this shit xd
 
@@ -66,5 +68,10 @@ public class ViewModel extends Hack {
         event.setOffHandScaleX(offScaleX.getValue());
         event.setOffHandScaleY(offScaleY.getValue());
         event.setOffHandScaleZ(offScaleZ.getValue());
+    }
+
+    @SubscribeEvent
+    public void onPerspectiveEvent(PerspectiveEvent event){
+        event.setAspect(aspect.getValue().floatValue());
     }
 }

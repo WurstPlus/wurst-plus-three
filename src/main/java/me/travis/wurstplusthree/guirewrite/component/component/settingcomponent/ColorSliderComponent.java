@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 public class ColorSliderComponent extends Component {
     private boolean hovered;
     private HackButton parent;
+    private ColorComponent p2;
     private int offset;
     private int x;
     private int y;
@@ -31,11 +32,12 @@ public class ColorSliderComponent extends Component {
 
     private double renderWidth;
 
-    public ColorSliderComponent(HackButton button, int offset, String cName, int cValue) {
+    public ColorSliderComponent(HackButton button, int offset, String cName, int cValue,ColorComponent p2) {
         this.parent = button;
         this.offset = offset;
         this.cName = cName;
         this.cValue = cValue;
+        this.p2 = p2;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
     }
@@ -86,10 +88,10 @@ public class ColorSliderComponent extends Component {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
+        if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.isOpen && this.p2.isOpen()) {
             dragging = true;
         }
-        if (isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
+        if (isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.isOpen && this.p2.isOpen()) {
             dragging = true;
         }
     }
@@ -118,6 +120,10 @@ public class ColorSliderComponent extends Component {
     @Override
     public HackButton getParent() {
         return parent;
+    }
+
+    public int getValue(){
+        return this.cValue;
     }
 
 }
