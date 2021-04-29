@@ -170,7 +170,6 @@ public class CrystalAura extends Hack {
                             if (!this.swing.is("None")) {
                                 BlockUtil.swingArm(swing);
                             }
-                            // TODO : THIS SOMETIMES FLAGS EVEN THOUGH THE CRYSTAL WASN'T BROKEN CAUSING THE BREAK FOR THE CA TO GET STUCK
                             if (packetSafe.getValue()) {
                                 this.hasPacketBroke = true;
                             }

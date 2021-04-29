@@ -15,7 +15,12 @@ public class ListCommand extends Command {
     @Override
     public void execute(String[] message) {
         ClientMessage.sendMessage(ChatFormatting.BOLD + "Hack list");
+        String cat = "";
+        if (message.length >= 1) {
+            cat = message[0];
+        }
         for (Hack.Category category : Hack.Category.values()) {
+            if (!cat.equalsIgnoreCase("") && !cat.equalsIgnoreCase(category.getName())) continue;
             ClientMessage.sendMessage(ChatFormatting.BOLD + category.getName());
             for (Hack hack : WurstplusThree.HACKS.getHacksByCategory(category)) {
                 ClientMessage.sendMessage(hack.getName() + " : " + hack.getDescription());
