@@ -3,6 +3,7 @@ package me.travis.wurstplusthree;
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
 import me.travis.wurstplusthree.gui.WurstplusGui;
+import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
@@ -60,6 +61,8 @@ public class WurstplusThree {
 
     public static SongManager SONG_MANAGER;
 
+    public static WurstplusGuiNew GUI2;
+
     @Mod.Instance
     public static WurstplusThree INSTANCE;
 
@@ -81,6 +84,7 @@ public class WurstplusThree {
         COMMANDS = new Commands();
         HACKS = new Hacks();
         GUI = new WurstplusGui();
+        GUI2 = new WurstplusGuiNew();
         this.loadManagers();
         CONFIG_MANAGER.loadConfig();
     }
