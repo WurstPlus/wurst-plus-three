@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class WurstplusGuiNew extends GuiScreen{
 
     public static ArrayList<CategoryComponent> categoryComponents;
 
+    private ResourceLocation shader;
+
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
         int startX = 10;
@@ -56,6 +59,17 @@ public class WurstplusGuiNew extends GuiScreen{
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
+
+        this.shader = new ResourceLocation("minecraft", "shaders/post/blur.json");
+
+        if (!mc.entityRenderer.isShaderActive() && GuiRewrite.INSTANCE.blur.getValue()) {
+            mc.entityRenderer.loadShader(this.shader);
+        }
+
+        if (!GuiRewrite.INSTANCE.blur.getValue()) {
+            mc.entityRenderer.stopUseShader();
+        }
+
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame();
             categoryComponent.updatePosition(mouseX, mouseY);
@@ -117,6 +131,11 @@ public class WurstplusGuiNew extends GuiScreen{
                 }
             }
         }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        mc.entityRenderer.stopUseShader();
     }
     private void scrollWheelCheck() {
          int dWheel = Mouse.getDWheel();
