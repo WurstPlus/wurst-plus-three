@@ -185,7 +185,6 @@ public class ConfigManager implements Globals {
             }
 
             br.close();
-
         }
     }
 
@@ -312,10 +311,10 @@ public class ConfigManager implements Globals {
         boolean flag = true;
         for (String line : Files.readAllLines(fontPath)) {
             if (flag) {
-                WurstplusThree.GUI_FONT_MANAGER.fontName = line;
+                WurstplusThree.GUI_FONT_MANAGER.setFont(line);
                 flag = false;
             } else {
-                WurstplusThree.GUI_FONT_MANAGER.fontSize = Integer.parseInt(line);
+                WurstplusThree.GUI_FONT_MANAGER.setFontSize(Integer.parseInt(line));
                 return;
             }
         }
