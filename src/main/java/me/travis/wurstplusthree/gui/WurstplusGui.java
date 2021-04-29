@@ -16,7 +16,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.ColourComponent;
 import me.travis.wurstplusthree.gui.components.KeybindComponent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.client.GuiOld;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.*;
@@ -66,13 +66,13 @@ public class WurstplusGui extends MinecraftHUDGUI {
                 return false;
             }
         };
-        ColorScheme scheme = new SettingsColorScheme(Gui.INSTANCE.enabledColor, Gui.INSTANCE.backgroundColor, Gui.INSTANCE.settingBackgroundColor, Gui.INSTANCE.outlineColor, Gui.INSTANCE.fontColor, Gui.INSTANCE.opacity);
+        ColorScheme scheme = new SettingsColorScheme(GuiOld.INSTANCE.enabledColor, GuiOld.INSTANCE.backgroundColor, GuiOld.INSTANCE.settingBackgroundColor, GuiOld.INSTANCE.outlineColor, GuiOld.INSTANCE.fontColor, GuiOld.INSTANCE.opacity);
         theme = new GameSenseTheme(scheme, 12, 2, 5);
         gui = new HUDClickGUI(guiInterface,null) {
             @Override
             public void handleScroll(int diff) {
                 super.handleScroll(diff);
-                if (Gui.INSTANCE.scrolling.getValue().equals("Screen")) {
+                if (GuiOld.INSTANCE.scrolling.getValue().equals("Screen")) {
                     for (FixedComponent component : components) {
                         if (!hudComponents.contains(component)) {
                             Point p = component.getPosition(guiInterface);
@@ -85,10 +85,10 @@ public class WurstplusGui extends MinecraftHUDGUI {
         };
         Point pos = new Point(10, 10);
         for (Hack.Category category : WurstplusThree.HACKS.getCategories()) {
-            DraggableContainer panel = new DraggableContainer(category.name(), null, theme.getPanelRenderer(), new SimpleToggleable(false), new SettingsAnimation(Gui.INSTANCE.animationSpeed), null, new Point(pos), 100) {
+            DraggableContainer panel = new DraggableContainer(category.name(), null, theme.getPanelRenderer(), new SimpleToggleable(false), new SettingsAnimation(GuiOld.INSTANCE.animationSpeed), null, new Point(pos), 100) {
                 @Override
                 protected int getScrollHeight(int childHeight) {
-                    if (Gui.INSTANCE.scrolling.getValue().equals("Screen")) {
+                    if (GuiOld.INSTANCE.scrolling.getValue().equals("Screen")) {
                         return childHeight;
                     }
                     return Math.min(childHeight, Math.max(12 * 4, WurstplusGui.this.height - getPosition(guiInterface).y - renderer.getHeight(open.getValue() != 0) - 12));
@@ -103,7 +103,7 @@ public class WurstplusGui extends MinecraftHUDGUI {
     }
 
     public void addModule(CollapsibleContainer panel, Hack hack) {
-        CollapsibleContainer container = new CollapsibleContainer(hack.getName(), null, theme.getContainerRenderer(), new SimpleToggleable(false), new SettingsAnimation(Gui.INSTANCE.animationSpeed), new Toggleable() {
+        CollapsibleContainer container = new CollapsibleContainer(hack.getName(), null, theme.getContainerRenderer(), new SimpleToggleable(false), new SettingsAnimation(GuiOld.INSTANCE.animationSpeed), new Toggleable() {
             @Override
             public void toggle() {
                 hack.toggle();
@@ -124,7 +124,7 @@ public class WurstplusGui extends MinecraftHUDGUI {
             } else if (setting instanceof EnumSetting) {
                 container.addComponent(new EnumComponent(setting.getName(), null, theme.getComponentRenderer(), (EnumSetting) setting));
             } else if (setting instanceof ColourSetting) {
-                container.addComponent(new ColourComponent(theme, (ColourSetting) setting, colorToggle, new SettingsAnimation(Gui.INSTANCE.animationSpeed)));
+                container.addComponent(new ColourComponent(theme, (ColourSetting) setting, colorToggle, new SettingsAnimation(GuiOld.INSTANCE.animationSpeed)));
             }
         }
         container.addComponent(new KeybindComponent(theme.getComponentRenderer(), new KeybindSetting() {
@@ -158,6 +158,6 @@ public class WurstplusGui extends MinecraftHUDGUI {
 
     @Override
     protected int getScrollSpeed() {
-        return Gui.INSTANCE.scrollSpeed.getValue();
+        return GuiOld.INSTANCE.scrollSpeed.getValue();
     }
 }

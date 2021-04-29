@@ -1,15 +1,12 @@
 package me.travis.wurstplusthree.guirewrite.component.component.settingcomponent;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.GuiRewrite;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -41,7 +38,7 @@ public class KeyBindComponent extends Component {
     public void renderComponent() {
         module = this.parent.mod;
         RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + Keyboard.getKeyName(module.getBind())), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + Keyboard.getKeyName(module.getBind())), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getColor().hashCode());
     }
 
     @Override

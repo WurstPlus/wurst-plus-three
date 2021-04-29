@@ -31,8 +31,8 @@ public class HoleESP extends Hack {
     EnumSetting customHoles = new EnumSetting("Show", "Single", Arrays.asList("Single", "Double"), this);
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
     BooleanSetting hideOwn = new BooleanSetting("Hide Own", false, this);
-    ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0), this);
-    ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0), this);
+    ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0, 100), this);
+    ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0, 100), this);
 
     private final ConcurrentHashMap<BlockPos, Colour> holes = new ConcurrentHashMap<>();
 

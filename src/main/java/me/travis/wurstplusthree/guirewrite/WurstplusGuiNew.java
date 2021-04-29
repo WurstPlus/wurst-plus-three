@@ -1,11 +1,9 @@
 package me.travis.wurstplusthree.guirewrite;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.GuiRewrite;
-import me.travis.wurstplusthree.manager.fonts.GuiFont;
+import me.travis.wurstplusthree.hack.client.Gui;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
  * -> swag gui :sunglasses:
  */
 
-public class WurstplusGuiNew extends GuiScreen{
+public class WurstplusGuiNew extends GuiScreen {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
@@ -62,11 +60,11 @@ public class WurstplusGuiNew extends GuiScreen{
 
         this.shader = new ResourceLocation("minecraft", "shaders/post/blur.json");
 
-        if (!mc.entityRenderer.isShaderActive() && GuiRewrite.INSTANCE.blur.getValue()) {
+        if (!mc.entityRenderer.isShaderActive() && Gui.INSTANCE.blur.getValue()) {
             mc.entityRenderer.loadShader(this.shader);
         }
 
-        if (!GuiRewrite.INSTANCE.blur.getValue()) {
+        if (!Gui.INSTANCE.blur.getValue()) {
             mc.entityRenderer.stopUseShader();
         }
 
@@ -141,12 +139,12 @@ public class WurstplusGuiNew extends GuiScreen{
          int dWheel = Mouse.getDWheel();
          if(dWheel < 0){
              for(CategoryComponent categoryComponent : categoryComponents){
-                 categoryComponent.setY(categoryComponent.getY() - GuiRewrite.INSTANCE.scrollSpeed.getValue());
+                 categoryComponent.setY(categoryComponent.getY() - Gui.INSTANCE.scrollSpeed.getValue());
              }
          }
          else if(dWheel > 0){
              for(CategoryComponent categoryComponent : categoryComponents){
-                 categoryComponent.setY(categoryComponent.getY() + GuiRewrite.INSTANCE.scrollSpeed.getValue());
+                 categoryComponent.setY(categoryComponent.getY() + Gui.INSTANCE.scrollSpeed.getValue());
              }
          }
     }
