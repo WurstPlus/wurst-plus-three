@@ -111,6 +111,7 @@ public class Hack implements Globals {
         return isListening >= -1;
     }
 
+
     public String getName() {
         return this.name;
     }

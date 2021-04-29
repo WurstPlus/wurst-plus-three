@@ -51,6 +51,7 @@ public class Hacks implements Globals {
         this.hacks.add(new CrystalAura());
         this.hacks.add(new Offhand());
         this.hacks.add(new Trap());
+        this.hacks.add(new SelfTrap());
         this.hacks.add(new HoleFill());
         this.hacks.add(new Crits());
         this.hacks.add(new Burrow());
