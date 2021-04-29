@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.guirewrite.component;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
+import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ColorComponent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.util.ColorUtil;
@@ -30,7 +31,7 @@ public class CategoryComponent {
     public CategoryComponent(Hack.Category cat) {
         this.category = cat;
 
-        this.components = new ArrayList<Component>();
+        this.components = new ArrayList<>();
         this.width = WurstplusGuiNew.WIDTH;
         this.height = WurstplusGuiNew.HEIGHT;
         this.x = 5;
@@ -41,7 +42,7 @@ public class CategoryComponent {
 
         int tY = this.height;
 
-        for (Hack mod : WurstplusThree.HACKS.getHacks()) {
+        for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
             if (mod.getCategory().equals(category)) {
                 HackButton moduleButton = new HackButton(mod, this, tY);
                 this.components.add(moduleButton);

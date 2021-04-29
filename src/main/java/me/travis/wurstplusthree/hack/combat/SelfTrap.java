@@ -19,102 +19,80 @@ import java.util.*;
 
 public class SelfTrap extends Hack {
 
+    /*
+     * k3b skidded this all by himself :D
+     */
     public SelfTrap() {
         super("SelfTrap", "when all else fails u can self trap", Hack.Category.COMBAT, false);
     }
 
-    BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
+    BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
-
-    private BlockPos trap_pos;
-
+    private BlockPos trapPos;
 
     public void onEnable() {
-        if (find_in_hotbar() == -1) {
+        if (findInHotbar() == -1) {
             this.disable();
-            return;
         }
     }
 
-
     public void onUpdate() {
         final Vec3d pos = EntityUtil.interpolateEntity(mc.player, mc.getRenderPartialTicks());
-        trap_pos = new BlockPos(pos.x, pos.y + 2, pos.z);
-        if (is_trapped()) {
-
+        trapPos = new BlockPos(pos.x, pos.y + 2, pos.z);
+        if (isTrapped()) {
             if (this.isEnabled()) {
                 this.disable();
             } else {
                 this.enable();
                 return;
             }
-
         }
 
-        BlockUtil.ValidResult result = BlockUtil.valid(trap_pos);
+        BlockUtil.ValidResult result = BlockUtil.valid(trapPos);
 
-        if (result == BlockUtil.ValidResult.AlreadyBlockThere && !mc.world.getBlockState(trap_pos).getMaterial().isReplaceable()) {
+        if (result == BlockUtil.ValidResult.AlreadyBlockThere && !mc.world.getBlockState(trapPos).getMaterial().isReplaceable()) {
             return;
         }
 
         if (result == BlockUtil.ValidResult.NoNeighbors) {
 
             BlockPos[] tests = {
-                    trap_pos.north(),
-                    trap_pos.south(),
-                    trap_pos.east(),
-                    trap_pos.west(),
-                    trap_pos.up(),
-                    trap_pos.down().west() // ????? salhack is weird and i dont care enough to remove this. who the fuck uses this shit anyways fr fucking jumpy
+                    trapPos.north(),
+                    trapPos.south(),
+                    trapPos.east(),
+                    trapPos.west(),
+                    trapPos.up(),
+                    trapPos.down().west()
             };
 
             for (BlockPos pos_ : tests) {
-
                 BlockUtil.ValidResult result_ = BlockUtil.valid(pos_);
-
                 if (result_ == BlockUtil.ValidResult.NoNeighbors || result_ == BlockUtil.ValidResult.NoEntityCollision) continue;
-
-                if (BlockUtil.placeBlock(pos_, find_in_hotbar(), rotate.getValue(), rotate.getValue(), swing)) {
+                if (BlockUtil.placeBlock(pos_, findInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
                     return;
                 }
-
             }
-
             return;
-
         }
-
-        BlockUtil.placeBlock(trap_pos, find_in_hotbar(), rotate.getValue(), rotate.getValue(), swing);
-
+        BlockUtil.placeBlock(trapPos, findInHotbar(), rotate.getValue(), rotate.getValue(), swing);
     }
 
-    public boolean is_trapped() {
-
-        if (trap_pos == null) return false;
-
-        IBlockState state = mc.world.getBlockState(trap_pos);
-
+    public boolean isTrapped() {
+        if (trapPos == null) return false;
+        IBlockState state = mc.world.getBlockState(trapPos);
         return state.getBlock() != Blocks.AIR && state.getBlock() != Blocks.WATER && state.getBlock() != Blocks.LAVA;
-
     }
 
-    private int find_in_hotbar() {
-
+    private int findInHotbar() {
         for (int i = 0; i < 9; ++i) {
-
             final ItemStack stack = mc.player.inventory.getStackInSlot(i);
-
             if (stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBlock) {
-
                 final Block block = ((ItemBlock) stack.getItem()).getBlock();
-
                 if (block instanceof BlockEnderChest)
                     return i;
-
                 else if (block instanceof BlockObsidian)
                     return i;
-
             }
         }
         return -1;

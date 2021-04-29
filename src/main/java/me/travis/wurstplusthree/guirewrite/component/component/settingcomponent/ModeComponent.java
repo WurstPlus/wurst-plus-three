@@ -101,4 +101,9 @@ public class ModeComponent extends Component {
         return parent;
     }
 
+    @Override
+    public int getOffset() {
+        return offset;
+    }
+
 }

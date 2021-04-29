@@ -23,6 +23,7 @@ public class ColorComponent extends Component {
     private int offset;
     private int opY;
     private boolean isOpen;
+    private boolean firstTimeOpen;
     private int x;
     private int y;
     private ColorSliderComponent r;
@@ -36,6 +37,7 @@ public class ColorComponent extends Component {
         this.parent = button;
         this.offset = offset;
         this.isOpen = false;
+        this.firstTimeOpen = true;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
         this.r = new ColorSliderComponent(parent, offset, "Red", set.getColor().getRed(), this);
@@ -62,16 +64,6 @@ public class ColorComponent extends Component {
             for (Component component : colorComponents) {
                 component.renderComponent();
             }
-            boolean flag = false;
-            for (Component component : this.parent.getChildren()) {
-                if (!flag && component == this) {
-                    flag = true;
-                    continue;
-                }
-                if (flag) {
-                    component.setOff(offset + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
-                }
-            }
         }
     }
 
@@ -86,13 +78,29 @@ public class ColorComponent extends Component {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button){
-        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen&&button == 1) {
+    public void mouseClicked(int mouseX, int mouseY, int button) {
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 1) {
             setOpen(!isOpen);
             this.parent.parent.refresh();
         }
         for(Component c : colorComponents){
             c.mouseClicked(mouseX, mouseY, button);
+        }
+        if (!this.isOpen && !this.firstTimeOpen) {
+            this.firstTimeOpen = true;
+        }
+        if (this.isOpen && firstTimeOpen) {
+            boolean flag = false;
+            for (Component component : this.parent.getChildren()) {
+                if (!flag && component == this) {
+                    flag = true;
+                    continue;
+                }
+                if (flag) {
+                    component.setOff(component.getOffset() + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 4);
+                }
+            }
+            this.firstTimeOpen = false;
         }
     }
 
@@ -125,6 +133,11 @@ public class ColorComponent extends Component {
     @Override
     public HackButton getParent() {
         return parent;
+    }
+
+    @Override
+    public int getOffset() {
+        return offset;
     }
 
 }

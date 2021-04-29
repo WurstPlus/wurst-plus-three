@@ -33,4 +33,8 @@ public class Component {
     public HackButton getParent() {
         return null;
     }
+
+    public int getOffset() {
+        return 0;
+    }
 }
