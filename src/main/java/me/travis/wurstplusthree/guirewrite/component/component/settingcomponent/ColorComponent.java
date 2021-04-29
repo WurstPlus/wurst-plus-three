@@ -57,8 +57,18 @@ public class ColorComponent extends Component {
         // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getColor().hashCode());
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
         if(this.isOpen) {
-            for (Component c : colorComponents) {
-                c.renderComponent();
+            for (Component component : colorComponents) {
+                component.renderComponent();
+            }
+            boolean flag = false;
+            for (Component component : this.parent.getChildren()) {
+                if (!flag && component == this) {
+                    flag = true;
+                    continue;
+                }
+                if (flag) {
+                    component.setOff((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
+                }
             }
         }
     }
@@ -107,6 +117,11 @@ public class ColorComponent extends Component {
 
     public boolean isOpen(){
         return this.isOpen;
+    }
+
+    @Override
+    public HackButton getParent() {
+        return parent;
     }
 
 }

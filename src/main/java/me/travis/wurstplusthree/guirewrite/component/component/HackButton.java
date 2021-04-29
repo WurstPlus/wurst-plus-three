@@ -27,19 +27,29 @@ public class HackButton extends Component {
 
     public Hack mod;
     public CategoryComponent parent;
-    private ArrayList<Component> subcomponents;
+    private final ArrayList<Component> subcomponents;
     public boolean isOpen;
     private boolean isHovered;
     public int offset;
     public int subCompLength = 0;
     public int opY;
 
+    public ArrayList<Component> getChildren() {
+        ArrayList<Component> children = new ArrayList<>();
+        for (Component component : this.subcomponents) {
+            if (component.getParent() == this) {
+                children.add(component);
+            }
+        }
+        return children;
+    }
+
     public HackButton(Hack mod, CategoryComponent parent, int offset) {
         this.mod = mod;
         this.parent = parent;
         this.offset = offset;
 
-        this.subcomponents = new ArrayList<Component>();
+        this.subcomponents = new ArrayList<>();
         this.isOpen = false;
         opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {

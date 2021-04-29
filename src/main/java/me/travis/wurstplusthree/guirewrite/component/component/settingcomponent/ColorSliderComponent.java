@@ -114,4 +114,10 @@ public class ColorSliderComponent extends Component {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    @Override
+    public HackButton getParent() {
+        return parent;
+    }
+
 }
