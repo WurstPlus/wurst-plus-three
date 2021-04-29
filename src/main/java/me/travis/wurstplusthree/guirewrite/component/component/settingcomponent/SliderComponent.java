@@ -162,4 +162,9 @@ public class SliderComponent extends Component {
     public HackButton getParent() {
         return parent;
     }
+
+    @Override
+    public int getOffset() {
+        return offset;
+    }
 }

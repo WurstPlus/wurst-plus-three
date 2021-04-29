@@ -6,6 +6,8 @@
 /.vscode/
 /.settings/
 /.idea/
+.classpath/
+.project/
 
 ### Eclipse ###
 .metadata

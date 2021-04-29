@@ -126,4 +126,9 @@ public class ColorSliderComponent extends Component {
         return this.cValue;
     }
 
+    @Override
+    public int getOffset() {
+        return offset;
+    }
+
 }

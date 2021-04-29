@@ -210,6 +210,12 @@ public class Hacks implements Globals {
         return hacks;
     }
 
+    public List<Hack> getHacksAlp() {
+        List<Hack> sortedHacks = new ArrayList<>(this.hacks);
+        sortedHacks.sort(Comparator.comparing(Hack::getName));
+        return sortedHacks;
+    }
+
     public List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
         if (customFont) {
             return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
