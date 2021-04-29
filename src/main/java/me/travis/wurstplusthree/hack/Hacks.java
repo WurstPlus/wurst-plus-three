@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class Hacks implements Globals {
 
     private final List<Hack> hacks = new ArrayList<>();
-    private List<Hack> drawnHacks = new ArrayList<>();
+    private final List<Hack> drawnHacks = new ArrayList<>();
 
     public Hacks() {
         // chat
