@@ -39,8 +39,6 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public static ArrayList<CategoryComponent> categoryComponents;
 
-    private ResourceLocation shader;
-
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
         int startX = 10;
