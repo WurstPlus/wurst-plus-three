@@ -6,15 +6,13 @@ import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.BoolComponent;
+import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ColorComponent;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ModeComponent;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.SliderComponent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
@@ -34,6 +32,7 @@ public class HackButton extends Component {
     private boolean isHovered;
     public int offset;
     public int subCompLength = 0;
+    public int opY;
 
     public HackButton(Hack mod, CategoryComponent parent, int offset){
         this.mod = mod;
@@ -42,7 +41,7 @@ public class HackButton extends Component {
 
         this.subcomponents = new ArrayList<Component>();
         this.isOpen = false;
-        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
         if(WurstplusThree.SETTINGS.getSettingFromHack(mod) != null){
             for(Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)){
                 if(s instanceof BooleanSetting){
@@ -59,6 +58,10 @@ public class HackButton extends Component {
                 }
                 else if(s instanceof DoubleSetting){
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                }
+                else if(s instanceof ColourSetting){
+                    this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
                 }
             }
@@ -93,7 +96,18 @@ public class HackButton extends Component {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
                     comp.renderComponent();
-                    subCompLength++;
+                    if(comp instanceof ColorComponent) {
+                        if (((ColorComponent) comp).isOpen()) {
+                            subCompLength += 5;
+                            opY += (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5;
+                        }
+                        else {
+                            subCompLength++;
+                        }
+                    }
+                    else {
+                        subCompLength++;
+                    }
                 }
             }
         }
@@ -150,5 +164,9 @@ public class HackButton extends Component {
             return true;
         }
         return false;
+    }
+
+    public void addOpY(int v){
+        opY += v;
     }
 }

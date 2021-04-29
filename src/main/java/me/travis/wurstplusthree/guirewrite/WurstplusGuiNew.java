@@ -28,6 +28,7 @@ public class WurstplusGuiNew extends GuiScreen{
     public static final int FONT_HEIGHT = 4;
     public static final int MODULE_FONT_INDENT = 6;
     public static final int SUB_FONT_INDENT = 2 * MODULE_FONT_INDENT;
+    public static final int COLOR_FONT_INDENT = 2 * SUB_FONT_INDENT;
 
     public static final int GUI_TRANSPARENCY = 0x99000000;
     public static final int GUI_HOVERED_TRANSPARENCY = 0x99222222;
