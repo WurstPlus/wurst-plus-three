@@ -21,6 +21,7 @@ public class GuiRewrite extends Hack{
     public ColourSetting fontColor = new ColourSetting("Font", new Colour(255,255,255, 255), this);
     public BooleanSetting rainbow = new BooleanSetting("Rainbow", false, this);
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
+    public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
 
 
     public GuiRewrite(){

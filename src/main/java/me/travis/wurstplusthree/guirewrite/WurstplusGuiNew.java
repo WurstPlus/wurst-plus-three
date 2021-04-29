@@ -4,10 +4,12 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.client.GuiRewrite;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class WurstplusGuiNew extends GuiScreen{
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        scrollWheelCheck();
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame();
             categoryComponent.updatePosition(mouseX, mouseY);
@@ -114,7 +117,19 @@ public class WurstplusGuiNew extends GuiScreen{
                 }
             }
         }
-
+    }
+    private void scrollWheelCheck() {
+         int dWheel = Mouse.getDWheel();
+         if(dWheel < 0){
+             for(CategoryComponent categoryComponent : categoryComponents){
+                 categoryComponent.setY(categoryComponent.getY() - GuiRewrite.INSTANCE.scrollSpeed.getValue());
+             }
+         }
+         else if(dWheel > 0){
+             for(CategoryComponent categoryComponent : categoryComponents){
+                 categoryComponent.setY(categoryComponent.getY() + GuiRewrite.INSTANCE.scrollSpeed.getValue());
+             }
+         }
     }
 
     @Override
