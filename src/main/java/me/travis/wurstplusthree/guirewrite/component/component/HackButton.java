@@ -149,6 +149,20 @@ public class HackButton extends Component {
         if (isMouseOnButton(mouseX, mouseY) && button == 1) {
             this.isOpen = !this.isOpen;
             this.parent.refresh();
+            for(Component comp : parent.getComponents()){
+                if(comp instanceof HackButton){
+                    if(((HackButton) comp).isOpen){
+                        if(((HackButton) comp).isOpen){
+                            for(Component comp2 : ((HackButton) comp).getChildren()){
+                                if(comp2 instanceof ColorComponent){
+                                    ((ColorComponent) comp2).setOpen(false);
+                                    this.parent.refresh();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         for (Component comp : this.subcomponents) {
             comp.mouseClicked(mouseX, mouseY, button);
