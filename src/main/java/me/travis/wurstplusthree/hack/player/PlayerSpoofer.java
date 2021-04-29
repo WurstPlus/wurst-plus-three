@@ -22,7 +22,7 @@ public class PlayerSpoofer extends Hack {
     public static PlayerSpoofer INSTANCE;
 
     public PlayerSpoofer() {
-        super("PlayerSpoofer", "spoofs you name and skin", Category.PLAYER, false);
+        super("Player Spoofer", "spoofs you name and skin", Category.PLAYER, false);
         INSTANCE = this;
     }
 
