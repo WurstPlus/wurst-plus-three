@@ -65,7 +65,7 @@ public class CapeManager implements Globals {
                 String cape = colune.split(":")[1];
                 URL capeUrl = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/capes/" + cape + ".png");
                 BufferedImage capeImage = ImageIO.read(capeUrl);
-                ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + cape + ".png"));
+                ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
             }
         } catch (Exception e) {

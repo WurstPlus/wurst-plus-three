@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.manager.CapeManager;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -42,7 +43,8 @@ public abstract class MixinAbstractClientPlayer {
                 SkinStorageManipulationer.WrappedResource wr = new SkinStorageManipulationer.WrappedResource(
                         FMLClientHandler.instance().getClient().getTextureManager().getDynamicTextureLocation(uuid.toString(), texture)
                 );
-                callbackInfoReturnable.setReturnValue(wr.location);
+
+                callbackInfoReturnable.setReturnValue(new ResourceLocation(wr.location.toString()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
