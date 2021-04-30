@@ -43,6 +43,7 @@ public class WurstplusThree {
 
     // gui
     public static WurstplusGui GUI;
+    public static WurstplusGuiNew GUI2;
 
     // managers
     public static MenuFont MENU_FONT_MANAGER;
@@ -63,8 +64,6 @@ public class WurstplusThree {
     public static SongManager SONG_MANAGER;
 
     public static RenderUtil2D RENDER_UTIL_2D;
-
-    public static WurstplusGuiNew GUI2;
 
     @Mod.Instance
     public static WurstplusThree INSTANCE;

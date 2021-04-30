@@ -38,6 +38,22 @@ public class BlockUtil implements Globals {
         return new Vec3d[]{new Vec3d(vec3d.x, vec3d.y - 1.0, vec3d.z), new Vec3d(vec3d.x != 0.0 ? vec3d.x * 2.0 : vec3d.x, vec3d.y, vec3d.x != 0.0 ? vec3d.z : vec3d.z * 2.0), new Vec3d(vec3d.x == 0.0 ? vec3d.x + 1.0 : vec3d.x, vec3d.y, vec3d.x == 0.0 ? vec3d.z : vec3d.z + 1.0), new Vec3d(vec3d.x == 0.0 ? vec3d.x - 1.0 : vec3d.x, vec3d.y, vec3d.x == 0.0 ? vec3d.z : vec3d.z - 1.0), new Vec3d(vec3d.x, vec3d.y + 1.0, vec3d.z)};
     }
 
+    public static List<BlockPos> getCircle(final BlockPos loc, final int y, final float r, final boolean hollow) {
+        final List<BlockPos> circleblocks = new ArrayList<>();
+        final int cx = loc.getX();
+        final int cz = loc.getZ();
+        for (int x = cx - (int) r; x <= cx + r; x++) {
+            for (int z = cz - (int) r; z <= cz + r; z++) {
+                final double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z);
+                if (dist < r * r && (!hollow || dist >= (r - 1.0f) * (r - 1.0f))) {
+                    final BlockPos l = new BlockPos(x, y, z);
+                    circleblocks.add(l);
+                }
+            }
+        }
+        return circleblocks;
+    }
+
     private static boolean hasNeighbour(final BlockPos blockPos) {
         for (final EnumFacing side : EnumFacing.values()) {
             final BlockPos neighbour = blockPos.offset(side);
