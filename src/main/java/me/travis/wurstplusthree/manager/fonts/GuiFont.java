@@ -21,8 +21,8 @@ public class GuiFont implements Globals {
     }
 
     public void reset() {
-        this.fontName = "Tahoma";
-        this.fontSize = 16;
+        this.setFont("Tahoma");
+        this.setFontSize(16);
         this.setFont();
     }
 

@@ -57,8 +57,8 @@ public class Nametags extends Hack {
 
     public BooleanSetting outline = new BooleanSetting("Outline", true, this);
     public DoubleSetting outlineWidth = new DoubleSetting("Width", 1.5, 0.1, 3.0, this);
+    public ColourSetting fontColour = new ColourSetting("Font Colour", new Colour(255, 120, 0, 200), this);
     public ColourSetting outlineColour = new ColourSetting("Outline Colour", new Colour(255, 80, 0, 150), this);
-
     public ColourSetting outlineColourFriend = new ColourSetting("Friend Colour", new Colour(20, 20, 255, 150), this);
     public ColourSetting outlineColourEnemy = new ColourSetting("Enemy Colour", new Colour(255, 20, 20, 150), this);
 
@@ -110,7 +110,7 @@ public class Nametags extends Hack {
         boolean isEnemy = WurstplusThree.ENEMY_MANAGER.isEnemy(player.getName());
         String name = ((isFriend || isEnemy) && player.isSneaking() ? SECTIONSIGN + "9" : SECTIONSIGN + "r")
                 + (isFriend ? ChatFormatting.AQUA :
-                isEnemy ? ChatFormatting.RED : ChatFormatting.GOLD)
+                isEnemy ? ChatFormatting.RED : "")
                 + player.getName() + ChatFormatting.RESET
                 + (gameMode.getValue() ? " [" + getShortGamemode(npi.getGameType().getName()) + "]" : "")
                 + " " + SECTIONSIGN + getPing(npi.getResponseTime()) + npi.getResponseTime() + "ms"
@@ -149,9 +149,9 @@ public class Nametags extends Hack {
             RenderUtil.drawTriangleOutline(width - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(name) / 2f, arrowPos.getValue(), 5, 2, 1, outlineWidth.getValue().floatValue(), outlineColor);
         }
         if (customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, -width, 13, -1);
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, -width, 13, fontColour.getValue().getRGB());
         } else {
-            mc.fontRenderer.drawStringWithShadow(name, -width, 11, -1);
+            mc.fontRenderer.drawStringWithShadow(name, -width, 11, fontColour.getValue().getRGB());
         }
         if (armour.getValue()) {
             int xOffset = -6;
