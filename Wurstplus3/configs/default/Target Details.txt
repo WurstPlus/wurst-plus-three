@@ -1,6 +1,0 @@
-Fucked:true
-1.13+:false
-Burrowed:true
-Fucked Colour:255:20:20:150:false
-Burrowed Colour:20:255:255:150:false
-Render:Pretty

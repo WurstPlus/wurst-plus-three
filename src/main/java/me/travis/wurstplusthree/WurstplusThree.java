@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.setting.Settings;
+import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -61,6 +62,8 @@ public class WurstplusThree {
 
     public static SongManager SONG_MANAGER;
 
+    public static RenderUtil2D RENDER_UTIL_2D;
+
     public static WurstplusGuiNew GUI2;
 
     @Mod.Instance
@@ -81,6 +84,7 @@ public class WurstplusThree {
     public void load() {
         EVENTS = new Events();
         SETTINGS = new Settings();
+        RENDER_UTIL_2D = new RenderUtil2D();
         COMMANDS = new Commands();
         HACKS = new Hacks();
         GUI = new WurstplusGui();

@@ -1,9 +1,0 @@
-Opactiy:150
-Scroll Speed:10
-Outline:255:255:255:255:false
-Enabled:20:220:20:255:false
-Background:255:165:0:255:false
-Setting:255:165:0:255:false
-Font Colour:0:0:0:255:false
-Animation Speed:200
-Scrolling:Container

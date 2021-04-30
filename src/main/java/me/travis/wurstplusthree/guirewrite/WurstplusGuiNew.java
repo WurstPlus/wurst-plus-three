@@ -1,11 +1,15 @@
 package me.travis.wurstplusthree.guirewrite;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -36,6 +40,7 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public static final int GUI_TRANSPARENCY = 0x99000000;
     public static final int GUI_HOVERED_TRANSPARENCY = 0x99222222;
+    private boolean flag = false;
 
     public static ArrayList<CategoryComponent> categoryComponents;
 
@@ -47,11 +52,16 @@ public class WurstplusGuiNew extends GuiScreen {
             categoryComponent.setX(startX);
             categoryComponents.add(categoryComponent);
             startX += categoryComponent.getWidth() + 10;
+            flag = false;
         }
     }
 
     @Override
     public void initGui() {
+        flag = false;
+        for(CategoryComponent c : categoryComponents){
+            c.animationValue = 0;
+        }
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
             //mc.entityRenderer.getShaderGroup().deleteShaderGroup(); this crashes
             if (!mc.entityRenderer.isShaderActive()) {
@@ -63,7 +73,10 @@ public class WurstplusGuiNew extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
-
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        if(!flag && Gui.INSTANCE.animation.getValue()) {
+            animate(sr);
+        }
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame();
             categoryComponent.updatePosition(mouseX, mouseY);
@@ -153,6 +166,35 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public static ArrayList<CategoryComponent> getCategories() {
         return categoryComponents;
+    }
+
+    private void animate(ScaledResolution sr){
+        final int deltaTime = WurstplusThree.RENDER_UTIL_2D.getDeltaTime();
+        for(CategoryComponent c : categoryComponents) {
+            final float SEQUENCES = 250;
+            final int y = 500;
+            if(c.animationValue < y){
+                c.animationValue += (y * ((float) (deltaTime) / SEQUENCES));
+            }
+
+            c.animationValue = constrainToRange(c.animationValue, 0, y);
+            final float newY = sr.getScaledHeight() - c.animationValue - 2;
+            WurstplusThree.LOGGER.info(newY);
+            c.setY((int) newY);
+        }
+        int i = 0;
+        for(CategoryComponent c : categoryComponents){
+            if(c.getY() == 7.0){
+                i++;
+            }
+        }
+        if(i == categoryComponents.size()) {
+            flag = true;
+        }
+    }
+
+    private static float constrainToRange(float value, float min, float max) {
+        return Math.min(Math.max(value, min), max);
     }
 
 }

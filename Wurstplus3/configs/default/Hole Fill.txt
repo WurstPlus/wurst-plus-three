@@ -1,4 +1,0 @@
-Range:5
-Rotate:false
-Toggle:true
-Swing:Mainhand

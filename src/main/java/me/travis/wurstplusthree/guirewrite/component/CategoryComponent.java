@@ -50,6 +50,8 @@ public class CategoryComponent {
         }
     }
 
+    public float animationValue = 0;
+
     public ArrayList<Component> getComponents() {
         return components;
     }

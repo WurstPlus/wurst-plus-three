@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.crash.CrashReport;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,6 +37,22 @@ public abstract class MixinMinecraft {
     @Inject(method={"getLimitFramerate"}, at={@At(value="HEAD")}, cancellable=true)
     public void getLimitFramerateHook(CallbackInfoReturnable<Integer> callbackInfoReturnable) {
     }
+
+
+    @Inject(method = "runGameLoop", at = @At("HEAD"))
+    private void runGameLoop(final CallbackInfo callbackInfo) {
+        final long currentTime = getTime();
+        final int deltaTime = (int) (currentTime - lastFrame);
+        lastFrame = currentTime;
+        WurstplusThree.RENDER_UTIL_2D.setDeltaTime(deltaTime);
+    }
+
+    private long lastFrame = getTime();
+
+    public long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+
 
     @Redirect(method={"runGameLoop"}, at=@At(value="INVOKE", target="Lorg/lwjgl/opengl/Display;sync(I)V", remap=false))
     public void syncHook(int maxFps) {

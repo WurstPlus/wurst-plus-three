@@ -1,5 +1,0 @@
-NoPush:true
-Bobbers:true
-Water:true
-Blocks:true
-Ice:true

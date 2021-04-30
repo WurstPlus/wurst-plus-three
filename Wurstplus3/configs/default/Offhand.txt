@@ -1,3 +1,0 @@
-Mode:Totem
-Gap In Hole:true
-Totem HP:16

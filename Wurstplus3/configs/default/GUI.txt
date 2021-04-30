@@ -1,7 +1,0 @@
-Button:224:156:96:255:false
-Line:255:122:5:255:false
-Font:255:255:255:255:false
-Rainbow:false
-RainbowDelay:100
-ScrollSpeed:15
-Blur:true

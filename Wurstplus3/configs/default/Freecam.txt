@@ -1,3 +1,0 @@
-Speed:0.5
-View:false
-Packet:false

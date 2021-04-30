@@ -1,6 +1,0 @@
-Range:5
-Show:Single
-Render:Pretty
-Hide Own:true
-Bedrock Color:0:255:176:100:true
-Obsidian Color:255:0:0:100:false

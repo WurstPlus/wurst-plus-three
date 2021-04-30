@@ -19,6 +19,14 @@ public class RenderUtil2D {
 
     public static int deltaTime;
 
+    public int getDeltaTime(){
+        return deltaTime;
+    }
+
+    public void setDeltaTime(int v){
+        deltaTime = v;
+    }
+
     // Utility
     public static double getAlphaFromHex(int color) {
         return ((double) ((color >> 24 & 0xff) / 255F));

@@ -1,2 +1,0 @@
-Self Colour:255:255:255:200:false
-Other Colour:160:0:0:200:false
