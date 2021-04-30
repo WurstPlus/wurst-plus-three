@@ -10,7 +10,7 @@ made for pvp and killing noobs
 
 on first run ensure your voices volume is maxed ;)
 
-## donations
+## Donations
 
 2 Boosts in discord OR $5 paypal for 1 month 'cool dudes' cape
 
