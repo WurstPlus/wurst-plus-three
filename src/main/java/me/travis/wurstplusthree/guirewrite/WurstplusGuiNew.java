@@ -182,7 +182,14 @@ public class WurstplusGuiNew extends GuiScreen {
         }
         int i = 0;
         for(CategoryComponent c : categoryComponents){
-            if(c.getY() == 7.0){
+            WurstplusThree.LOGGER.info(c.getY() + " " + mc.gameSettings.guiScale);
+            if(c.getY() <= 7.0){
+                i++;
+            }
+            else if(c.getY() <= 38 && mc.gameSettings.fullScreen){
+                i++;
+            }
+            else if(c.getY() <= 578 && mc.gameSettings.guiScale == 1){
                 i++;
             }
         }
