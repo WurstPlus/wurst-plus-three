@@ -479,11 +479,11 @@ public class CrystalAura extends Hack {
         return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
     }
 
-    private EntityOtherPlayerMP newTarget(EntityPlayer currentTarget) {
+    private EntityPlayer newTarget(EntityPlayer currentTarget) {
         if (!(currentTarget.motionX > 0.08 || currentTarget.motionX < -0.08))
-            return (EntityOtherPlayerMP) currentTarget;
+            return currentTarget;
         if (!(currentTarget.motionZ > 0.08 || currentTarget.motionZ < -0.08))
-            return (EntityOtherPlayerMP) currentTarget;
+            return currentTarget;
         currentTarget.getUniqueID();
         GameProfile profile = new GameProfile(currentTarget.getUniqueID(), currentTarget.getName());
         EntityOtherPlayerMP newTarget = new EntityOtherPlayerMP(mc.world, profile);
