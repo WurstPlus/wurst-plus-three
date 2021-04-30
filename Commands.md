@@ -1,4 +1,4 @@
-#Commands
+# Commands
 
 - Friend <add/del/list/clear>
   - Used to add friends (if you have any)
