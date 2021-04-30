@@ -89,7 +89,7 @@ public class CapeManager implements Globals {
 
     public BufferedImage getCapeFromDonor(UUID uuid) {
         for (Pair<UUID, BufferedImage> donator : this.donatorCapes) {
-            if (donator.getKey() == uuid) {
+            if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return donator.getValue();
             }
         }
