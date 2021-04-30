@@ -45,7 +45,7 @@ public class ColorComponent extends Component {
         this.g = new ColorSliderComponent(parent, offset, "Green", set.getValue().getGreen(), this);
         this.b = new ColorSliderComponent(parent, offset, "Blue", set.getValue().getBlue(), this);
         this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getValue().getAlpha(), this);
-        this.bc = new BoolComponent(set, button, offset);
+        this.bc = new BoolComponent(set, button, offset, this);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
