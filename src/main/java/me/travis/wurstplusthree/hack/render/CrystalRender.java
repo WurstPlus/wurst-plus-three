@@ -73,9 +73,7 @@ public class CrystalRender extends Hack {
                     if (entity instanceof EntityEnderCrystal) {
                         this.scaleMap.remove(entity);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception ignored) {}
             }
         }
     }

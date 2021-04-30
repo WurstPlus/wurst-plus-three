@@ -29,7 +29,11 @@ public abstract class MixinAbstractClientPlayer {
         UUID uuid = Objects.requireNonNull(getPlayerInfo()).getGameProfile().getId();
 
         if (WurstplusThree.CAPE_MANAGER.isOg(uuid)) {
-             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
+            callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
+        }
+
+        if (WurstplusThree.CAPE_MANAGER.isContrabutor(uuid)) {
+            callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-dev.png"));
         }
 
         if (WurstplusThree.CAPE_MANAGER.isDonator(uuid)) {

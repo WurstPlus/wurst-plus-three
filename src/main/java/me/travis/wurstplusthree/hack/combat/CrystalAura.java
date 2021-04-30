@@ -68,7 +68,7 @@ public class CrystalAura extends Hack {
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
-    BooleanSetting predictPlace = new BooleanSetting("Predict Place", true, this);
+    BooleanSetting predictPlace = new BooleanSetting("Predict Place", false, this);
     IntSetting predictTicks = new IntSetting("Predict Ticks", 2, 0, 10, this);
 
     EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost"), this);
