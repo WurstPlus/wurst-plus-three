@@ -10,9 +10,9 @@ int myVarName = 0;
 ```
 
 Any contributions to the base of the client must be done in java but any
-contributions to Models can be done in Kotlin and java (depending on the file)!
+contributions to Models can be done in Kotlin or java (depending on the file)!
 
-Before you contribute you must test your for bugs!
+Before you contribute you must test your code for bugs!
 
 Please try to do small contributions so merging is easier!
 
