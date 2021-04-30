@@ -160,11 +160,13 @@ public class Events implements Globals {
         WurstplusThree.SERVER_MANAGER.onPacketReceived();
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
-            if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
-                MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
-                WurstplusThree.POP_MANAGER.onTotemPop(player);
-            }
+            try {
+                if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
+                    EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
+                    MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
+                    WurstplusThree.POP_MANAGER.onTotemPop(player);
+                }
+            } catch (Exception ignored) {}
         } else if (event.getPacket() instanceof SPacketPlayerListItem && !nullCheck() && this.logoutTimer.passedS(1.0)) {
             SPacketPlayerListItem packet = event.getPacket();
             if (!SPacketPlayerListItem.Action.ADD_PLAYER.equals(packet.getAction()) && !SPacketPlayerListItem.Action.REMOVE_PLAYER.equals(packet.getAction())) {
