@@ -52,6 +52,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Crits());
         this.hacks.add(new Burrow());
         this.hacks.add(new AnvilAura());
+        this.hacks.add(new PacketXP());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());

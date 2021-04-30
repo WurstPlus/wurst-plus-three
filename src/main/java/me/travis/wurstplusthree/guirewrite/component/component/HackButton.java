@@ -67,6 +67,9 @@ public class HackButton extends Component {
                     this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
                 }
+                else if (s instanceof KeySetting){
+                    this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
+                }
             }
             this.subcomponents.add(new KeyBindComponent(this, opY));
             this.subcomponents.add(new ShownComponent(this, opY));
