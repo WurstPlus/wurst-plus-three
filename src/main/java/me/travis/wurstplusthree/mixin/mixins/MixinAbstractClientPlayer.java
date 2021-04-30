@@ -14,9 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -36,12 +34,10 @@ public abstract class MixinAbstractClientPlayer {
 
         if (WurstplusThree.CAPE_MANAGER.isDonator(uuid)) {
             try {
-                BufferedImage image = null;
-                image = ImageIO.read(new File("Wurstplus3/capes/"+uuid+".png"));
-                //BufferedImage image = WurstplusThree.CAPE_MANAGER.getCapeFromDonor(uuid);
+                BufferedImage image = WurstplusThree.CAPE_MANAGER.getCapeFromDonor(uuid);
                 DynamicTexture texture = new DynamicTexture(image);
                 SkinStorageManipulationer.WrappedResource wr = new SkinStorageManipulationer.WrappedResource(
-                        FMLClientHandler.instance().getClient().getTextureManager().getDynamicTextureLocation(uuid.toString()+".png", texture)
+                        FMLClientHandler.instance().getClient().getTextureManager().getDynamicTextureLocation(uuid.toString(), texture)
                 );
                 callbackInfoReturnable.setReturnValue(new ResourceLocation(wr.location.toString()));
             } catch (Exception e) {
