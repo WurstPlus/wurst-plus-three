@@ -1,0 +1,22 @@
+#Commands
+
+- Friend <add/del/list/clear>
+  - Used to add friends (if you have any)
+- Enemy <add/del/list/clear>
+  - Used to add enemy's
+- Prefix
+  - Used to set a new prefix
+- Toggle
+  - Used to toggle a hack
+- Bind
+  - Used to bind a hack
+- PlayerSpoof
+  - Used to set the username for the PlayerSpoof hack
+- Help
+  - Used to help dumb people
+- List
+  - Used to see hack descriptions
+- Drawn
+  - Used to draw a hack to hud
+- Font <set/size>
+  - Used to set Cfont (do "set random" for a random font)

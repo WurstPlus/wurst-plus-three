@@ -34,6 +34,8 @@ Right shift opens the GUI
 
 '.' is the default prefix, to change this go to .minecraft\Wurstplus3\configs\default\BINDS.txt and change the top line
 
+For a list of commands [click here](Commands.md)
+
 ## Contributing
 Make a pull request, would be preferable if you joined the discord before hand
 
