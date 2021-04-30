@@ -36,3 +36,5 @@ Right shift opens the GUI
 
 ## Contributing
 Make a pull request, would be preferable if you joined the discord before hand
+
+For a guide on contributing please [click here](ContributingGuide.md) 
