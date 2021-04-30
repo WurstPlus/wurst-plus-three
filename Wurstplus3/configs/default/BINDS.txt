@@ -9,15 +9,15 @@ HUD:0:true
 Gui:54:false
 Kill Aura:0:false
 Surround:0:false
-Crystal Aura:19:true
+Crystal Aura:19:false
 Offhand:0:false
 Trap:0:false
 SelfTrap:0:false
-Hole Fill:0:false
+Hole Fill:33:false
 Crits:0:false
 Burrow:0:false
 Anvil Aura:0:false
-Fake Player:0:false
+Fake Player:49:false
 Middle Click Friend:0:false
 Instant Break:0:false
 Blink:0:false
@@ -30,7 +30,7 @@ Sprint:0:false
 Reverse Step:0:false
 Freecam:0:false
 No Knockback:0:false
-Speed:0:false
+Speed:46:false
 Step:0:false
 Scaffold:0:false
 FastUtil:0:false
@@ -41,10 +41,10 @@ Player Spoofer:0:false
 Anti Fog:0:false
 Nametags:0:false
 Crystal Render:0:false
-Hole ESP:0:false
+Hole ESP:0:true
 No Render:0:false
-Camera Clip:0:false
-Fov:0:false
+Camera Clip:0:true
+Fov:0:true
 Hand Colour:0:false
 Chams:0:false
 Log Spots:0:false
@@ -54,4 +54,4 @@ Target Details:0:false
 Esp:0:false
 Extra Tab:0:false
 Break Highlight:0:false
-ViewModel:0:false
+ViewModel:0:true

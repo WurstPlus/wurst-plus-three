@@ -1,4 +1,4 @@
 Mode:Strafe
-YPort Speed:0.06
-Jump Height:0.41
-Timer Speed:1.15
+YPort Speed:0.15
+Jump Height:0.4
+Timer Speed:1.1

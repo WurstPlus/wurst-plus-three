@@ -53,8 +53,10 @@ public class WurstplusGuiNew extends GuiScreen {
     @Override
     public void initGui() {
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
-            mc.entityRenderer.getShaderGroup().deleteShaderGroup();
-            mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+            //mc.entityRenderer.getShaderGroup().deleteShaderGroup(); this crashes
+            if (!mc.entityRenderer.isShaderActive()) {
+                mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+            }
         }
     }
 
@@ -129,6 +131,7 @@ public class WurstplusGuiNew extends GuiScreen {
     public void onGuiClosed() {
         mc.entityRenderer.stopUseShader();
     }
+
     private void scrollWheelCheck() {
          int dWheel = Mouse.getDWheel();
          if(dWheel < 0){

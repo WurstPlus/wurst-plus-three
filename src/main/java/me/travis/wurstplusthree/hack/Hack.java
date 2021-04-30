@@ -20,6 +20,7 @@ public class Hack implements Globals {
     private final String description;
     private final Category category;
     private int bind;
+    private boolean shown;
     private boolean isEnabled;
     /**
      * -1 = not
@@ -34,6 +35,7 @@ public class Hack implements Globals {
         this.category = cat;
         this.isListening = (shouldAlwaysListen ? 0 : 1);
         this.bind = Keyboard.KEY_NONE;
+        this.shown = true;
         this.isEnabled = false;
     }
 
@@ -84,7 +86,7 @@ public class Hack implements Globals {
         if (this.isEnabled() && this.isListening()) {
             MinecraftForge.EVENT_BUS.register(this);
         }
-        ClientMessage.sendToggleMessage(this, true);
+        if(this.shown) {ClientMessage.sendToggleMessage(this, true);}
     }
 
     public void disable() {
@@ -93,7 +95,7 @@ public class Hack implements Globals {
         }
         this.isEnabled = false;
         this.onDisable();
-        ClientMessage.sendToggleMessage(this, false);
+        if(this.shown) {ClientMessage.sendToggleMessage(this, false);}
     }
 
     public void toggle() {
@@ -129,12 +131,20 @@ public class Hack implements Globals {
         return this.bind;
     }
 
+    public boolean getShown() {
+        return this.shown;
+    }
+
     public String getBindName() {
         return Keyboard.getKeyName(this.bind);
     }
 
     public void setBind(int bind) {
         this.bind = bind;
+    }
+
+    public void setShown(boolean shown) {
+        this.shown = shown;
     }
 
     public Category getCategory() {

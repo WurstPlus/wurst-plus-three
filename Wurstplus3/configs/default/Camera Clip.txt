@@ -1,1 +1,1 @@
-Distance:10.0
+Distance:6.36

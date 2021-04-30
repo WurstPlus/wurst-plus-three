@@ -9,7 +9,7 @@ guiScale:2
 particles:0
 bobView:false
 anaglyph3d:false
-maxFps:120
+maxFps:200
 fboEnable:true
 difficulty:2
 fancyGraphics:true
@@ -26,7 +26,7 @@ chatLinksPrompt:true
 chatOpacity:1.0
 snooperEnabled:true
 fullscreen:false
-enableVsync:true
+enableVsync:false
 useVbo:true
 hideServerAddress:false
 advancedItemTooltips:false
@@ -68,11 +68,11 @@ key_key.playerlist:15
 key_key.pickItem:-98
 key_key.command:53
 key_key.screenshot:60
-key_key.togglePerspective:63
+key_key.togglePerspective:-96
 key_key.smoothCamera:0
 key_key.fullscreen:87
 key_key.spectatorOutlines:0
-key_key.swapHands:33
+key_key.swapHands:211
 key_key.saveToolbarActivator:46
 key_key.loadToolbarActivator:45
 key_key.advancements:38

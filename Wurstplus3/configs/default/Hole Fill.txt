@@ -1,4 +1,4 @@
-Range:3
-Rotate:true
-Toggle:false
+Range:5
+Rotate:false
+Toggle:true
 Swing:Mainhand

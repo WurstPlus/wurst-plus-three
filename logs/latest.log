@@ -1,59 +1,58 @@
-[22:18:56] [main/INFO] [GradleStart]: Extra: []
-[22:18:56] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Administrator/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
-[22:18:56] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:18:56] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:18:56] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
-[22:18:56] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[22:18:56] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2768 for Minecraft 1.12.2 loading
-[22:18:56] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at C:\Users\Administrator\.jdks\corretto-1.8.0_265\jre
-[22:18:57] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
-[22:18:57] [main/ERROR] [FML]: Full: C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
-[22:18:57] [main/ERROR] [FML]: Trimmed: c:/users/administrator/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
-[22:18:57] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
-[22:18:57] [main/INFO] [FML]: Detected deobfuscated environment, loading log configs for colored console logs.
-[22:19:02] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
-[22:19:02] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
-[22:19:02] [main/INFO] [FML]: Found a command line coremod : me.travis.wurstplusthree.mixin.MixinLoader
-[22:19:02] [main/WARN] [FML]: The coremod me.travis.wurstplusthree.mixin.MixinLoader does not have a MCVersion annotation, it may cause issues with this version of Minecraft
-[22:19:02] [main/INFO] [FML]: Ignoring missing certificate for coremod MixinLoader (me.travis.wurstplusthree.mixin.MixinLoader), as this is probably a dev workspace
-[22:19:02] [main/INFO] [wurstplusthree]: mixins initialized
-[22:19:03] [main/INFO] [mixin]: SpongePowered MIXIN Subsystem Version=0.7.11 Source=file:/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.7.11-SNAPSHOT/7a670207bdb97db418118ad1e9bb42424ff3776d/mixin-0.7.11-SNAPSHOT.jar Service=LaunchWrapper Env=CLIENT
-[22:19:04] [main/INFO] [mixin]: Compatibility level set to JAVA_8
-[22:19:04] [main/ERROR] [mixin]: Mixin config mixins.wurstplusthree.json does not specify "minVersion" property
-[22:19:04] [main/INFO] [wurstplusthree]: searge
-[22:19:04] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
-[22:19:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
-[22:19:04] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
-[22:19:04] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
-[22:19:04] [main/INFO] [GradleStart]: Injecting location in coremod me.travis.wurstplusthree.mixin.MixinLoader
-[22:19:04] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.mixin.EnvironmentStateTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[22:19:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:19:09] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
-[22:19:09] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:19:09] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[22:19:09] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.mixin.EnvironmentStateTweaker
-[22:19:09] [main/INFO] [mixin]: Initialised Mixin FML Remapper Adapter with net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper@263bbfeb
-[22:19:09] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[22:19:10] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[22:19:10] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[22:19:10] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[22:19:10] [main/WARN] [mixin]: Reference map 'mixins.wurstplusthree.refmap.json' for mixins.wurstplusthree.json could not be read. If this is a development environment you can ignore this message
-[22:19:12] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[22:19:15] [main/INFO] [net.minecraft.client.Minecraft]: Setting user: Player562
-[22:19:22] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
-[22:19:22] [main/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4
-[22:19:24] [main/INFO] [FML]: -- System Details --
+[01:54:17] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Administrator/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[01:54:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[01:54:17] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[01:54:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[01:54:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[01:54:17] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2768 for Minecraft 1.12.2 loading
+[01:54:17] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at C:\Users\Administrator\.jdks\corretto-1.8.0_265\jre
+[01:54:17] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
+[01:54:17] [main/ERROR] [FML]: Full: C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
+[01:54:17] [main/ERROR] [FML]: Trimmed: c:/users/administrator/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
+[01:54:17] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[01:54:17] [main/INFO] [FML]: Detected deobfuscated environment, loading log configs for colored console logs.
+[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
+[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
+[01:54:20] [main/INFO] [FML]: Found a command line coremod : me.travis.wurstplusthree.mixin.MixinLoader
+[01:54:20] [main/WARN] [FML]: The coremod me.travis.wurstplusthree.mixin.MixinLoader does not have a MCVersion annotation, it may cause issues with this version of Minecraft
+[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod MixinLoader (me.travis.wurstplusthree.mixin.MixinLoader), as this is probably a dev workspace
+[01:54:20] [main/INFO] [wurstplusthree]: mixins initialized
+[01:54:20] [main/INFO] [mixin]: SpongePowered MIXIN Subsystem Version=0.7.11 Source=file:/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.7.11-SNAPSHOT/7a670207bdb97db418118ad1e9bb42424ff3776d/mixin-0.7.11-SNAPSHOT.jar Service=LaunchWrapper Env=CLIENT
+[01:54:21] [main/INFO] [mixin]: Compatibility level set to JAVA_8
+[01:54:21] [main/ERROR] [mixin]: Mixin config mixins.wurstplusthree.json does not specify "minVersion" property
+[01:54:21] [main/INFO] [wurstplusthree]: searge
+[01:54:21] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
+[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod me.travis.wurstplusthree.mixin.MixinLoader
+[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[01:54:24] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[01:54:24] [main/INFO] [mixin]: Initialised Mixin FML Remapper Adapter with net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper@263bbfeb
+[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[01:54:25] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[01:54:25] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[01:54:25] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[01:54:25] [main/WARN] [mixin]: Reference map 'mixins.wurstplusthree.refmap.json' for mixins.wurstplusthree.json could not be read. If this is a development environment you can ignore this message
+[01:54:26] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[01:54:27] [main/INFO] [net.minecraft.client.Minecraft]: Setting user: Player406
+[01:54:33] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[01:54:33] [main/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4
+[01:54:35] [main/INFO] [FML]: -- System Details --
 Details:
 	Minecraft Version: 1.12.2
 	Operating System: Windows 10 (amd64) version 10.0
 	Java Version: 1.8.0_265, Amazon.com Inc.
 	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Amazon.com Inc.
-	Memory: 292148088 bytes (278 MB) / 413663232 bytes (394 MB) up to 1719140352 bytes (1639 MB)
+	Memory: 143614488 bytes (136 MB) / 472907776 bytes (451 MB) up to 1719140352 bytes (1639 MB)
 	JVM Flags: 0 total; 
 	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
 	FML: 
@@ -61,178 +60,154 @@ Details:
 MixinLoader (unknown)
   
 	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 457.51' Renderer: 'GeForce GTX 1050 Ti/PCIe/SSE2'
-[22:19:24] [main/INFO] [FML]: MinecraftForge v14.23.5.2768 Initialized
-[22:19:24] [main/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
-[22:19:24] [main/INFO] [FML]: Replaced 1036 ore ingredients
-[22:19:25] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
-[22:19:27] [main/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
-[22:19:27] [Thread-3/INFO] [FML]: Using sync timing. 200 frames of Display.update took 494473100 nanos
-[22:19:27] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at CLIENT
-[22:19:27] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
-[22:19:29] [main/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Wurst+3
-[22:19:29] [main/INFO] [FML]: Processing ObjectHolder annotations
-[22:19:29] [main/INFO] [FML]: Found 1168 ObjectHolder annotations
-[22:19:30] [main/INFO] [FML]: Identifying ItemStackHolder annotations
-[22:19:30] [main/INFO] [FML]: Found 0 ItemStackHolder annotations
-[22:19:30] [main/INFO] [FML]: Configured a dormant chunk cache size of 0
-[22:19:30] [main/INFO] [wurstplusthree]: loading Wurst+3
-[22:19:30] [main/INFO] [FML]: Applying holder lookups
-[22:19:30] [main/INFO] [FML]: Holder lookups applied
-[22:19:30] [main/INFO] [FML]: Applying holder lookups
-[22:19:30] [main/INFO] [FML]: Holder lookups applied
-[22:19:30] [main/INFO] [FML]: Applying holder lookups
-[22:19:30] [main/INFO] [FML]: Holder lookups applied
-[22:19:30] [main/INFO] [FML]: Applying holder lookups
-[22:19:30] [main/INFO] [FML]: Holder lookups applied
-[22:19:30] [main/INFO] [FML]: Injecting itemstacks
-[22:19:30] [main/INFO] [FML]: Itemstack injection complete
-[22:19:30] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
-[22:19:31] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2855
-[22:19:43] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...
-[22:19:44] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenAL
-[22:19:44] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[22:19:44] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.
-[22:19:44] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine started
-[22:20:00] [main/INFO] [FML]: Max texture size: 16384
-[22:20:01] [main/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlas
-[22:20:05] [main/INFO] [FML]: Applying holder lookups
-[22:20:05] [main/INFO] [FML]: Holder lookups applied
-[22:20:07] [main/ERROR] [FML]: Unable to set any field net.minecraft.client.gui.GuiIngame on type net.minecraftforge.fml.relauncher.ReflectionHelper$UnableToAccessFieldException: java.lang.NullPointerException
-[22:20:07] [main/INFO] [wurstplusthree]: Wurst+3 : 0.2.4 has been loaded
-[22:20:07] [main/INFO] [FML]: Injecting itemstacks
-[22:20:07] [main/INFO] [FML]: Itemstack injection complete
-[22:20:07] [main/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
-[22:20:07] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
-[22:20:07] [main/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
-[22:20:08] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: Invalid session id
-[22:20:20] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Starting integrated minecraft server version 1.12.2
-[22:20:20] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Generating keypair
-[22:20:20] [Server thread/INFO] [FML]: Injecting existing registry data into this server instance
-[22:20:20] [Server thread/INFO] [FML]: Applying holder lookups
-[22:20:20] [Server thread/INFO] [FML]: Holder lookups applied
-[22:20:21] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@3e2198d8)
-[22:20:22] [Server thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 488 advancements
-[22:20:22] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@3e2198d8)
-[22:20:22] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@3e2198d8)
-[22:20:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing start region for level 0
-[22:20:24] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 0%
-[22:20:25] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 50%
-[22:20:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 92%
-[22:20:27] [Server thread/INFO] [FML]: Unloading dimension -1
-[22:20:27] [Server thread/INFO] [FML]: Unloading dimension 1
-[22:20:27] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Changing view distance to 12, from 10
-[22:20:32] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
-[22:20:32] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
-[22:20:32] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.12.2,FML@8.0.99.99,forge@14.23.5.2768,mcp@9.42,wurstplusthree@0.2.4
-[22:20:32] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
-[22:20:32] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
-[22:20:32] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Player562[local:E:e9a54596] logged in with entity id 407 at (-15.099259119203602, 67.0, 165.70099936138908)
-[22:20:32] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player562 joined the game
-[22:20:39] [Server thread/WARN] [net.minecraft.server.MinecraftServer]: Can't keep up! Did the system time change, or is the server overloaded? Running 2210ms behind, skipping 44 tick(s)
-[22:20:39] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:20:39] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:21:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:21:29] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:29] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:30] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:30] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:21:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:21:53] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:21:53] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:22:16] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:22:17] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:22:17] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:22:25] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:22:25] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:22:30] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:22:30] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:24:13] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:16] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:16] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:17] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:17] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:21] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:21] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:24:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:26] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:26] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:26] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:27] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:24:29] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:24:29] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:24:29] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:25:02] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:25:02] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:25:04] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:25:04] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:26:13] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:26:13] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:27:44] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:45] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:46] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:46] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:50] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:27:50] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:27:50] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:27:50] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:28:12] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:28:12] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:28:50] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:28:50] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:28:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:28:52] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:28:52] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:28:53] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:28:59] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:28:59] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:29:06] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:29:07] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:29:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:29:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:29:12] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[22:29:12] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[22:29:21] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : ToggleMsgs
-[22:29:22] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[22:29:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:29:23] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Blink
-[22:29:23] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Freecam
-[22:29:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Stopping server
-[22:29:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving players
-[22:29:23] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Player562 lost connection: Disconnected
-[22:29:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player562 left the game
-[22:29:23] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Stopping singleplayer server as player logged out
-[22:29:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving worlds
-[22:29:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[22:29:24] [Server thread/INFO] [FML]: Unloading dimension 0
-[22:29:24] [Server thread/INFO] [FML]: Applying holder lookups
-[22:29:24] [Server thread/INFO] [FML]: Holder lookups applied
-[22:29:27] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3584]: unloading wurst+3
-[22:29:27] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3586]: wurst+3 has been unloaded
-[22:29:27] [main/INFO] [net.minecraft.client.Minecraft]: Stopping!
-[22:29:27] [main/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...
-[22:29:27] [main/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.com
+[01:54:35] [main/INFO] [FML]: MinecraftForge v14.23.5.2768 Initialized
+[01:54:35] [main/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[01:54:35] [main/INFO] [FML]: Replaced 1036 ore ingredients
+[01:54:36] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
+[01:54:37] [main/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
+[01:54:37] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at CLIENT
+[01:54:37] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[01:54:38] [Thread-3/INFO] [FML]: Using sync timing. 200 frames of Display.update took 237031800 nanos
+[01:54:38] [main/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Wurst+3
+[01:54:39] [main/INFO] [FML]: Processing ObjectHolder annotations
+[01:54:39] [main/INFO] [FML]: Found 1168 ObjectHolder annotations
+[01:54:39] [main/INFO] [FML]: Identifying ItemStackHolder annotations
+[01:54:39] [main/INFO] [FML]: Found 0 ItemStackHolder annotations
+[01:54:39] [main/INFO] [FML]: Configured a dormant chunk cache size of 0
+[01:54:39] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[01:54:39] [main/INFO] [wurstplusthree]: loading Wurst+3
+[01:54:39] [main/INFO] [FML]: Applying holder lookups
+[01:54:39] [main/INFO] [FML]: Holder lookups applied
+[01:54:39] [main/INFO] [FML]: Applying holder lookups
+[01:54:39] [main/INFO] [FML]: Holder lookups applied
+[01:54:39] [main/INFO] [FML]: Applying holder lookups
+[01:54:39] [main/INFO] [FML]: Holder lookups applied
+[01:54:39] [main/INFO] [FML]: Applying holder lookups
+[01:54:39] [main/INFO] [FML]: Holder lookups applied
+[01:54:39] [main/INFO] [FML]: Injecting itemstacks
+[01:54:39] [main/INFO] [FML]: Itemstack injection complete
+[01:54:40] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2855
+[01:54:48] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...
+[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenAL
+[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.
+[01:54:48] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine started
+[01:55:01] [main/INFO] [FML]: Max texture size: 16384
+[01:55:01] [main/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlas
+[01:55:04] [main/INFO] [FML]: Applying holder lookups
+[01:55:04] [main/INFO] [FML]: Holder lookups applied
+[01:55:08] [main/ERROR] [FML]: Unable to set any field net.minecraft.client.gui.GuiIngame on type net.minecraftforge.fml.relauncher.ReflectionHelper$UnableToAccessFieldException: java.lang.NullPointerException
+[01:55:08] [main/INFO] [wurstplusthree]: Wurst+3 : 0.3.0 has been loaded
+[01:55:08] [main/INFO] [FML]: Injecting itemstacks
+[01:55:08] [main/INFO] [FML]: Itemstack injection complete
+[01:55:09] [main/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
+[01:55:09] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[01:55:09] [main/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
+[01:55:11] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: Invalid session id
+[01:55:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Starting integrated minecraft server version 1.12.2
+[01:55:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Generating keypair
+[01:55:15] [Server thread/INFO] [FML]: Injecting existing registry data into this server instance
+[01:55:16] [Server thread/INFO] [FML]: Applying holder lookups
+[01:55:16] [Server thread/INFO] [FML]: Holder lookups applied
+[01:55:16] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
+[01:55:17] [Server thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 488 advancements
+[01:55:17] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
+[01:55:17] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
+[01:55:17] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing start region for level 0
+[01:55:18] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 18%
+[01:55:19] [Server thread/INFO] [FML]: Unloading dimension -1
+[01:55:19] [Server thread/INFO] [FML]: Unloading dimension 1
+[01:55:19] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Changing view distance to 12, from 10
+[01:55:22] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
+[01:55:22] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
+[01:55:22] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.12.2,FML@8.0.99.99,forge@14.23.5.2768,mcp@9.42,wurstplusthree@0.3.0
+[01:55:22] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
+[01:55:22] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
+[01:55:22] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Player406[local:E:37f1657a] logged in with entity id 382 at (30.699999988079067, 65.0, 124.00184179660778)
+[01:55:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 joined the game
+[01:55:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 has made the advancement [Cover Me With Diamonds]
+[01:55:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 has made the advancement [Ice Bucket Challenge]
+[01:55:26] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:55:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:55:26] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Player406 has made the advancement [Cover Me With Diamonds]
+[01:55:26] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Player406 has made the advancement [Ice Bucket Challenge]
+[01:55:26] [main/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 15 advancements
+[01:55:28] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:55:28] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:55:55] [main/INFO] [wurstplusthree]: [CHAT] [1:55] 'sunset' is not a valid number
+[01:55:58] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: [Player406: Set the time to 1000]
+[01:55:58] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Set the time to 1000
+[01:56:02] [main/INFO] [wurstplusthree]: [CHAT] [1:56] 'set' is not a valid number
+[01:56:08] [main/WARN] [net.minecraft.client.network.NetHandlerPlayClient]: Received passengers for unknown entity
+[01:56:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:56:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:11] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:13] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:14] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:15] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:20] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:21] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:27] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:30] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:33] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:39] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:56:40] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:56:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:57:08] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:57:08] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:57:22] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:57:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:57:45] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:57:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:57:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:57:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:57:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:57:55] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:57:55] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:57:56] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:58:00] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:58:01] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[01:58:02] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[01:58:04] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
+[01:58:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:58:15] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:58:35] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:58:35] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[01:58:53] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[01:58:53] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[02:01:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[02:01:43] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[02:01:43] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[02:01:52] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[02:01:53] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[02:01:53] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[02:01:59] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[02:02:19] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[02:02:19] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[02:02:19] [main/WARN] [net.minecraft.client.network.NetHandlerPlayClient]: Received passengers for unknown entity
+[02:02:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
+[02:02:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
+[02:02:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[02:02:25] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
+[02:02:25] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[02:02:26] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Blink
+[02:02:26] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Freecam
+[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Stopping server
+[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving players
+[02:02:26] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Player406 lost connection: Disconnected
+[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 left the game
+[02:02:26] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Stopping singleplayer server as player logged out
+[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving worlds
+[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
+[02:02:26] [Server thread/INFO] [FML]: Unloading dimension 0
+[02:02:26] [Server thread/INFO] [FML]: Applying holder lookups
+[02:02:26] [Server thread/INFO] [FML]: Holder lookups applied
+[02:02:29] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3584]: unloading wurst+3
+[02:02:29] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3586]: wurst+3 has been unloaded
+[02:02:29] [main/INFO] [net.minecraft.client.Minecraft]: Stopping!
+[02:02:29] [main/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...
+[02:02:29] [main/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.com

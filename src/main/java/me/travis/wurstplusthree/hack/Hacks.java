@@ -208,6 +208,16 @@ public class Hacks implements Globals {
         return hacks;
     }
 
+    public List<Hack> getEnabledAndShownHacks() {
+        List<Hack> hacks = new ArrayList<>();
+        for(Hack hack : getEnabledHacks()){
+            if(hack.getShown()){
+                hacks.add(hack);
+            }
+        }
+        return hacks;
+    }
+
     public List<Hack> getHacksAlp() {
         List<Hack> sortedHacks = new ArrayList<>(this.hacks);
         sortedHacks.sort(Comparator.comparing(Hack::getName));
@@ -216,11 +226,11 @@ public class Hacks implements Globals {
 
     public List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
         if (customFont) {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+            return this.getEnabledAndShownHacks().stream().sorted(Comparator.comparing(hack ->
                     WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
                             * (reverse ? -1 : 1))).collect(Collectors.toList());
         } else {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+            return this.getEnabledAndShownHacks().stream().sorted(Comparator.comparing(hack ->
                     mc.fontRenderer.getStringWidth(hack.getFullArrayString())
                             * (reverse ? -1 : 1))).collect(Collectors.toList());
         }
