@@ -4,11 +4,8 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.BotUtil;
 
+@Hack.Registration(name = "Bot", description = "pvp bot", category = Hack.Category.COMBAT, isListening = false)
 public class Bot extends Hack {
-
-    public Bot() {
-        super("Bot", "pvp bot", Category.COMBAT, false);
-    }
 
     private MovementStage currentMovementStage;
     private ActionStage currentActionStage;

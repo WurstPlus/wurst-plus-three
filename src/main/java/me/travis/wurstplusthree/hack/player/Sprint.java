@@ -7,11 +7,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Sprint", description = "sprints automatically", category = Hack.Category.PLAYER, isListening = false)
 public class Sprint extends Hack {
 
-    public Sprint() {
-        super("Sprint", "sprints automatically", Category.PLAYER, false);
-    }
 
     public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);
 

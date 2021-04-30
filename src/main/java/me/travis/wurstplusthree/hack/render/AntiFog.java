@@ -7,11 +7,9 @@ import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Hack.Registration(name = "Anti Fog", description = "removes fog", category = Hack.Category.RENDER, isListening = false)
 public class AntiFog extends Hack {
 
-    public AntiFog() {
-        super("Anti Fog" ,"removes fog", Category.RENDER,  false);
-    }
 
     public BooleanSetting clear = new BooleanSetting("Remove Fog", true, this);
     public BooleanSetting colour = new BooleanSetting("Colour Fog", true, this);

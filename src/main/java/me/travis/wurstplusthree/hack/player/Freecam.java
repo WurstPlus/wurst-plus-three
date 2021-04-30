@@ -16,11 +16,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Hack.Registration(name = "Freecam", description = "lets u see freely", category = Hack.Category.PLAYER, isListening = false)
 public class Freecam extends Hack {
 
-    public Freecam() {
-        super("Freecam", "lets u see freely", Category.PLAYER, false);
-    }
 
     public DoubleSetting speed = new DoubleSetting("Speed", 0.5, 0.1, 5.0, this);
     public BooleanSetting view = new BooleanSetting("View", false, this);

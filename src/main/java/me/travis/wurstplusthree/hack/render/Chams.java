@@ -5,12 +5,12 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
+@Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER, isListening = false)
 public class Chams extends Hack {
 
     public static Chams INSTANCE;
 
     public Chams() {
-        super("Chams", "draws people as colours/through walls", Category.RENDER, false);
         INSTANCE = this;
     }
 

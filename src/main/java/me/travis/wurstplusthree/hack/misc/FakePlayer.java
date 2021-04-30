@@ -10,11 +10,9 @@ import net.minecraft.world.GameType;
 
 import java.util.UUID;
 
+@Hack.Registration(name = "Fake Player", description = "spawns a dripped out fake player", category = Hack.Category.MISC, isListening = false)
 public class FakePlayer extends Hack {
 
-    public FakePlayer() {
-        super("Fake Player", "spawns a dripped out fake player", Category.MISC, false);
-    }
 
     final private ItemStack[] armour = new ItemStack[] {
             new ItemStack(Items.GOLDEN_BOOTS),

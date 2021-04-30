@@ -17,12 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 28/04/2021
  */
 
+@Hack.Registration(name = "Player Spoofer", description = "spoofs you name and skin", category = Hack.Category.PLAYER, isListening = false)
 public class PlayerSpoofer extends Hack {
 
     public static PlayerSpoofer INSTANCE;
 
     public PlayerSpoofer() {
-        super("Player Spoofer", "spoofs you name and skin", Category.PLAYER, false);
         INSTANCE = this;
     }
 

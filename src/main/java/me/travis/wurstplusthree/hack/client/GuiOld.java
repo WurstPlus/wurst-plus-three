@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Gui Old", description = "displays a skidded GUI", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_0)
 public class GuiOld extends Hack {
 
     public static GuiOld INSTANCE;
@@ -25,8 +26,6 @@ public class GuiOld extends Hack {
     public EnumSetting scrolling = new EnumSetting("Scrolling", "Screen", Arrays.asList("Screen", "Container"), this);
 
     public GuiOld() {
-        super("GUI Old", "displays a skidded GUI", Category.CLIENT, true);
-        this.setBind(Keyboard.KEY_0);
         INSTANCE = this;
     }
 

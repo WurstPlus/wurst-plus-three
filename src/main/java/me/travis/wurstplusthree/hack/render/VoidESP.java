@@ -16,11 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Arrays;
 import java.util.List;
 
+@Hack.Registration(name = "Void Esp", description = "see where the void is", category = Hack.Category.RENDER, isListening = false)
 public class VoidESP extends Hack {
 
-    public VoidESP() {
-        super("Void Esp", "see where the void is", Category.RENDER, false);
-    }
 
     IntSetting range = new IntSetting("Range", 10, 0, 50, this);
     IntSetting yLevel = new IntSetting("Slef Y", 20, 0, 255, this);

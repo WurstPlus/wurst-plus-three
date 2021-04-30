@@ -9,12 +9,12 @@ import me.travis.wurstplusthree.util.elements.Colour;
  * @since 28/04/2021
  */
 
+@Hack.Registration(name = "Pitbull", description = "makes everyones skin pitbull", category = Hack.Category.RENDER, isListening = false)
 public class Pitbull extends Hack {
 
     public static Pitbull INSTANCE;
 
     public Pitbull(){
-        super("Pitbull", "makes everyones skin pitbull",  Category.MISC, false);
         INSTANCE = this;
     }
 

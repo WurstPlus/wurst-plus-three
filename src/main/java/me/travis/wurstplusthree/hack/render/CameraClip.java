@@ -3,12 +3,12 @@ package me.travis.wurstplusthree.hack.render;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
+@Hack.Registration(name = "Camera Clip", description = "f5 mode", category = Hack.Category.RENDER, isListening = false)
 public class CameraClip extends Hack {
 
     public static CameraClip INSTANCE;
 
     public CameraClip() {
-        super("Camera Clip", "f5 mode", Category.RENDER,  false);
         INSTANCE = this;
     }
 

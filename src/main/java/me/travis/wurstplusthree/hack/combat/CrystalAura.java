@@ -32,13 +32,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
 
+@Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
 
     // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
-        super("Crystal Aura", "the goods", Category.COMBAT, false);
         INSTANCE = this;
     }
 

@@ -4,11 +4,9 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 
+@Hack.Registration(name = "Radio", description = "plays the best music", category = Hack.Category.MISC, isListening = false)
 public class Radio extends Hack {
 
-    public Radio() {
-        super("Radio", "plays the best music", Category.MISC, false);
-    }
 
     BooleanSetting playButton = new BooleanSetting("Play", false, this);
     BooleanSetting stopButton = new BooleanSetting("Stop", false, this);

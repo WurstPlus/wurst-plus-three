@@ -13,11 +13,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Speed", description = "makes u go faster", category = Hack.Category.PLAYER, isListening = false)
 public class Speed extends Hack {
 
-    public Speed() {
-        super("Speed", "makes u go faster", Category.PLAYER, false);
-    }
 
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);
     DoubleSetting yPortSpeed = new DoubleSetting("YPort Speed", 0.06, 0.01, 0.15, this);
