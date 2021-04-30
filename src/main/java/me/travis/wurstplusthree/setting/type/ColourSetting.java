@@ -17,7 +17,10 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
 
     @Override
     public Colour getValue() {
-        if (rainbow) return Colour.fromHSB((System.currentTimeMillis() % (360 * 32)) / (360f * 32), 1, 1);
+        if (rainbow) {
+            Color c = Colour.fromHSB((System.currentTimeMillis() % (360 * 32)) / (360f * 32), 1, 1);
+            return new Colour(c.getRed(), c.getGreen(), c.getBlue(), value.getAlpha());
+        }
         else return super.getValue();
     }
 

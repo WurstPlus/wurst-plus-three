@@ -6,6 +6,8 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -37,8 +39,6 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public static ArrayList<CategoryComponent> categoryComponents;
 
-    private ResourceLocation shader;
-
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
         int startX = 10;
@@ -52,21 +52,15 @@ public class WurstplusGuiNew extends GuiScreen {
 
     @Override
     public void initGui() {
+        if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
+            mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+        }
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
-
-        this.shader = new ResourceLocation("minecraft", "shaders/post/blur.json");
-
-        if (!mc.entityRenderer.isShaderActive() && Gui.INSTANCE.blur.getValue()) {
-            mc.entityRenderer.loadShader(this.shader);
-        }
-
-        if (!Gui.INSTANCE.blur.getValue()) {
-            mc.entityRenderer.stopUseShader();
-        }
 
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame();

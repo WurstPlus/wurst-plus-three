@@ -55,6 +55,9 @@ public class ColorComponent extends Component {
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
         colorComponents.add(a);
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        colorComponents.add(bc);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+
     }
 
     @Override

@@ -119,7 +119,7 @@ public class HackButton extends Component {
             for (Component c : subcomponents) {
                 if (c instanceof ColorComponent) {
                     if (((ColorComponent) c).isOpen()) {
-                        val += 4;
+                        val += 5;
                     }
                 }
             }
