@@ -1,0 +1,6 @@
+Rotate:true
+Hybrid:true
+Packet:true
+Block Face:false
+Blocks Per Tick:2
+Timeout Ticks:20

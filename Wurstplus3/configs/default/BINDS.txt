@@ -1,0 +1,57 @@
+.
+Clear Chatbox:0:false
+Totem Pop Counter:0:false
+Auto Ez:0:false
+Custom Chat:0:true
+ToggleMsgs:0:true
+GUI Old:11:false
+HUD:0:true
+Gui:54:false
+Kill Aura:0:false
+Surround:0:false
+Crystal Aura:19:true
+Offhand:0:false
+Trap:0:false
+SelfTrap:0:false
+Hole Fill:0:false
+Crits:0:false
+Burrow:0:false
+Anvil Aura:0:false
+Fake Player:0:false
+Middle Click Friend:0:false
+Instant Break:0:false
+Blink:0:false
+Replenish:0:false
+Entity Mine:0:false
+AntiVoid:0:false
+Radio:0:false
+Pitbull:0:false
+Sprint:0:false
+Reverse Step:0:false
+Freecam:0:false
+No Knockback:0:false
+Speed:0:false
+Step:0:false
+Scaffold:0:false
+FastUtil:0:false
+Armour Mend:0:false
+XCarry:0:false
+Jesus:0:false
+Player Spoofer:0:false
+Anti Fog:0:false
+Nametags:0:false
+Crystal Render:0:false
+Hole ESP:0:false
+No Render:0:false
+Camera Clip:0:false
+Fov:0:false
+Hand Colour:0:false
+Chams:0:false
+Log Spots:0:false
+Tracers:0:false
+Small Shield:0:false
+Target Details:0:false
+Esp:0:false
+Extra Tab:0:false
+Break Highlight:0:false
+ViewModel:0:false

@@ -1,0 +1,7 @@
+Mode:Normal
+Target:Focus
+Range:4.5
+Rotate:false
+Walls:true
+Swing:true
+32k Delay:3

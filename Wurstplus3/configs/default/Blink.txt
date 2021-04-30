@@ -1,0 +1,5 @@
+mode:Manual
+CPacketPlayer:true
+Time Limit:20
+Packet Limit:20
+Distance:10.0

@@ -1,0 +1,7 @@
+Rotate:true
+Instant:true
+Type:Packet
+Block:All
+Force:1.5
+Center:false
+Bypass:false

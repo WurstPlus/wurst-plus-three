@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.util;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.chat.ToggleMessages;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentBase;
@@ -17,16 +18,21 @@ public class ClientMessage implements Globals {
     private static final String opener = ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.WHITE + " : " + ChatFormatting.RESET;
 
     public static void sendToggleMessage(Hack hack, boolean enabled) {
-        if (hack.getName().equalsIgnoreCase("gui")) return;
-        ChatFormatting open = (enabled ? ChatFormatting.GREEN : ChatFormatting.RED);
-        if (hack.getName().equalsIgnoreCase("crystal aura")) {
-            if (open == ChatFormatting.GREEN) {
-                sendMessage("we " + open + "gaming");
-            } else {
-                sendMessage("we aint " + open + "gaming " + ChatFormatting.RESET + "no more");
+        if(mc.world != null && mc.player != null) {
+            if(WurstplusThree.HACKS.ishackEnabled("togglemsgs")) {
+                if (hack.getName().equalsIgnoreCase("gui")) return;
+                ChatFormatting open = (enabled ? ChatFormatting.GREEN : ChatFormatting.RED);
+                boolean compact = ToggleMessages.INSTANCE.compact.getValue();
+                if (hack.getName().equalsIgnoreCase("crystal aura")) {
+                    if (open == ChatFormatting.GREEN) {
+                        sendMessage("we " + open + "gaming", !compact);
+                    } else {
+                        sendMessage("we aint " + open + "gaming " + ChatFormatting.RESET + "no more", !compact);
+                    }
+                } else {
+                    sendMessage(open + hack.getName(), !compact);
+                }
             }
-        } else {
-            sendMessage(open + hack.getName());
         }
     }
 
@@ -84,4 +90,14 @@ public class ClientMessage implements Globals {
         }
     }
 
+    public static void sendMessage(String message, boolean perm){
+        if(mc.player == null) return;
+        try{
+            TextComponentString component = new TextComponentString(opener + message);
+            int i = perm ? 0 : 12076;
+            mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(component, i);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
 }

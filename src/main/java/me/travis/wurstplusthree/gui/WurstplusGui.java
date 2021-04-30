@@ -85,7 +85,7 @@ public class WurstplusGui extends MinecraftHUDGUI {
         };
         Point pos = new Point(10, 10);
         for (Hack.Category category : WurstplusThree.HACKS.getCategories()) {
-            DraggableContainer panel = new DraggableContainer(category.name(), null, theme.getPanelRenderer(), new SimpleToggleable(false), new SettingsAnimation(GuiOld.INSTANCE.animationSpeed), null, new Point(pos), 100) {
+            DraggableContainer panel = new DraggableContainer(category.name(), null, theme.getPanelRenderer(), new SimpleToggleable(true), new SettingsAnimation(GuiOld.INSTANCE.animationSpeed), null, new Point(pos), 100) {
                 @Override
                 protected int getScrollHeight(int childHeight) {
                     if (GuiOld.INSTANCE.scrolling.getValue().equals("Screen")) {

@@ -1,0 +1,4 @@
+Mode:Self
+Ammount:1
+Rotate:false
+Range:4

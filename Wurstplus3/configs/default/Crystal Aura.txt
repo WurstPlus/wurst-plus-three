@@ -1,0 +1,39 @@
+Place:true
+Break:true
+Anti Weakness:true
+Break Range:5.0
+Place Range:5.0
+Break Range Wall:3.0
+Place Range Wall:3.0
+Place Delay:0
+Break Delay:1
+HP Enemy Place:9
+HP Enemy Break:8
+Max Self Damage:5
+Rotate:Off
+Raytrace:false
+Swing:Mainhand
+Auto Switch:true
+Anti Suicide:true
+Packet Safe:false
+Predict Crystal:true
+Predict Block:true
+Predict Place:true
+Predict Ticks:2
+Fast:Ghost
+1.13:false
+Tabbott:true
+Tabbott HP:8
+Armour Fucker:true
+Armour%:20
+Stop Faceplace Sword:false
+Place Swing:true
+AttackPacket:true
+Chain Mode:false
+Chain Counter:3
+Chain Step:2
+Render:Pretty
+Width:1
+Fill Colour:0:0:0:255:false
+Box Colour:255:255:255:255:false
+RenderDamage:true

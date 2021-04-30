@@ -1,0 +1,5 @@
+Textured:false
+Coloured:false
+XQZ:false
+Colour:255:255:255:150:false
+Hidden Colour:255:255:255:150:false

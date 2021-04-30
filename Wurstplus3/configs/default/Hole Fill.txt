@@ -1,0 +1,4 @@
+Range:3
+Rotate:true
+Toggle:false
+Swing:Mainhand

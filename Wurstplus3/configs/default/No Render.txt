@@ -1,0 +1,12 @@
+Armour:true
+Fire:true
+Blind:true
+Nausea:true
+Hurt Cam:true
+Sky Light:false
+Bossbar:false
+Weather:false
+Change Time:false
+Block:true
+Water:true
+Time:0

@@ -1,0 +1,4 @@
+Mode:Extra
+Speed:4
+Rotate:true
+Swing:Mainhand

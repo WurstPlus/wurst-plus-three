@@ -1,0 +1,15 @@
+Welcomer:false
+Watermark:true
+Fps:false
+Tps:false
+Ping:false
+Clock:true
+ArrayList:true
+Helper:true
+Stats:false
+Lag Notification:true
+Coords:true
+Armour:false
+Font:255:255:255:200:false
+Outline:0:0:0:255:false
+Custom Font:true
