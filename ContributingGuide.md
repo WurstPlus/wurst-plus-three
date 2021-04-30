@@ -20,4 +20,4 @@ Also join the discord to see the #todo section
 
 Finally, please don't write china code!!!!!
 
-Unless you me >:)
+Unless your me >:)
