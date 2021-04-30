@@ -101,7 +101,7 @@ public class HackButton extends Component {
                     comp.renderComponent();
                     if (comp instanceof ColorComponent) {
                         if (((ColorComponent) comp).isOpen()) {
-                            subCompLength += 5;
+                            subCompLength += 6;
                         } else {
                             subCompLength++;
                         }
