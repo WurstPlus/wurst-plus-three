@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.render;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ public class Tracers extends Hack {
 
     DoubleSetting width = new DoubleSetting("Width", 2.0, 0.0, 10.0, this);
     DoubleSetting range = new DoubleSetting("Range", 100.0, 0.0, 500.0, this);
+    BooleanSetting friends = new BooleanSetting("Friends", true, this);
 
     @Override
     public void onRender3D(Render3DEvent event) {
@@ -32,6 +34,7 @@ public class Tracers extends Hack {
         mc.world.loadedEntityList.forEach(entity -> {
             if (!(entity instanceof EntityPlayer) || entity == mc.player) return;
             EntityPlayer player = (EntityPlayer) entity;
+            if (!friends.getValue() && WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return;
             if (mc.player.getDistance(player) > range.getValue()) return;
             float[] colour = this.getColorByDistance(entity);
             this.drawLineToEntity(entity, colour[0], colour[1], colour[2], colour[3]);

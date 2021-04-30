@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.*;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.GuiRewrite;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ColorUtil;
@@ -88,12 +88,12 @@ public class HackButton extends Component {
         if (mod.isEnabled()) {
             RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING,
                     parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING,
-                    (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()),
-                    (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(GuiRewrite.INSTANCE.rainbowDelay.getValue(), GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()));
+                    (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()),
+                    (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()));
         } else {
             RenderUtil2D.drawRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
         }
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_INDENT, parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_INDENT, parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getColor().hashCode());
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
@@ -119,7 +119,7 @@ public class HackButton extends Component {
             for (Component c : subcomponents) {
                 if (c instanceof ColorComponent) {
                     if (((ColorComponent) c).isOpen()) {
-                        val += 4;
+                        val += 5;
                     }
                 }
             }

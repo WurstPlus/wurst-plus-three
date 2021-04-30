@@ -3,9 +3,8 @@ package me.travis.wurstplusthree.guirewrite.component;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
-import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.ColorComponent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.GuiRewrite;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
@@ -19,8 +18,8 @@ import java.util.ArrayList;
 public class CategoryComponent {
     public ArrayList<Component> components;
     public Hack.Category category;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     public int x;
     public int y;
     public boolean isOpen;
@@ -69,9 +68,9 @@ public class CategoryComponent {
 
     public void renderFrame() {
         RenderUtil2D.drawGradientRect(this.x, this.y, this.x + width, this.y + height,
-                (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()),
-                (GuiRewrite.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(GuiRewrite.INSTANCE.rainbowDelay.getValue(), GuiRewrite.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : GuiRewrite.INSTANCE.buttonColor.getColor().hashCode()));
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_INDENT, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
+                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()),
+                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()));
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_INDENT, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getColor().hashCode());
 
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
@@ -86,9 +85,9 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, GuiRewrite.INSTANCE.lineColor.getColor().hashCode()); // Left
-                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, GuiRewrite.INSTANCE.lineColor.getColor().hashCode()); // Right
-                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, GuiRewrite.INSTANCE.lineColor.getColor().hashCode()); // Bottom
+                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getColor().hashCode()); // Left
+                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getColor().hashCode()); // Right
+                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getColor().hashCode()); // Bottom
             }
         }
     }

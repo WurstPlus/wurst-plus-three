@@ -4,12 +4,11 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
-import me.travis.wurstplusthree.hack.client.GuiRewrite;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -18,19 +17,21 @@ import java.util.ArrayList;
  */
 
 public class ColorComponent extends Component {
-    private ColourSetting set;
-    private HackButton parent;
+    private final ColourSetting set;
+    private final HackButton parent;
     private int offset;
-    private int opY;
     private boolean isOpen;
     private boolean firstTimeOpen;
     private int x;
     private int y;
-    private ColorSliderComponent r;
-    private ColorSliderComponent g;
-    private ColorSliderComponent b;
-    private ColorSliderComponent a;
-    private ArrayList<Component> colorComponents;
+    private final ColorSliderComponent r;
+    private final ColorSliderComponent g;
+    private final ColorSliderComponent b;
+    private final ColorSliderComponent a;
+    private final BoolComponent bc;
+    private final ArrayList<Component> colorComponents;
+
+    // TODO : ADD RAINBOW BUTTON
 
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
         this.set = value;
@@ -44,6 +45,7 @@ public class ColorComponent extends Component {
         this.g = new ColorSliderComponent(parent, offset, "Green", set.getColor().getGreen(), this);
         this.b = new ColorSliderComponent(parent, offset, "Blue", set.getColor().getBlue(), this);
         this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getColor().getAlpha(), this);
+        this.bc = new BoolComponent(set, button, offset);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
@@ -53,13 +55,16 @@ public class ColorComponent extends Component {
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
         colorComponents.add(a);
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        colorComponents.add(bc);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+
     }
 
     @Override
     public void renderComponent() {
         RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.set.getColor().hashCode());
         // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getColor().hashCode());
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, GuiRewrite.INSTANCE.fontColor.getColor().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getColor().hashCode());
         if (this.isOpen) {
             for (Component component : colorComponents) {
                 component.renderComponent();
@@ -70,7 +75,7 @@ public class ColorComponent extends Component {
     @Override
     public void setOff(int newOff) {
         offset = newOff;
-        opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
         for (Component c : colorComponents) {
             c.setOff(opY);
             opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
@@ -85,7 +90,7 @@ public class ColorComponent extends Component {
                     if (((HackButton) comp).isOpen) {
                         for (Component comp2 : ((HackButton) comp).getChildren()) {
                             if (comp2 instanceof ColorComponent) {
-                                if (((ColorComponent) comp2).isOpen && (ColorComponent) comp2 != this) {
+                                if (((ColorComponent) comp2).isOpen && comp2 != this) {
                                     ((ColorComponent) comp2).setOpen(false);
                                     this.parent.parent.refresh();
                                 }
@@ -111,7 +116,7 @@ public class ColorComponent extends Component {
                     continue;
                 }
                 if (flag) {
-                    component.setOff(component.getOffset() + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 4);
+                    component.setOff(component.getOffset() + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
                 }
             }
             this.firstTimeOpen = false;
