@@ -6,7 +6,7 @@ Place Range:5.0
 Break Range Wall:3.0
 Place Range Wall:3.0
 Place Delay:0
-Break Delay:0
+Break Delay:1
 HP Enemy Place:9
 HP Enemy Break:8
 Max Self Damage:5

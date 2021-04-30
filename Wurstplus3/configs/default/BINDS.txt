@@ -10,7 +10,7 @@ Gui:54:false
 Kill Aura:0:false
 Surround:0:false
 Crystal Aura:19:false
-Offhand:0:false
+Offhand:0:true
 Trap:0:false
 SelfTrap:0:false
 Hole Fill:33:false
@@ -19,7 +19,7 @@ Burrow:0:false
 Anvil Aura:0:false
 Fake Player:49:false
 Middle Click Friend:0:false
-Instant Break:0:false
+Instant Break:0:true
 Blink:0:false
 Replenish:0:false
 Entity Mine:0:false
@@ -29,20 +29,20 @@ Pitbull:0:false
 Sprint:0:false
 Reverse Step:0:false
 Freecam:0:false
-No Knockback:0:false
+No Knockback:0:true
 Speed:46:false
 Step:0:false
 Scaffold:0:false
-FastUtil:0:false
+FastUtil:0:true
 Armour Mend:0:false
 XCarry:0:false
 Jesus:0:false
 Player Spoofer:0:false
-Anti Fog:0:false
-Nametags:0:false
+Anti Fog:0:true
+Nametags:0:true
 Crystal Render:0:false
 Hole ESP:0:true
-No Render:0:false
+No Render:0:true
 Camera Clip:0:true
 Fov:0:true
 Hand Colour:0:false

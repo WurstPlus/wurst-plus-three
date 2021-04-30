@@ -1,5 +1,5 @@
 Remove Fog:true
 Colour Fog:true
 Overworld:255:255:255:255:false
-Nether:255:255:255:255:false
+Nether:251:0:255:255:true
 End:255:255:255:255:false

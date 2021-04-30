@@ -1,58 +1,63 @@
-[01:54:17] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Administrator/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
-[01:54:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[01:54:17] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[01:54:17] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
-[01:54:17] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[01:54:17] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2768 for Minecraft 1.12.2 loading
-[01:54:17] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at C:\Users\Administrator\.jdks\corretto-1.8.0_265\jre
-[01:54:17] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
-[01:54:17] [main/ERROR] [FML]: Full: C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
-[01:54:17] [main/ERROR] [FML]: Trimmed: c:/users/administrator/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
-[01:54:17] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
-[01:54:17] [main/INFO] [FML]: Detected deobfuscated environment, loading log configs for colored console logs.
-[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
-[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
-[01:54:20] [main/INFO] [FML]: Found a command line coremod : me.travis.wurstplusthree.mixin.MixinLoader
-[01:54:20] [main/WARN] [FML]: The coremod me.travis.wurstplusthree.mixin.MixinLoader does not have a MCVersion annotation, it may cause issues with this version of Minecraft
-[01:54:20] [main/INFO] [FML]: Ignoring missing certificate for coremod MixinLoader (me.travis.wurstplusthree.mixin.MixinLoader), as this is probably a dev workspace
-[01:54:20] [main/INFO] [wurstplusthree]: mixins initialized
-[01:54:20] [main/INFO] [mixin]: SpongePowered MIXIN Subsystem Version=0.7.11 Source=file:/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.7.11-SNAPSHOT/7a670207bdb97db418118ad1e9bb42424ff3776d/mixin-0.7.11-SNAPSHOT.jar Service=LaunchWrapper Env=CLIENT
-[01:54:21] [main/INFO] [mixin]: Compatibility level set to JAVA_8
-[01:54:21] [main/ERROR] [mixin]: Mixin config mixins.wurstplusthree.json does not specify "minVersion" property
-[01:54:21] [main/INFO] [wurstplusthree]: searge
-[01:54:21] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
-[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
-[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
-[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
-[01:54:21] [main/INFO] [GradleStart]: Injecting location in coremod me.travis.wurstplusthree.mixin.MixinLoader
-[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.mixin.EnvironmentStateTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[01:54:21] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[01:54:24] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
-[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
-[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.mixin.EnvironmentStateTweaker
-[01:54:24] [main/INFO] [mixin]: Initialised Mixin FML Remapper Adapter with net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper@263bbfeb
-[01:54:24] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[01:54:25] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
-[01:54:25] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
-[01:54:25] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
-[01:54:25] [main/WARN] [mixin]: Reference map 'mixins.wurstplusthree.refmap.json' for mixins.wurstplusthree.json could not be read. If this is a development environment you can ignore this message
-[01:54:26] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
-[01:54:27] [main/INFO] [net.minecraft.client.Minecraft]: Setting user: Player406
-[01:54:33] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
-[01:54:33] [main/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4
-[01:54:35] [main/INFO] [FML]: -- System Details --
+[04:56:03] [main/INFO] [GradleStart]: username: rachelzone02@gmail.com
+[04:56:03] [main/INFO] [GradleStart]: Extra: []
+[04:56:03] [main/INFO] [GradleStart]: Password found, attempting login
+[04:56:03] [main/INFO] [com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication]: Logging in with username & password
+[04:56:04] [main/INFO] [GradleStart]: Login Succesful!
+[04:56:05] [main/INFO] [GradleStart]: Running with arguments: [--userProperties, [], --assetsDir, C:/Users/Administrator/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --userType, mojang, --accessToken{REDACTED}, --version, 1.12.2, --uuid, 324ec8f7c1b44197aaeced7bdb38e2a5, --username, ray_and_ice, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[04:56:05] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[04:56:05] [main/INFO] [LaunchWrapper]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[04:56:05] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[04:56:05] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[04:56:05] [main/INFO] [FML]: Forge Mod Loader version 14.23.5.2768 for Minecraft 1.12.2 loading
+[04:56:05] [main/INFO] [FML]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at C:\Users\Administrator\.jdks\corretto-1.8.0_265\jre
+[04:56:05] [main/ERROR] [FML]: Apache Maven library folder was not in the format expected. Using default libraries directory.
+[04:56:05] [main/ERROR] [FML]: Full: C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
+[04:56:05] [main/ERROR] [FML]: Trimmed: c:/users/administrator/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
+[04:56:05] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[04:56:05] [main/INFO] [FML]: Detected deobfuscated environment, loading log configs for colored console logs.
+[04:56:07] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugin
+[04:56:07] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugin
+[04:56:07] [main/INFO] [FML]: Found a command line coremod : me.travis.wurstplusthree.mixin.MixinLoader
+[04:56:07] [main/WARN] [FML]: The coremod me.travis.wurstplusthree.mixin.MixinLoader does not have a MCVersion annotation, it may cause issues with this version of Minecraft
+[04:56:07] [main/INFO] [FML]: Ignoring missing certificate for coremod MixinLoader (me.travis.wurstplusthree.mixin.MixinLoader), as this is probably a dev workspace
+[04:56:07] [main/INFO] [wurstplusthree]: mixins initialized
+[04:56:08] [main/INFO] [mixin]: SpongePowered MIXIN Subsystem Version=0.7.11 Source=file:/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.7.11-SNAPSHOT/7a670207bdb97db418118ad1e9bb42424ff3776d/mixin-0.7.11-SNAPSHOT.jar Service=LaunchWrapper Env=CLIENT
+[04:56:08] [main/INFO] [mixin]: Compatibility level set to JAVA_8
+[04:56:08] [main/ERROR] [mixin]: Mixin config mixins.wurstplusthree.json does not specify "minVersion" property
+[04:56:08] [main/INFO] [wurstplusthree]: searge
+[04:56:08] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
+[04:56:08] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[04:56:08] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[04:56:08] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[04:56:08] [main/INFO] [GradleStart]: Injecting location in coremod me.travis.wurstplusthree.mixin.MixinLoader
+[04:56:08] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Loading tweak class name org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[04:56:08] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[04:56:14] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[04:56:14] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[04:56:14] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[04:56:14] [main/INFO] [LaunchWrapper]: Calling tweak class org.spongepowered.asm.mixin.EnvironmentStateTweaker
+[04:56:14] [main/INFO] [mixin]: Initialised Mixin FML Remapper Adapter with net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper@238bfd6c
+[04:56:14] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[04:56:15] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[04:56:15] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[04:56:15] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[04:56:15] [main/WARN] [mixin]: Reference map 'mixins.wurstplusthree.refmap.json' for mixins.wurstplusthree.json could not be read. If this is a development environment you can ignore this message
+[04:56:18] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[04:56:22] [main/INFO] [net.minecraft.client.Minecraft]: Setting user: ray_and_ice
+[04:56:29] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[04:56:29] [main/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4
+[04:56:31] [main/INFO] [FML]: -- System Details --
 Details:
 	Minecraft Version: 1.12.2
 	Operating System: Windows 10 (amd64) version 10.0
 	Java Version: 1.8.0_265, Amazon.com Inc.
 	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Amazon.com Inc.
-	Memory: 143614488 bytes (136 MB) / 472907776 bytes (451 MB) up to 1719140352 bytes (1639 MB)
+	Memory: 289492632 bytes (276 MB) / 400031744 bytes (381 MB) up to 1719140352 bytes (1639 MB)
 	JVM Flags: 0 total; 
 	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
 	FML: 
@@ -60,154 +65,190 @@ Details:
 MixinLoader (unknown)
   
 	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 457.51' Renderer: 'GeForce GTX 1050 Ti/PCIe/SSE2'
-[01:54:35] [main/INFO] [FML]: MinecraftForge v14.23.5.2768 Initialized
-[01:54:35] [main/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
-[01:54:35] [main/INFO] [FML]: Replaced 1036 ore ingredients
-[01:54:36] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
-[01:54:37] [main/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
-[01:54:37] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at CLIENT
-[01:54:37] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
-[01:54:38] [Thread-3/INFO] [FML]: Using sync timing. 200 frames of Display.update took 237031800 nanos
-[01:54:38] [main/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Wurst+3
-[01:54:39] [main/INFO] [FML]: Processing ObjectHolder annotations
-[01:54:39] [main/INFO] [FML]: Found 1168 ObjectHolder annotations
-[01:54:39] [main/INFO] [FML]: Identifying ItemStackHolder annotations
-[01:54:39] [main/INFO] [FML]: Found 0 ItemStackHolder annotations
-[01:54:39] [main/INFO] [FML]: Configured a dormant chunk cache size of 0
-[01:54:39] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
-[01:54:39] [main/INFO] [wurstplusthree]: loading Wurst+3
-[01:54:39] [main/INFO] [FML]: Applying holder lookups
-[01:54:39] [main/INFO] [FML]: Holder lookups applied
-[01:54:39] [main/INFO] [FML]: Applying holder lookups
-[01:54:39] [main/INFO] [FML]: Holder lookups applied
-[01:54:39] [main/INFO] [FML]: Applying holder lookups
-[01:54:39] [main/INFO] [FML]: Holder lookups applied
-[01:54:39] [main/INFO] [FML]: Applying holder lookups
-[01:54:39] [main/INFO] [FML]: Holder lookups applied
-[01:54:39] [main/INFO] [FML]: Injecting itemstacks
-[01:54:39] [main/INFO] [FML]: Itemstack injection complete
-[01:54:40] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2855
-[01:54:48] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...
-[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenAL
-[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
-[01:54:48] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.
-[01:54:48] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine started
-[01:55:01] [main/INFO] [FML]: Max texture size: 16384
-[01:55:01] [main/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlas
-[01:55:04] [main/INFO] [FML]: Applying holder lookups
-[01:55:04] [main/INFO] [FML]: Holder lookups applied
-[01:55:08] [main/ERROR] [FML]: Unable to set any field net.minecraft.client.gui.GuiIngame on type net.minecraftforge.fml.relauncher.ReflectionHelper$UnableToAccessFieldException: java.lang.NullPointerException
-[01:55:08] [main/INFO] [wurstplusthree]: Wurst+3 : 0.3.0 has been loaded
-[01:55:08] [main/INFO] [FML]: Injecting itemstacks
-[01:55:08] [main/INFO] [FML]: Itemstack injection complete
-[01:55:09] [main/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
-[01:55:09] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
-[01:55:09] [main/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
-[01:55:11] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: Invalid session id
-[01:55:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Starting integrated minecraft server version 1.12.2
-[01:55:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Generating keypair
-[01:55:15] [Server thread/INFO] [FML]: Injecting existing registry data into this server instance
-[01:55:16] [Server thread/INFO] [FML]: Applying holder lookups
-[01:55:16] [Server thread/INFO] [FML]: Holder lookups applied
-[01:55:16] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
-[01:55:17] [Server thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 488 advancements
-[01:55:17] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
-[01:55:17] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@1b228e2a)
-[01:55:17] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing start region for level 0
-[01:55:18] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 18%
-[01:55:19] [Server thread/INFO] [FML]: Unloading dimension -1
-[01:55:19] [Server thread/INFO] [FML]: Unloading dimension 1
-[01:55:19] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Changing view distance to 12, from 10
-[01:55:22] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2
-[01:55:22] [Netty Server IO #1/INFO] [FML]: Client protocol version 2
-[01:55:22] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.12.2,FML@8.0.99.99,forge@14.23.5.2768,mcp@9.42,wurstplusthree@0.3.0
-[01:55:22] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection established
-[01:55:22] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
-[01:55:22] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Player406[local:E:37f1657a] logged in with entity id 382 at (30.699999988079067, 65.0, 124.00184179660778)
-[01:55:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 joined the game
-[01:55:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 has made the advancement [Cover Me With Diamonds]
-[01:55:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 has made the advancement [Ice Bucket Challenge]
-[01:55:26] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:55:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:55:26] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Player406 has made the advancement [Cover Me With Diamonds]
-[01:55:26] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Player406 has made the advancement [Ice Bucket Challenge]
-[01:55:26] [main/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 15 advancements
-[01:55:28] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:55:28] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:55:55] [main/INFO] [wurstplusthree]: [CHAT] [1:55] 'sunset' is not a valid number
-[01:55:58] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: [Player406: Set the time to 1000]
-[01:55:58] [main/INFO] [wurstplusthree]: [CHAT] [1:55] Set the time to 1000
-[01:56:02] [main/INFO] [wurstplusthree]: [CHAT] [1:56] 'set' is not a valid number
-[01:56:08] [main/WARN] [net.minecraft.client.network.NetHandlerPlayClient]: Received passengers for unknown entity
-[01:56:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:56:10] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:11] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:13] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:14] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:15] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:20] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:21] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:27] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:28] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:30] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:33] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:39] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:56:40] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:56:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:57:08] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:57:08] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:57:22] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:57:22] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:57:45] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:57:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:57:49] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:57:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:57:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:57:55] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:57:55] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:57:56] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:58:00] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:58:01] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[01:58:02] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[01:58:04] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Fake Player
-[01:58:15] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:58:15] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:58:35] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:58:35] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[01:58:53] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[01:58:53] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[02:01:32] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
-[02:01:43] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[02:01:43] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[02:01:52] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
-[02:01:53] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[02:01:53] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[02:01:59] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
-[02:02:19] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[02:02:19] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[02:02:19] [main/WARN] [net.minecraft.client.network.NetHandlerPlayClient]: Received passengers for unknown entity
-[02:02:22] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we gaming
-[02:02:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : we aint gaming no more
-[02:02:25] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
-[02:02:25] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...
-[02:02:25] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[02:02:26] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Blink
-[02:02:26] [Netty Local Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Freecam
-[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Stopping server
-[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving players
-[02:02:26] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Player406 lost connection: Disconnected
-[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player406 left the game
-[02:02:26] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Stopping singleplayer server as player logged out
-[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving worlds
-[02:02:26] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworld
-[02:02:26] [Server thread/INFO] [FML]: Unloading dimension 0
-[02:02:26] [Server thread/INFO] [FML]: Applying holder lookups
-[02:02:26] [Server thread/INFO] [FML]: Holder lookups applied
-[02:02:29] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3584]: unloading wurst+3
-[02:02:29] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3586]: wurst+3 has been unloaded
-[02:02:29] [main/INFO] [net.minecraft.client.Minecraft]: Stopping!
-[02:02:29] [main/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...
-[02:02:29] [main/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.com
+[04:56:31] [main/INFO] [FML]: MinecraftForge v14.23.5.2768 Initialized
+[04:56:31] [main/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.
+[04:56:31] [main/INFO] [FML]: Replaced 1036 ore ingredients
+[04:56:32] [main/INFO] [FML]: Searching C:\Users\Administrator\Desktop\wurst-plus-three\.\mods for mods
+[04:56:34] [Thread-3/INFO] [FML]: Using sync timing. 200 frames of Display.update took 905918900 nanos
+[04:56:34] [main/INFO] [FML]: Forge Mod Loader has identified 5 mods to load
+[04:56:35] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at CLIENT
+[04:56:35] [main/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[04:56:36] [main/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Wurst+3
+[04:56:37] [main/INFO] [FML]: Processing ObjectHolder annotations
+[04:56:37] [main/INFO] [FML]: Found 1168 ObjectHolder annotations
+[04:56:37] [main/INFO] [FML]: Identifying ItemStackHolder annotations
+[04:56:37] [main/INFO] [FML]: Found 0 ItemStackHolder annotations
+[04:56:38] [main/INFO] [FML]: Configured a dormant chunk cache size of 0
+[04:56:38] [main/INFO] [wurstplusthree]: loading Wurst+3
+[04:56:38] [main/INFO] [FML]: Applying holder lookups
+[04:56:38] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[04:56:38] [main/INFO] [FML]: Holder lookups applied
+[04:56:38] [main/INFO] [FML]: Applying holder lookups
+[04:56:38] [main/INFO] [FML]: Holder lookups applied
+[04:56:38] [main/INFO] [FML]: Applying holder lookups
+[04:56:38] [main/INFO] [FML]: Holder lookups applied
+[04:56:38] [main/INFO] [FML]: Applying holder lookups
+[04:56:38] [main/INFO] [FML]: Holder lookups applied
+[04:56:38] [main/INFO] [FML]: Injecting itemstacks
+[04:56:38] [main/INFO] [FML]: Itemstack injection complete
+[04:56:38] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2855
+[04:56:47] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...
+[04:56:47] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenAL
+[04:56:47] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[04:56:47] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.
+[04:56:47] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine started
+[04:57:02] [main/INFO] [FML]: Max texture size: 16384
+[04:57:02] [main/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlas
+[04:57:06] [main/INFO] [FML]: Applying holder lookups
+[04:57:06] [main/INFO] [FML]: Holder lookups applied
+[04:57:08] [main/ERROR] [FML]: Unable to set any field net.minecraft.client.gui.GuiIngame on type net.minecraftforge.fml.relauncher.ReflectionHelper$UnableToAccessFieldException: java.lang.NullPointerException
+[04:57:08] [main/INFO] [wurstplusthree]: Wurst+3 : 0.3.0 has been loaded
+[04:57:08] [main/INFO] [FML]: Injecting itemstacks
+[04:57:08] [main/INFO] [FML]: Itemstack injection complete
+[04:57:08] [main/INFO] [FML]: Forge Mod Loader has successfully loaded 5 mods
+[04:57:08] [main/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:
+[04:57:08] [main/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loaded
+[04:57:35] [main/INFO] [net.minecraft.client.multiplayer.GuiConnecting]: Connecting to us.crystalpvp.cc, 25565
+[04:57:37] [Netty Client IO #1/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[04:57:37] [Netty Client IO #0/INFO] [FML]: Aborting client handshake "VANILLA"
+[04:57:37] [Netty Client IO #0/INFO] [FML]: [Netty Client IO #0] Client side vanilla connection established
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: java.lang.NullPointerException
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at me.travis.wurstplusthree.hack.chat.CustomChat.onPacketReceive(CustomChat.java:89)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_35_CustomChat_onPacketReceive_Receive.invoke(.dynamic)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.handler$onChannelReadPre$zbf000(NetworkManager.java:606)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.channelRead0(NetworkManager.java)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.channelRead0(NetworkManager.java:49)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher.channelRead0(NetworkDispatcher.java:279)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher.channelRead0(NetworkDispatcher.java:72)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:280)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:396)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:248)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:287)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1334)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:926)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:624)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:559)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:476)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:438)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at java.lang.Thread.run(Thread.java:748)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: java.lang.NullPointerException
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at me.travis.wurstplusthree.hack.chat.CustomChat.onPacketReceive(CustomChat.java:89)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_35_CustomChat_onPacketReceive_Receive.invoke(.dynamic)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.handler$onChannelReadPre$zbf000(NetworkManager.java:606)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.channelRead0(NetworkManager.java)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraft.network.NetworkManager.channelRead0(NetworkManager.java:49)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher.channelRead0(NetworkDispatcher.java:279)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at net.minecraftforge.fml.common.network.handshake.NetworkDispatcher.channelRead0(NetworkDispatcher.java:72)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:105)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:280)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:396)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:248)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:287)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1334)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:926)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:134)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:624)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:559)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:476)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:438)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:858)
+[04:57:37] [Netty Client IO #0/INFO] [STDERR]: [me.travis.wurstplusthree.hack.chat.CustomChat:onPacketReceive:91]: 	at java.lang.Thread.run(Thread.java:748)
+[04:57:41] [main/INFO] [wurstplusthree]: [CHAT] [4:57]                                      
+[04:57:41] [main/INFO] [wurstplusthree]: [CHAT] [4:57] [CombatLog] Combat protection system initalized. Engineered by JackProehl and iiSnipez.
+[04:57:41] [Netty Client IO #0/INFO] [FML]: Server protocol version 2
+[04:57:41] [Netty Client IO #0/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[04:57:42] [main/INFO] [wurstplusthree]: [CHAT] [4:57] ray_and_ice has joined the game
+[04:57:42] [main/INFO] [FML]: Applying holder lookups
+[04:57:42] [main/INFO] [FML]: Holder lookups applied
+[04:57:53] [main/INFO] [wurstplusthree]: [CHAT] [4:57] DaBabie has joined the game
+[04:58:13] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[04:58:14] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[04:58:15] [main/INFO] [wurstplusthree]: [CHAT] [4:58] Hey! Sorry, but you can't break that block here.
+[04:58:47] [main/INFO] [wurstplusthree]: [CHAT] [4:58] Hey! Sorry, but you can't PvP here.
+[04:58:48] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[04:58:51] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Speed
+[04:59:00] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[04:59:13] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[05:03:04] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[05:03:04] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[05:03:16] [main/INFO] [wurstplusthree]: [CHAT] [5:03] Hey! Sorry, but you can't break that block here.
+[05:03:23] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[05:03:31] [main/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Instant Break
+[05:03:57] [Netty Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Blink
+[05:03:57] [Netty Client IO #0/INFO] [wurstplusthree]: [CHAT] Wurst+3 : Freecam
+[05:03:57] [main/INFO] [FML]: Applying holder lookups
+[05:03:57] [main/INFO] [FML]: Holder lookups applied
+[05:04:01] [Netty Client IO #2/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[05:07:11] [Netty Client IO #4/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, wurstplusthree] at SERVER
+[05:08:01] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3584]: unloading wurst+3
+[05:08:01] [main/INFO] [STDOUT]: [net.minecraft.client.Minecraft:unload:3586]: wurst+3 has been unloaded
+[05:08:01] [main/INFO] [net.minecraft.client.Minecraft]: Stopping!
+[05:08:01] [main/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...
+[05:08:02] [main/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.com

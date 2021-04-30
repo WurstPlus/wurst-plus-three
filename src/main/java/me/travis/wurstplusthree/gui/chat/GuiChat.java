@@ -81,7 +81,7 @@ public class GuiChat extends GuiNewChat implements Globals {
                 float f1 = getChatScale();
                 int k = MathHelper.ceil(getChatWidth() / f1);
                 GlStateManager.pushMatrix();
-                if ((CustomChat.INSTANCE.smoothChat.getValue()) && !this.isScrolled) {
+                if ((CustomChat.INSTANCE.smoothChat.getValue()) && CustomChat.INSTANCE.type.is("Horizontal") && !this.isScrolled) {
                     GlStateManager.translate(2.0F +  CustomChat.INSTANCE.xOffset.getValue().floatValue(), 8.0F + CustomChat.INSTANCE.yOffset.getValue().floatValue() + (9.0F - 9.0F * percent) * f1, 0.0F);
                 } else {
                     GlStateManager.translate(2.0F + CustomChat.INSTANCE.xOffset.getValue().floatValue(), 8.0F +  CustomChat.INSTANCE.yOffset.getValue().floatValue(), 0.0F);

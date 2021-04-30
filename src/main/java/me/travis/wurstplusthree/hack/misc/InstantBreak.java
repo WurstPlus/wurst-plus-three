@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
+import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -23,11 +24,14 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -56,6 +60,7 @@ public class InstantBreak extends Hack {
     public BooleanSetting noTrace = new BooleanSetting("No Trace", false, this);
     public BooleanSetting noGapTrace = new BooleanSetting("No Gap Trace", false, this);
     public BooleanSetting allow = new BooleanSetting("Allow", false, this);
+    public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting pickaxe = new BooleanSetting("Pickaxe", false, this);
     public BooleanSetting doubleBreak = new BooleanSetting("Double Break", false, this);
     public BooleanSetting webSwitch = new BooleanSetting("Web Switch", false, this);
@@ -67,6 +72,20 @@ public class InstantBreak extends Hack {
     private boolean isMining = false;
     private BlockPos lastPos = null;
     private EnumFacing lastFacing = null;
+    private float yaw;
+    private float pitch;
+
+    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
+        if(this.currentPos != null){
+            this.setYawPitch(currentPos);
+        }
+    }
+
+    @Override
+    public void onDisable(){
+        this.currentPos = null;
+    }
 
     @Override
     public void onTick() {
@@ -115,10 +134,15 @@ public class InstantBreak extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent()
     public void onPacketSend(PacketEvent.Send event) {
         if (nullCheck()) {
             return;
+        }
+        if (event.getPacket() instanceof CPacketPlayer && rotate.getValue() && this.currentPos != null) {
+            final CPacketPlayer p = event.getPacket();
+            p.yaw = yaw;
+            p.pitch = pitch;
         }
         if (event.getStage() == 0) {
             CPacketPlayerDigging packet;
@@ -229,4 +253,9 @@ public class InstantBreak extends Hack {
         }
     }
 
+    private void setYawPitch(BlockPos pos) {
+        float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
+        this.yaw = angle[0];
+        this.pitch = angle[1];
+    }
 }

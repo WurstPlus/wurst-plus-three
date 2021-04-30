@@ -4,10 +4,10 @@ Name Highlight:true
 Time Stamps:true
 Suffix:false
 Infinite:true
-SmoothChat:false
+SmoothChat:true
 XOffset:0.0
 YOffset:0.0
 VSpeed:30.0
 VLength:10.0
 VIncrements:1.0
-Type:Horizontal
+Type:Vertical

@@ -10,6 +10,7 @@ public class Fov extends Hack {
     }
 
     IntSetting fov = new IntSetting("Fov", 130, 90, 179, this);
+
     float fovOld;
 
     @Override

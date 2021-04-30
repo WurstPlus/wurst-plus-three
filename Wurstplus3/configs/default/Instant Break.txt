@@ -9,6 +9,7 @@ No Swing:false
 No Trace:false
 No Gap Trace:false
 Allow:false
+Rotate:true
 Pickaxe:false
 Double Break:false
 Web Switch:false
