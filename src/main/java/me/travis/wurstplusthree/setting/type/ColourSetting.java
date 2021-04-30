@@ -29,6 +29,10 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
         this.value = new Colour(value);
     }
 
+    public void setValue(int red, int green, int blue, int alpha) {
+        this.value = new Colour(red, green, blue, alpha);
+    }
+
     @Override
     public Color getColor() {
         return this.value;

@@ -174,7 +174,7 @@ public class ConfigManager implements Globals {
             BufferedWriter br = new BufferedWriter(new FileWriter(file));
 
             for (Setting setting : hack.getSettings()) {
-                if (setting.getType().equalsIgnoreCase("colour")) {
+                if (setting instanceof ColourSetting) {
                     ColourSetting color = (ColourSetting) setting;
                     br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
                             + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
@@ -212,13 +212,14 @@ public class ConfigManager implements Globals {
                         break;
                     case "colour":
                         try {
+                            ColourSetting colourSetting = (ColourSetting) setting;
                             int red = Integer.parseInt(value);
                             int green = Integer.parseInt(colune.split(":")[2]);
                             int blue = Integer.parseInt(colune.split(":")[3]);
                             int alpha = Integer.parseInt(colune.split(":")[4]);
                             boolean rainbow = Boolean.parseBoolean(colune.split(":")[5]);
-                            ((ColourSetting) setting).setRainbow(rainbow);
-                            setting.setValue(new Colour(red, green, blue, alpha));
+                            colourSetting.setRainbow(rainbow);
+                            colourSetting.setValue(red, green, blue, alpha);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
