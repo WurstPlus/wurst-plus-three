@@ -21,7 +21,6 @@ import org.lwjgl.input.Keyboard;
 @Hack.Registration(name = "No Knockback", description = "makes u stay in place", category = Hack.Category.PLAYER, isListening = false)
 public class NoKnockback extends Hack {
 
-
     private static final KeyBinding[] keys = new KeyBinding[]{mc.gameSettings.keyBindForward, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};
 
     public BooleanSetting noPush = new BooleanSetting("NoPush", true, this);

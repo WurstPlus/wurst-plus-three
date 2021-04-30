@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Hack.Registration(name = "XCarry", description = "carrys stuff", category = Hack.Category.PLAYER, isListening = false)
 public class XCarry extends Hack {
 
-
     @SubscribeEvent
     public void onCloseGuiScreen(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketCloseWindow) {

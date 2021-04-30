@@ -12,7 +12,6 @@ public class MCF extends Hack {
 
     private boolean isButtonDown = false;
 
-
     @Override
     public void onUpdate() {
         if (Mouse.isButtonDown(2)) {

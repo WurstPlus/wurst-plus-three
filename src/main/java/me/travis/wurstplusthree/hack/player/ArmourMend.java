@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Hack.Registration(name = "Armour Mend", description = "mends armour", category = Hack.Category.PLAYER, isListening = false)
 public class ArmourMend extends Hack {
 
-
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);
     BooleanSetting mendingTakeOff = new BooleanSetting("Auto Mend", true, this);
     IntSetting enemyRange = new IntSetting("Enemy Range", 8, 0, 25, this);

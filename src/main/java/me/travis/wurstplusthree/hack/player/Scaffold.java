@@ -21,11 +21,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Hack.Registration(name = "Reverse Step", description = "pulls u down down down", category = Hack.Category.PLAYER, isListening = false)
+@Hack.Registration(name = "Scaffold", description = "puts block mc.player.down()", category = Hack.Category.PLAYER, isListening = false)
 public class Scaffold extends Hack {
 
-
     private final Timer timer = new Timer();
+
     BooleanSetting rotation = new BooleanSetting("Rotate", false, this);
 
     @Override

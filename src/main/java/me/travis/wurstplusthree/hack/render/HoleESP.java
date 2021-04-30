@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Hack.Registration(name = "Hole ESP", description = "shows holes", category = Hack.Category.RENDER, isListening = false)
 public class HoleESP extends Hack {
 
-
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);
     EnumSetting customHoles = new EnumSetting("Show", "Single", Arrays.asList("Single", "Double"), this);
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);

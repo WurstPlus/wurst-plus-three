@@ -16,7 +16,6 @@ import java.util.Arrays;
 @Hack.Registration(name = "Speed", description = "makes u go faster", category = Hack.Category.PLAYER, isListening = false)
 public class Speed extends Hack {
 
-
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);
     DoubleSetting yPortSpeed = new DoubleSetting("YPort Speed", 0.06, 0.01, 0.15, this);
     DoubleSetting jumpHeight = new DoubleSetting("Jump Height", 0.41, 0.0, 1.0, this);
@@ -24,7 +23,7 @@ public class Speed extends Hack {
 
     private boolean slowdown;
     private double playerSpeed;
-    private Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     @Override
     public void onEnable() {

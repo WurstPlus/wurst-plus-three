@@ -185,7 +185,12 @@ public class Hacks implements Globals {
     }
 
     public List<Hack.Category> getCategories() {
-        return Arrays.asList(Hack.Category.values());
+        List<Hack.Category> cats = new ArrayList<>();
+        for (Hack.Category category : Hack.Category.values()) {
+            if (category.getName().equalsIgnoreCase("hidden")) continue;
+            cats.add(category);
+        }
+        return cats;
     }
 
     public List<Hack> getHacksByCategory(Hack.Category cat) {

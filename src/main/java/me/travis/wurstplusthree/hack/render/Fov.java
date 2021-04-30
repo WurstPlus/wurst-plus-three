@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.setting.type.IntSetting;
 @Hack.Registration(name = "Fov", description = "tabbott mode", category = Hack.Category.RENDER, isListening = false)
 public class Fov extends Hack {
 
-
     IntSetting fov = new IntSetting("Fov", 130, 90, 179, this);
 
     float fovOld;

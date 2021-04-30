@@ -18,7 +18,6 @@ import java.util.Arrays;
 @Hack.Registration(name = "Kill Aura", description = "hits people", category = Hack.Category.COMBAT, isListening = false)
 public class KillAura extends Hack {
 
-
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);
     public EnumSetting targetMode = new EnumSetting("Target", "Focus", Arrays.asList("Focus", "Closest", "Health"), this);
     public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);

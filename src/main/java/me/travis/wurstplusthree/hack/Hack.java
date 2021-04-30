@@ -20,13 +20,6 @@ import java.util.List;
 
 public class Hack implements Globals {
 
-
-    /**
-     * -1 = not
-     * 0 = always
-     * 1 = yes
-     */
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Registration {
@@ -45,7 +38,7 @@ public class Hack implements Globals {
 
     private final String name = getMod().name();
     private final String description = getMod().description();
-    private final Category category= getMod().category();
+    private final Category category = getMod().category();
     private int bind = getMod().bind();
     private boolean shown = getMod().shown();
     private boolean isEnabled = getMod().enabled();
@@ -192,7 +185,8 @@ public class Hack implements Globals {
         MISC("Misc"),
         RENDER("Render"),
         PLAYER("Player"),
-        CLIENT("Client");
+        CLIENT("Client"),
+        HIDDEN("Hidden");
 
         private final String name;
 

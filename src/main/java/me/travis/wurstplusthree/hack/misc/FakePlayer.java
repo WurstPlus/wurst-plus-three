@@ -13,7 +13,6 @@ import java.util.UUID;
 @Hack.Registration(name = "Fake Player", description = "spawns a dripped out fake player", category = Hack.Category.MISC, isListening = false)
 public class FakePlayer extends Hack {
 
-
     final private ItemStack[] armour = new ItemStack[] {
             new ItemStack(Items.GOLDEN_BOOTS),
             new ItemStack(Items.GOLDEN_LEGGINGS),

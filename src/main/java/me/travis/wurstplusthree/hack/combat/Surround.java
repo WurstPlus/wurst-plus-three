@@ -21,7 +21,6 @@ import java.util.Set;
 @Hack.Registration(name = "Surround", description = "surrounds u", category = Hack.Category.COMBAT, isListening = false)
 public class Surround extends Hack {
 
-
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting hybrid = new BooleanSetting("Hybrid", true, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);

@@ -25,6 +25,7 @@ import java.util.List;
 
 @Hack.Registration(name = "Break Highlight", description = "highlights where people are breaking", category = Hack.Category.RENDER, isListening = false)
 public class BreakHighlight extends Hack {
+
     ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255, 200), this);
     ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0, 200), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();

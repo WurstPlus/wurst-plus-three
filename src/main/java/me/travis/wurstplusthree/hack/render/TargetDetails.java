@@ -20,7 +20,6 @@ import java.util.Arrays;
 @Hack.Registration(name = "Target Details", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
 public class TargetDetails extends Hack {
 
-
     BooleanSetting showFucked = new BooleanSetting("Fucked", true, this);
     BooleanSetting onePointT = new BooleanSetting("1.13+", false, this);
     BooleanSetting showBurrow = new BooleanSetting("Burrowed", true, this);

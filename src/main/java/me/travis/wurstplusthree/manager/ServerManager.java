@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Objects;
 
-//@Hack.Registration(name = "ServerManager", description = "Manages Server", isListening = true)
+@Hack.Registration(name = "ServerManager", description = "Manages Server", category = Hack.Category.HIDDEN, isListening = true)
 public class ServerManager extends Hack {
 
     private final float[] tpsCounts = new float[10];

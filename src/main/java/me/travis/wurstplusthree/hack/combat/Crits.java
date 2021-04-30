@@ -14,7 +14,6 @@ import java.util.Objects;
 @Hack.Registration(name = "Crits", description = "does critical hits", category = Hack.Category.COMBAT, isListening = false)
 public class Crits extends Hack {
 
-
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);
     private final Timer timer = new Timer();
 

@@ -20,7 +20,6 @@ import java.util.List;
 @Hack.Registration(name = "Hole Fill", description = "fills holes", category = Hack.Category.COMBAT, isListening = false)
 public class HoleFill extends Hack {
 
-
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);

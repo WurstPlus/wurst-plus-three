@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Hack.Registration(name = "Step", description = "steps up things", category = Hack.Category.PLAYER, isListening = false)
 public class Step extends Hack {
 
-
     BooleanSetting vanilla = new BooleanSetting("Vanilla", false, this);
     IntSetting height = new IntSetting("Height", 2, 1, 2, this);
 

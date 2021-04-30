@@ -25,7 +25,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Hack.Registration(name = "Log Spots", description = "shows ez logs", category = Hack.Category.RENDER, isListening = false)
 public class LogSpots extends Hack {
 
-
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);
     IntSetting range = new IntSetting("Distance", 250, 0, 500, this);
 

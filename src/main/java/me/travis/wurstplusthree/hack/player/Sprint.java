@@ -10,7 +10,6 @@ import java.util.Arrays;
 @Hack.Registration(name = "Sprint", description = "sprints automatically", category = Hack.Category.PLAYER, isListening = false)
 public class Sprint extends Hack {
 
-
     public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);
 
     @SubscribeEvent

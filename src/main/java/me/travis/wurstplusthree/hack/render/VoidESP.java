@@ -19,7 +19,6 @@ import java.util.List;
 @Hack.Registration(name = "Void Esp", description = "see where the void is", category = Hack.Category.RENDER, isListening = false)
 public class VoidESP extends Hack {
 
-
     IntSetting range = new IntSetting("Range", 10, 0, 50, this);
     IntSetting yLevel = new IntSetting("Slef Y", 20, 0, 255, this);
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);

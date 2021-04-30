@@ -25,7 +25,6 @@ import java.util.Arrays;
 @Hack.Registration(name = "Burrow", description = "fills ur lower-half with a block", category = Hack.Category.COMBAT, isListening = false)
 public class Burrow extends Hack {
 
-
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting instant = new BooleanSetting("Instant", true, this);
     EnumSetting type = new EnumSetting("Type", "Packet", Arrays.asList("Packet", "Normal"), this);

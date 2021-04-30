@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraft.client.Minecraft;
@@ -47,7 +48,7 @@ public class WurstplusGuiNew extends GuiScreen {
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
         int startX = 10;
-        for (Hack.Category category : Hack.Category.values()) {
+        for (Hack.Category category : WurstplusThree.HACKS.getCategories()) {
             CategoryComponent categoryComponent = new CategoryComponent(category);
             categoryComponent.setX(startX);
             categoryComponents.add(categoryComponent);

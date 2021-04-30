@@ -9,7 +9,6 @@ import net.minecraft.util.math.RayTraceResult;
 @Hack.Registration(name = "Entity Mine", description = "mines through entities", category = Hack.Category.MISC, isListening = false)
 public class EntityMine extends Hack {
 
-
     private boolean focus = false;
 
     @Override

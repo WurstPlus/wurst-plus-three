@@ -7,7 +7,6 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 @Hack.Registration(name = "Radio", description = "plays the best music", category = Hack.Category.MISC, isListening = false)
 public class Radio extends Hack {
 
-
     BooleanSetting playButton = new BooleanSetting("Play", false, this);
     BooleanSetting stopButton = new BooleanSetting("Stop", false, this);
     BooleanSetting skipButton = new BooleanSetting("Skip", false, this);

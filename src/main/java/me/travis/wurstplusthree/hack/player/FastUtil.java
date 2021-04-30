@@ -9,7 +9,6 @@ import net.minecraft.item.ItemExpBottle;
 @Hack.Registration(name = "FastUtil", description = "util but fast", category = Hack.Category.PLAYER, isListening = false)
 public class FastUtil extends Hack {
 
-
     BooleanSetting xp = new BooleanSetting("XP", true, this);
     BooleanSetting crystal = new BooleanSetting("Crystal", true, this);
 

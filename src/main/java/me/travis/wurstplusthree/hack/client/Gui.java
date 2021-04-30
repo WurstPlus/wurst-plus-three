@@ -14,7 +14,8 @@ import org.lwjgl.input.Keyboard;
  */
 
 @Hack.Registration(name = "Gui", description = "swag custom gui", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_RSHIFT)
-public class Gui extends Hack{
+public class Gui extends Hack {
+    
     public static Gui INSTANCE;
 
     public ColourSetting buttonColor = new ColourSetting("Button", new Colour(224, 156, 96, 255), this);

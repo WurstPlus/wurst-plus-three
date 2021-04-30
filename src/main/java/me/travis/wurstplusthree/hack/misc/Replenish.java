@@ -15,7 +15,6 @@ import java.util.Map;
 @Hack.Registration(name = "Replenish", description = "replenishes items in ur hotbar", category = Hack.Category.MISC, isListening = false)
 public class Replenish extends Hack {
 
-
     private int delay_step = 0;
 
     @Override

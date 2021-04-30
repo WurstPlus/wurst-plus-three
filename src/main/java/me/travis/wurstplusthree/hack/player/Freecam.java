@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Hack.Registration(name = "Freecam", description = "lets u see freely", category = Hack.Category.PLAYER, isListening = false)
 public class Freecam extends Hack {
 
-
     public DoubleSetting speed = new DoubleSetting("Speed", 0.5, 0.1, 5.0, this);
     public BooleanSetting view = new BooleanSetting("View", false, this);
     public BooleanSetting packet = new BooleanSetting("Packet", false, this);
