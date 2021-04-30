@@ -1,4 +1,4 @@
-![logo](https://github.com/TrvsF/wurst-plus-three/tree/main/src/main/resources/logo.png)
+![logo](src/main/resources/logo.png)
 
 # Wurst+3
 
