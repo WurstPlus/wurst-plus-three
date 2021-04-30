@@ -63,7 +63,6 @@ public class WurstplusGuiNew extends GuiScreen {
             c.animationValue = 0;
         }
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
-            //mc.entityRenderer.getShaderGroup().deleteShaderGroup(); this crashes
             if (!mc.entityRenderer.isShaderActive()) {
                 mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
             }

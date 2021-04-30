@@ -70,9 +70,9 @@ public class CategoryComponent {
 
     public void renderFrame() {
         RenderUtil2D.drawGradientRect(this.x, this.y, this.x + width, this.y + height,
-                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()),
-                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getColor().hashCode()));
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_INDENT, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getColor().hashCode());
+                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
+                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_INDENT, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
 
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
@@ -87,9 +87,9 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getColor().hashCode()); // Left
-                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getColor().hashCode()); // Right
-                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getColor().hashCode()); // Bottom
+                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
+                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
+                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
             }
         }
     }

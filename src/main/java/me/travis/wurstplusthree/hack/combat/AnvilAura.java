@@ -25,18 +25,29 @@ public class AnvilAura extends Hack {
         super("Anvil Aura", "drops anvils on people/urself", Category.COMBAT, false);
     }
 
-    EnumSetting mode = new EnumSetting("Mode", "Self", Arrays.asList("Self", "Others"), this);
-    IntSetting ammount = new IntSetting("Ammount", 1, 1, 5, this);
+    EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
+    IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     IntSetting range = new IntSetting("Range", 4, 0, 6, this);
+
+    private int placedAmmount;
+
+    @Override
+    public void onEnable() {
+        this.placedAmmount = 0;
+        if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
+            this.disable();
+        }
+    }
 
     @Override
     public void onTick() {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
-        if (target == null) return;
+        if (target == null || placedAmmount >= ammount.getValue()) return;
         BlockPos anvilPos = EntityUtil.getFlooredPos(target).up(2);
         if (BlockUtil.canPlaceBlock(anvilPos)) {
             placeAnvil(anvilPos);
+            placedAmmount++;
         } else {
             placeObi(anvilPos.down().east());
             placeObi(anvilPos.east());

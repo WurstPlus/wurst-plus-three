@@ -11,9 +11,11 @@ import me.travis.wurstplusthree.util.HudUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hud extends Hack {
@@ -33,9 +35,9 @@ public class Hud extends Hack {
     BooleanSetting clock = new BooleanSetting("Clock", true, this);
     BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);
     BooleanSetting helper = new BooleanSetting("Helper", true, this);
-    BooleanSetting playerStats = new BooleanSetting("Stats", false, this);
     BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);
     BooleanSetting coords = new BooleanSetting("Coords", true, this);
+    BooleanSetting friends = new BooleanSetting("Friends", true, this);
 
     BooleanSetting armour = new BooleanSetting("Armour", false, this);
 
@@ -67,11 +69,14 @@ public class Hud extends Hack {
         this.doTopRight();
         this.doBottomRight();
         this.doHelper();
-        this.doPlayerStats();
         this.doBottomLeft();
 
         if (this.armour.getValue()) {
             this.renderArmorHUD(true);
+        }
+
+        if (this.friends.getValue()) {
+            this.renderFriends();
         }
 
     }
@@ -87,22 +92,6 @@ public class Hud extends Hack {
                 y += 11;
             }
         }
-    }
-
-    private void doPlayerStats() {
-        if (!this.playerStats.getValue()) return;
-        int y = 65;
-        String hp = (EntityUtil.getHealth(mc.player) <= 10 ? ChatFormatting.RED : ChatFormatting.GREEN) + "" + EntityUtil.getHealth(mc.player);
-        String mx = "X : " + Math.round(mc.player.motionX);
-        String my = "Y : " + Math.round(mc.player.motionY);
-        String mz = "Z : " + Math.round(mc.player.motionY);
-        this.drawString(hp, 10, y);
-        y += 12;
-        this.drawString(mx, 10, y);
-        y += 12;
-        this.drawString(my, 10, y);
-        y += 12;
-        this.drawString(mz, 10, y);
     }
 
     private void doHelper() {
@@ -124,6 +113,26 @@ public class Hud extends Hack {
         this.drawString("Surround " + surround, 10, y);
         y += 12;
         this.drawString("KAura " + ka, 10, y);
+    }
+
+    private void renderFriends() {
+        List<String> friends = new ArrayList<>();
+        for (EntityPlayer player : mc.world.playerEntities) {
+            if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
+                friends.add(player.getName());
+            }
+        }
+        int y = 72;
+        if (friends.isEmpty()) {
+            drawString(ChatFormatting.BOLD + "U got no friends", 10, y);
+        } else {
+            drawString(ChatFormatting.BOLD + "the_fellas", 10, y);
+            y += 12;
+            for (String friend : friends) {
+                drawString(friend, 10, y);
+                y += 12;
+            }
+        }
     }
 
     private void doTopleft() {

@@ -41,10 +41,10 @@ public class ColorComponent extends Component {
         this.firstTimeOpen = true;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
-        this.r = new ColorSliderComponent(parent, offset, "Red", set.getColor().getRed(), this);
-        this.g = new ColorSliderComponent(parent, offset, "Green", set.getColor().getGreen(), this);
-        this.b = new ColorSliderComponent(parent, offset, "Blue", set.getColor().getBlue(), this);
-        this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getColor().getAlpha(), this);
+        this.r = new ColorSliderComponent(parent, offset, "Red", set.getValue().getRed(), this);
+        this.g = new ColorSliderComponent(parent, offset, "Green", set.getValue().getGreen(), this);
+        this.b = new ColorSliderComponent(parent, offset, "Blue", set.getValue().getBlue(), this);
+        this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getValue().getAlpha(), this);
         this.bc = new BoolComponent(set, button, offset);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
@@ -62,9 +62,9 @@ public class ColorComponent extends Component {
 
     @Override
     public void renderComponent() {
-        RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.set.getColor().hashCode());
-        // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getColor().hashCode());
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getColor().hashCode());
+        RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.set.getValue().hashCode());
+        // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getValue().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             for (Component component : colorComponents) {
                 component.renderComponent();

@@ -67,7 +67,7 @@ public class CustomChat extends Hack {
                 return;
             }
             if (this.suffix.getValue()) {
-                s += " \u25e6 \u0461\u2795\u01B7";
+                s += " \u25e6 \u0461\u028B\u0433\u0455\u0074\u0440\u0406\u028B\u0455 \u01B7";
             }
             if (s.length() >= 256) {
                 s = s.substring(0, 256);
