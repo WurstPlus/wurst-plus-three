@@ -1,3 +1,5 @@
+![logo](https://github.com/TrvsF/wurst-plus-three/tree/main/src/main/resources/logo.png)
+
 # Wurst+3
 
 [Discord](discord.gg/hvnZePKQHx) | [Donate](https://paypal.com/trvsf) | [Download]()
