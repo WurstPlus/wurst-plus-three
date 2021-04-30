@@ -4,9 +4,9 @@ For all contributions we will be looking for properly formatted code for
 example var names with Camel Casing
 ```java
 //NOT TODO
-int my_var_name = 0
+int my_var_name = 0;
 //TODO
-int myVarName = 0
+int myVarName = 0;
 ```
 
 Any contributions to the base of the client must be done in java but any
