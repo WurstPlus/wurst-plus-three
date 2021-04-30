@@ -16,13 +16,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Jesus", description = "its jebus, say hello jebus SHGDFYGSDKJHFGSDHJ", category = Hack.Category.PLAYER, isListening = false)
 public class Jesus extends Hack {
 
     public static Jesus INSTANCE;
 
     public Jesus() {
-        super("Jesus", "its jebus, say hello jebus SHGDFYGSDKJHFGSDHJ", Category.PLAYER, false);
-
         INSTANCE = this;
     }
 

@@ -17,14 +17,12 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.*;
 
+@Hack.Registration(name = "SelfTrap", description = "when all else fails u can self trap", category = Hack.Category.COMBAT, isListening = false)
 public class SelfTrap extends Hack {
 
     /*
      * k3b skidded this all by himself :D
      */
-    public SelfTrap() {
-        super("SelfTrap", "when all else fails u can self trap", Hack.Category.COMBAT, false);
-    }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);

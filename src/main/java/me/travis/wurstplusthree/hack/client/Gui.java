@@ -13,6 +13,7 @@ import org.lwjgl.input.Keyboard;
  * @since 29/04/2021
  */
 
+@Hack.Registration(name = "Gui", description = "swag custom gui", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_RSHIFT)
 public class Gui extends Hack{
     public static Gui INSTANCE;
 
@@ -27,8 +28,6 @@ public class Gui extends Hack{
     public IntSetting animationStages = new IntSetting("AnimationStages", 250, 1, 1000, this);
 
     public Gui(){
-        super("Gui", "swag custom gui", Category.CLIENT, true);
-        setBind(Keyboard.KEY_RSHIFT);
         INSTANCE = this;
     }
 

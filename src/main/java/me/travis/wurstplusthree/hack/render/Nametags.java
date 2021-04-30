@@ -34,12 +34,12 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
+@Hack.Registration(name = "Nametags", description = "makes name above player", category = Hack.Category.RENDER, isListening = false)
 public class Nametags extends Hack {
 
     public static Nametags INSTANCE;
 
     public Nametags() {
-        super("Nametags", "makes name above player", Category.RENDER, false);
         INSTANCE = this;
     }
 

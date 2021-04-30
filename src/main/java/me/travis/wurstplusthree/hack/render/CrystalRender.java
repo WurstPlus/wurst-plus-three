@@ -19,12 +19,12 @@ import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Hack.Registration(name = "Crystal Render", description = "changes how crystal renders", category = Hack.Category.RENDER, isListening = false)
 public class CrystalRender extends Hack {
 
     public static CrystalRender INSTANCE;
 
     public CrystalRender() {
-        super("Crystal Render", "changes how crystal renders", Category.RENDER, false);
         INSTANCE = this;
     }
 

@@ -22,11 +22,9 @@ import net.minecraft.util.math.Vec3d;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+@Hack.Registration(name = "Burrow", description = "fills ur lower-half with a block", category = Hack.Category.COMBAT, isListening = false)
 public class Burrow extends Hack {
 
-    public Burrow() {
-        super("Burrow", "fills ur lower-half with a block", Category.COMBAT, false);
-    }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting instant = new BooleanSetting("Instant", true, this);

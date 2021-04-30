@@ -20,11 +20,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+@Hack.Registration(name = "Esp", description = "draws box around shit", category = Hack.Category.RENDER, isListening = false)
 public class Esp extends Hack {
 
-    public Esp() {
-        super("Esp", "draws box around shit", Category.RENDER, false);
-    }
 
     BooleanSetting items = new BooleanSetting("Items", true, this);
     BooleanSetting orbs = new BooleanSetting("Orbs", true, this);

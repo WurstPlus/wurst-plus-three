@@ -7,13 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.input.Mouse;
 
+@Hack.Registration(name = "Middle Click Friend", description = "middleclick adds friend", category = Hack.Category.MISC, isListening = false)
 public class MCF extends Hack {
 
     private boolean isButtonDown = false;
 
-    public MCF() {
-        super("Middle Click Friend", "middleclick adds friend", Category.MISC, false);
-    }
 
     @Override
     public void onUpdate() {

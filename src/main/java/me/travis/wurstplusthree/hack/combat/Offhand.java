@@ -13,11 +13,8 @@ import net.minecraft.item.Item;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Offhand", description = "puts things in ur offhand", category = Hack.Category.COMBAT, isListening = false)
 public class Offhand extends Hack {
-
-    public Offhand() {
-        super("Offhand", "puts things in ur offhand", Category.COMBAT, false);
-    }
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
     BooleanSetting gapHole = new BooleanSetting("Gap In Hole", true, this);

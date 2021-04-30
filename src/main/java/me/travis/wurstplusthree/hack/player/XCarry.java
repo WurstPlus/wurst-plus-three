@@ -5,11 +5,9 @@ import me.travis.wurstplusthree.hack.Hack;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Hack.Registration(name = "XCarry", description = "carrys stuff", category = Hack.Category.PLAYER, isListening = false)
 public class XCarry extends Hack {
 
-    public XCarry() {
-        super("XCarry", "carrys stuff", Category.PLAYER, false);
-    }
 
     @SubscribeEvent
     public void onCloseGuiScreen(PacketEvent.Send event) {

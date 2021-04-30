@@ -18,12 +18,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
+@Hack.Registration(name = "Surround", description = "surrounds u", category = Hack.Category.COMBAT, isListening = false)
 public class Surround extends Hack {
 
-    public Surround() {
-        super("Surround", "surrounds u", Category.COMBAT, false);
-    }
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting hybrid = new BooleanSetting("Hybrid", true, this);

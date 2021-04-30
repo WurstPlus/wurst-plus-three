@@ -18,12 +18,12 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Hack.Registration(name = "Blink", description = "allows u to move without being seen", category = Hack.Category.MISC, isListening = false)
 public class Blink extends Hack {
 
     public static Blink INSTANCE;
 
     public Blink() {
-        super("Blink", "allows u to move without being seen", Category.MISC, false);
         INSTANCE = this;
     }
 

@@ -15,11 +15,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
+@Hack.Registration(name = "Kill Aura", description = "hits people", category = Hack.Category.COMBAT, isListening = false)
 public class KillAura extends Hack {
 
-    public KillAura() {
-        super("Kill Aura", "hits people", Category.COMBAT, false);
-    }
 
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);
     public EnumSetting targetMode = new EnumSetting("Target", "Focus", Arrays.asList("Focus", "Closest", "Health"), this);

@@ -12,10 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  *  -> This is dumb as well but its the only way i think you can do it lol
  */
 
+@Hack.Registration(name = "ViewModel", description = "makes you hand look cool", category = Hack.Category.RENDER, isListening = false)
 public class ViewModel extends Hack {
-    public ViewModel() {
-        super("ViewModel", "makes you hand look cool", Category.RENDER, false);
-    }
 
     DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
     DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);

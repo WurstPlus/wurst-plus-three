@@ -11,11 +11,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Objects;
 
+@Hack.Registration(name = "Crits", description = "does critical hits", category = Hack.Category.COMBAT, isListening = false)
 public class Crits extends Hack {
 
-    public Crits() {
-        super("Crits", "does critical hits", Category.COMBAT, false);
-    }
 
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);
     private final Timer timer = new Timer();

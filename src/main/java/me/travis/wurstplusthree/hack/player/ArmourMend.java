@@ -16,11 +16,9 @@ import net.minecraft.item.ItemStack;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Hack.Registration(name = "Armour Mend", description = "mends armour", category = Hack.Category.PLAYER, isListening = false)
 public class ArmourMend extends Hack {
 
-    public ArmourMend() {
-        super("Armour Mend", "mends armour", Category.PLAYER, false);
-    }
 
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);
     BooleanSetting mendingTakeOff = new BooleanSetting("Auto Mend", true, this);

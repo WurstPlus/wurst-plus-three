@@ -4,11 +4,8 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.ClientMessage;
 
+@Hack.Registration(name = "Totem Pop Counter", description = "counts totems that people have popped", category = Hack.Category.CHAT, isListening = false)
 public class TotemPopCounter extends Hack {
-
-    public TotemPopCounter() {
-        super("Totem Pop Counter", "counts totems that people have popped", Category.CHAT, false);
-    }
 
     @Override
     public void onUpdate() {

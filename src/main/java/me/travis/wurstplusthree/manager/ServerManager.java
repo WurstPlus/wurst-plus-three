@@ -7,11 +7,8 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Objects;
 
+//@Hack.Registration(name = "ServerManager", description = "Manages Server", isListening = true)
 public class ServerManager extends Hack {
-
-    public ServerManager() {
-        super("ServerManager", "Manages Server", null, true);
-    }
 
     private final float[] tpsCounts = new float[10];
     private final DecimalFormat format = new DecimalFormat("##.00#");

@@ -37,13 +37,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 import java.util.Arrays;
 
+@Hack.Registration(name = "Instant Break", description = "breaks blocks in strange ways", category = Hack.Category.MISC, isListening = false)
 public class InstantBreak extends Hack {
 
     public static InstantBreak INSTANCE;
 
     public InstantBreak() {
-        super("Instant Break", "breaks blocks in strange ways", Category.MISC, false);
-
         INSTANCE = this;
     }
 

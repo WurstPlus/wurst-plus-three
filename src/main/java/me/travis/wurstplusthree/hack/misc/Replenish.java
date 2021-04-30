@@ -12,11 +12,9 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
+@Hack.Registration(name = "Replenish", description = "replenishes items in ur hotbar", category = Hack.Category.MISC, isListening = false)
 public class Replenish extends Hack {
 
-    public Replenish() {
-        super("Replenish", "replenishes items in ur hotbar", Category.MISC, false);
-    }
 
     private int delay_step = 0;
 

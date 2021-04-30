@@ -17,11 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Hack.Registration(name = "Hole Fill", description = "fills holes", category = Hack.Category.COMBAT, isListening = false)
 public class HoleFill extends Hack {
 
-    public HoleFill() {
-        super("Hole Fill", "fills holes", Category.COMBAT, false);
-    }
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

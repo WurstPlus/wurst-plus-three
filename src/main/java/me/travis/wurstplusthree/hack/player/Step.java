@@ -9,11 +9,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Hack.Registration(name = "Step", description = "steps up things", category = Hack.Category.PLAYER, isListening = false)
 public class Step extends Hack {
 
-    public Step() {
-        super("Step", "steps up things", Category.PLAYER, false);
-    }
 
     BooleanSetting vanilla = new BooleanSetting("Vanilla", false, this);
     IntSetting height = new IntSetting("Height", 2, 1, 2, this);

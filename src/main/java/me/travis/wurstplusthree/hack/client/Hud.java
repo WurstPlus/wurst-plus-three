@@ -18,13 +18,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Hack.Registration(name = "HUD", description = "hud elements", category = Hack.Category.CLIENT, isListening = false, enabled = true)
 public class Hud extends Hack {
-
-    public Hud() {
-        super("HUD", "hud elements", Category.CLIENT, false);
-
-        this.enable();
-    }
 
     BooleanSetting welcomer = new BooleanSetting("Welcomer", false, this);
 

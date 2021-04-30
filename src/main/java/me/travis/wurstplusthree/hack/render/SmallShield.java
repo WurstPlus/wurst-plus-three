@@ -2,11 +2,9 @@ package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.hack.Hack;
 
+@Hack.Registration(name = "Small Shield", description = "trvsf moment", category = Hack.Category.RENDER, isListening = false)
 public class SmallShield extends Hack {
 
-    public SmallShield() {
-        super("Small Shield", "trvsf moment", Category.RENDER, false);
-    }
 
     @Override
     public void onUpdate() {

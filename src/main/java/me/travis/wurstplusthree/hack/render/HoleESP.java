@@ -21,11 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Hack.Registration(name = "Hole ESP", description = "shows holes", category = Hack.Category.RENDER, isListening = false)
 public class HoleESP extends Hack {
 
-    public HoleESP() {
-        super("Hole ESP", "shows holes", Category.RENDER, false);
-    }
 
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);
     EnumSetting customHoles = new EnumSetting("Show", "Single", Arrays.asList("Single", "Double"), this);

@@ -11,48 +11,45 @@ import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Hack implements Globals {
 
-    private final String name;
-    private final String description;
-    private final Category category;
-    private int bind;
-    private boolean shown;
-    private boolean isEnabled;
+
     /**
      * -1 = not
      * 0 = always
      * 1 = yes
      */
-    private int isListening;
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
     public @interface Registration {
         String name();
         String description();
-        Category category();
-        int isListening();
+        Category category(); //TODO travis fix this it needs to be null for server manager
+        boolean isListening();
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
         boolean shown() default true;
-    }
-
-    public Hack(String name, String desc, Category cat, boolean shouldAlwaysListen) {
-        this.name = name;
-        this.description = desc;
-        this.category = cat;
-        this.isListening = (shouldAlwaysListen ? 0 : 1);
-        this.bind = Keyboard.KEY_NONE;
-        this.shown = true;
-        this.isEnabled = false;
     }
 
     private Registration getMod(){
         return getClass().getAnnotation(Registration.class);
     }
 
+    private final String name = getMod().name();
+    private final String description = getMod().description();
+    private final Category category= getMod().category();
+    private int bind = getMod().bind();
+    private boolean shown = getMod().shown();
+    private boolean isEnabled = getMod().enabled();
+    private int isListening = (getMod().isListening() ? 0 : 1);
 
     public void onEnable() {
     }

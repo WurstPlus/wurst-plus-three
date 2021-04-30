@@ -19,11 +19,8 @@ import java.util.Arrays;
 
 // TODO : FIX THIS
 
+@Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
-
-    public AnvilAura() {
-        super("Anvil Aura", "drops anvils on people/urself", Category.COMBAT, false);
-    }
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);

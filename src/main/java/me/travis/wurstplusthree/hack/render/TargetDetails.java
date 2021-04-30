@@ -17,11 +17,9 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Hack.Registration(name = "Target Details", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
 public class TargetDetails extends Hack {
 
-    public TargetDetails() {
-        super("Target Details", "shows status of dude", Category.RENDER, false);
-    }
 
     BooleanSetting showFucked = new BooleanSetting("Fucked", true, this);
     BooleanSetting onePointT = new BooleanSetting("1.13+", false, this);

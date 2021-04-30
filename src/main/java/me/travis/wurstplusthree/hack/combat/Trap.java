@@ -20,11 +20,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Hack.Registration(name = "Trap", description = "traps people", category = Hack.Category.COMBAT, isListening = false)
 public class Trap extends Hack {
-
-    public Trap() {
-        super("Trap", "traps people", Category.COMBAT, false);
-    }
 
     EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet"),this);
     IntSetting blocksPerTick = new IntSetting("Speed", 4, 0, 8, this);
