@@ -170,7 +170,7 @@ public class WurstplusGuiNew extends GuiScreen {
     private void animate(ScaledResolution sr){
         final int deltaTime = WurstplusThree.RENDER_UTIL_2D.getDeltaTime();
         for(CategoryComponent c : categoryComponents) {
-            final float SEQUENCES = 250;
+            final float SEQUENCES = Gui.INSTANCE.animationStages.getValue();
             final int y = 500;
             if(c.animationValue < y){
                 c.animationValue += (y * ((float) (deltaTime) / SEQUENCES));
@@ -178,7 +178,6 @@ public class WurstplusGuiNew extends GuiScreen {
 
             c.animationValue = constrainToRange(c.animationValue, 0, y);
             final float newY = sr.getScaledHeight() - c.animationValue - 2;
-            WurstplusThree.LOGGER.info(newY);
             c.setY((int) newY);
         }
         int i = 0;

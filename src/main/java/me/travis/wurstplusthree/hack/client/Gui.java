@@ -24,6 +24,7 @@ public class Gui extends Hack{
     public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
     public BooleanSetting blur = new BooleanSetting("Blur", true, this);
     public BooleanSetting animation = new BooleanSetting("Animation", true, this);
+    public IntSetting animationStages = new IntSetting("AnimationStages", 250, 1, 1000, this);
 
     public Gui(){
         super("Gui", "swag custom gui", Category.CLIENT, true);

@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.hack.render.HandColour;
 import me.travis.wurstplusthree.hack.render.Nametags;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
+import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -106,11 +107,13 @@ public class MixinRenderPlayer {
             return new ResourceLocation(SkinStorageManipulationer.getTexture().toString());
         }
         else if(Pitbull.INSTANCE.isEnabled() && entity != Minecraft.getMinecraft().player){
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glColor4f(Pitbull.INSTANCE.texture.getColor().getRed()/255f, Pitbull.INSTANCE.texture.getColor().getGreen()/255f, Pitbull.INSTANCE.texture.getColor().getBlue()/255f, Pitbull.INSTANCE.texture.getColor().getAlpha()/255f);
             return new ResourceLocation("textures/pitbull.png");
         }
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        return entity.getLocationSkin();
+        else {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            return entity.getLocationSkin();
+        }
     }
 
 }
