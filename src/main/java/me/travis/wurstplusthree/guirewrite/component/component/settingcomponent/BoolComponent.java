@@ -17,6 +17,7 @@ import me.travis.wurstplusthree.util.RenderUtil2D;
 
 public class BoolComponent extends Component {
     private final boolean rainbow;
+    private ColorComponent p;
     private boolean hovered;
     private BooleanSetting option;
     private ColourSetting coption;
@@ -29,24 +30,24 @@ public class BoolComponent extends Component {
         this.option = option;
         this.parent = button;
         this.offset = offset;
-
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
 
         this.rainbow = false;
     }
 
-    public BoolComponent(ColourSetting setting, HackButton button, int offset) {
+    public BoolComponent(ColourSetting setting, HackButton button, int offset, ColorComponent p) {
         this.coption = setting;
         this.parent = button;
         this.offset = offset;
         this.option = null;
-
+        this.p = p;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
 
         this.rainbow = true;
     }
+
 
     @Override
     public void renderComponent() {
@@ -88,7 +89,9 @@ public class BoolComponent extends Component {
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             if (rainbow) {
-                this.coption.setRainbow(!this.coption.getRainbow());
+                if(p.isOpen()) {
+                    this.coption.setRainbow(!this.coption.getRainbow());
+                }
             } else {
                 this.option.setValue(!option.getValue());
             }
