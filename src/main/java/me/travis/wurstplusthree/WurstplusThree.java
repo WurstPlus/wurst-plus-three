@@ -87,10 +87,10 @@ public class WurstplusThree {
         RENDER_UTIL_2D = new RenderUtil2D();
         COMMANDS = new Commands();
         HACKS = new Hacks();
-        GUI = new WurstplusGui();
-        GUI2 = new WurstplusGuiNew();
         this.loadManagers();
         CONFIG_MANAGER.loadConfig();
+        GUI = new WurstplusGui();
+        GUI2 = new WurstplusGuiNew();
     }
 
     public static void unLoad() {
