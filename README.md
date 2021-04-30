@@ -10,6 +10,16 @@ made for pvp and killing noobs
 
 on first run ensure your voices volume is maxed ;)
 
+## donations
+
+2 Boosts in discord OR $5 paypal for 1 month 'cool dudes' cape
+
+10 boosts in discord OR $15 paypal for lifetime custom cape
+
+to donate use link above and make sure your discord tag is included in the comments, then DM travis#0001 on discord
+
+nitro boosts capes will be given ASAP
+
 ## Why
 
 Got bored pt. 3, began work as a project for my friends to pvp, turned into this
