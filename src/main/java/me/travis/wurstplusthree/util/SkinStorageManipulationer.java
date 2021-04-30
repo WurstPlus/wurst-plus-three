@@ -20,16 +20,17 @@ public class SkinStorageManipulationer {
             bufferedImage = ImageIO.read(new File("Wurstplus3/tmp/skin.png"));
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         DynamicTexture texture = new DynamicTexture(bufferedImage);
         WrappedResource wr = new WrappedResource(FMLClientHandler.instance().getClient().getTextureManager().getDynamicTextureLocation("skin.png", texture));
         return wr.location;
     }
 
-    static class WrappedResource {
-        final ResourceLocation location;
+    public static class WrappedResource {
+        public final ResourceLocation location;
 
-        WrappedResource(ResourceLocation location) {
+        public WrappedResource(ResourceLocation location) {
             this.location = location;
         }
     }

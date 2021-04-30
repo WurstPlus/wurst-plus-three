@@ -56,7 +56,6 @@ public class PlayerSpoofer extends Hack {
             URL url2 = new URL("https://mc-heads.net/skin/" + uuid);
             image = ImageIO.read(url2);
             ImageIO.write(image, "png", new File("Wurstplus3/tmp/skin.png"));
-
         } catch (IOException e) {
             e.printStackTrace();
         }

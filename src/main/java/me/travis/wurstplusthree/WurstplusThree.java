@@ -48,21 +48,17 @@ public class WurstplusThree {
     // managers
     public static MenuFont MENU_FONT_MANAGER;
     public static GuiFont GUI_FONT_MANAGER;
-
     public static FriendManager FRIEND_MANAGER;
     public static EnemyManager ENEMY_MANAGER;
-
     public static PopManager POP_MANAGER;
-
     public static ServerManager SERVER_MANAGER;
-
     public static PositionManager POS_MANAGER;
     public static RotationManager ROTATION_MANAGER;
-
     public static ConfigManager CONFIG_MANAGER;
-
     public static SongManager SONG_MANAGER;
+    public static CapeManager CAPE_MANAGER;
 
+    // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
 
     @Mod.Instance
@@ -107,6 +103,7 @@ public class WurstplusThree {
         ROTATION_MANAGER = new RotationManager();
         CONFIG_MANAGER = new ConfigManager();
         SONG_MANAGER = new SongManager();
+        CAPE_MANAGER = new CapeManager();
     }
 
 }
