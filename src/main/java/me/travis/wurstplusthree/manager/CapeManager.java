@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.manager;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Pair;
 
@@ -79,7 +80,7 @@ public class CapeManager implements Globals {
 
     public boolean isDonator(UUID uuid) {
         for (Pair<UUID, BufferedImage> donator : this.donatorCapes) {
-            if (donator.getKey() == uuid) {
+            if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return true;
             }
         }

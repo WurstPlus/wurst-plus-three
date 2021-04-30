@@ -1,9 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.manager.CapeManager;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -16,9 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,7 +29,7 @@ public abstract class MixinAbstractClientPlayer {
         UUID uuid = Objects.requireNonNull(getPlayerInfo()).getGameProfile().getId();
 
         if (WurstplusThree.CAPE_MANAGER.isOg(uuid)) {
-            // callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
+//             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
         }
 
         if (WurstplusThree.CAPE_MANAGER.isDonator(uuid)) {
@@ -43,7 +39,6 @@ public abstract class MixinAbstractClientPlayer {
                 SkinStorageManipulationer.WrappedResource wr = new SkinStorageManipulationer.WrappedResource(
                         FMLClientHandler.instance().getClient().getTextureManager().getDynamicTextureLocation(uuid.toString(), texture)
                 );
-
                 callbackInfoReturnable.setReturnValue(new ResourceLocation(wr.location.toString()));
             } catch (Exception e) {
                 e.printStackTrace();
