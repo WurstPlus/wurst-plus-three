@@ -29,6 +29,16 @@ public class Hack implements Globals {
      */
     private int isListening;
 
+    public @interface Registration {
+        String name();
+        String description();
+        Category category();
+        int isListening();
+        int bind() default Keyboard.KEY_NONE;
+        boolean enabled() default false;
+        boolean shown() default true;
+    }
+
     public Hack(String name, String desc, Category cat, boolean shouldAlwaysListen) {
         this.name = name;
         this.description = desc;
@@ -38,6 +48,11 @@ public class Hack implements Globals {
         this.shown = true;
         this.isEnabled = false;
     }
+
+    private Registration getMod(){
+        return getClass().getAnnotation(Registration.class);
+    }
+
 
     public void onEnable() {
     }

@@ -44,6 +44,9 @@ public class MixinRenderPlayer {
             GL11.glColor4f((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)color.getBlue() / 255.0f,
                     (float)color.getAlpha() / 255.0f);
         }
+        else if(clientPlayer == Minecraft.getMinecraft().player && PlayerSpoofer.INSTANCE.isEnabled()){
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SkinStorageManipulationer.getTexture().toString()));
+        }
     }
 
     @Inject(method={"renderRightArm"}, at={@At(value="RETURN")}, cancellable=true)
@@ -54,6 +57,9 @@ public class MixinRenderPlayer {
             GL11.glEnable((int)3553);
             GL11.glEnable((int)3008);
             GL11.glPopAttrib();
+        }
+        else if(clientPlayer == Minecraft.getMinecraft().player && PlayerSpoofer.INSTANCE.isEnabled()){
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SkinStorageManipulationer.getTexture().toString()));
         }
     }
 
@@ -74,6 +80,9 @@ public class MixinRenderPlayer {
             GL11.glColor4f((float)((float)color.getRed() / 255.0f), (float)((float)color.getGreen() / 255.0f), (float)((float)color.getBlue() / 255.0f),
                     (float)((float)color.getAlpha() / 255.0f));
         }
+        else if(clientPlayer == Minecraft.getMinecraft().player && PlayerSpoofer.INSTANCE.isEnabled()){
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SkinStorageManipulationer.getTexture().toString()));
+        }
     }
 
     @Inject(method={"renderLeftArm"}, at={@At(value="RETURN")}, cancellable=true)
@@ -84,6 +93,9 @@ public class MixinRenderPlayer {
             GL11.glEnable((int)3553);
             GL11.glEnable((int)3008);
             GL11.glPopAttrib();
+        }
+        else if(clientPlayer == Minecraft.getMinecraft().player && PlayerSpoofer.INSTANCE.isEnabled()){
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SkinStorageManipulationer.getTexture().toString()));
         }
     }
 
