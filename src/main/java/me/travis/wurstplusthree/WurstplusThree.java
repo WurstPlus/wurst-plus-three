@@ -57,6 +57,7 @@ public class WurstplusThree {
     public static ConfigManager CONFIG_MANAGER;
     public static SongManager SONG_MANAGER;
     public static CapeManager CAPE_MANAGER;
+    public static CosmeticManager COSMETIC_MANAGER;
 
     // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
@@ -104,6 +105,7 @@ public class WurstplusThree {
         CONFIG_MANAGER = new ConfigManager();
         SONG_MANAGER = new SongManager();
         CAPE_MANAGER = new CapeManager();
+        COSMETIC_MANAGER = new CosmeticManager();
     }
 
 }
