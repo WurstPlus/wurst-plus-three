@@ -1,7 +1,5 @@
 package me.travis.wurstplusthree.manager;
 
-import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.util.elements.DonatorItem;
 import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -33,6 +31,7 @@ public class CosmeticManager {
             while ((inputLine = in.readLine()) != null) {
                 String colune = inputLine.trim();
                 String name = colune.split(":")[0];
+                //WurstplusThree.LOGGER.info(name);
                 String type = colune.split(":")[1];
                 String[] cosmetics = type.split(",");
                 ArrayList<ModelBase> cList = new ArrayList<>();
@@ -42,7 +41,6 @@ public class CosmeticManager {
                     }
                 }
                 this.cosmeticMap.put(name, cList);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,5 +80,6 @@ public class CosmeticManager {
     public boolean hasCosmetics(EntityPlayer player) {
         return this.cosmeticMap.containsKey(player.getUniqueID().toString());
     }
+
 
 }
