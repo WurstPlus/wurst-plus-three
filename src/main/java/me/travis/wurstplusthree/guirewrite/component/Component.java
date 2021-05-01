@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.guirewrite.component;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 27/04/2021
  */
 

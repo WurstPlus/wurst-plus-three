@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.event.events;
 import me.travis.wurstplusthree.event.EventStage;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 29/04/2021
  */
 

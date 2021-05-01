@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 01/05/2021
  */
 

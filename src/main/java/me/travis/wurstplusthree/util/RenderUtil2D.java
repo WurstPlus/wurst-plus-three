@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 29/04/2021
  *  -> From Glacier (My old client)
  */

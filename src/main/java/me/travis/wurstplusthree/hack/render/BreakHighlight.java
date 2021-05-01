@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 25/04/2021
  * fixed ur shit nerd ¬ travis
  */

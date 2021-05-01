@@ -11,7 +11,7 @@ import me.travis.wurstplusthree.util.RenderUtil2D;
 import java.util.ArrayList;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 27/04/2021
  */
 

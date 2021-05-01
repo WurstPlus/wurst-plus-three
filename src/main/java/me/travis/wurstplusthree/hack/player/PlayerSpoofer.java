@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 28/04/2021
  */
 

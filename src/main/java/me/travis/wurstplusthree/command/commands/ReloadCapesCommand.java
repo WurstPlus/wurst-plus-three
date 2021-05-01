@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.util.ClientMessage;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 01/05/2021
  */
 

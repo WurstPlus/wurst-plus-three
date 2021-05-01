@@ -1,7 +1,7 @@
 package me.travis.wurstplusthree.util;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 27/04/2021
  */
 

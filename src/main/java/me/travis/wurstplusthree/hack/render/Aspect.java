@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 01/05/2021
  */
 

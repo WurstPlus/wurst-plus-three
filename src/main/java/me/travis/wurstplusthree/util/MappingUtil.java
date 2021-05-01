@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.util;
 import net.minecraft.client.Minecraft;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 25/04/2021
  */
 

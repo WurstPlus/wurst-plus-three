@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 28/04/2021
  */
 

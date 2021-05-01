@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand;
 import org.lwjgl.input.Keyboard;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 30/04/2021
  */
 

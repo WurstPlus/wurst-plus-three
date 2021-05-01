@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.setting.Setting;
 import org.lwjgl.input.Keyboard;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 30/04/2021
  */
 

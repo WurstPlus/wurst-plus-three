@@ -11,7 +11,7 @@ import java.util.List;
 import static me.travis.wurstplusthree.util.PlayerUtil.getPlayerPos;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 28/04/2021
  *  - not china code i promise!
  */

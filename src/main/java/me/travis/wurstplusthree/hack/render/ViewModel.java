@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 26/04/2021
  *  -> This is dumb as well but its the only way i think you can do it lol
  */

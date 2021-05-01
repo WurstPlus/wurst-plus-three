@@ -11,7 +11,7 @@ import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 29/04/2021
  */
 

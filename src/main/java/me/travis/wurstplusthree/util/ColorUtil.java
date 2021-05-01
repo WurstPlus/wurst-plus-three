@@ -4,7 +4,7 @@ package me.travis.wurstplusthree.util;
 import java.awt.*;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 29/04/2021
  * -> from my client (Glacier)
  */

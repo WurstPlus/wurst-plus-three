@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 28/04/2021
  */
 

@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 27/04/2021
  * -> swag gui :sunglasses:
  */

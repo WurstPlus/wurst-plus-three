@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.util.ClientMessage;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 28/04/2021
  * FIXED UR SHIT ¬ travis
  */

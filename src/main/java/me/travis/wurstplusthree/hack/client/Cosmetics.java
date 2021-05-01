@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 01/05/2021
  */
 

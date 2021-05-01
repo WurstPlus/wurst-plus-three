@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 27/04/2021
  */
 @SideOnly(Side.CLIENT)

@@ -11,7 +11,7 @@ import me.travis.wurstplusthree.util.RenderUtil2D;
 import org.lwjgl.input.Keyboard;
 
 /**
- * @author Madmegsox1
+ * @author megyn
  * @since 29/04/2021
  */
 
