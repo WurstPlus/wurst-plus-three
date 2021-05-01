@@ -31,14 +31,6 @@ public class MenuFont implements Globals {
         }
     }
 
-    public float drawStringRainbow(String string, float x, float y, boolean shadow) {
-        if (shadow) {
-            return this.menuFont.drawStringWithShadow(string, x, y, Rainbow.rgb);
-        } else {
-            return this.menuFont.drawString(string, x, y, Rainbow.rgb);
-        }
-    }
-
     public int getTextHeight() {
         return this.menuFont.getStringHeight();
     }

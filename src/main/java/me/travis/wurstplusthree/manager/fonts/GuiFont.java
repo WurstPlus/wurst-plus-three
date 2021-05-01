@@ -60,12 +60,11 @@ public class GuiFont implements Globals {
         }
     }
 
-    public float drawStringRainbow(String string, float x, float y, boolean shadow) {
-        Rainbow.updateRainbow();
+    public void drawStringRainbow(String string, float x, float y, boolean shadow) {
         if (shadow) {
-            return this.font.drawStringWithShadow(string, x, y, Rainbow.rgb);
+            this.font.drawStringWithShadow(string, x, y, Rainbow.getColour().getRGB());
         } else {
-            return this.font.drawString(string, x, y, Rainbow.rgb);
+            this.font.drawString(string, x, y, Rainbow.getColour().getRGB());
         }
     }
 

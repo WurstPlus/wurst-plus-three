@@ -42,6 +42,10 @@ public class MathsUtil implements Globals {
         return bd.doubleValue();
     }
 
+    public static int random(int min, int max) {
+        return random.nextInt(max - min) + min;
+    }
+
     public static int floor(double value) {
         int i = (int)value;
         return value < (double)i ? i - 1 : i;
