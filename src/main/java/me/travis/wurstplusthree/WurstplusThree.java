@@ -20,12 +20,12 @@ import org.lwjgl.opengl.Display;
 /**
  * @author travis - began work on 8th april 2021
  */
-@Mod(modid = "wurstplusthree", name = "Wurst+3", version = "0.3.2")
+@Mod(modid = "wurstplusthree", name = "Wurst+3", version = "0.4.0")
 public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
     public static final String MODNAME = "Wurst+3";
-    public static final String MODVER = "0.3.2";
+    public static final String MODVER = "0.4.0";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
