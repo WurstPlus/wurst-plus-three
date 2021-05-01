@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.setting.Setting;
 
 import java.util.List;
 
-public class EnumSetting extends Setting<String> implements com.lukflug.panelstudio.settings.EnumSetting {
+public class EnumSetting extends Setting<String> {
 
     private final List<String> modes;
 
@@ -27,12 +27,10 @@ public class EnumSetting extends Setting<String> implements com.lukflug.panelstu
         return name.equalsIgnoreCase(this.getValue());
     }
 
-    @Override
     public void increment() {
         value = modes.get((modes.indexOf(this.value) + 1) % modes.size());
     }
 
-    @Override
     public String getValueName() {
         return this.value;
     }

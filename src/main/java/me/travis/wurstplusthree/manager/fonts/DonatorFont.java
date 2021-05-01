@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.manager.fonts;
 
-import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.gui.font.CustomFont;
 import me.travis.wurstplusthree.util.Globals;
 

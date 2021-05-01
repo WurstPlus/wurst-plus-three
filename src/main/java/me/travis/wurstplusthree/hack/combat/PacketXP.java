@@ -1,12 +1,10 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.ClientMessage;
-import me.travis.wurstplusthree.util.RotationUtil;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;

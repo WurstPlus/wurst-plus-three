@@ -10,7 +10,6 @@ import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.Globals;
-import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 
 import java.io.*;

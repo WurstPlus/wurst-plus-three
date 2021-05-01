@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
 import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import me.travis.wurstplusthree.hack.render.CameraClip;

@@ -2,7 +2,6 @@ package me.travis.wurstplusthree;
 
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
-import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
@@ -11,7 +10,6 @@ import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.setting.Settings;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import me.travis.wurstplusthree.util.elements.DonatorItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -44,7 +42,6 @@ public class WurstplusThree {
     public static Settings SETTINGS;
 
     // gui
-    public static WurstplusGui GUI;
     public static WurstplusGuiNew GUI2;
 
     // managers
@@ -88,7 +85,6 @@ public class WurstplusThree {
         HACKS = new Hacks();
         this.loadManagers();
         CONFIG_MANAGER.loadConfig();
-        GUI = new WurstplusGui();
         GUI2 = new WurstplusGuiNew();
     }
 

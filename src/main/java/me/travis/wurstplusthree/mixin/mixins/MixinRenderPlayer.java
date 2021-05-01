@@ -1,11 +1,10 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.render.Pitbull;
 import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import me.travis.wurstplusthree.hack.render.HandColour;
 import me.travis.wurstplusthree.hack.render.Nametags;
+import me.travis.wurstplusthree.hack.render.Pitbull;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
-import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.OpenGlHelper;

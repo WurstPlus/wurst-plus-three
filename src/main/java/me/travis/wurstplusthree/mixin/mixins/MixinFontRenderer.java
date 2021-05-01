@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
 import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.HudUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;

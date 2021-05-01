@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.player.Freecam;
 import me.travis.wurstplusthree.hack.player.Jesus;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.Globals;

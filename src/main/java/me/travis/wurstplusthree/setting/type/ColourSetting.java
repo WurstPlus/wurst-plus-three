@@ -1,13 +1,12 @@
 package me.travis.wurstplusthree.setting.type;
 
-import com.lukflug.panelstudio.settings.ColorSetting;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
 import java.awt.*;
 
-public class ColourSetting extends Setting<Colour> implements ColorSetting {
+public class ColourSetting extends Setting<Colour> {
 
     private boolean rainbow;
 
@@ -24,7 +23,6 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
         else return this.value;
     }
 
-    @Override
     public void setValue(Color value) {
         this.value = new Colour(value);
     }
@@ -33,17 +31,14 @@ public class ColourSetting extends Setting<Colour> implements ColorSetting {
         this.value = new Colour(red, green, blue, alpha);
     }
 
-    @Override
     public Color getColor() {
         return this.value;
     }
 
-    @Override
     public boolean getRainbow() {
         return this.rainbow;
     }
 
-    @Override
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
     }

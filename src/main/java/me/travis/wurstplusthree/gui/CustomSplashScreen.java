@@ -2,10 +2,8 @@ package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.Rainbow;
-import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.DonatorItem;
-import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,9 +15,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomSplashScreen extends GuiScreen {
 

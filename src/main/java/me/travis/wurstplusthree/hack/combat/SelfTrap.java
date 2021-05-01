@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.*;
+import java.util.Arrays;
 
 @Hack.Registration(name = "SelfTrap", description = "when all else fails u can self trap", category = Hack.Category.COMBAT, isListening = false)
 public class SelfTrap extends Hack {

@@ -7,7 +7,6 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import org.lwjgl.input.Keyboard;
 
 /**
  * @author BrownZombie

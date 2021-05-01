@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.hack.player;
 
 import com.google.gson.Gson;
-import me.travis.wurstplusthree.command.commands.PlayerSpooferCommand;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.ClientMessage;
 

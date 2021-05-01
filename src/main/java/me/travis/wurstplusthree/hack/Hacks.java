@@ -3,10 +3,9 @@ package me.travis.wurstplusthree.hack;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.gui.WurstplusGui;
+import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.chat.*;
 import me.travis.wurstplusthree.hack.client.Cosmetics;
-import me.travis.wurstplusthree.hack.client.GuiOld;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.*;
@@ -17,7 +16,6 @@ import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +34,6 @@ public class Hacks implements Globals {
         this.hacks.add(new CustomChat());
         this.hacks.add(new ToggleMessages());
         // client
-        this.hacks.add(new GuiOld());
         this.hacks.add(new Hud());
         this.hacks.add(new Gui());
         this.hacks.add(new Cosmetics());
@@ -177,7 +174,7 @@ public class Hacks implements Globals {
     }
 
     public void onKeyDown(int key) {
-        if (key == 0 || mc.currentScreen instanceof WurstplusGui) {
+        if (key == 0 || mc.currentScreen instanceof WurstplusGuiNew) {
             return;
         }
         for (Hack hack : this.hacks) {

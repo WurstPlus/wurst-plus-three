@@ -2,10 +2,6 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            name = "lukflug"
-            url = "https://lukflug.github.io/maven/"
-        }
-        maven {
             name = 'SpongePowered'
             url = 'https://repo.spongepowered.org/repository/maven-public'
         }
@@ -45,10 +41,6 @@ repositories {
         name = 'spongepowered-repo'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
-    maven {
-        name = 'lukflug'
-        url = 'https://lukflug.github.io/maven'
-    }
     jcenter()
 }
 
@@ -60,8 +52,6 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-    compile('com.lukflug:panelstudio:0.1.8')
-    compile('com.lukflug:panelstudio-mc12:0.1.8')
 }
 
 
@@ -88,8 +78,6 @@ shadowJar {
     dependencies {
         include(dependency('com.googlecode.json-simple:json-simple:1.1.1'))
         include(dependency('org.spongepowered:mixin'))
-        include(dependency('com.lukflug:panelstudio'))
-        include(dependency('com.lukflug:panelstudio-mc12'))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
