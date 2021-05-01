@@ -6,10 +6,12 @@ import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
+import me.travis.wurstplusthree.manager.fonts.DonatorFont;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.setting.Settings;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import me.travis.wurstplusthree.util.elements.DonatorItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -48,6 +50,7 @@ public class WurstplusThree {
     // managers
     public static MenuFont MENU_FONT_MANAGER;
     public static GuiFont GUI_FONT_MANAGER;
+    public static DonatorFont DONATOR_FONT_MANAGER;
     public static FriendManager FRIEND_MANAGER;
     public static EnemyManager ENEMY_MANAGER;
     public static PopManager POP_MANAGER;
@@ -105,6 +108,7 @@ public class WurstplusThree {
         CONFIG_MANAGER = new ConfigManager();
         SONG_MANAGER = new SongManager();
         CAPE_MANAGER = new CapeManager();
+        DONATOR_FONT_MANAGER = new DonatorFont();
         COSMETIC_MANAGER = new CosmeticManager();
     }
 
