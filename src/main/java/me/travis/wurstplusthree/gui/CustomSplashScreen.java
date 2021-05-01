@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
+import me.travis.wurstplusthree.util.elements.DonatorItem;
 import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -23,8 +24,7 @@ import java.util.stream.Collectors;
 public class CustomSplashScreen extends GuiScreen {
 
     private final ResourceLocation background = new ResourceLocation("textures/pitbull1.jpg");
-    private final List<Pair<String, Integer>> donators = new ArrayList<>();
-    private final List<Pair<Integer, Integer>> donatorPos = new ArrayList<>();
+    private final List<DonatorItem> donatorItems = new ArrayList<>();
     private int y;
     private int x;
     private float watermarkX;
@@ -56,9 +56,8 @@ public class CustomSplashScreen extends GuiScreen {
     }
 
     private void initDonators() {
-        this.donatorPos.clear();
-        this.donators.clear();
-        try { // donators
+        this.donatorItems.clear();
+        try {
             URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/boosts.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
@@ -66,8 +65,8 @@ public class CustomSplashScreen extends GuiScreen {
                 String colune = inputLine.trim();
                 String name = colune.split(":")[0];
                 String ammount = colune.split(":")[1];
-                donators.add(new Pair<>(name, Integer.parseInt(ammount)));
-                donatorPos.add(new Pair<>(MathsUtil.random(50, this.width - 50), MathsUtil.random(50, this.height - 50)));
+                donatorItems.add(new DonatorItem(name, Integer.parseInt(ammount), WurstplusThree.GUI_FONT_MANAGER.getTextWidth(name),
+                        WurstplusThree.GUI_FONT_MANAGER.getTextHeight(), this.width, this.height));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,14 +130,20 @@ public class CustomSplashScreen extends GuiScreen {
         this.mc.getTextureManager().bindTexture(this.background);
         CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
         String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 - with help from BrownZombie, k3b";
-        int c = 0;
-        for (Pair<String, Integer> pair : this.donators) {
-            String name = pair.getKey();
-            int size = pair.getValue();
-            int x = this.donatorPos.get(c).getKey();
-            int y = this.donatorPos.get(c).getValue();
-            WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(name, x, y, true);
-            c++;
+        for (DonatorItem item : this.donatorItems) {
+            item.updatePos();
+            switch (item.getSize()) {
+                case 1:
+                    WurstplusThree.DONATOR_FONT_MANAGER.drawSmallStringRainbow(item.getName(), (float) item.getX(), (float) item.getY(), item.getRgb());
+                    break;
+                case 2:
+                    WurstplusThree.DONATOR_FONT_MANAGER.drawMediumStringRainbow(item.getName(), (float) item.getX(), (float) item.getY(), item.getRgb());
+                    break;
+                case 3:
+                    WurstplusThree.DONATOR_FONT_MANAGER.drawLargeStringRainbow(item.getName(), (float) item.getX(), (float) item.getY(), item.getRgb());
+                    break;
+            }
+
         }
         WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(watermark, watermarkX, this.height - WurstplusThree.GUI_FONT_MANAGER.getTextHeight() - 2, true);
         watermarkX -= .05f;
