@@ -84,7 +84,7 @@ public class PacketXP extends Hack{
 
             if (percent >= takeOffVal.getValue() && !item.equals(Items.AIR)) {
                 if (!notInInv(Items.AIR)) {
-                    ClientMessage.sendMessage("Cannot take armor off as there is no slots free!");
+                    return;
                 }
                 if (delay_count < delay.getValue()) {
                     delay_count++;
