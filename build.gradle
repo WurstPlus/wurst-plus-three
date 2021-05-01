@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version "0.3.1"
+version "0.3.2"
 group project.modGroup
 
 sourceCompatibility = targetCompatibility = '1.8'
