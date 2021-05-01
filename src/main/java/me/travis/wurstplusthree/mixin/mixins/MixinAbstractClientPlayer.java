@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -34,6 +35,10 @@ public abstract class MixinAbstractClientPlayer {
 
         if (WurstplusThree.CAPE_MANAGER.isContrabutor(uuid)) {
             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-dev.png"));
+        }
+
+        if (WurstplusThree.CAPE_MANAGER.isPoggers(uuid)) {
+            callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-cool.png"));
         }
 
         if (WurstplusThree.CAPE_MANAGER.isDonator(uuid)) {
