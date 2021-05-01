@@ -42,6 +42,7 @@ public class Cosmetics extends Hack {
             gm.render(event.getEntity(), 0.0f, 0.0f, -0.1f, 0.0f, 0.0f, 0.0625f);
             mc.getTextureManager().deleteTexture(gm.glassesTexture);
         }
+        GlStateManager.popMatrix();
     }
 
     public float interpolate(float yaw1, float yaw2, float percent) {
