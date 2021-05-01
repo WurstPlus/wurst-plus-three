@@ -12,13 +12,21 @@ on first run ensure your voices volume is maxed ;)
 
 ## Donations
 
-2 Boosts in discord OR $5 paypal for 1 month 'cool dudes' cape
+join the discord for more infomation
 
-10 boosts in discord OR $15 paypal for lifetime custom cape
+2 Boosts in discord OR $5 for 1 month 'cool dudes' cape
+
+10 boosts in discord OR $15 for lifetime custom cape
 
 to donate use link above and make sure your discord tag is included in the comments, then DM travis#0001 on discord
 
 nitro boosts capes will be given ASAP
+
+## Credits
+
+the usual suspects are here, [phobos](https://github.com/Hqrion/Phobos-1.9.0-BUILDABLE-SRC), [gamesense](https://github.com/IUDevman/gamesense-client), some [xulu](https://github.com/Elementars/Xulu-v1.5.2), and other misc stuff. if you want better credit dm me on discord travis#0001
+
+also the old gui is using [panel studio](https://github.com/lukflug/PanelStudio/)
 
 ## Why
 

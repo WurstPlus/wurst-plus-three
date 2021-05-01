@@ -30,4 +30,9 @@ public class KeySetting extends Setting<Integer> implements KeybindSetting {
     public String getKeyName() {
         return Keyboard.getKeyName(this.getKey());
     }
+
+    @Override
+    public String getType() {
+        return "key";
+    }
 }

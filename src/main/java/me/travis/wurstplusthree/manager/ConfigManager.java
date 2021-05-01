@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
@@ -179,7 +180,12 @@ public class ConfigManager implements Globals {
                     br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
                             + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
                             + color.getRainbow() + "\r\n");
-                } else {
+                }
+                else if(setting instanceof KeySetting){
+                    KeySetting key = (KeySetting) setting;
+                    br.write(setting.getName()+ ":" + key.getKey() + "\r\n");
+                }
+                else {
                     br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
                 }
             }
@@ -232,6 +238,10 @@ public class ConfigManager implements Globals {
                         break;
                     case "int":
                         setting.setValue(Integer.parseInt(value));
+                        break;
+                    case "key":
+                        KeySetting key = (KeySetting) setting;
+                        key.setKey(Integer.parseInt(value));
                         break;
                 }
             }
