@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGui;
 import me.travis.wurstplusthree.hack.chat.*;
+import me.travis.wurstplusthree.hack.client.Cosmetics;
 import me.travis.wurstplusthree.hack.client.GuiOld;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
@@ -38,6 +39,7 @@ public class Hacks implements Globals {
         this.hacks.add(new GuiOld());
         this.hacks.add(new Hud());
         this.hacks.add(new Gui());
+        this.hacks.add(new Cosmetics());
         // combat
         // TODO : PISTON AURA
         // TODO : BED AURA

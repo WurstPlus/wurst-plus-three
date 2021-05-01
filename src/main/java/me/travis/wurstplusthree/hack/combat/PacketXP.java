@@ -51,10 +51,11 @@ public class PacketXP extends Hack{
             mc.player.rotationPitch = oldPitch;
             mc.player.inventory.currentItem = prvSlot;
             mc.player.connection.sendPacket(new CPacketHeldItemChange(prvSlot));
+            if (allowTakeOff.getValue()) {
+                takeArmorOff(); //TODO travis add the ArmourMend take off thing
+            }
         }
-        if (allowTakeOff.getValue()) {
-            takeArmorOff(); //TODO travis add the ArmourMend take off thing
-        }
+
     }
 
     private int findExpInHotbar() {
