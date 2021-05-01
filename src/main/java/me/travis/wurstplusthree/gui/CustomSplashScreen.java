@@ -10,11 +10,20 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CustomSplashScreen extends GuiScreen {
 
     private final ResourceLocation background = new ResourceLocation("textures/pitbull1.jpg");
+    private final List<String> donators = new ArrayList<>();
     private int y;
     private int x;
     private float watermarkX;
@@ -48,6 +57,16 @@ public class CustomSplashScreen extends GuiScreen {
     public void initGui() {
         mc.gameSettings.enableVsync = false;
         mc.gameSettings.limitFramerate = 200;
+        try { // donators
+            URL capesList = new URL("https://pastebin.com/raw/jN25rx82");
+            BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                donators.add(inputLine);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.playMusic();
         this.x = this.width / 4;
         this.y = this.height / 4 + 48;
@@ -100,7 +119,7 @@ public class CustomSplashScreen extends GuiScreen {
         GlStateManager.disableBlend();
         this.mc.getTextureManager().bindTexture(this.background);
         CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
-        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882";
+        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 | Donators: " + new ArrayList<>(donators).toString().replace("[", "").replace("]", "");
         WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(watermark, watermarkX, this.height - WurstplusThree.GUI_FONT_MANAGER.getTextHeight() - 2, true);
         watermarkX -= .05f;
         if (watermarkX < -WurstplusThree.GUI_FONT_MANAGER.getTextWidth(watermark) - 10) {

@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.manager;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Pair;
 
