@@ -36,7 +36,7 @@ public class Hacks implements Globals {
         // client
         this.hacks.add(new Hud());
         this.hacks.add(new Gui());
-        this.hacks.add(new Cosmetics());
+        //this.hacks.add(new Cosmetics());
         // combat
         // TODO : PISTON AURA
         // TODO : BED AURA
