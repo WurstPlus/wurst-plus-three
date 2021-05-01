@@ -37,7 +37,6 @@ public class CosmeticManager {
                 String[] cosmetics = type.split(",");
                 ArrayList<ModelBase> cList = new ArrayList<>();
                 for(String c : cosmetics){
-                    WurstplusThree.LOGGER.info(c);
                     if(c.equals("glasses")){
                         cList.add(gm);
                     }
