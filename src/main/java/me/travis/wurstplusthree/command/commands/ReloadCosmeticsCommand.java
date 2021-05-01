@@ -9,15 +9,14 @@ import me.travis.wurstplusthree.util.ClientMessage;
  * @since 01/05/2021
  */
 
-public class ReloadCapesCommand extends Command {
-
-    public ReloadCapesCommand(){
-        super("ReloadCapes", "ReloadCape");
+public class ReloadCosmeticsCommand extends Command {
+    public ReloadCosmeticsCommand(){
+        super("ReloadCosmetics", "ReloadCosmetic");
     }
 
     @Override
     public void execute(String[] message) {
-        WurstplusThree.CAPE_MANAGER.reload();
-        ClientMessage.sendMessage("Reloaded Capes!");
+        WurstplusThree.COSMETIC_MANAGER.reload();
+        ClientMessage.sendMessage("Reloaded Cosmetics!");
     }
 }

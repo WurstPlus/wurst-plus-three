@@ -49,6 +49,31 @@ public class CosmeticManager {
         }
     }
 
+    public void reload(){
+        cosmeticMap.clear();
+        try {
+            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cosmetics.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                String colune = inputLine.trim();
+                String name = colune.split(":")[0];
+                String type = colune.split(":")[1];
+                String[] cosmetics = type.split(",");
+                ArrayList<ModelBase> cList = new ArrayList<>();
+                for(String c : cosmetics){
+                    if(c.equals("glasses")){
+                        cList.add(gm);
+                    }
+                }
+                this.cosmeticMap.put(name, cList);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public ArrayList<ModelBase> getRenderModels(EntityPlayer player) {
         return this.cosmeticMap.get(player.getUniqueID().toString());
