@@ -20,3 +20,7 @@
   - Used to draw a hack to hud
 - Font <set/size>
   - Used to set Cfont (do "set random" for a random font)
+- Reload Capes
+  - Reloads Capes
+- Reload Cosmetics
+  - Reloads Cosmetics    
