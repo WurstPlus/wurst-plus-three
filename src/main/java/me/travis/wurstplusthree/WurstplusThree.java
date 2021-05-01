@@ -108,11 +108,8 @@ public class WurstplusThree {
         CONFIG_MANAGER = new ConfigManager();
         SONG_MANAGER = new SongManager();
         CAPE_MANAGER = new CapeManager();
-<<<<<<< HEAD
         DONATOR_FONT_MANAGER = new DonatorFont();
-=======
         COSMETIC_MANAGER = new CosmeticManager();
->>>>>>> 69181d39424bb52686a05931862519c4536b9f24
     }
 
 }
