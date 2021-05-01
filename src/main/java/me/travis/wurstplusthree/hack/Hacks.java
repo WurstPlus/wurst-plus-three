@@ -36,7 +36,7 @@ public class Hacks implements Globals {
         // client
         this.hacks.add(new Hud());
         this.hacks.add(new Gui());
-        this.hacks.add(new Cosmetics());
+        //this.hacks.add(new Cosmetics());
         // combat
         // TODO : PISTON AURA
         // TODO : BED AURA
@@ -94,6 +94,7 @@ public class Hacks implements Globals {
         this.hacks.add(new BreakHighlight());
         this.hacks.add(new ViewModel());
         this.hacks.add(new VoidESP());
+        this.hacks.add(new Aspect());
     }
 
     public List<Hack> getHacks() {
