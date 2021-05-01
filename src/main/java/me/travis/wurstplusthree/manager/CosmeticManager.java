@@ -19,9 +19,10 @@ import java.util.Map;
 public class CosmeticManager {
     private final Minecraft mc = Minecraft.getMinecraft();
     public Map<String, List<ModelBase>> cosmeticMap = new HashMap<>();
+    public static GlassesModel gm = new GlassesModel();
 
     public CosmeticManager(){
-        this.cosmeticMap.put("da20a139-54f7-4319-9f6a-a76330d658d0", Arrays.asList(new ModelBase[]{new GlassesModel(),}));
+        this.cosmeticMap.put("da20a139-54f7-4319-9f6a-a76330d658d0", Arrays.asList(new ModelBase[]{gm}));
     }
 
 
