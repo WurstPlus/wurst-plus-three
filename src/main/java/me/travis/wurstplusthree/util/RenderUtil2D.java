@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 /**
  * @author Azrn
  * @since 29/04/2021
- * 
  */
 
 public class RenderUtil2D {
