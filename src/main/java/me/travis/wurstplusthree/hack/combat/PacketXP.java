@@ -39,7 +39,7 @@ public class PacketXP extends Hack{
 
     @Override
     public void onUpdate(){
-        if(Keyboard.isKeyDown(bind.getKey())){
+        if(Keyboard.isKeyDown(bind.getKey()) && mc.currentScreen == null){
             int oldPitch = (int)mc.player.rotationPitch;
             prvSlot = mc.player.inventory.currentItem; //TODO add better rotations
             mc.player.connection.sendPacket(new CPacketHeldItemChange(findExpInHotbar()));

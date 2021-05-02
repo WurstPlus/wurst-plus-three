@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.event;
 import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
+import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
@@ -15,14 +16,17 @@ import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
@@ -35,6 +39,7 @@ public class Events implements Globals {
     private Object EventManager;
 
     private final Timer logoutTimer = new Timer();
+    private long time = -1;
 
     public Events() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -42,6 +47,40 @@ public class Events implements Globals {
 
     public void unload() {
         MinecraftForge.EVENT_BUS.unregister(this);
+    }
+
+    @SubscribeEvent
+    public void onKeyPress(InputEvent.KeyInputEvent event) {
+        for(Hack hack : WurstplusThree.HACKS.getHacks()){
+            if (hack.getBind() <= -1) continue;
+            if(Keyboard.isKeyDown(hack.getBind())){
+                hack.toggle();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onMousePress(InputEvent.MouseInputEvent event){
+        int button = new MouseEvent().getButton();
+        if (System.currentTimeMillis() - time < 220) {
+            time = System.currentTimeMillis();
+            return;
+        }
+        time = System.currentTimeMillis();
+        for(Hack hack : WurstplusThree.HACKS.getHacks()) {
+            if (hack.getBind() >= -1) continue;
+            if (button == 0 && hack.getBind() == -2) {
+                hack.toggle();
+            } else if (button == 1 && hack.getBind()  == -3) {
+                hack.toggle();
+            } else if (button == 2 && hack.getBind() == -4) {
+                hack.toggle();
+            } else if (button == 3 && hack.getBind()  == -5) {
+                hack.toggle();
+            } else if (button == 4 && hack.getBind() == -6) {
+                hack.toggle();
+            }
+        }
     }
 
     @SubscribeEvent
@@ -195,4 +234,6 @@ public class Events implements Globals {
             WurstplusThree.SERVER_MANAGER.update();
         }
     }
+
+
 }

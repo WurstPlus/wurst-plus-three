@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.InventoryUtil;
+import me.travis.wurstplusthree.util.MouseUtil;
 import net.minecraft.item.ItemEnderPearl;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
@@ -29,13 +30,24 @@ public class KeyPearl extends Hack {
 
     @Override
     public void onUpdate() {
-        if ((middleClick.getValue()) ? Mouse.isButtonDown(2) : Keyboard.isKeyDown(key.getKey())) {
-            if (!isButtonDown && mc.currentScreen == null) {
-                this.pearl();
+        if (key.getKey() < -1) {
+            if (Mouse.isButtonDown(new MouseUtil().convertToMouse(key.getKey()))) { //TODO fix for keys
+                if (!isButtonDown && mc.currentScreen == null) {
+                    this.pearl();
+                }
+                isButtonDown = true;
+            } else {
+                isButtonDown = false;
             }
-            isButtonDown = true;
-        } else {
-            isButtonDown = false;
+        } else if (key.getKey() > -1) {
+            if (Keyboard.isKeyDown(key.getKey())) {
+                if (!isButtonDown && mc.currentScreen == null) {
+                    this.pearl();
+                }
+                isButtonDown = true;
+            } else {
+                isButtonDown = false;
+            }
         }
     }
 
