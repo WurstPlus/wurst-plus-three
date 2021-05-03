@@ -10,6 +10,8 @@ Made for crystalpvp and killing noobs.
 
 On first run ensure your voices volume is maxed ;)
 
+[CoC](CODE_OF_CONDUCT.md)
+
 ## Donations
 
 Join the discord for more infomation.
