@@ -29,6 +29,7 @@ public class Commands implements Globals {
         this.commands.add(new FontCommand());
         this.commands.add(new ReloadCapesCommand());
         this.commands.add(new ReloadCosmeticsCommand());
+        this.commands.add(new NameMcCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
