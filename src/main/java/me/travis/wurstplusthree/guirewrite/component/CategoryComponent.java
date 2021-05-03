@@ -87,9 +87,9 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
-                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
-                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
+                RenderUtil2D.drawVLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
+                RenderUtil2D.drawVLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
+                RenderUtil2D.drawHLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
             }
         }
     }

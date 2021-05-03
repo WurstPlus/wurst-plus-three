@@ -23,7 +23,7 @@ public class AltComponent {
     }
 
     public void render() {
-        RenderUtil2D.drawRect(MainAltGui.x, MainAltGui.y + offset, MainAltGui.x + MainAltGui.width, MainAltGui.y + offset + MainAltGui.height, MainAltGui.GUI_TRANSPARENCY);
+        RenderUtil2D.drawRectMC(MainAltGui.x, MainAltGui.y + offset, MainAltGui.x + MainAltGui.width, MainAltGui.y + offset + MainAltGui.height, MainAltGui.GUI_TRANSPARENCY);
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(alt.getUsername(), MainAltGui.x + 20, MainAltGui.y + offset + 10, new Color(255, 255, 255).hashCode());
     }
 

@@ -41,7 +41,7 @@ public class MainAltGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks){
-        RenderUtil2D.drawRect(0, 0, mc.displayWidth, mc.displayWidth, new Color(28, 28, 28).hashCode());
+        RenderUtil2D.drawRectMC(0, 0, mc.displayWidth, mc.displayWidth, new Color(28, 28, 28).hashCode());
         for(AltComponent alt : altComponents){
             alt.render();
         }
