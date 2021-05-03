@@ -7,7 +7,7 @@ package me.travis.wurstplusthree.util;
 
 public class MouseUtil {
 
-    public int convertToMouse(int key){
+    public static int convertToMouse(int key){
         switch (key){
             case -2:
                 return 0;

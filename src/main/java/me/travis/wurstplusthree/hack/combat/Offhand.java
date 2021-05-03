@@ -43,27 +43,28 @@ public class Offhand extends Hack {
             this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             return;
         }
-        if(gapKey.getKey() < -1){
-            if(Mouse.isButtonDown(new MouseUtil().convertToMouse(gapKey.getKey()))){
-                if(!keyPressed && mc.currentScreen == null){
+        if (gapKey.getKey() < -1) {
+            if (Mouse.isButtonDown(MouseUtil.convertToMouse(gapKey.getKey()))) {
+                if (!keyPressed && mc.currentScreen == null) {
                     this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 }
                 keyPressed = true;
                 return;
+            } else {
+                keyPressed = false;
             }
-        }
-        else if (gapKey.getKey() > -1) {
-            if(Keyboard.isKeyDown(gapKey.getKey())) {
+        } else if (gapKey.getKey() > -1) {
+            if (Keyboard.isKeyDown(gapKey.getKey())) {
                 if (!keyPressed && mc.currentScreen == null) {
                     this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 }
+                keyPressed = true;
+                return;
+            } else {
+                keyPressed = false;
             }
-            keyPressed = true;
-            return;
         }
-        else {
-            keyPressed = false;
-        }
+
 
         if (PlayerUtil.isInHole() && gapHole.getValue() && !WurstplusThree.HACKS.ishackEnabled("Crystal Aura")) {
             this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);

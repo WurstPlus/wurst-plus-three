@@ -31,7 +31,7 @@ public class KeyPearl extends Hack {
     @Override
     public void onUpdate() {
         if (key.getKey() < -1) {
-            if (Mouse.isButtonDown(new MouseUtil().convertToMouse(key.getKey()))) { //TODO fix for keys
+            if (Mouse.isButtonDown(MouseUtil.convertToMouse(key.getKey()))) {
                 if (!isButtonDown && mc.currentScreen == null) {
                     this.pearl();
                 }
