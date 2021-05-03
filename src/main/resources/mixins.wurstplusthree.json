@@ -48,6 +48,8 @@
     "MixinServerPinger",
     "MixinVisGraph",
     "MixinWorld",
+    "MixinRenderEntityItem",
+    "MixinRenderer",
     "accessors.IC00Handshake",
     "accessors.IContainer",
     "accessors.IServerAddress",
