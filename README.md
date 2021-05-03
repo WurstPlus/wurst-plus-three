@@ -59,4 +59,4 @@ For a list of commands [click here](Commands.md)
 ## Contributing
 Make a pull request, would be preferable if you joined the discord before hand
 
-For a guide on contributing please [click here](ContributingGuide.md) 
+For a guide on contributing please [click here](CONTRIBUTING.md.md) 
