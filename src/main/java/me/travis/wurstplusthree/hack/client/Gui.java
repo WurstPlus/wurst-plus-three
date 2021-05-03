@@ -31,6 +31,7 @@ public class Gui extends Hack {
     public BooleanSetting animation = new BooleanSetting("Animation", true, this);
     public IntSetting animationStages = new IntSetting("AnimationStages", 250, 1, 1000, this);
     public EnumSetting arrowType = new EnumSetting("ArrowType", "Off", Arrays.asList("Off", "Type1", "Type2"), this);
+    public IntSetting mouseDelay = new IntSetting("MouseDelay", 250, 100, 300, this);
 
     public Gui(){
         INSTANCE = this;

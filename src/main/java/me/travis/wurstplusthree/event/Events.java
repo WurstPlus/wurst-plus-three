@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
@@ -62,7 +63,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onMousePress(InputEvent.MouseInputEvent event){
         int button = new MouseEvent().getButton();
-        if (System.currentTimeMillis() - time < 220) {
+        if (System.currentTimeMillis() - time < Gui.INSTANCE.mouseDelay.getValue()) {
             time = System.currentTimeMillis();
             return;
         }
