@@ -11,7 +11,10 @@ import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ColorUtil;
+import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
@@ -114,6 +117,7 @@ public class HackButton extends Component {
                 }
             }
         }
+        renderArrow();
     }
 
     @Override
@@ -190,6 +194,32 @@ public class HackButton extends Component {
             return true;
         }
         return false;
+    }
+
+    private void renderArrow(){
+        switch (Gui.INSTANCE.arrowType.getValue()){
+            case "Type1":
+                if(this.isOpen){
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 1, 2, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                break;
+            case "Type2":
+                if(this.isOpen){
+                    GL11.glPushMatrix();
+                    GL11.glTranslated(parent.getX() + 102f, parent.getY() + offset + 12f, 0);
+                    GL11.glRotatef(-90f, 0f, 0f, 1f);
+                    GL11.glTranslated(-(parent.getX() + 102f), -(parent.getY() + offset + 12f), 0);
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                    GL11.glPopMatrix();
+                }
+                else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                break;
+        }
     }
 
     public void addOpY(int v) {
