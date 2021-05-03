@@ -46,7 +46,9 @@ repositories {
 
 dependencies {
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
+    compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
     compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
@@ -78,6 +80,7 @@ shadowJar {
     dependencies {
         include(dependency('com.googlecode.json-simple:json-simple:1.1.1'))
         include(dependency('org.spongepowered:mixin'))
+        include(dependency('club.minnced:java-discord-rpc:2.0.1'))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'

@@ -21,11 +21,11 @@ public class ViewModel extends Hack {
     DoubleSetting offX = new DoubleSetting("offX", -1.2, -6.0, 0.0, this);
     DoubleSetting offY = new DoubleSetting("offY", -0.95, -3.0, 3.0, this);
     DoubleSetting offZ = new DoubleSetting("offZ", -1.45, -5.0, 5.0, this);
-    DoubleSetting mainAngel = new DoubleSetting("mainAngel", 0.0, 0.0, 360.0, this);
+    DoubleSetting mainAngel = new DoubleSetting("mainAngle", 0.0, 0.0, 360.0, this);
     DoubleSetting mainRx = new DoubleSetting("mainRotationPointX", 0.0, -1.0, 1.0, this);
     DoubleSetting mainRy = new DoubleSetting("mainRotationPointY", 0.0, -1.0, 1.0, this);
     DoubleSetting mainRz = new DoubleSetting("mainRotationPointZ", 0.0, -1.0, 1.0, this);
-    DoubleSetting offAngel = new DoubleSetting("offAngel", 0.0, 0.0, 360.0, this);
+    DoubleSetting offAngel = new DoubleSetting("offAngle", 0.0, 0.0, 360.0, this);
     DoubleSetting offRx = new DoubleSetting("offRotationPointX", 0.0, -1.0, 1.0, this);
     DoubleSetting offRy = new DoubleSetting("offRotationPointY", 0.0, -1.0, 1.0, this);
     DoubleSetting offRz = new DoubleSetting("offRotationPointZ", 0.0, -1.0, 1.0, this);

@@ -40,6 +40,7 @@ public class Hacks implements Globals {
         // TODO : PISTON AURA
         // TODO : BED AURA
         // TODO : AUTO 32K
+        // TODO : PRAY TO PVP GODS TO WIN
         this.hacks.add(new KillAura());
         this.hacks.add(new Surround());
         this.hacks.add(new CrystalAura());
@@ -62,6 +63,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Radio());
         this.hacks.add(new Pitbull());
         this.hacks.add(new KeyPearl());
+        this.hacks.add(new DiscordRPC());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
