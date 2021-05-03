@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG] "
+title: "[BUG]"
 labels: bug
 assignees: ''
 
@@ -12,15 +12,15 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-
-**Other mods**
-List other forge mods you are using (if any):
+1. Turn on module: '...'
+2. Set the setting to '....'
+3. See error
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+Add screenshots or videos to help explain the problem.
 
 **Additional context**
 Add any other context about the problem here.
