@@ -53,7 +53,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         for(Hack hack : WurstplusThree.HACKS.getHacks()){
-            if (hack.getBind() <= -1) continue;
+            if (hack.getBind() <= -1 || hack.getBind() == Keyboard.KEY_NONE) continue;
             if(Keyboard.isKeyDown(hack.getBind())){
                 hack.toggle();
             }
@@ -69,7 +69,7 @@ public class Events implements Globals {
         }
         time = System.currentTimeMillis();
         for(Hack hack : WurstplusThree.HACKS.getHacks()) {
-            if (hack.getBind() >= -1) continue;
+            if (hack.getBind() >= -1 || hack.getBind() == Keyboard.KEY_NONE) continue;
             if (button == 0 && hack.getBind() == -2) {
                 hack.toggle();
             } else if (button == 1 && hack.getBind()  == -3) {

@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.chat.*;
+import me.travis.wurstplusthree.hack.client.Cosmetics;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.hack.combat.*;
@@ -52,6 +53,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Burrow());
         this.hacks.add(new AnvilAura());
         this.hacks.add(new PacketXP());
+        this.hacks.add(new AutoWeb());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
