@@ -33,7 +33,7 @@ public abstract class MixinAbstractClientPlayer {
             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
         }
 
-        if (WurstplusThree.CAPE_MANAGER.isContrabutor(uuid)) {
+        if (WurstplusThree.CAPE_MANAGER.isContributor(uuid)) {
             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-dev.png"));
         }
 

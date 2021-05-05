@@ -18,7 +18,7 @@ public class CapeManager implements Globals {
     private final List<UUID> ogCapes = new ArrayList<>();
     private final List<Pair<UUID, BufferedImage>> donatorCapes = new ArrayList<>();
     private final List<UUID> poggersCapes = new ArrayList<>();
-    private final List<UUID> contrabutorCapes = new ArrayList<>();
+    private final List<UUID> contributorCapes = new ArrayList<>();
 
     public CapeManager() {
         try { // og
@@ -36,7 +36,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                contrabutorCapes.add(UUID.fromString(inputLine));
+                contributorCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                contrabutorCapes.add(UUID.fromString(inputLine));
+                contributorCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,8 +148,8 @@ public class CapeManager implements Globals {
         return this.poggersCapes.contains(uuid);
     }
 
-    public boolean isContrabutor(UUID uuid) {
-        return this.contrabutorCapes.contains(uuid);
+    public boolean isContributor(UUID uuid) {
+        return this.contributorCapes.contains(uuid);
     }
 
 }
