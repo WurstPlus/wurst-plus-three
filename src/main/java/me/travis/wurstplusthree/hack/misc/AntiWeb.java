@@ -32,7 +32,7 @@ public class AntiWeb extends Hack {
             if(disableBB.getValue()) {
                 event.setCanceledE(true);
                 event.setBoundingBox(Block.FULL_BLOCK_AABB.contract(0, bbOffset.getValue(), 0));
-            } //TODO 1. set block to web 2. set mc.player motionX *= 0.84
+            }
         }
     }
 
