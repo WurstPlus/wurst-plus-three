@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.MouseUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -35,6 +36,11 @@ public class Offhand extends Hack {
         if (switching) {
             swapItems(lastSlot, 2);
             return;
+
+        }
+        if (mc.currentScreen instanceof GuiContainer) {
+            return;
+
         }
 
         float hp = EntityUtil.getHealth(mc.player);
@@ -71,6 +77,8 @@ public class Offhand extends Hack {
             return;
         }
 
+
+
         switch (mode.getValue()) {
             case "Totem":
                 this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
@@ -102,6 +110,7 @@ public class Offhand extends Hack {
             mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
             mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
             switching = false;
+
         }
 
         mc.playerController.updateController();
