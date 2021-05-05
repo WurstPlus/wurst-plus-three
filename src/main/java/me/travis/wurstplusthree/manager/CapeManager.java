@@ -121,7 +121,9 @@ public class CapeManager implements Globals {
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isOg(UUID uuid) {
@@ -133,7 +135,8 @@ public class CapeManager implements Globals {
             if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return true;
             }
-        } return false;
+        }
+        return false;
     }
 
     public BufferedImage getCapeFromDonor(UUID uuid) {
@@ -141,7 +144,8 @@ public class CapeManager implements Globals {
             if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return donator.getValue();
             }
-        } return null;
+        }
+        return null;
     }
 
     public boolean isPoggers(UUID uuid) {

@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.manager;
 
 import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
-import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +18,8 @@ import java.util.Map;
  * @since 01/05/2021
  */
 
-public class CosmeticManager implements Globals {
+public class CosmeticManager {
+    private final Minecraft mc = Minecraft.getMinecraft();
     public Map<String, ArrayList<ModelBase>> cosmeticMap = new HashMap<>();
     public static GlassesModel gm = new GlassesModel();
 
