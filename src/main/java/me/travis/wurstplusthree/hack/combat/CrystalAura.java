@@ -12,6 +12,7 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +37,7 @@ import java.util.*;
 public class CrystalAura extends Hack {
 
     // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
+	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -205,11 +207,11 @@ public class CrystalAura extends Hack {
     }
 
     private void doCrystalAura() {
-        if (nullCheck()) {
-            this.disable();
-            return;
-        }
-
+    	if (nullCheck()) {
+    		this.disable();
+    		return;
+    	}
+    	
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
 
@@ -245,6 +247,7 @@ public class CrystalAura extends Hack {
             if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
+                PlayerControllerMP.syncCurrentPlayItem();
             }
         } else {
             offhandCheck = true;
@@ -397,7 +400,6 @@ public class CrystalAura extends Hack {
                 player = this.newTarget(target);
             }
 
-            if (this.raytrace.getValue() && !mc.player.canEntityBeSeen(crystal)) return 0;
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
                     return 0;
