@@ -333,7 +333,6 @@ public class CrystalAura extends Hack {
             for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
-
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
                 } else {
@@ -454,9 +453,13 @@ public class CrystalAura extends Hack {
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()))
+            {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
-            } else {
+            } else if(player.isInWeb){
+                miniumDamage = 1; //TODO fix this travis
+            }
+            else {
                 miniumDamage = this.minHpPlace.getValue();
             }
 
