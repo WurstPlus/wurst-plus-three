@@ -54,6 +54,7 @@ public class Hacks implements Globals {
         this.hacks.add(new AnvilAura());
         this.hacks.add(new PacketXP());
         this.hacks.add(new AutoWeb());
+        this.hacks.add(new BowAim());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
