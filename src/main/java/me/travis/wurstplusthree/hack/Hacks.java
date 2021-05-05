@@ -66,6 +66,7 @@ public class Hacks implements Globals {
         this.hacks.add(new Pitbull());
         this.hacks.add(new KeyPearl());
         this.hacks.add(new DiscordRPC());
+        this.hacks.add(new AntiWeb());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());

@@ -24,5 +24,9 @@ public class MixinBlockWeb {
     {
         BlockCollisionBoundingBoxEvent bb = new BlockCollisionBoundingBoxEvent(pos);
         MinecraftForge.EVENT_BUS.post(bb);
+        if(bb.isCanceledE()){
+            callbackInfoReturnable.setReturnValue(bb.getBoundingBox());
+            callbackInfoReturnable.cancel();
+        }
     }
 }

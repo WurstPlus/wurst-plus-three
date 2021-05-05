@@ -50,6 +50,7 @@
     "MixinWorld",
     "MixinRenderEntityItem",
     "MixinRenderer",
+    "MixinBlockWeb",
     "accessors.IC00Handshake",
     "accessors.IContainer",
     "accessors.IServerAddress",
