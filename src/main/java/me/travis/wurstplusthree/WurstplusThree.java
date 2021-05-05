@@ -20,7 +20,7 @@ import org.lwjgl.opengl.Display;
 /**
  * @author travis - began work on 8th april 2021
  */
-@Mod(modid = "wurstplusthree", name = "Wurst+3", version = "0.4.0")
+@Mod(modid = WurstplusThree.MODID, name = WurstplusThree.MODNAME, version = WurstplusThree.MODVER)
 public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
