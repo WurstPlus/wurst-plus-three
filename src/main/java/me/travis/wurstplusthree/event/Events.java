@@ -50,6 +50,7 @@ public class Events implements Globals {
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
+    /*
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         for(Hack hack : WurstplusThree.HACKS.getHacks()){
@@ -59,6 +60,7 @@ public class Events implements Globals {
             }
         }
     }
+     */
 
     @SubscribeEvent
     public void onMousePress(InputEvent.MouseInputEvent event){

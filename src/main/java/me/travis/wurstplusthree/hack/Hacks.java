@@ -183,7 +183,7 @@ public class Hacks implements Globals {
     }
 
     public void onKeyDown(int key) {
-        if (key == 0 || mc.currentScreen instanceof WurstplusGuiNew) {
+        if (key <= 0 || mc.currentScreen instanceof WurstplusGuiNew) {
             return;
         }
         for (Hack hack : this.hacks) {

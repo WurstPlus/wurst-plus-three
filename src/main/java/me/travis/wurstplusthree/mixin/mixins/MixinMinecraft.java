@@ -26,14 +26,13 @@ import javax.annotation.Nullable;
 public abstract class MixinMinecraft {
     @Shadow
     public abstract void displayGuiScreen(@Nullable GuiScreen var1);
-    /*
+
     @Inject(method={"runTickKeyboard"}, at={@At(value="FIELD", target="Lnet/minecraft/client/Minecraft;currentScreen:Lnet/minecraft/client/gui/GuiScreen;", ordinal=0)}, locals=LocalCapture.CAPTURE_FAILSOFT)
     private void onRunTickKeyboard(CallbackInfo ci, int i) {
         if (Keyboard.getEventKeyState() && WurstplusThree.HACKS != null) {
             WurstplusThree.HACKS.onKeyDown(i);
         }
     }
-     */
 
     @Inject(method={"getLimitFramerate"}, at={@At(value="HEAD")}, cancellable=true)
     public void getLimitFramerateHook(CallbackInfoReturnable<Integer> callbackInfoReturnable) {
