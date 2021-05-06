@@ -22,7 +22,7 @@ public class AntiWeb extends Hack {
     BooleanSetting disableBB = new BooleanSetting("Add BB", true, this);
     DoubleSetting bbOffset = new DoubleSetting("BB Offset", 0.0, -2.0, 2.0,this);
     BooleanSetting onGround = new BooleanSetting("On Ground", true, this);
-    DoubleSetting motionY = new DoubleSetting("Set MotionY", 0.0, -1.0, 2.0, this);
+    DoubleSetting motionY = new DoubleSetting("Set MotionY", 1.0, 0.0, 20.0, this);
     DoubleSetting motionX = new DoubleSetting("Set MotionX", 0.84, -1.0, 5.0, this);
 
     @SubscribeEvent
@@ -40,17 +40,25 @@ public class AntiWeb extends Hack {
     @Override
     public void onUpdate(){
         if(mc.player.isInWeb){
-            if(onGround.getValue()) {
-                mc.player.isInWeb = false;
-            }
             if(Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode)){
-                mc.player.motionY = -10.0;
-            }else if(onGround.getValue()){
-                mc.player.onGround = false;
+                mc.player.isInWeb = true;
+                mc.player.motionY *= motionY.getValue();
+            }
+            else if(Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode) && !disableBB.getValue()){
+                mc.player.isInWeb = true;
+                mc.player.motionY *= -motionY.getValue();
             }
 
-            mc.player.motionX *= motionX.getValue();
-            mc.player.motionZ *= motionX.getValue();
+            else if(onGround.getValue()){
+                mc.player.onGround = false;
+            }
+            if(Keyboard.isKeyDown(mc.gameSettings.keyBindForward.keyCode) ||  Keyboard.isKeyDown(mc.gameSettings.keyBindBack.keyCode) || Keyboard.isKeyDown(mc.gameSettings.keyBindLeft.keyCode)
+                    || Keyboard.isKeyDown(mc.gameSettings.keyBindRight.keyCode)) {
+                mc.player.isInWeb = false;
+                mc.player.motionX *= motionX.getValue();
+                mc.player.motionZ *= motionX.getValue();
+            }
+
         }
     }
 }
