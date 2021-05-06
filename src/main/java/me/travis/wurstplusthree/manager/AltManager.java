@@ -100,7 +100,7 @@ public class AltManager {
     }
 
 
-    private void setSession(Session newSession) throws Exception {
+    private void setSession(Session newSession){
         Class<? extends Minecraft> mc = Minecraft.getMinecraft().getClass();
         try {
             Field session = null;
@@ -108,7 +108,7 @@ public class AltManager {
             for (Field field : mc.getDeclaredFields()) {
                 if (field.getType().isInstance(newSession)) {
                     session = field;
-                    System.out.println("Attempting Injection into Session.");
+                    WurstplusThree.LOGGER.info("Attempting Injection into Session.");
                 }
             }
 
@@ -121,7 +121,6 @@ public class AltManager {
             session.setAccessible(false);
         } catch (Exception exeption) {
             exeption.printStackTrace();
-            throw exeption;
         }
     }
 
