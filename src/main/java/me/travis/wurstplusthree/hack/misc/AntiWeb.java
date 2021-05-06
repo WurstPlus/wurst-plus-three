@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.misc;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.player.Step;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
@@ -39,7 +40,7 @@ public class AntiWeb extends Hack {
 
     @Override
     public void onUpdate(){
-        if(mc.player.isInWeb){
+        if(mc.player.isInWeb && !WurstplusThree.HACKS.ishackEnabled("Step")){
             if(Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode)){
                 mc.player.isInWeb = true;
                 mc.player.motionY *= motionY.getValue();
