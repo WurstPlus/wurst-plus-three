@@ -44,11 +44,6 @@ public class AntiWeb extends Hack {
                 mc.player.isInWeb = true;
                 mc.player.motionY *= motionY.getValue();
             }
-            else if(Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode) && !disableBB.getValue()){
-                mc.player.isInWeb = true;
-                mc.player.motionY *= -motionY.getValue();
-            }
-
             else if(onGround.getValue()){
                 mc.player.onGround = false;
             }
