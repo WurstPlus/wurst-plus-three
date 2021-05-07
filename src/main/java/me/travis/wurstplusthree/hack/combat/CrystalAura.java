@@ -15,6 +15,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,7 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -90,7 +92,9 @@ public class CrystalAura extends Hack {
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
 
-    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline"), this);
+    BooleanSetting ignoreWebs = new BooleanSetting("Ignore Webs", true, this);
+
+    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Flat"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
@@ -453,14 +457,15 @@ public class CrystalAura extends Hack {
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()))
-            {
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
-            } else if(player.isInWeb){
-                miniumDamage = 1; //TODO fix this travis
             }
             else {
                 miniumDamage = this.minHpPlace.getValue();
+            }
+
+            if (ignoreWebs.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
+                mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
             }
 
             double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
@@ -544,6 +549,7 @@ public class CrystalAura extends Hack {
                 break;
         }
         RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true);
+
 
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
