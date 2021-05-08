@@ -18,12 +18,11 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -61,6 +60,7 @@ public class CrystalAura extends Hack {
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
+    BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -197,6 +197,10 @@ public class CrystalAura extends Hack {
                 }
             }
         }
+        if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
+            ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
+            RotationUtil.resetRotations();
+        }
     }
 
     @Override
@@ -211,7 +215,7 @@ public class CrystalAura extends Hack {
     		this.disable();
     		return;
     	}
-    	
+
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
 
