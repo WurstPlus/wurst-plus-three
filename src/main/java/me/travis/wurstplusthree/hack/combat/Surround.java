@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -24,9 +25,10 @@ public class Surround extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting hybrid = new BooleanSetting("Hybrid", true, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);
+    BooleanSetting center = new BooleanSetting("Center", true, this);
     BooleanSetting blockHead = new BooleanSetting("Block Face", false, this);
     IntSetting tickForPlace = new IntSetting("Blocks Per Tick", 2, 1, 8, this);
-    IntSetting timeoutTicks = new IntSetting("Timeout Ticks", 20, 10, 50, this);
+    IntSetting timeoutTicks = new IntSetting("Timeout Ticks", 20, 0, 50, this);
 
     private int yLevel = 0;
     private final Timer timer = new Timer();
@@ -48,7 +50,36 @@ public class Surround extends Hack {
         if (mc.player != null) {
             yLevel = (int) Math.round(mc.player.posY);
             this.startPos = EntityUtil.getRoundedBlockPos(Surround.mc.player);
+            if (center.getValue()) {
+                double y = mc.player.getPosition().getY();
+                double x = mc.player.getPosition().getX();
+                double z = mc.player.getPosition().getZ();
 
+                Vec3d plusPlus = new Vec3d(x + 0.5, y, z + 0.5);
+                Vec3d plusMinus = new Vec3d(x + 0.5, y, z - 0.5);
+                Vec3d minusMinus = new Vec3d(x - 0.5, y, z - 0.5);
+                Vec3d minusPlus = new Vec3d(x - 0.5, y, z + 0.5);
+                if (getDst(plusPlus) < getDst(plusMinus) && getDst(plusPlus) < getDst(minusMinus) && getDst(plusPlus) < getDst(minusPlus)) {
+                    x = mc.player.getPosition().getX() + 0.5;
+                    z = mc.player.getPosition().getZ() + 0.5;
+                    centerPlayer(x, y, z);
+                }
+                if (getDst(plusMinus) < getDst(plusPlus) && getDst(plusMinus) < getDst(minusMinus) && getDst(plusMinus) < getDst(minusPlus)) {
+                    x = mc.player.getPosition().getX() + 0.5;
+                    z = mc.player.getPosition().getZ() - 0.5;
+                    centerPlayer(x, y, z);
+                }
+                if (getDst(minusMinus) < getDst(plusPlus) && getDst(minusMinus) < getDst(plusMinus) && getDst(minusMinus) < getDst(minusPlus)) {
+                    x = mc.player.getPosition().getX() - 0.5;
+                    z = mc.player.getPosition().getZ() - 0.5;
+                    centerPlayer(x, y, z);
+                }
+                if (getDst(minusPlus) < getDst(plusPlus) && getDst(minusPlus) < getDst(plusMinus) && getDst(minusPlus) < getDst(minusMinus)) {
+                    x = mc.player.getPosition().getX() - 0.5;
+                    z = mc.player.getPosition().getZ() + 0.5;
+                    centerPlayer(x, y, z);
+                }
+            }
             this.ticksPassed = 0;
             this.retries.clear();
             this.retryTimer.reset();
@@ -152,6 +183,15 @@ public class Surround extends Hack {
             }
         }
         return false;
+    }
+
+    private double getDst(Vec3d vec) {
+        return mc.player.getPositionVector().distanceTo(vec);
+    }
+
+    private void centerPlayer(double x, double y, double z) {
+        mc.player.connection.sendPacket(new CPacketPlayer.Position(x, y, z, true));
+        mc.player.setPosition(x, y, z);
     }
 
     private boolean check() {

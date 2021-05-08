@@ -36,11 +36,12 @@ public class Hacks implements Globals {
         // client
         this.hacks.add(new Hud());
         this.hacks.add(new Gui());
-        //this.hacks.add(new Cosmetics());
+        this.hacks.add(new Cosmetics());
         // combat
         // TODO : PISTON AURA
         // TODO : BED AURA
         // TODO : AUTO 32K
+        // TODO : PRAY TO PVP GODS TO WIN
         this.hacks.add(new KillAura());
         this.hacks.add(new Surround());
         this.hacks.add(new CrystalAura());
@@ -52,6 +53,8 @@ public class Hacks implements Globals {
         this.hacks.add(new Burrow());
         this.hacks.add(new AnvilAura());
         this.hacks.add(new PacketXP());
+        this.hacks.add(new AutoWeb());
+        this.hacks.add(new BowAim());
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
@@ -62,6 +65,9 @@ public class Hacks implements Globals {
         this.hacks.add(new AntiVoid());
         this.hacks.add(new Radio());
         this.hacks.add(new Pitbull());
+        this.hacks.add(new KeyPearl());
+        this.hacks.add(new DiscordRPC());
+        this.hacks.add(new AntiWeb());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
@@ -75,6 +81,7 @@ public class Hacks implements Globals {
         this.hacks.add(new XCarry());
         this.hacks.add(new Jesus());
         this.hacks.add(new PlayerSpoofer());
+        this.hacks.add(new NoHandshake());
         // render
         this.hacks.add(new AntiFog());
         this.hacks.add(new Nametags());
@@ -95,6 +102,7 @@ public class Hacks implements Globals {
         this.hacks.add(new ViewModel());
         this.hacks.add(new VoidESP());
         this.hacks.add(new Aspect());
+        this.hacks.add(new ItemPhysics());
     }
 
     public List<Hack> getHacks() {
@@ -175,7 +183,7 @@ public class Hacks implements Globals {
     }
 
     public void onKeyDown(int key) {
-        if (key == 0 || mc.currentScreen instanceof WurstplusGuiNew) {
+        if (key <= 0 || mc.currentScreen instanceof WurstplusGuiNew) {
             return;
         }
         for (Hack hack : this.hacks) {

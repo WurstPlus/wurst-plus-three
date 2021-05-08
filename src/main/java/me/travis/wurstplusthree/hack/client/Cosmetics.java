@@ -24,7 +24,7 @@ public class Cosmetics extends Hack {
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post event) {
         if (!WurstplusThree.COSMETIC_MANAGER.hasCosmetics(event.getEntityPlayer())) return;
-        ArrayList<ModelBase> models = WurstplusThree.COSMETIC_MANAGER.getRenderModels(event.getEntityPlayer());
+        ModelBase model = WurstplusThree.COSMETIC_MANAGER.getRenderModels(event.getEntityPlayer());
         GlStateManager.pushMatrix();
         GlStateManager.translate(event.getX(), event.getY(), event.getZ());
         double scale = 1.0;
@@ -33,13 +33,10 @@ public class Cosmetics extends Hack {
         GL11.glTranslated(0.0, (-((double) event.getEntityPlayer().height - (event.getEntityPlayer().isSneaking() ? 0.25 : 0.0) - 0.38) / scale), 0.0);
         GL11.glRotated((180.0 + rotate), 0.0, 1.0, 0.0);
         GlStateManager.translate(0.0, -0.45, 0.0);
-        for (ModelBase model : models) {
-            if (model instanceof GlassesModel) {
-                GlassesModel gm = new GlassesModel();
-                mc.getTextureManager().bindTexture(gm.glassesTexture);
-                gm.render(event.getEntity(), 0.0f, 0.0f, -0.1f, 0.0f, 0.0f, 0.0625f);
-                mc.getTextureManager().deleteTexture(gm.glassesTexture);
-            }
+        if (model instanceof GlassesModel) {
+            mc.getTextureManager().bindTexture(((GlassesModel) model).glassesTexture);
+            model.render(event.getEntity(), 0.0f, 0.0f, -0.1f, 0.0f, 0.0f, 0.0625f);
+            mc.getTextureManager().deleteTexture(((GlassesModel) model).glassesTexture);
         }
         GlStateManager.popMatrix();
     }

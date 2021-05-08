@@ -45,7 +45,7 @@ public class CategoryComponent {
             if (mod.getCategory().equals(category)) {
                 HackButton moduleButton = new HackButton(mod, this, tY);
                 this.components.add(moduleButton);
-                tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
             }
         }
     }
@@ -72,7 +72,7 @@ public class CategoryComponent {
         RenderUtil2D.drawGradientRect(this.x, this.y, this.x + width, this.y + height,
                 (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
                 (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_INDENT, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
 
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
@@ -86,10 +86,10 @@ public class CategoryComponent {
                         }
                     }
                 }
-                x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
-                RenderUtil2D.drawVerticalLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
-                RenderUtil2D.drawVerticalLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
-                RenderUtil2D.drawHorizontalLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
+                x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
+                RenderUtil2D.drawVLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
+                RenderUtil2D.drawVLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
+                RenderUtil2D.drawHLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
             }
         }
     }
