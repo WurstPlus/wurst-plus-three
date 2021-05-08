@@ -20,7 +20,7 @@ import java.util.Map;
  */
 
 public class CosmeticManager implements Globals {
-    public Map<String, ArrayList<ModelBase>> cosmeticMap = new HashMap<>();
+    public Map<String, ModelBase> cosmeticMap = new HashMap<>();
 
     public static GlassesModel gm = new GlassesModel();
 
