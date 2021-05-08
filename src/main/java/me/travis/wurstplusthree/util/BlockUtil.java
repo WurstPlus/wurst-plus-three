@@ -221,6 +221,8 @@ public class BlockUtil implements Globals {
         List<EnumFacing> facings = new ArrayList<>();
         for (EnumFacing side : EnumFacing.values()) {
             BlockPos neighbour = pos.offset(side);
+            if(mc.world.getBlockState(neighbour) == null)return facings;
+            if(mc.world.getBlockState(neighbour).getBlock() == null)return facings;
             if (mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false)) {
                 IBlockState blockState = mc.world.getBlockState(neighbour);
                 if (!blockState.getMaterial().isReplaceable()) {

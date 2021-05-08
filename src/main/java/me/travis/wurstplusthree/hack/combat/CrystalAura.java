@@ -26,7 +26,6 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -84,6 +83,7 @@ public class CrystalAura extends Hack {
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
+    BooleanSetting ignoreTerrain = new BooleanSetting("Ignore Webs", true, this);
 
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
@@ -91,8 +91,7 @@ public class CrystalAura extends Hack {
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
-
-    BooleanSetting ignoreWebs = new BooleanSetting("Ignore Webs", true, this);
+    
 
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Flat"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
@@ -464,7 +463,7 @@ public class CrystalAura extends Hack {
                 miniumDamage = this.minHpPlace.getValue();
             }
 
-            if (ignoreWebs.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
+            if (ignoreTerrain.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
                 mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
             }
 
