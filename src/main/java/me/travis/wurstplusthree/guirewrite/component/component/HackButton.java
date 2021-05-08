@@ -54,7 +54,7 @@ public class HackButton extends Component {
         opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
-                if (s instanceof BooleanSetting) {
+                if (s instanceof BooleanSetting && s.getName() !=  "HoldMode$") {
                     this.subcomponents.add(new BoolComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
@@ -74,7 +74,7 @@ public class HackButton extends Component {
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
                 }
             }
-            this.subcomponents.add(new KeyBindComponent(this, opY));
+            this.subcomponents.add(new ModuleBindComponent(this, opY));
             this.subcomponents.add(new ShownComponent(this, opY));
         }
     }

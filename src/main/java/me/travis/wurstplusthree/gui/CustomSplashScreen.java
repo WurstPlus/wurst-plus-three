@@ -115,7 +115,7 @@ public class CustomSplashScreen extends GuiScreen {
                 e.printStackTrace();
             }
         } else if (CustomSplashScreen.isHovered(this.x, this.y + 110, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("alts"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
-            //this.mc.displayGuiScreen(new MainAltGui());
+            this.mc.displayGuiScreen(new MainAltGui());
         }
         else if (CustomSplashScreen.isHovered(this.x, this.y + 132, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.shutdown();
