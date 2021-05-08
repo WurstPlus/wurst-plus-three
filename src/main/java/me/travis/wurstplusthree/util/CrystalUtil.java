@@ -50,7 +50,11 @@ public class CrystalUtil implements Globals {
         Vec3d vec3d = new Vec3d(posX, posY, posZ);
         double blockDensity = 0.0;
         try {
-            blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+            if(entity.world.getBlockState(EntityUtil.getRoundedBlockPos(entity)).getBlock() == Blocks.WEB){
+                blockDensity = 0.0;
+            }else {
+                blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
