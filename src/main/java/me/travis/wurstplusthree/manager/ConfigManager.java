@@ -6,10 +6,12 @@ import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.combat.Burrow;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.WhitelistUtil;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 
 import java.io.*;
@@ -36,12 +38,14 @@ public class ConfigManager implements Globals {
     private final String hudFile = "hud.json";
     private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
+    private final String burrowFile = "burrowBlocks.txt";
 
     // DIRS
     private final String clientDir = mainFolder + clientFile;
     private final String configDir = mainFolder + configFile;
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
+    private final String burrowDir = mainFolder + burrowFile;
     private final String ezDir = mainFolder + ezFile;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
@@ -59,6 +63,7 @@ public class ConfigManager implements Globals {
     private final Path configPath = Paths.get(configDir);
     private final Path drawnPath = Paths.get(drawnDir);
     private final Path fontPath = Paths.get(fontDir);
+    private final Path burrowPath = Paths.get(burrowDir);
     private final Path ezPath = Paths.get(ezDir);
     private final Path enemiesPath = Paths.get(enemiesDir);
     private final Path friendsPath = Paths.get(friendsDir);
@@ -74,6 +79,7 @@ public class ConfigManager implements Globals {
             this.loadBinds();
             this.loadDrawn();
             this.loadFont();
+            this.loadBurrowBlock();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,6 +97,7 @@ public class ConfigManager implements Globals {
             this.saveBinds();
             this.saveDrawn();
             this.saveFont();
+            this.saveBurrowBlock();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -329,6 +336,22 @@ public class ConfigManager implements Globals {
             }
         }
         WurstplusThree.GUI_FONT_MANAGER.setFont();
+    }
+
+    public void saveBurrowBlock() throws IOException {
+        FileWriter writer = new FileWriter(burrowDir);
+        //Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
+        String s = WurstplusThree.COMMANDS.getBurrowCommand().getBBlock();
+        writer.write(s);
+        writer.close();
+    }
+
+    private void loadBurrowBlock() throws IOException {
+        for (String l : Files.readAllLines(burrowPath)){
+            Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
+            a.setBlock(new WhitelistUtil().findBlock(l));
+            WurstplusThree.COMMANDS.getBurrowCommand().setBBlock(l);
+        }
     }
 
     public boolean deleteFile(final String path) throws IOException {
