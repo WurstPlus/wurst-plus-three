@@ -14,7 +14,7 @@ import java.net.URI;
 public class NameMcCommand extends Command {
 
     public NameMcCommand(){
-        super("namemc", "nmc");
+        super("Namemc", "nmc");
     }
 
 
