@@ -87,24 +87,20 @@ public class BlockUtil implements Globals {
 
         IBlockState l_State = mc.world.getBlockState(pos);
 
-        if (l_State.getBlock() == Blocks.AIR)
-        {
+        if (l_State.getBlock() == Blocks.AIR) {
             final BlockPos[] l_Blocks =
                     { pos.north(), pos.south(), pos.east(), pos.west(), pos.up(), pos.down() };
 
-            for (BlockPos l_Pos : l_Blocks)
-            {
+            for (BlockPos l_Pos : l_Blocks) {
                 IBlockState l_State2 = mc.world.getBlockState(l_Pos);
 
                 if (l_State2.getBlock() == Blocks.AIR)
                     continue;
 
-                for (final EnumFacing side : EnumFacing.values())
-                {
+                for (final EnumFacing side : EnumFacing.values()) {
                     final BlockPos neighbor = pos.offset(side);
 
-                    if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false))
-                    {
+                    if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false)) {
                         return ValidResult.Ok;
                     }
                 }

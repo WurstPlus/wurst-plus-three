@@ -18,7 +18,7 @@ public class CapeManager implements Globals {
     private final List<UUID> ogCapes = new ArrayList<>();
     private final List<Pair<UUID, BufferedImage>> donatorCapes = new ArrayList<>();
     private final List<UUID> poggersCapes = new ArrayList<>();
-    private final List<UUID> contrabutorCapes = new ArrayList<>();
+    private final List<UUID> contributorCapes = new ArrayList<>();
 
     public CapeManager() {
         try { // og
@@ -36,7 +36,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                contrabutorCapes.add(UUID.fromString(inputLine));
+                contributorCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                contrabutorCapes.add(UUID.fromString(inputLine));
+                contributorCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,9 +121,7 @@ public class CapeManager implements Globals {
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public boolean isOg(UUID uuid) {
@@ -135,8 +133,7 @@ public class CapeManager implements Globals {
             if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return true;
             }
-        }
-        return false;
+        } return false;
     }
 
     public BufferedImage getCapeFromDonor(UUID uuid) {
@@ -144,16 +141,15 @@ public class CapeManager implements Globals {
             if (donator.getKey().toString().equalsIgnoreCase(uuid.toString())) {
                 return donator.getValue();
             }
-        }
-        return null;
+        } return null;
     }
 
     public boolean isPoggers(UUID uuid) {
         return this.poggersCapes.contains(uuid);
     }
 
-    public boolean isContrabutor(UUID uuid) {
-        return this.contrabutorCapes.contains(uuid);
+    public boolean isContributor(UUID uuid) {
+        return this.contributorCapes.contains(uuid);
     }
 
 }

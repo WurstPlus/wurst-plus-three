@@ -12,18 +12,18 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +37,7 @@ import java.util.*;
 public class CrystalAura extends Hack {
 
     // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
+	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -60,6 +61,7 @@ public class CrystalAura extends Hack {
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
+    BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -198,6 +200,10 @@ public class CrystalAura extends Hack {
                 }
             }
         }
+        if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
+            ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
+            RotationUtil.resetRotations();
+        }
     }
 
     @Override
@@ -208,10 +214,10 @@ public class CrystalAura extends Hack {
     }
 
     private void doCrystalAura() {
-        if (nullCheck()) {
-            this.disable();
-            return;
-        }
+    	if (nullCheck()) {
+    		this.disable();
+    		return;
+    	}
 
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
@@ -248,6 +254,7 @@ public class CrystalAura extends Hack {
             if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
+                PlayerControllerMP.syncCurrentPlayItem();
             }
         } else {
             offhandCheck = true;
@@ -399,7 +406,6 @@ public class CrystalAura extends Hack {
                 player = this.newTarget(target);
             }
 
-            if (this.raytrace.getValue() && !mc.player.canEntityBeSeen(crystal)) return 0;
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
                     return 0;

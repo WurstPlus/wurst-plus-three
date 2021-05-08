@@ -10,6 +10,8 @@ Made for crystalpvp and killing noobs.
 
 On first run ensure your voices volume is maxed ;)
 
+[CoC](CODE_OF_CONDUCT.md)
+
 ## Donations
 
 Join the discord for more infomation.
@@ -57,4 +59,4 @@ For a list of commands [click here](Commands.md)
 ## Contributing
 Make a pull request, would be preferable if you joined the discord before hand
 
-For a guide on contributing please [click here](ContributingGuide.md) 
+For a guide on contributing please [click here](CONTRIBUTING.md) 
