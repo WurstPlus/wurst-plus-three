@@ -350,6 +350,7 @@ public class ConfigManager implements Globals {
         for (String l : Files.readAllLines(burrowPath)){
             Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
             a.setBlock(new WhitelistUtil().findBlock(l));
+            WurstplusThree.COMMANDS.getBurrowCommand().setBBlock(l);
         }
     }
 

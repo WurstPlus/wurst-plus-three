@@ -15,7 +15,7 @@ import me.travis.wurstplusthree.util.WhitelistUtil
 
 class BurrowBlockCommand : Command("BurrowBlock", "bb") {
 
-    var bBlock: String = "";
+    var bBlock: String = ""
 
     override fun execute(message: Array<String>) {
         val bClass = WurstplusThree.HACKS.getHackByName("Burrow") as Burrow

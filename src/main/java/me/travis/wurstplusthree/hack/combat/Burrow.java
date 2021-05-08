@@ -5,10 +5,9 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.util.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockEnderChest;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -34,7 +33,7 @@ public class Burrow extends Hack {
     int swapBlock = -1;
     Vec3d centerBlock = Vec3d.ZERO;
     BlockPos oldPos;
-    Block blockW;
+    Block blockW = Blocks.OBSIDIAN;
     boolean flag;
 
     @Override
