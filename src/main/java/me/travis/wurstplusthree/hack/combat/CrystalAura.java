@@ -247,7 +247,7 @@ public class CrystalAura extends Hack {
             if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
-                PlayerControllerMP.syncCurrentPlayItem();
+                mc.playerController.syncCurrentPlayItem();
             }
         } else {
             offhandCheck = true;
