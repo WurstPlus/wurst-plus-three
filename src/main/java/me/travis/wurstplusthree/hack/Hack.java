@@ -30,6 +30,7 @@ public class Hack implements Globals {
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
         boolean shown() default true;
+        boolean hold() default false;
     }
 
     private Registration getMod(){
@@ -40,7 +41,7 @@ public class Hack implements Globals {
     private final String description = getMod().description();
     private final Category category = getMod().category();
     private int bind = getMod().bind();
-    private BooleanSetting hold = new BooleanSetting("HoldMode$", false, this);
+    private boolean hold = getMod().hold();
     private boolean shown = getMod().shown();
     private boolean isEnabled = getMod().enabled();
     private int isListening = (getMod().isListening() ? 0 : 1);
@@ -82,9 +83,13 @@ public class Hack implements Globals {
         return this.isEnabled;
     }
 
-    public boolean isHold() {return this.hold.getValue();}
+    public boolean isHold() {return this.hold;}
 
-    public void toggleHold() {this.hold.setValue(!hold.getValue());}
+    public void toggleHold() {this.hold = !this.hold;}
+
+    public void setHold(boolean hold) {
+        this.hold = hold;
+    }
 
     public void stopListening() {
         this.isListening = -1;

@@ -151,11 +151,15 @@ public class Hacks implements Globals {
     public void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onUpdate);
         for (Hack hack : hacks) {
-            if (hack.isHold()) {
+            if (hack.isHold() && hack.getBind() >= 0) {
                 if (Keyboard.isKeyDown(hack.getBind())) {
-                    if (!hack.isEnabled()) { hack.enable();}
+                    if (!hack.isEnabled()) {
+                        hack.enable();
+                    }
                 } else {
-                    if (hack.isEnabled()) { hack.disable();}
+                    if (hack.isEnabled()) {
+                        hack.disable();
+                    }
                 }
             }
         }
