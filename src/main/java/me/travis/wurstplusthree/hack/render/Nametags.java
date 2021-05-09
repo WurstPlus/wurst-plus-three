@@ -95,7 +95,6 @@ public class Nametags extends Hack {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         GlStateManager.disableDepth();

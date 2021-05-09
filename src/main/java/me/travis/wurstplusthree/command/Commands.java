@@ -29,6 +29,8 @@ public class Commands implements Globals {
         this.commands.add(new FontCommand());
         this.commands.add(new ReloadCapesCommand());
         this.commands.add(new ReloadCosmeticsCommand());
+        this.commands.add(new NameMcCommand());
+        this.commands.add(new BurrowBlockCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
@@ -76,6 +78,15 @@ public class Commands implements Globals {
 
     public void setPrefix(String prefix) {
         Commands.prefix = prefix;
+    }
+
+    public BurrowBlockCommand getBurrowCommand(){
+        for(Command c : commands){
+            if(c.isName("BurrowBlock")){
+                return (BurrowBlockCommand) c;
+            }
+        }
+        return null;
     }
 
 }

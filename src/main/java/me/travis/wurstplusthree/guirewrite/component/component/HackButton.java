@@ -11,7 +11,10 @@ import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ColorUtil;
+import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
@@ -48,24 +51,24 @@ public class HackButton extends Component {
 
         this.subcomponents = new ArrayList<>();
         this.isOpen = false;
-        opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
                 if (s instanceof BooleanSetting) {
                     this.subcomponents.add(new BoolComponent((BooleanSetting) s, this, opY));
-                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
                     this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
-                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof IntSetting) {
                     this.subcomponents.add(new SliderComponent((IntSetting) s, this, opY));
-                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof DoubleSetting) {
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
-                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof ColourSetting) {
                     this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
-                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 }
                 else if (s instanceof KeySetting){
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
@@ -79,10 +82,10 @@ public class HackButton extends Component {
     @Override
     public void setOff(int newOff) {
         offset = newOff;
-        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         for (Component comp : this.subcomponents) {
             comp.setOff(opY);
-            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         }
     }
 
@@ -90,14 +93,14 @@ public class HackButton extends Component {
     public void renderComponent() {
         subCompLength = 0;
         if (mod.isEnabled()) {
-            RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING,
-                    parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING,
+            RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET,
+                    parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_OFFSET,
                     (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
                     (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
         } else {
-            RenderUtil2D.drawRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
+            RenderUtil2D.drawRectMC(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);
         }
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_INDENT, parent.getY() + this.offset + WurstplusGuiNew.MODULE_SPACING + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_SIZE, parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
@@ -114,6 +117,7 @@ public class HackButton extends Component {
                 }
             }
         }
+        renderArrow();
     }
 
     @Override
@@ -127,9 +131,9 @@ public class HackButton extends Component {
                     }
                 }
             }
-            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * (this.subcomponents.size() + 1 + val));
+            return ((WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET) * (this.subcomponents.size() + 1 + val));
         }
-        return WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        return WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
     }
 
     @Override
@@ -186,10 +190,36 @@ public class HackButton extends Component {
 
 
     public boolean isMouseOnButton(int x, int y) {
-        if (x > parent.getX() + WurstplusGuiNew.MODULE_WIDTH_OFFSET && x < parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH_OFFSET && y > this.parent.getY() + this.offset && y < this.parent.getY() + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING + this.offset) {
+        if (x > parent.getX() + WurstplusGuiNew.MODULE_WIDTH && x < parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH && y > this.parent.getY() + this.offset && y < this.parent.getY() + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + this.offset) {
             return true;
         }
         return false;
+    }
+
+    private void renderArrow(){
+        switch (Gui.INSTANCE.arrowType.getValue()){
+            case "Type1":
+                if(this.isOpen){
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 1, 2, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                break;
+            case "Type2":
+                if(this.isOpen){
+                    GL11.glPushMatrix();
+                    GL11.glTranslated(parent.getX() + 102f, parent.getY() + offset + 12f, 0);
+                    GL11.glRotatef(-90f, 0f, 0f, 1f);
+                    GL11.glTranslated(-(parent.getX() + 102f), -(parent.getY() + offset + 12f), 0);
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                    GL11.glPopMatrix();
+                }
+                else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                }
+                break;
+        }
     }
 
     public void addOpY(int v) {

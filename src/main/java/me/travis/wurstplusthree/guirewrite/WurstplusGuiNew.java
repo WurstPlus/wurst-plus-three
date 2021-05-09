@@ -29,17 +29,17 @@ public class WurstplusGuiNew extends GuiScreen implements Globals {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
-    public static final int MODULE_WIDTH_OFFSET = 2;
-    public static final int MODULE_SPACING = 1;
-    public static final int SETTING_WIDTH_OFFSET = 5;
+    public static final int MODULE_WIDTH = 2;
+    public static final int MODULE_OFFSET = 1;
+    public static final int SETTING_OFFSET = 5;
 
     public static final int FONT_HEIGHT = 4;
-    public static final int MODULE_FONT_INDENT = 6;
-    public static final int SUB_FONT_INDENT = 2 * MODULE_FONT_INDENT;
-    public static final int COLOR_FONT_INDENT = 2 * SUB_FONT_INDENT;
+    public static final int MODULE_FONT_SIZE = 6;
+    public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
+    public static final int COLOR_FONT_SIZE = 2 * SUB_FONT_SIZE;
 
-    public static final int GUI_TRANSPARENCY = 0x99000000;
-    public static final int GUI_HOVERED_TRANSPARENCY = 0x99222222;
+    public static final int GUI_COLOR = 0x99000000;
+    public static final int GUI_HOVERED_COLOR = 0x99222222;
     private boolean flag = false;
 
     public static ArrayList<CategoryComponent> categoryComponents;

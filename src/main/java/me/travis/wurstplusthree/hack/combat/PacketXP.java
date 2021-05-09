@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.ClientMessage;
+import me.travis.wurstplusthree.util.MouseUtil;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 /**
  * @author Madmegsox1
@@ -39,18 +41,13 @@ public class PacketXP extends Hack{
 
     @Override
     public void onUpdate(){
-        if(Keyboard.isKeyDown(bind.getKey())){
-            int oldPitch = (int)mc.player.rotationPitch;
-            prvSlot = mc.player.inventory.currentItem; //TODO add better rotations
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(findExpInHotbar()));
-            mc.player.rotationPitch = lookPitch.getValue();
-            mc.player.connection.sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, lookPitch.getValue(), true));
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
-            mc.player.rotationPitch = oldPitch;
-            mc.player.inventory.currentItem = prvSlot;
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(prvSlot));
-            if (allowTakeOff.getValue()) {
-                takeArmorOff(); //TODO travis add the ArmourMend take off thing
+        if(bind.getKey() > -1) {
+            if (Keyboard.isKeyDown(bind.getKey()) && mc.currentScreen == null) {
+                usedXp();
+            }
+        }else if(bind.getKey() < -1){
+            if(Mouse.isButtonDown(MouseUtil.convertToMouse(bind.getKey())) && mc.currentScreen == null){
+                usedXp();
             }
         }
 
@@ -65,6 +62,21 @@ public class PacketXP extends Hack{
             }
         }
         return slot;
+    }
+
+    private void usedXp(){
+        int oldPitch = (int)mc.player.rotationPitch;
+        prvSlot = mc.player.inventory.currentItem; //TODO add better rotations
+        mc.player.connection.sendPacket(new CPacketHeldItemChange(findExpInHotbar()));
+        mc.player.rotationPitch = lookPitch.getValue();
+        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, lookPitch.getValue(), true));
+        mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+        mc.player.rotationPitch = oldPitch;
+        mc.player.inventory.currentItem = prvSlot;
+        mc.player.connection.sendPacket(new CPacketHeldItemChange(prvSlot));
+        if (allowTakeOff.getValue()) {
+            takeArmorOff(); //TODO travis add the ArmourMend take off thing
+        }
     }
 
     private ItemStack getArmor(int first) {
