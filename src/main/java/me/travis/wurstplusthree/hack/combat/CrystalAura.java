@@ -468,7 +468,8 @@ public class CrystalAura extends Hack {
             else {
                 miniumDamage = this.minHpPlace.getValue();
             }
-
+            //we should change the raytrace stuff to ignore all explodable blocks instead of setting webs to air
+            // setting webs to air can cause huge desync and get you killed
             if (ignoreTerrain.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
                 mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
             }
