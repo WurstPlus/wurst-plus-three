@@ -80,6 +80,7 @@ public class CrystalAura extends Hack {
 
     BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this);
     IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this);
+    KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this);
 
     BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this);
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
@@ -421,7 +422,7 @@ public class CrystalAura extends Hack {
             // set min damage to 2 if we want to kill the dude fast
             double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
             } else {
                 miniumDamage = this.minHpBreak.getValue();
@@ -462,7 +463,7 @@ public class CrystalAura extends Hack {
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
             }
             else {
