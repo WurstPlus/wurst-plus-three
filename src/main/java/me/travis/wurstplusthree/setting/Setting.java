@@ -25,7 +25,9 @@ public class Setting<T> {
         return this.value;
     }
 
-    public String getType() {return "";}
+    public String getType() {
+    	return "";
+    }
 
     public Hack getParent() {
         return this.parent;
