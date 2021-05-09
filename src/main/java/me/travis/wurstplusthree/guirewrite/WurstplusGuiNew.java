@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
-import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -64,7 +63,7 @@ public class WurstplusGuiNew extends GuiScreen {
         }
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
             if (mc.entityRenderer.getShaderGroup() != null) {
-                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            	mc.entityRenderer.getShaderGroup().deleteShaderGroup();
             }
             mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
         }
@@ -96,7 +95,7 @@ public class WurstplusGuiNew extends GuiScreen {
             }
             if (categoryComponent.isWithinHeader(mouseX, mouseY) && mouseButton == 1) {
                 categoryComponent.setOpen(!categoryComponent.isOpen());
-                this.mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             }
             if (categoryComponent.isOpen()) {
                 if (!categoryComponent.getComponents().isEmpty()) {

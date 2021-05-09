@@ -91,14 +91,10 @@ public class InventoryUtil implements Globals {
     }
 
     public static boolean holdingItem(Class c) {
-        boolean result = false;
-        ItemStack stack = InventoryUtil.mc.player.getHeldItemMainhand();
-        result = InventoryUtil.isInstanceOf(stack, c);
-        if (!result) {
-            ItemStack offhand = InventoryUtil.mc.player.getHeldItemOffhand();
-            result = InventoryUtil.isInstanceOf(stack, c);
-        }
-        return result;
+    	
+    	if (isInstanceOf(mc.player.getHeldItemMainhand(), c) || isInstanceOf(mc.player.getHeldItemOffhand(), c)) {
+    		return true;
+    	} return false;
     }
 
     public static boolean isInstanceOf(ItemStack stack, Class c) {
