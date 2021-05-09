@@ -30,7 +30,6 @@ public class Offhand extends Hack {
     BooleanSetting GapOnPick = new BooleanSetting("Pick Gap", false, this);
     BooleanSetting Always = new BooleanSetting("Always", false, this);
     BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
-    DoubleSetting damageMultiplier = new DoubleSetting("Damage Multiplier", 1.0, 1.0, 2.0, this);
 
 
     private boolean switching;
@@ -84,9 +83,8 @@ public class Offhand extends Hack {
     private boolean crystalDamage() {
         double ris2 = 0;
         for (Entity entity : mc.world.loadedEntityList) {
-
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
-                if ((ris2 = CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player) * damageMultiplier.getValue()) >= mc.player.getHealth()) {
+                if ((ris2 = CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
                     return true;
                 }
             }
@@ -112,7 +110,6 @@ public class Offhand extends Hack {
             switching = false;
 
         }
-
         mc.playerController.updateController();
     }
 
