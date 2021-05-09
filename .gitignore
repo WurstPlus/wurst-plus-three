@@ -299,3 +299,5 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,gradle,eclipse,windows,forgegradle,intellij+all,emacs,vim
+.classpath
+.project
