@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * -> swag gui :sunglasses:
  */
 
-public class WurstplusGuiNew extends GuiScreen {
+public class WurstplusGuiNew extends GuiScreen implements Globals {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
