@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * -> swag gui :sunglasses:
  */
 
-public class WurstplusGuiNew extends GuiScreen implements Globals {
+public class WurstplusGuiNew extends GuiScreen {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
