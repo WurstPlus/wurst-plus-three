@@ -6,8 +6,9 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author Madmegsox1
+ * @author SankuGG
  * @since 01/05/2021
+ *  -> src from prism
  */
 
 @Hack.Registration(name = "Aspect", description = "Does aspect shit", category = Hack.Category.RENDER, isListening = false)

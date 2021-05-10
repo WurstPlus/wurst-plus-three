@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
  * @since 27/04/2021
  */
 
-public class Component {
+public abstract class Component {
     public void renderComponent() {
     }
 

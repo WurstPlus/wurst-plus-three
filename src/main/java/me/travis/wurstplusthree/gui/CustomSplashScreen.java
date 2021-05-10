@@ -82,7 +82,8 @@ public class CustomSplashScreen extends GuiScreen {
         this.buttonList.add(new TextButton(1, this.x, this.y + 44, "the_fellas"));
         this.buttonList.add(new TextButton(2, this.x, this.y + 66, "settings"));
         this.buttonList.add(new TextButton(2, this.x, this.y + 88, "discord"));
-        this.buttonList.add(new TextButton(2, this.x, this.y + 110, "log"));
+        this.buttonList.add(new TextButton(2, this.x, this.y + 110, "alts"));
+        this.buttonList.add(new TextButton(2, this.x, this.y + 132, "log"));
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
@@ -112,7 +113,10 @@ public class CustomSplashScreen extends GuiScreen {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (CustomSplashScreen.isHovered(this.x, this.y + 110, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
+        } else if (CustomSplashScreen.isHovered(this.x, this.y + 110, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("alts"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
+            //this.mc.displayGuiScreen(new MainAltGui());
+        }
+        else if (CustomSplashScreen.isHovered(this.x, this.y + 132, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.shutdown();
         }
     }
@@ -126,7 +130,7 @@ public class CustomSplashScreen extends GuiScreen {
         GlStateManager.disableBlend();
         this.mc.getTextureManager().bindTexture(this.background);
         CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
-        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 - with help from BrownZombie, k3b";
+        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 - with help from BrownZombie, k3b, and Austin :D";
         for (DonatorItem item : this.donatorItems) {
             item.updatePos();
             switch (item.getSize()) {

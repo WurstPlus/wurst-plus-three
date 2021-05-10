@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.player;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
+import net.minecraft.entity.Entity;
 
 @Hack.Registration(name = "Reverse Step", description = "pulls u down down down", category = Hack.Category.PLAYER, isListening = false)
 public class ReverseStep extends Hack {

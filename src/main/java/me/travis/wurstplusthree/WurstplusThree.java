@@ -20,12 +20,12 @@ import org.lwjgl.opengl.Display;
 /**
  * @author travis - began work on 8th april 2021
  */
-@Mod(modid = "wurstplusthree", name = "Wurst+3", version = "0.4.0")
+@Mod(modid = WurstplusThree.MODID, name = WurstplusThree.MODNAME, version = WurstplusThree.MODVER)
 public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
     public static final String MODNAME = "Wurst+3";
-    public static final String MODVER = "0.4.0";
+    public static final String MODVER = "0.5.0";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
@@ -58,6 +58,7 @@ public class WurstplusThree {
     public static SongManager SONG_MANAGER;
     public static CapeManager CAPE_MANAGER;
     public static CosmeticManager COSMETIC_MANAGER;
+    public static AltManager ALT_MANAGER;
 
     // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
@@ -106,6 +107,7 @@ public class WurstplusThree {
         CAPE_MANAGER = new CapeManager();
         DONATOR_FONT_MANAGER = new DonatorFont();
         COSMETIC_MANAGER = new CosmeticManager();
+        ALT_MANAGER = new AltManager();
     }
 
 }

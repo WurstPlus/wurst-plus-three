@@ -51,19 +51,19 @@ public class KeyBindComponent extends Component {
     public void renderComponent() {
         if (normal) {
             module = this.parent.mod;
-            RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
-            if(module.getBind() == -1){
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + "NONE"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
-            }else{
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + Keyboard.getKeyName(module.getBind())), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
+            RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);
+            if (module.getBind() == -1) {
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + "NONE"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            } else {
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + getRenderKey()), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
             }
 
         } else {
-            RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
-            if(setting.getKey() == -1){
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + "NONE"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
-            }else {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + Keyboard.getKeyName(setting.getKey())), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
+            RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);
+            if (setting.getKey() == -1) {
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + "NONE"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            } else {
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isBinding ? "Listening..." : (name + " - " + getRenderKey()), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
             }
         }
     }
@@ -81,11 +81,54 @@ public class KeyBindComponent extends Component {
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        if (this.isBinding) {
+            this.isBinding = false;
+            if (normal) {
+                switch (button) {
+                    case 0:
+                        module.setBind(-2);
+                        break;
+                    case 1:
+                        module.setBind(-3);
+                        break;
+                    case 2:
+                        module.setBind(-4);
+                        break;
+                    case 3:
+                        module.setBind(-5);
+                        break;
+                    case 4:
+                        module.setBind(-6);
+                        break;
+
+                }
+            } else {
+                WurstplusThree.LOGGER.info(button);
+                switch (button) {
+                    case 0:
+                        setting.setKey(-2);
+                        break;
+                    case 1:
+                        setting.setKey(-3);
+                        break;
+                    case 2:
+                        setting.setKey(-4);
+                        break;
+                    case 3:
+                        setting.setKey(-5);
+                        break;
+                    case 4:
+                        setting.setKey(-6);
+                        break;
+                }
+            }
+            return;
+        }
         if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             this.isBinding = !this.isBinding;
         }
@@ -94,16 +137,20 @@ public class KeyBindComponent extends Component {
     @Override
     public void keyTyped(char typedChar, int key) {
         if (this.isBinding) {
-            if(this.normal) {
+            if (this.normal) {
                 module.setBind(key);
-                this.isBinding = false;
-            }else {
+                if (key == Keyboard.KEY_DELETE) {
+                    module.setBind(-1);
+                }
+            } else {
                 setting.setKey(key);
-                this.isBinding = false;
+                if (key == Keyboard.KEY_DELETE) {
+                    setting.setKey(-1);
+                }
             }
+            this.isBinding = false;
         }
     }
-
 
     @Override
     public HackButton getParent() {
@@ -113,5 +160,40 @@ public class KeyBindComponent extends Component {
     @Override
     public int getOffset() {
         return offset;
+    }
+
+    private String getRenderKey() {
+        if (normal) {
+            if (module == null) return "NONE";
+            switch (module.getBind()) {
+                case -2:
+                    return "M0";
+                case -3:
+                    return "M1";
+                case -4:
+                    return "M2";
+                case -5:
+                    return "M3";
+                case -6:
+                    return "M4";
+                default:
+                    return Keyboard.getKeyName(module.getBind());
+            }
+        } else {
+            switch (setting.getKey()) {
+                case -2:
+                    return "M0";
+                case -3:
+                    return "M1";
+                case -4:
+                    return "M2";
+                case -5:
+                    return "M3";
+                case -6:
+                    return "M4";
+                default:
+                    return Keyboard.getKeyName(setting.getKey());
+            }
+        }
     }
 }

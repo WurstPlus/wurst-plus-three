@@ -4,13 +4,10 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.util.BlockUtil;
-import me.travis.wurstplusthree.util.InventoryUtil;
-import me.travis.wurstplusthree.util.MappingUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockEnderChest;
+import me.travis.wurstplusthree.util.*;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -28,7 +25,7 @@ public class Burrow extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting instant = new BooleanSetting("Instant", true, this);
     EnumSetting type = new EnumSetting("Type", "Packet", Arrays.asList("Packet", "Normal"), this);
-    EnumSetting block = new EnumSetting("Block", "All", Arrays.asList("All", "EChest", "Chest"), this);
+    EnumSetting block = new EnumSetting("Block", "All", Arrays.asList("All", "EChest", "Chest", "WhiteList"), this);
     DoubleSetting force = new DoubleSetting("Force", 1.5, -5.0, 10.0, this);
     BooleanSetting center = new BooleanSetting("Center", false, this);
     BooleanSetting bypass = new BooleanSetting("Bypass", false, this);
@@ -36,6 +33,7 @@ public class Burrow extends Hack {
     int swapBlock = -1;
     Vec3d centerBlock = Vec3d.ZERO;
     BlockPos oldPos;
+    Block blockW = Blocks.OBSIDIAN;
     boolean flag;
 
     @Override
@@ -77,6 +75,13 @@ public class Burrow extends Hack {
                 break;
             case "Chest":
                 swapBlock = InventoryUtil.findHotbarBlock(BlockChest.class);
+                break;
+            case "WhiteList":
+                if(blockW.equals(null)){
+                    ClientMessage.sendMessage("Please set the block with commands!");
+                    return;
+                }
+                swapBlock = InventoryUtil.findHotbarBlock(blockW.getClass());
         }
         if (swapBlock == -1) {
             this.disable();
@@ -197,6 +202,14 @@ public class Burrow extends Hack {
     @Override
     public String getDisplayInfo() {
         return this.type.getValueName();
+    }
+
+    public void setBlock(Block b){
+        this.blockW = b;
+    }
+
+    public Block getBlock(){
+        return this.blockW;
     }
 
 }

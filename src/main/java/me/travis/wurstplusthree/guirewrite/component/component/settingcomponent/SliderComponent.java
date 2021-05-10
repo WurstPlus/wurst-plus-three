@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 /**
  * @author Madmegsox1
  * @since 29/04/2021
+ * fat cock
  */
 
 public class SliderComponent extends Component {
@@ -53,18 +54,12 @@ public class SliderComponent extends Component {
 
     @Override
     public void renderComponent() {
-        // Draw background box
-        net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.hovered ? WurstplusGuiNew.GUI_HOVERED_TRANSPARENCY : WurstplusGuiNew.GUI_TRANSPARENCY);
-
-        // Draw slider
-        RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING,
+        net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);
+        RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET,
                 (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
                 (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
 
-        // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getValue().hashCode());
-
-        // Draw slider name and value
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + MathsUtil.round(this.setI.getValue(), 2) : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + MathsUtil.round(this.setI.getValue(), 2) : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
     }
 
     @Override
@@ -78,13 +73,13 @@ public class SliderComponent extends Component {
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
 
-        int widthTest = WurstplusGuiNew.WIDTH - (WurstplusGuiNew.SETTING_WIDTH_OFFSET * 2);
+        int widthTest = WurstplusGuiNew.WIDTH - (WurstplusGuiNew.SETTING_OFFSET * 2);
         double diff = Math.min(widthTest, Math.max(0, mouseX - this.x));
         if (isInt()) {
             int min = setI.getMin();
             int max = setI.getMax();
 
-            renderWidth = (widthTest) * (float)(setI.getValue() - min) / (max - min) + WurstplusGuiNew.SETTING_WIDTH_OFFSET;
+            renderWidth = (widthTest) * (float)(setI.getValue() - min) / (max - min) + WurstplusGuiNew.SETTING_OFFSET;
 
             if (dragging) {
                 if (diff == 0) {
@@ -99,7 +94,7 @@ public class SliderComponent extends Component {
             double min = setD.getMin();
             double max = setD.getMax();
 
-            renderWidth = (widthTest) * (setD.getValue() - min) / (max - min) + WurstplusGuiNew.SETTING_WIDTH_OFFSET;
+            renderWidth = (widthTest) * (setD.getValue() - min) / (max - min) + WurstplusGuiNew.SETTING_OFFSET;
 
             if (dragging) {
                 if (diff == 0) {
@@ -140,15 +135,15 @@ public class SliderComponent extends Component {
 
 
     public boolean isMouseOnButtonD(int x, int y) {
-        return x > this.x + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.x + (parent.parent.getWidth() / 2 + 1) - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
+        return x > this.x + WurstplusGuiNew.SETTING_OFFSET && x < this.x + (parent.parent.getWidth() / 2 + 1) - WurstplusGuiNew.SETTING_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
     }
 
     public boolean isMouseOnButtonI(int x, int y) {
-        return x > this.x + parent.parent.getWidth() / 2 + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.x + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
+        return x > this.x + parent.parent.getWidth() / 2 + WurstplusGuiNew.SETTING_OFFSET && x < this.x + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
     }
 
     public boolean isInt() {

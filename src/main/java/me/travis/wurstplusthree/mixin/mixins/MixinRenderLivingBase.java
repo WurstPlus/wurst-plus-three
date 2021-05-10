@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.hack.render.Chams;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -52,7 +53,8 @@ extends Render<T> {
                     GL11.glDepthMask((boolean)true);
                     GL11.glColor4f((float)((float)visibleColor2.getRed() / 255.0f), (float)((float)visibleColor2.getGreen() / 255.0f), (float)((float)visibleColor2.getBlue() / 255.0f), (float)((float)hiddenColor.getAlpha() / 255.0f));
                     modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-                } else {
+                }
+                else {
                     visibleColor = Chams.INSTANCE.colour.getValue();
                     GL11.glDisable((int)2929);
                     GL11.glDepthMask((boolean)false);

@@ -87,24 +87,20 @@ public class BlockUtil implements Globals {
 
         IBlockState l_State = mc.world.getBlockState(pos);
 
-        if (l_State.getBlock() == Blocks.AIR)
-        {
+        if (l_State.getBlock() == Blocks.AIR) {
             final BlockPos[] l_Blocks =
                     { pos.north(), pos.south(), pos.east(), pos.west(), pos.up(), pos.down() };
 
-            for (BlockPos l_Pos : l_Blocks)
-            {
+            for (BlockPos l_Pos : l_Blocks) {
                 IBlockState l_State2 = mc.world.getBlockState(l_Pos);
 
                 if (l_State2.getBlock() == Blocks.AIR)
                     continue;
 
-                for (final EnumFacing side : EnumFacing.values())
-                {
+                for (final EnumFacing side : EnumFacing.values()) {
                     final BlockPos neighbor = pos.offset(side);
 
-                    if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false))
-                    {
+                    if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false)) {
                         return ValidResult.Ok;
                     }
                 }
@@ -221,6 +217,8 @@ public class BlockUtil implements Globals {
         List<EnumFacing> facings = new ArrayList<>();
         for (EnumFacing side : EnumFacing.values()) {
             BlockPos neighbour = pos.offset(side);
+            if(mc.world.getBlockState(neighbour) == null)return facings;
+            if(mc.world.getBlockState(neighbour).getBlock() == null)return facings;
             if (mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false)) {
                 IBlockState blockState = mc.world.getBlockState(neighbour);
                 if (!blockState.getMaterial().isReplaceable()) {

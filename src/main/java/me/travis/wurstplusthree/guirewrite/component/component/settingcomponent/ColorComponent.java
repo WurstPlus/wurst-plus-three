@@ -48,23 +48,23 @@ public class ColorComponent extends Component {
         this.bc = new BoolComponent(set, button, offset, this);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
-        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
         colorComponents.add(g);
-        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
         colorComponents.add(b);
-        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
         colorComponents.add(a);
-        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
         colorComponents.add(bc);
-        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING);
+        parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
 
     }
 
     @Override
     public void renderComponent() {
-        RenderUtil2D.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING, this.set.getValue().hashCode());
+        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.set.getValue().hashCode());
         // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getValue().hashCode());
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_INDENT, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_SPACING, Gui.INSTANCE.fontColor.getValue().hashCode());
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             for (Component component : colorComponents) {
                 component.renderComponent();
@@ -75,10 +75,10 @@ public class ColorComponent extends Component {
     @Override
     public void setOff(int newOff) {
         offset = newOff;
-        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        int opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         for (Component c : colorComponents) {
             c.setOff(opY);
-            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         }
     }
 
@@ -116,7 +116,7 @@ public class ColorComponent extends Component {
                     continue;
                 }
                 if (flag) {
-                    component.setOff(component.getOffset() + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING) * 5);
+                    component.setOff(component.getOffset() + (WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET) * 5);
                 }
             }
             this.firstTimeOpen = false;
@@ -139,7 +139,7 @@ public class ColorComponent extends Component {
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_WIDTH_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_SPACING && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_SPACING;
+        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
     }
 
     public void setOpen(boolean v) {

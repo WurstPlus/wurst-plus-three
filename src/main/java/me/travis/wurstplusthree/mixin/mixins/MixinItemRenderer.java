@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,12 +32,11 @@ public abstract class MixinItemRenderer {
                 1.0, 1.0, 1.0
         );
         MinecraftForge.EVENT_BUS.post(event);
-        if(hand == EnumHandSide.RIGHT){
+        if (hand == EnumHandSide.RIGHT) {
             GlStateManager.translate(event.getMainX(), event.getMainY(), event.getMainZ());
             GlStateManager.scale(event.getMainHandScaleX(), event.getMainHandScaleY(), event.getMainHandScaleZ());
             GlStateManager.rotate((float) event.getMainRAngel(), (float) event.getMainRx(), (float) event.getMainRy(), (float) event.getMainRz());
-        }
-        else {
+        } else {
             GlStateManager.translate(event.getOffX(), event.getOffY(), event.getOffZ());
             GlStateManager.scale(event.getOffHandScaleX(), event.getOffHandScaleY(), event.getOffHandScaleZ());
             GlStateManager.rotate((float) event.getOffRAngel(), (float) event.getOffRx(), (float) event.getOffRy(), (float) event.getOffRz());

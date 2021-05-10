@@ -12,17 +12,18 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +37,7 @@ import java.util.*;
 public class CrystalAura extends Hack {
 
     // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
+	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -59,6 +61,7 @@ public class CrystalAura extends Hack {
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
+    BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -82,6 +85,7 @@ public class CrystalAura extends Hack {
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
+    BooleanSetting ignoreTerrain = new BooleanSetting("Ignore Webs", true, this);
 
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
@@ -89,8 +93,9 @@ public class CrystalAura extends Hack {
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
+    
 
-    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline"), this);
+    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Flat"), this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
@@ -195,6 +200,10 @@ public class CrystalAura extends Hack {
                 }
             }
         }
+        if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
+            ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
+            RotationUtil.resetRotations();
+        }
     }
 
     @Override
@@ -205,10 +214,10 @@ public class CrystalAura extends Hack {
     }
 
     private void doCrystalAura() {
-        if (nullCheck()) {
-            this.disable();
-            return;
-        }
+    	if (nullCheck()) {
+    		this.disable();
+    		return;
+    	}
 
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
@@ -245,6 +254,7 @@ public class CrystalAura extends Hack {
             if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
+                mc.playerController.syncCurrentPlayItem();
             }
         } else {
             offhandCheck = true;
@@ -333,7 +343,6 @@ public class CrystalAura extends Hack {
             for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
-
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
                 } else {
@@ -397,7 +406,6 @@ public class CrystalAura extends Hack {
                 player = this.newTarget(target);
             }
 
-            if (this.raytrace.getValue() && !mc.player.canEntityBeSeen(crystal)) return 0;
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
                     return 0;
@@ -456,8 +464,13 @@ public class CrystalAura extends Hack {
             if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
                     (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
-            } else {
+            }
+            else {
                 miniumDamage = this.minHpPlace.getValue();
+            }
+
+            if (ignoreTerrain.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
+                mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
             }
 
             double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
@@ -541,6 +554,7 @@ public class CrystalAura extends Hack {
                 break;
         }
         RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true);
+
 
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");

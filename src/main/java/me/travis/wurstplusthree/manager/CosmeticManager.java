@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.manager;
 
 import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
+import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,12 +19,12 @@ import java.util.Map;
  * @since 01/05/2021
  */
 
-public class CosmeticManager {
-    private final Minecraft mc = Minecraft.getMinecraft();
-    public Map<String, ArrayList<ModelBase>> cosmeticMap = new HashMap<>();
+public class CosmeticManager implements Globals {
+    public Map<String, ModelBase> cosmeticMap = new HashMap<>();
+
     public static GlassesModel gm = new GlassesModel();
 
-    public CosmeticManager(){
+    public CosmeticManager() {
         try {
             URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cosmetics.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
@@ -33,21 +34,16 @@ public class CosmeticManager {
                 String name = colune.split(":")[0];
                 //WurstplusThree.LOGGER.info(name);
                 String type = colune.split(":")[1];
-                String[] cosmetics = type.split(",");
-                ArrayList<ModelBase> cList = new ArrayList<>();
-                for(String c : cosmetics){
-                    if(c.equals("glasses")){
-                        cList.add(gm);
-                    }
+                if (type.equals("glasses")) {
+                    this.cosmeticMap.put(name, gm);
                 }
-                this.cosmeticMap.put(name, cList);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void reload(){
+    public void reload() {
         cosmeticMap.clear();
         try {
             URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cosmetics.txt");
@@ -56,16 +52,11 @@ public class CosmeticManager {
             while ((inputLine = in.readLine()) != null) {
                 String colune = inputLine.trim();
                 String name = colune.split(":")[0];
+                //WurstplusThree.LOGGER.info(name);
                 String type = colune.split(":")[1];
-                String[] cosmetics = type.split(",");
-                ArrayList<ModelBase> cList = new ArrayList<>();
-                for(String c : cosmetics){
-                    if(c.equals("glasses")){
-                        cList.add(gm);
-                    }
+                if (type.equals("glasses")) {
+                    this.cosmeticMap.put(name, gm);
                 }
-                this.cosmeticMap.put(name, cList);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +64,7 @@ public class CosmeticManager {
     }
 
 
-    public ArrayList<ModelBase> getRenderModels(EntityPlayer player) {
+    public ModelBase getRenderModels(EntityPlayer player) {
         return this.cosmeticMap.get(player.getUniqueID().toString());
     }
 

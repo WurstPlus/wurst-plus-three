@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,7 +51,34 @@ public class CrystalUtil implements Globals {
         Vec3d vec3d = new Vec3d(posX, posY, posZ);
         double blockDensity = 0.0;
         try {
-            blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+            Block block = entity.world.getBlockState(new BlockPos(vec3d.x, vec3d.y, vec3d.z)).getBlock();
+            if (Blocks.WEB.equals(block)) {
+                blockDensity = 0.0;
+            } else if (Blocks.NETHERRACK.equals(block)) {
+                blockDensity = 0.0;
+            } else if (Blocks.NETHER_BRICK.equals(block)) {
+                blockDensity = 0.0;
+            } else if (Blocks.NETHER_BRICK_FENCE.equals(block)) {
+                blockDensity = 0.0;
+            } else if (Blocks.NETHER_BRICK_STAIRS.equals(block)) {
+                blockDensity = 0.0;
+            }else if(Blocks.GLASS.equals(block)){
+                blockDensity = 0.0;
+            }else if(Blocks.STONE.equals(block)){
+                blockDensity = 0.0;
+            }else if(Blocks.DIRT.equals(block)){
+                blockDensity = 0.0;
+                //mc.world.setBlockToAir(new BlockPos(vec3d.x, vec3d.y, vec3d.z));
+            }else if(Blocks.GRASS.equals(block)){
+                blockDensity = 0.0;
+            }
+            else {
+                blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+            }
+
+            /*
+                blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+             */
         } catch (Exception e) {
             e.printStackTrace();
         }
