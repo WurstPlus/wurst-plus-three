@@ -83,6 +83,10 @@ public class WurstplusGuiNew extends GuiScreen {
                 comp.updateComponent(mouseX, mouseY);
             }
         }
+        boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
+        if (gradientShadow) {
+            drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), 00000000, Gui.INSTANCE.gradientColor.getValue().getRGB());
+        }
     }
 
     @Override

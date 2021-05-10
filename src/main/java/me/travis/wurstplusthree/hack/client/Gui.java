@@ -28,6 +28,8 @@ public class Gui extends Hack {
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
     public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
     public BooleanSetting blur = new BooleanSetting("Blur", true, this);
+    public BooleanSetting gradient = new BooleanSetting("Gradient", false, this);
+    public ColourSetting gradientColor = new ColourSetting("GradientColor", new Colour(255, 122, 5, 255), this);
     public BooleanSetting animation = new BooleanSetting("Animation", true, this);
     public IntSetting animationStages = new IntSetting("AnimationStages", 250, 1, 1000, this);
     public EnumSetting arrowType = new EnumSetting("ArrowType", "Off", Arrays.asList("Off", "Type1", "Type2"), this);
