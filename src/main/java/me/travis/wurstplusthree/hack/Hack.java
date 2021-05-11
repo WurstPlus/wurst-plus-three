@@ -25,7 +25,7 @@ public class Hack implements Globals {
     public @interface Registration {
         String name();
         String description();
-        Category category(); //TODO travis fix this it needs to be null for server manager
+        Category category();
         boolean isListening();
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
