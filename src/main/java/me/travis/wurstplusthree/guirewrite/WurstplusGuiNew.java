@@ -63,7 +63,7 @@ public class WurstplusGuiNew extends GuiScreen {
         }
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && Gui.INSTANCE.blur.getValue()) {
             if (mc.entityRenderer.getShaderGroup() != null) {
-                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            	mc.entityRenderer.getShaderGroup().deleteShaderGroup();
             }
             mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
         }
@@ -73,6 +73,10 @@ public class WurstplusGuiNew extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
+        if (gradientShadow) {
+            drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Gui.INSTANCE.gradientStartColor.getValue().getRGB(), Gui.INSTANCE.gradientEndColor.getValue().getRGB());
+        }
         if(!flag && Gui.INSTANCE.animation.getValue()) {
             animate(sr);
         }
@@ -95,7 +99,7 @@ public class WurstplusGuiNew extends GuiScreen {
             }
             if (categoryComponent.isWithinHeader(mouseX, mouseY) && mouseButton == 1) {
                 categoryComponent.setOpen(!categoryComponent.isOpen());
-                this.mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             }
             if (categoryComponent.isOpen()) {
                 if (!categoryComponent.getComponents().isEmpty()) {

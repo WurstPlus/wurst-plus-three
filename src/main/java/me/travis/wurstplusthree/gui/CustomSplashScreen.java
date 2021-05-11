@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.alt.MainAltGui;
 import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.DonatorItem;
@@ -131,7 +130,7 @@ public class CustomSplashScreen extends GuiScreen {
         GlStateManager.disableBlend();
         this.mc.getTextureManager().bindTexture(this.background);
         CustomSplashScreen.drawCompleteImage(-16.0f + xOffset, -9.0f + yOffset, this.width + 32, this.height + 18);
-        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 - with help from BrownZombie, k3b";
+        String watermark = WurstplusThree.MODNAME + " v" + WurstplusThree.MODVER + " : made by travis#0001 | Madmeg#4882 - with help from BrownZombie, k3b, and Austin :D";
         for (DonatorItem item : this.donatorItems) {
             item.updatePos();
             switch (item.getSize()) {

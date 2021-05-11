@@ -24,7 +24,7 @@ public class BurrowBlockCommand extends Command {
     @Override
     public void execute(String[] message) {
         Burrow bClass = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
-        Block b = new WhitelistUtil().findBlock(message[0]);
+        Block b = WhitelistUtil.findBlock(message[0]);
 
         if(b.equals(null)){
             ClientMessage.sendMessage("Cannot set Block to " + message[0]);
