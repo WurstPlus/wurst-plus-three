@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -13,6 +14,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -23,6 +26,7 @@ public class Offhand extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
     BooleanSetting gapHole = new BooleanSetting("Gap In Hole", true, this);
+    BooleanSetting cancelMovement = new BooleanSetting("CancelMovement", false, this); // 2b2t does not let you swap items when moving so you must stop movement first then swap.
     IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
     KeySetting gapKey = new KeySetting("Gap Key", Keyboard.KEY_NONE, this);
 
@@ -46,7 +50,15 @@ public class Offhand extends Hack {
         float hp = EntityUtil.getHealth(mc.player);
 
         if (hp < TotemHp.getValue()) {
+            // Stop the player movement so totem can be swapped on 2b2t.
+            if (cancelMovement.getValue()) {
+                StopPlayerMovement.toggle(true);
+            }
             this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
+            // Stop the cancelling of the MoveEvent after the totem has been swapped.
+            if (cancelMovement.getValue()) {
+                StopPlayerMovement.toggle(false);
+            }
             return;
         }
         if (gapKey.getKey() < -1) {
@@ -78,7 +90,6 @@ public class Offhand extends Hack {
         }
 
 
-
         switch (mode.getValue()) {
             case "Totem":
                 this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
@@ -90,8 +101,6 @@ public class Offhand extends Hack {
                 this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 return;
         }
-
-
     }
 
     public void swapItems(int slot, int step) {
@@ -131,5 +140,21 @@ public class Offhand extends Hack {
             }
         }
         return -1;
+    }
+
+    public static class StopPlayerMovement {
+        private static StopPlayerMovement stopPlayerMovement = new StopPlayerMovement();
+        public static void toggle(boolean on) {
+            if (on) {
+                MinecraftForge.EVENT_BUS.register(stopPlayerMovement);
+            } else {
+                MinecraftForge.EVENT_BUS.unregister(stopPlayerMovement);
+            }
+        }
+        // Cancel the MoveEvent.
+        @SubscribeEvent
+        public void onMove(MoveEvent event) {
+            event.setCanceled(true);
+        }
     }
 }
