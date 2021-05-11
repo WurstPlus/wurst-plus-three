@@ -1,10 +1,8 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -14,8 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 import java.util.Arrays;
 
@@ -38,16 +34,12 @@ public class Offhand extends Hack {
     @Override
     public void onTick() {
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
-
             if (switching) {
                 swapItems(lastSlot, 2);
                 return;
             }
-
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-
-            if ((hp > TotemHp.getValue() && (!crystalDamage() || !CrystalCheck.getValue()) || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue()))) {
-
+            if (hp > TotemHp.getValue() && !crystalDamage() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
                 if (mode.getValue().equalsIgnoreCase("crystal") && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
                     swapItems(getItemSlot(Items.END_CRYSTAL), 0);
                     return;
@@ -70,17 +62,16 @@ public class Offhand extends Hack {
                 swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
                 return;
             }
-
-
             if (mc.player.getHeldItemOffhand().getItem() == Items.AIR) {
                 swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             }
-
         }
-
     }
 
     private boolean crystalDamage() {
+        if (!CrystalCheck.getValue()) {
+            return false;
+        }
         double ris2 = 0;
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
