@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.CustomSplashScreen;
+import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -94,14 +95,12 @@ public abstract class MixinMinecraft {
 
     @Redirect(method={"sendClickBlockToController"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;isHandActive()Z"))
     private boolean isHandActiveWrapper(EntityPlayerSP playerSP) {
-        return playerSP.isHandActive();
+        return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerSP.isHandActive();
     }
 
-    /*
-    @Redirect(method={"rightClickMouse"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/PlayerControllerMP;getIsHittingBlock()Z", ordinal=0), require=1)
+    @Redirect(method={"rightClickMouse"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/PlayerControllerMP;getIsHittingBlock()Z", ordinal=0))
     private boolean isHittingBlockHook(PlayerControllerMP playerControllerMP) {
-        return playerControllerMP.getIsHittingBlock();
+        return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerControllerMP.getIsHittingBlock();
     }
-     */
 }
 

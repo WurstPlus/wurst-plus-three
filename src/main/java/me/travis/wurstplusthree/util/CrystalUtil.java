@@ -51,34 +51,13 @@ public class CrystalUtil implements Globals {
         Vec3d vec3d = new Vec3d(posX, posY, posZ);
         double blockDensity = 0.0;
         try {
-            Block block = entity.world.getBlockState(new BlockPos(vec3d.x, vec3d.y, vec3d.z)).getBlock();
-            if (Blocks.WEB.equals(block)) {
-                blockDensity = 0.0;
-            } else if (Blocks.NETHERRACK.equals(block)) {
-                blockDensity = 0.0;
-            } else if (Blocks.NETHER_BRICK.equals(block)) {
-                blockDensity = 0.0;
-            } else if (Blocks.NETHER_BRICK_FENCE.equals(block)) {
-                blockDensity = 0.0;
-            } else if (Blocks.NETHER_BRICK_STAIRS.equals(block)) {
-                blockDensity = 0.0;
-            }else if(Blocks.GLASS.equals(block)){
-                blockDensity = 0.0;
-            }else if(Blocks.STONE.equals(block)){
-                blockDensity = 0.0;
-            }else if(Blocks.DIRT.equals(block)){
-                blockDensity = 0.0;
-                //mc.world.setBlockToAir(new BlockPos(vec3d.x, vec3d.y, vec3d.z));
-            }else if(Blocks.GRASS.equals(block)){
+            BlockPos block = new BlockPos(vec3d.x, vec3d.y, vec3d.z);
+            if (getBlockResistance(block) == BlockResistance.Breakable) {
                 blockDensity = 0.0;
             }
             else {
                 blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
             }
-
-            /*
-                blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-             */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,6 +92,29 @@ public class CrystalUtil implements Globals {
         }
         damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
         return damage;
+    }
+
+    public static BlockResistance getBlockResistance(BlockPos block) {
+        if (mc.world.isAirBlock(block))
+            return BlockResistance.Blank;
+
+        else if (mc.world.getBlockState(block).getBlock().getBlockHardness(mc.world.getBlockState(block), mc.world, block) != -1 && !(mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST)))
+            return BlockResistance.Breakable;
+
+        else if (mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST))
+            return BlockResistance.Resistant;
+
+        else if (mc.world.getBlockState(block).getBlock().equals(Blocks.BEDROCK))
+            return BlockResistance.Unbreakable;
+
+        return null;
+    }
+
+    public enum BlockResistance {
+        Blank,
+        Breakable,
+        Resistant,
+        Unbreakable
     }
 
     public static float getDamageMultiplied(float damage) {
