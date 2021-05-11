@@ -113,7 +113,6 @@ public class CrystalAura extends Hack {
 
     private double renderDamageVal = 0;
 
-    private float lastYaw;
     private float yaw;
     private float pitch;
 
