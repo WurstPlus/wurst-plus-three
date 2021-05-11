@@ -54,7 +54,7 @@ public class HackButton extends Component {
         opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
-                if (s instanceof BooleanSetting && s.getName() !=  "HoldMode$") {
+                if (s instanceof BooleanSetting) {
                     this.subcomponents.add(new BoolComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
