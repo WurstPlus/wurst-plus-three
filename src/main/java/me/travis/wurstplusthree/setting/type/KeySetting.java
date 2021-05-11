@@ -24,6 +24,7 @@ public class KeySetting extends Setting<Integer> {
     }
 
     public boolean isDown() {
+        if (this.value <= 0) return false;
         return Keyboard.isKeyDown(value);
     }
 
