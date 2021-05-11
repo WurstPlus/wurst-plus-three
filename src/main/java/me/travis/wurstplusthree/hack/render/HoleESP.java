@@ -3,10 +3,7 @@ package me.travis.wurstplusthree.hack.render;
 import com.google.common.collect.Sets;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.Pair;
@@ -27,16 +24,14 @@ public class HoleESP extends Hack {
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);
     EnumSetting customHoles = new EnumSetting("Show", "Single", Arrays.asList("Single", "Double"), this);
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Gradient"), this);
+    DoubleSetting Height = new DoubleSetting("Height", 1.0, -1.0, 2.0, this);
+    DoubleSetting lineWidth = new DoubleSetting("Line Width", 1.0, -1.0, 2.0, this);
     BooleanSetting hideOwn = new BooleanSetting("Hide Own", false, this);
     ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0, 100), this);
+    ColourSetting bedrockColor2 = new ColourSetting("Bedrock Outline", new Colour(0, 255, 0, 100), this);
     ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0, 100), this);
-    IntSetting RDelay = new IntSetting("Rainbow Delay", 500, 0, 2500, this);
-    IntSetting FillUp = new IntSetting("Fill Up", 80, 0, 255, this);
-    IntSetting FillDown = new IntSetting("Fill Down", 0, 0, 255, this);
-    IntSetting LineFillUp = new IntSetting("Line Fill Up", 80, 0, 255, this);
-    IntSetting LineFillDown = new IntSetting("Line Fill Down", 0, 0, 255, this);
-    BooleanSetting invertLine = new BooleanSetting("Invert Line", false, this);
-    BooleanSetting invertFill = new BooleanSetting("Invert Fill", false, this);
+    ColourSetting obsidianColor2 = new ColourSetting("Obsidian Outline", new Colour(255, 0, 0, 100), this);
+
 
 
     private final ConcurrentHashMap<BlockPos, Pair<Colour, Boolean>> holes = new ConcurrentHashMap<>();
@@ -108,7 +103,6 @@ public class HoleESP extends Hack {
     }
 
     private void renderHoles(BlockPos hole, Pair<Colour, Boolean> pair) {
-        Color color = pair.getKey();
         boolean safe = pair.getValue();
         if (hideOwn.getValue() && hole.equals(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ))) {
             return;
@@ -131,48 +125,12 @@ public class HoleESP extends Hack {
                     solid = false;
                     break;
             }
-            RenderUtil.drawBoxESP(hole, color, color, 2f, outline, solid, true);
+            RenderUtil.drawBoxESP(hole, safe ? bedrockColor.getValue() : obsidianColor.getValue(), safe ? bedrockColor2.getValue() : obsidianColor2.getValue(), lineWidth.getValue(), outline, solid, (float) (Height.getValue() - 1));
         } else {
-            RenderUtil.drawOpenGradientBox(hole, (!invertFill.getValue()) ? getGColor(safe, false, false) : getGColor(safe, true, false),
-                    (!invertFill.getValue()) ? getGColor(safe, true, false) : getGColor(safe, false, false), 0);
-            RenderUtil.drawGradientBlockOutline(hole, (invertLine.getValue()) ? getGColor(safe, false, true) : getGColor(safe, true, true),
-                    (invertLine.getValue()) ? getGColor(safe, true, true) : getGColor(safe, false, true), 2f, 0);
+            RenderUtil.drawGlowBox(hole, Height.getValue() - 1,lineWidth.getValue().floatValue(), safe ? bedrockColor.getValue() : obsidianColor.getValue(), safe ? bedrockColor2.getValue() : obsidianColor2.getValue());
         }
     }
 
-    private Color getGColor(boolean safe, boolean top, boolean line) {
-        Color rVal;
-        if (!safe) {
-            if (obsidianColor.getRainbow()) {
-                if (top) {
-                    rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
-                }
-            } else {
-                if (top) {
-                    rVal = new Colour(obsidianColor.getColor().getRed(), obsidianColor.getColor().getGreen(), obsidianColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = new Colour(obsidianColor.getColor().getRed(), obsidianColor.getColor().getGreen(), obsidianColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
-                }
-            }
-        } else {
-            if (bedrockColor.getRainbow()) {
-                if (top) {
-                    rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
-                }
-            } else {
-                if (top) {
-                    rVal = new Colour(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = new Colour(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
-                }
-            }
-        }
-        return rVal;
-    }
 
 
     @Override
