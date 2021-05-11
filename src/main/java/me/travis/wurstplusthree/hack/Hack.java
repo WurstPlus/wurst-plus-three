@@ -1,10 +1,12 @@
 package me.travis.wurstplusthree.hack;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import it.unimi.dsi.fastutil.booleans.BooleanSet;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.setting.Setting;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hack implements Globals {
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Registration {
@@ -29,6 +30,7 @@ public class Hack implements Globals {
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
         boolean shown() default true;
+        boolean hold() default false;
     }
 
     private Registration getMod(){
@@ -39,6 +41,7 @@ public class Hack implements Globals {
     private final String description = getMod().description();
     private final Category category = getMod().category();
     private int bind = getMod().bind();
+    private boolean hold = getMod().hold();
     private boolean shown = getMod().shown();
     private boolean isEnabled = getMod().enabled();
     private int isListening = (getMod().isListening() ? 0 : 1);
@@ -78,6 +81,14 @@ public class Hack implements Globals {
 
     public boolean isEnabled() {
         return this.isEnabled;
+    }
+
+    public boolean isHold() {return this.hold;}
+
+    public void toggleHold() {this.hold = !this.hold;}
+
+    public void setHold(boolean hold) {
+        this.hold = hold;
     }
 
     public void stopListening() {
