@@ -73,6 +73,10 @@ public class WurstplusGuiNew extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
+        if (gradientShadow) {
+            drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Gui.INSTANCE.gradientStartColor.getValue().getRGB(), Gui.INSTANCE.gradientEndColor.getValue().getRGB());
+        }
         if(!flag && Gui.INSTANCE.animation.getValue()) {
             animate(sr);
         }
