@@ -43,7 +43,6 @@ public class Hacks implements Globals {
         // TODO : AUTO 32K
         // TODO : PRAY TO PVP GODS TO WIN
         this.hacks.add(new KillAura());
-        this.hacks.add(new AutoArmor());
         this.hacks.add(new Surround());
         this.hacks.add(new CrystalAura());
         this.hacks.add(new Offhand());
