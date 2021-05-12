@@ -11,9 +11,15 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,9 +31,14 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.CombatRules;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Explosion;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -90,7 +101,7 @@ public class CrystalAura extends Hack {
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
-    BooleanSetting ignoreTerrain = new BooleanSetting("Ignore Webs", true, this);
+    BooleanSetting ignoreTerrain = new BooleanSetting("WallTrace", true, this);
 
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
@@ -156,11 +167,12 @@ public class CrystalAura extends Hack {
                 mc.world.removeEntityFromWorld(packet.entityId);
             }
             EntityEnderCrystal crystal = (EntityEnderCrystal) packet.getEntityFromWorld(mc.world);
-            if (this.predictBlock.getValue()) {
-                if (crystal != null) {
+            if (this.predictBlock.getValue() && place.getValue()) {
+                if (crystal != null && mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
                     for (EntityPlayer player : mc.world.playerEntities) {
                         if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
                             BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
+
                         }
                     }
                 }
@@ -269,8 +281,10 @@ public class CrystalAura extends Hack {
         }
 
         didAnything = true;
-        setYawPitch(targetBlock);
-        BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal) {
+            setYawPitch(targetBlock);
+            BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
+        }
     }
 
     private void breakCrystal() {
@@ -348,7 +362,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), crystalLogic.getValue(), this.thirteen.getValue())) {
+            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
@@ -428,7 +442,7 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2 if we want to kill the dude fast
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(crystal, player) >= minHpPlace.getValue()) {
+            if (calculateDamage(crystal, player) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
@@ -439,9 +453,9 @@ public class CrystalAura extends Hack {
                 miniumDamage = this.minHpBreak.getValue();
             }
 
-            double targetDamage = CrystalUtil.calculateDamage(crystal, player);
+            double targetDamage = calculateDamage(crystal, player);
             if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player);
+            double selfDamage = calculateDamage(crystal, mc.player);
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
@@ -473,7 +487,7 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(blockPos, player) >= minHpPlace.getValue()) {
+            if (calculateDamage(blockPos, player) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
@@ -484,15 +498,10 @@ public class CrystalAura extends Hack {
                 miniumDamage = this.minHpPlace.getValue();
                 facePlacing = false;
             }
-            //we should change the raytrace stuff to ignore all explodable blocks instead of setting webs to air
-            // setting webs to air can cause huge desync and get you killed
-            if (ignoreTerrain.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
-                mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
-            }
 
-            double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
+            double targetDamage = calculateDamage(blockPos, player);
             if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player);
+            double selfDamage = calculateDamage(blockPos, mc.player);
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
@@ -597,7 +606,228 @@ public class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return this.ezTarget != null ? this.ezTarget.getName() : null;
+        return   (facePlacing ? "FacePlacing " : "Chasing ") + (this.ezTarget != null ? this.ezTarget.getName() : "");
     }
 
+    //terrain ignoring raytrace stuff made by wallhacks_ and node3112
+
+
+    public float calculateDamage(BlockPos pos, Entity target) {
+        return getExplosionDamage(target, new Vec3d (pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), 6.0f);
+    }
+
+    public float calculateDamage(Entity crystal, Entity target) {
+        return getExplosionDamage(target, new Vec3d(crystal.posX, crystal.posY, crystal.posZ), 6.0f);
+    }
+
+    public float getExplosionDamage(Entity targetEntity, Vec3d explosionPosition, float explosionPower) {
+        Vec3d entityPosition = new Vec3d(targetEntity.posX, targetEntity.posY, targetEntity.posZ);
+        if (targetEntity.isImmuneToExplosions()) return 0.0f;
+        explosionPower *= 2.0f;
+        double distanceToSize = entityPosition.distanceTo(explosionPosition) / explosionPower;
+        double blockDensity = 0.0;
+        // Offset to "fake position"
+        AxisAlignedBB bbox = targetEntity.getEntityBoundingBox().offset(targetEntity.getPositionVector().subtract(entityPosition));
+        Vec3d bboxDelta = new Vec3d(
+                1.0 / ((bbox.maxX - bbox.minX) * 2.0 + 1),
+                1.0 / ((bbox.maxY - bbox.minY) * 2.0 + 1),
+                1.0 / ((bbox.maxZ - bbox.minZ) * 2.0 + 1)
+        );
+
+        double xOff = (1.0 - Math.floor(1.0 / bboxDelta.x) * bboxDelta.x) / 2.0;
+        double zOff = (1.0 - Math.floor(1.0 / bboxDelta.z) * bboxDelta.z) / 2.0;
+
+        if (bboxDelta.x >= 0.0 && bboxDelta.y >= 0.0 && bboxDelta.z >= 0.0) {
+            int nonSolid = 0;
+            int total = 0;
+
+            for (double x = 0.0; x <= 1.0; x += bboxDelta.x) {
+                for (double y = 0.0; y <= 1.0; y += bboxDelta.y) {
+                    for (double z = 0.0; z <= 1.0; z += bboxDelta.z) {
+                        Vec3d startPos = new Vec3d(
+                                xOff + bbox.minX + (bbox.maxX - bbox.minX) * x,
+                                bbox.minY + (bbox.maxY - bbox.minY) * y,
+                                zOff + bbox.minZ + (bbox.maxZ - bbox.minZ) * z
+                        );
+
+                        if (!rayTraceSolidCheck(startPos, explosionPosition)) ++nonSolid;
+                        ++total;
+                    }
+                }
+            }
+
+            blockDensity = (double)nonSolid / (double)total;
+        }
+
+        double densityAdjust = (1.0 - distanceToSize) * blockDensity;
+        float damage = (float)(int)((densityAdjust * densityAdjust + densityAdjust) / 2.0 * 7.0 * explosionPower + 1.0);
+
+        if (targetEntity instanceof EntityLivingBase)
+            damage = getBlastReduction((EntityLivingBase)targetEntity, getDamageFromDifficulty(damage, mc.world.getDifficulty()),
+                    new Explosion(mc.world, null, explosionPosition.x, explosionPosition.y, explosionPosition.z,
+                            explosionPower / 2.0f, false, true));
+
+        return damage;
+    }
+
+    public boolean rayTraceSolidCheck(Vec3d start, Vec3d end) {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (!Double.isNaN(start.x) && !Double.isNaN(start.y) && !Double.isNaN(start.z)) {
+            if (!Double.isNaN(end.x) && !Double.isNaN(end.y) && !Double.isNaN(end.z)) {
+                int currX = MathHelper.floor(start.x);
+                int currY = MathHelper.floor(start.y);
+                int currZ = MathHelper.floor(start.z);
+
+                int endX = MathHelper.floor(end.x);
+                int endY = MathHelper.floor(end.y);
+                int endZ = MathHelper.floor(end.z);
+
+                BlockPos blockPos = new BlockPos(currX, currY, currZ);
+                IBlockState blockState = mc.world.getBlockState(blockPos);
+                net.minecraft.block.Block block = blockState.getBlock();
+
+                if ((blockState.getCollisionBoundingBox(mc.world, blockPos) != Block.NULL_AABB) &&
+                        block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
+                    RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
+                    if (collisionInterCheck != null) return true;
+                }
+
+                double seDeltaX = end.x - start.x;
+                double seDeltaY = end.y - start.y;
+                double seDeltaZ = end.z - start.z;
+
+                int steps = 200;
+
+                while (steps-- >= 0) {
+                    if (Double.isNaN(start.x) || Double.isNaN(start.y) || Double.isNaN(start.z)) return false;
+                    if (currX == endX && currY == endY && currZ == endZ) return false;
+
+                    boolean unboundedX = true;
+                    boolean unboundedY = true;
+                    boolean unboundedZ = true;
+
+                    double stepX = 999.0;
+                    double stepY = 999.0;
+                    double stepZ = 999.0;
+                    double deltaX = 999.0;
+                    double deltaY = 999.0;
+                    double deltaZ = 999.0;
+
+                    if (endX > currX) {
+                        stepX = currX + 1.0;
+                    } else if (endX < currX) {
+                        stepX = currX;
+                    } else {
+                        unboundedX = false;
+                    }
+
+                    if (endY > currY) {
+                        stepY = currY + 1.0;
+                    } else if (endY < currY) {
+                        stepY = currY;
+                    } else {
+                        unboundedY = false;
+                    }
+
+                    if (endZ > currZ) {
+                        stepZ = currZ + 1.0;
+                    } else if (endZ < currZ) {
+                        stepZ = currZ;
+                    } else {
+                        unboundedZ = false;
+                    }
+
+                    if (unboundedX) deltaX = (stepX - start.x) / seDeltaX;
+                    if (unboundedY) deltaY = (stepY - start.y) / seDeltaY;
+                    if (unboundedZ) deltaZ = (stepZ - start.z) / seDeltaZ;
+
+                    if (deltaX == 0.0) deltaX = -1.0e-4;
+                    if (deltaY == 0.0) deltaY = -1.0e-4;
+                    if (deltaZ == 0.0) deltaZ = -1.0e-4;
+
+                    EnumFacing facing;
+
+                    if (deltaX < deltaY && deltaX < deltaZ) {
+                        facing = endX > currX ? EnumFacing.WEST : EnumFacing.EAST;
+                        start = new Vec3d(stepX, start.y + seDeltaY * deltaX, start.z + seDeltaZ * deltaX);
+                    } else if (deltaY < deltaZ) {
+                        facing = endY > currY ? EnumFacing.DOWN : EnumFacing.UP;
+                        start = new Vec3d(start.x + seDeltaX * deltaY, stepY, start.z + seDeltaZ * deltaY);
+                    } else {
+                        facing = endZ > currZ ? EnumFacing.NORTH : EnumFacing.SOUTH;
+                        start = new Vec3d(start.x + seDeltaX * deltaZ, start.y + seDeltaY * deltaZ, stepZ);
+                    }
+
+                    currX = MathHelper.floor(start.x) - (facing == EnumFacing.EAST ? 1 : 0);
+                    currY = MathHelper.floor(start.y) - (facing == EnumFacing.UP ? 1 : 0);
+                    currZ = MathHelper.floor(start.z) - (facing == EnumFacing.SOUTH ? 1 : 0);
+
+                    blockPos = new BlockPos(currX, currY, currZ);
+                    blockState = mc.world.getBlockState(blockPos);
+                    block = blockState.getBlock();
+
+                    if (block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
+                        RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
+                        if (collisionInterCheck != null) return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
+        damage = CombatRules.getDamageAfterAbsorb(damage, entity.getTotalArmorValue(),
+                (float)entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+
+        float enchantmentModifierDamage = 0.0f;
+        try {
+            enchantmentModifierDamage = (float) EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(),
+                    DamageSource.causeExplosionDamage(explosion));
+        } catch (Exception ignored) {
+        }
+        enchantmentModifierDamage = MathHelper.clamp(enchantmentModifierDamage, 0.0f, 20.0f);
+
+        damage *= 1.0f - enchantmentModifierDamage / 25.0f;
+        PotionEffect resistanceEffect = entity.getActivePotionEffect(MobEffects.RESISTANCE);
+
+        if (entity.isPotionActive(MobEffects.RESISTANCE) && resistanceEffect != null)
+            damage = damage * (25.0f - (resistanceEffect.getAmplifier() + 1) * 5.0f) / 25.0f;
+
+        damage = Math.max(damage, 0.0f);
+        return damage;
+    }
+
+    public List<Block> getBlocks() {
+        List<Block> list = new ArrayList<Block>();
+        list.add(Blocks.OBSIDIAN);
+        list.add(Blocks.BEDROCK);
+        list.add(Blocks.COMMAND_BLOCK);
+        list.add(Blocks.BARRIER);
+        list.add(Blocks.ENCHANTING_TABLE);
+        list.add(Blocks.END_PORTAL_FRAME);
+        list.add(Blocks.BEACON);
+        list.add(Blocks.ANVIL);
+        return list;
+    }
+
+    public float getDamageFromDifficulty(float damage, EnumDifficulty difficulty) {
+        switch (difficulty) {
+            case PEACEFUL: {
+                return 0.0f;
+            }
+            case EASY: {
+                return damage * 0.5f;
+            }
+            case NORMAL: {
+                return damage;
+            }
+            case HARD:
+            default: {
+                return damage * 1.5f;
+            }
+        }
+    }
 }
