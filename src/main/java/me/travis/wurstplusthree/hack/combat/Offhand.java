@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -25,11 +26,8 @@ import java.util.Arrays;
 public class Offhand extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
-    BooleanSetting gapHole = new BooleanSetting("Gap In Hole", true, this);
     BooleanSetting cancelMovement = new BooleanSetting("CancelMovement", false, this); // 2b2t does not let you swap items when moving so you must stop movement first then swap.
     IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
-    KeySetting gapKey = new KeySetting("Gap Key", Keyboard.KEY_NONE, this);
-    IntSetting TotemHp = new IntSetting("Switch HP", 16, 0, 36, this);
     IntSetting HoleHP = new IntSetting("Hole HP", 16, 0, 36, this);
     BooleanSetting GapSwitch = new BooleanSetting("Gap Swap", false, this);
     BooleanSetting GapOnSword = new BooleanSetting("Sword Gap", false, this);
@@ -47,11 +45,9 @@ public class Offhand extends Hack {
         if (switching) {
             swapItems(lastSlot, 2);
             return;
-
         }
         if (mc.currentScreen instanceof GuiContainer) {
             return;
-
         }
 
         float hp = EntityUtil.getHealth(mc.player);
@@ -68,12 +64,9 @@ public class Offhand extends Hack {
             }
             return;
         }
-        if (gapKey.getKey() < -1) {
-            if (Mouse.isButtonDown(MouseUtil.convertToMouse(gapKey.getKey()))) {
-                if (!keyPressed && mc.currentScreen == null) {
-                    this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
-                }
-                keyPressed = true;
+    }
+
+    @Override
     public void onTick() {
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
             if (switching) {
@@ -114,8 +107,7 @@ public class Offhand extends Hack {
         if (!CrystalCheck.getValue()) {
             return false;
         }
-
-
+        /*
         switch (mode.getValue()) {
             case "Totem":
                 this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
@@ -127,6 +119,7 @@ public class Offhand extends Hack {
                 this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 return;
         }
+         */
         double ris2 = 0;
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
@@ -178,6 +171,7 @@ public class Offhand extends Hack {
 
     public static class StopPlayerMovement {
         private static StopPlayerMovement stopPlayerMovement = new StopPlayerMovement();
+
         public static void toggle(boolean on) {
             if (on) {
                 MinecraftForge.EVENT_BUS.register(stopPlayerMovement);
@@ -185,6 +179,7 @@ public class Offhand extends Hack {
                 MinecraftForge.EVENT_BUS.unregister(stopPlayerMovement);
             }
         }
+
         // Cancel the MoveEvent.
         @SubscribeEvent
         public void onMove(MoveEvent event) {
