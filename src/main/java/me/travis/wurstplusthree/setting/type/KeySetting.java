@@ -23,6 +23,11 @@ public class KeySetting extends Setting<Integer> {
         this.value = key;
     }
 
+    public boolean isDown() {
+        if (this.value <= 0) return false;
+        return Keyboard.isKeyDown(value);
+    }
+
     public String getKeyName() {
         return Keyboard.getKeyName(this.getKey());
     }

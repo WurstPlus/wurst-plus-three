@@ -3,14 +3,11 @@ package me.travis.wurstplusthree.hack.combat;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.setting.type.KeySetting;
-import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.MouseUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import me.travis.wurstplusthree.setting.type.*;
+import me.travis.wurstplusthree.util.*;
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -18,6 +15,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemSword;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 
@@ -29,9 +29,16 @@ public class Offhand extends Hack {
     BooleanSetting cancelMovement = new BooleanSetting("CancelMovement", false, this); // 2b2t does not let you swap items when moving so you must stop movement first then swap.
     IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
     KeySetting gapKey = new KeySetting("Gap Key", Keyboard.KEY_NONE, this);
+    IntSetting TotemHp = new IntSetting("Switch HP", 16, 0, 36, this);
+    IntSetting HoleHP = new IntSetting("Hole HP", 16, 0, 36, this);
+    BooleanSetting GapSwitch = new BooleanSetting("Gap Swap", false, this);
+    BooleanSetting GapOnSword = new BooleanSetting("Sword Gap", false, this);
+    BooleanSetting GapOnPick = new BooleanSetting("Pick Gap", false, this);
+    BooleanSetting Always = new BooleanSetting("Always", false, this);
+    BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
+
 
     private boolean switching;
-    private boolean keyPressed;
     private int lastSlot;
 
     @Override
@@ -67,26 +74,45 @@ public class Offhand extends Hack {
                     this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 }
                 keyPressed = true;
+    public void onTick() {
+        if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
+            if (switching) {
+                swapItems(lastSlot, 2);
                 return;
-            } else {
-                keyPressed = false;
             }
-        } else if (gapKey.getKey() > -1) {
-            if (Keyboard.isKeyDown(gapKey.getKey())) {
-                if (!keyPressed && mc.currentScreen == null) {
-                    this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
+            float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
+            if (hp > TotemHp.getValue() && !crystalDamage() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
+                if (mode.getValue().equalsIgnoreCase("crystal") && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
+                    swapItems(getItemSlot(Items.END_CRYSTAL), 0);
+                    return;
+                } else if (((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue()) {
+                    swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
+                    if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
+                        mc.playerController.isHittingBlock = true;
+                    }
+                    return;
                 }
-                keyPressed = true;
-                return;
+                if (mode.getValue().equalsIgnoreCase("totem")) {
+                    swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
+                    return;
+                }
+                if (mode.getValue().equalsIgnoreCase("gapple")) {
+                    swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
+                    return;
+                }
             } else {
-                keyPressed = false;
+                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
+                return;
+            }
+            if (mc.player.getHeldItemOffhand().getItem() == Items.AIR) {
+                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             }
         }
+    }
 
-
-        if (PlayerUtil.isInHole() && gapHole.getValue() && !WurstplusThree.HACKS.ishackEnabled("Crystal Aura")) {
-            this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
-            return;
+    private boolean crystalDamage() {
+        if (!CrystalCheck.getValue()) {
+            return false;
         }
 
 
@@ -101,6 +127,15 @@ public class Offhand extends Hack {
                 this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 return;
         }
+        double ris2 = 0;
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
+                if ((ris2 = CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void swapItems(int slot, int step) {
@@ -121,7 +156,6 @@ public class Offhand extends Hack {
             switching = false;
 
         }
-
         mc.playerController.updateController();
     }
 

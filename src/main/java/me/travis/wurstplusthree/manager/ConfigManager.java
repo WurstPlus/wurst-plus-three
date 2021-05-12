@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class ConfigManager implements Globals {
 
+
     // FOLDERS
     private final String mainFolder = "Wurstplus3/";
     private final String configsFolder = mainFolder + "configs/";
@@ -268,7 +269,7 @@ public class ConfigManager implements Globals {
         final BufferedWriter br = new BufferedWriter(new FileWriter(file));
         br.write(Commands.prefix + "\r\n");
         for (Hack module : WurstplusThree.HACKS.getHacks()) {
-            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + "\r\n");
+            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + ":" + module.isHold() + "\r\n");
         }
         br.close();
     }
@@ -291,8 +292,10 @@ public class ConfigManager implements Globals {
                     final String tag = colune.split(":")[0];
                     final String bind = colune.split(":")[1];
                     final String active = colune.split(":")[2];
+                    final String hold = colune.split(":")[3];
                     Hack hack = WurstplusThree.HACKS.getHackByName(tag);
                     hack.setBind(Integer.parseInt(bind));
+                    hack.setHold(Boolean.parseBoolean(hold));
                     if (Boolean.parseBoolean(active)) {
                         hack.enable();
                     }

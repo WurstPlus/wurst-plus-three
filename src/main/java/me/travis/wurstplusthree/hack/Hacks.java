@@ -14,6 +14,7 @@ import me.travis.wurstplusthree.hack.player.*;
 import me.travis.wurstplusthree.hack.render.*;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -149,7 +150,21 @@ public class Hacks implements Globals {
 
     public void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onUpdate);
+        for (Hack hack : hacks) {
+            if (hack.isHold() && hack.getBind() >= 0) {
+                if (Keyboard.isKeyDown(hack.getBind())) {
+                    if (!hack.isEnabled()) {
+                        hack.enable();
+                    }
+                } else {
+                    if (hack.isEnabled()) {
+                        hack.disable();
+                    }
+                }
+            }
+        }
     }
+
 
     public void onTick() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onTick);
@@ -187,6 +202,7 @@ public class Hacks implements Globals {
             return;
         }
         for (Hack hack : this.hacks) {
+            if (hack.isHold()) continue;
             if (hack.getBind() == key) {
                 hack.toggle();
             }

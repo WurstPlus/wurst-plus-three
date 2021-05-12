@@ -61,7 +61,10 @@ public class CrystalAura extends Hack {
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
+
+
     BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
+    BooleanSetting crystalLogic = new BooleanSetting("Crystal Logic", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -80,6 +83,8 @@ public class CrystalAura extends Hack {
 
     BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this);
     IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this);
+    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 5, 0, 10, this);
+    KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this);
 
     BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this);
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
@@ -116,6 +121,7 @@ public class CrystalAura extends Hack {
     private boolean hasPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
+    private boolean facePlacing;
 
     private int currentChainCounter;
     private int chainCount;
@@ -123,6 +129,7 @@ public class CrystalAura extends Hack {
     private int breakTimeout;
     private int breakDelayCounter;
     private int placeDelayCounter;
+    private int facePlaceDelayCounter;
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
@@ -222,7 +229,7 @@ public class CrystalAura extends Hack {
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
 
-        if (this.place.getValue() && placeDelayCounter > placeTimeout) {
+        if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
             this.placeCrystal();
         }
         if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !hasPacketBroke) {
@@ -239,7 +246,7 @@ public class CrystalAura extends Hack {
         currentChainCounter++;
         breakDelayCounter++;
         placeDelayCounter++;
-
+        facePlaceDelayCounter++;
     }
 
     private void placeCrystal() {
@@ -247,6 +254,7 @@ public class CrystalAura extends Hack {
         if (targetBlock == null) return;
 
         placeDelayCounter = 0;
+        facePlaceDelayCounter = 0;
         alreadyAttacking = false;
         boolean offhandCheck = false;
 
@@ -340,7 +348,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
+            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), crystalLogic.getValue(), this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
@@ -420,10 +428,14 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2 if we want to kill the dude fast
             double miniumDamage;
-            if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+            if (CrystalUtil.calculateDamage(crystal, player) >= minHpPlace.getValue()) {
+                facePlacing = false;
+                miniumDamage = this.minHpBreak.getValue();
+            } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
+                facePlacing = true;
             } else {
+                facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             }
 
@@ -461,14 +473,19 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
-            if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue())) {
+            if (CrystalUtil.calculateDamage(blockPos, player) >= minHpPlace.getValue()) {
+                facePlacing = false;
+                miniumDamage = this.minHpBreak.getValue();
+            } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
+                    (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
                 miniumDamage = EntityUtil.isInHole(player) ? 0.5 : 2;
-            }
-            else {
+                facePlacing = true;
+            } else {
                 miniumDamage = this.minHpPlace.getValue();
+                facePlacing = false;
             }
-
+            //we should change the raytrace stuff to ignore all explodable blocks instead of setting webs to air
+            // setting webs to air can cause huge desync and get you killed
             if (ignoreTerrain.getValue() && mc.world.getBlockState(EntityUtil.getRoundedBlockPos(player)).getBlock() == Blocks.WEB) {
                 mc.world.setBlockToAir(EntityUtil.getRoundedBlockPos(player));
             }
@@ -488,6 +505,7 @@ public class CrystalAura extends Hack {
     private boolean isPlayerValid(EntityPlayer player) {
         if (player.getHealth() + player.getAbsorptionAmount() <= 0 || player == mc.player) return false;
         if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return false;
+        if (player.getName().equals(mc.player.getName())) return false;
         if (player.getDistanceSq(mc.player) > 13 * 13) return false;
         return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
     }
@@ -568,6 +586,7 @@ public class CrystalAura extends Hack {
         placeTimeoutFlag = false;
         isRotating = false;
         ezTarget = null;
+        facePlacing = false;
         chainCount = chainStep.getValue();
         attemptedCrystals.clear();
         hasPacketBroke = false;

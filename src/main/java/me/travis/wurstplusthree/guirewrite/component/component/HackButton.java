@@ -74,7 +74,7 @@ public class HackButton extends Component {
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
                 }
             }
-            this.subcomponents.add(new KeyBindComponent(this, opY));
+            this.subcomponents.add(new ModuleBindComponent(this, opY));
             this.subcomponents.add(new ShownComponent(this, opY));
         }
     }
