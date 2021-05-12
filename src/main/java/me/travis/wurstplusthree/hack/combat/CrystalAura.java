@@ -442,7 +442,7 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2 if we want to kill the dude fast
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(crystal, player) >= minHpPlace.getValue()) {
+            if (calculateDamage(crystal, player) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(player, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
@@ -453,9 +453,9 @@ public class CrystalAura extends Hack {
                 miniumDamage = this.minHpBreak.getValue();
             }
 
-            double targetDamage = CrystalUtil.calculateDamage(crystal, player);
+            double targetDamage = calculateDamage(crystal, player);
             if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player);
+            double selfDamage = calculateDamage(crystal, mc.player);
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
@@ -487,7 +487,7 @@ public class CrystalAura extends Hack {
 
             // set min damage to 2/.5 if we want to kill the dude fast
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(blockPos, player) >= minHpPlace.getValue()) {
+            if (calculateDamage(blockPos, player) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(player) <= facePlaceHP.getValue() && faceplace.getValue()) ||
@@ -499,9 +499,9 @@ public class CrystalAura extends Hack {
                 facePlacing = false;
             }
 
-            double targetDamage = CrystalUtil.calculateDamage(blockPos, player);
+            double targetDamage = calculateDamage(blockPos, player);
             if (targetDamage < miniumDamage && EntityUtil.getHealth(player) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player);
+            double selfDamage = calculateDamage(blockPos, mc.player);
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
@@ -609,30 +609,23 @@ public class CrystalAura extends Hack {
         return   (facePlacing ? "FacePlacing " : "Chasing ") + (this.ezTarget != null ? this.ezTarget.getName() : "");
     }
 
-    //currently not functional but will try to fix later
-    //its meant to raytrace past the blocks on the ignore list but now working so everything is using the normal crystalutil for now
-    //please dont delete this il try to fix it when i get the chance
-    //you could try fix it tho (:
+    //terrain ignoring raytrace stuff made by wallhacks_ and node3112
 
-    /*
+
     public float calculateDamage(BlockPos pos, Entity target) {
-        return getExplosionDamage(target, new Vec3d(target.posX, target.posY, target.posZ),  new Vec3d (pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), getIgnoreBlocks(), 6.0f);
+        return getExplosionDamage(target, new Vec3d (pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), 6.0f);
     }
 
     public float calculateDamage(Entity crystal, Entity target) {
-        return getExplosionDamage(target, new Vec3d(target.posX, target.posY, target.posZ), new Vec3d(crystal.posX, crystal.posY, crystal.posZ), getIgnoreBlocks(), 6.0f);
+        return getExplosionDamage(target, new Vec3d(crystal.posX, crystal.posY, crystal.posZ), 6.0f);
     }
 
-    public float getExplosionDamage(Entity targetEntity, Vec3d entityPosition, Vec3d explosionPosition, List<Block> ignoreBlocks,
-                                    float explosionPower) {
+    public float getExplosionDamage(Entity targetEntity, Vec3d explosionPosition, float explosionPower) {
+        Vec3d entityPosition = new Vec3d(targetEntity.posX, targetEntity.posY, targetEntity.posZ);
         if (targetEntity.isImmuneToExplosions()) return 0.0f;
-
-        Minecraft mc = Minecraft.getMinecraft();
-
         explosionPower *= 2.0f;
         double distanceToSize = entityPosition.distanceTo(explosionPosition) / explosionPower;
         double blockDensity = 0.0;
-
         // Offset to "fake position"
         AxisAlignedBB bbox = targetEntity.getEntityBoundingBox().offset(targetEntity.getPositionVector().subtract(entityPosition));
         Vec3d bboxDelta = new Vec3d(
@@ -657,7 +650,7 @@ public class CrystalAura extends Hack {
                                 zOff + bbox.minZ + (bbox.maxZ - bbox.minZ) * z
                         );
 
-                        if (!rayTraceSolidCheck(startPos, entityPosition, ignoreBlocks)) ++nonSolid;
+                        if (!rayTraceSolidCheck(startPos, explosionPosition)) ++nonSolid;
                         ++total;
                     }
                 }
@@ -677,7 +670,7 @@ public class CrystalAura extends Hack {
         return damage;
     }
 
-    public boolean rayTraceSolidCheck(Vec3d start, Vec3d end, List<Block> ignoreBlocks) {
+    public boolean rayTraceSolidCheck(Vec3d start, Vec3d end) {
         Minecraft mc = Minecraft.getMinecraft();
 
         if (!Double.isNaN(start.x) && !Double.isNaN(start.y) && !Double.isNaN(start.z)) {
@@ -695,7 +688,7 @@ public class CrystalAura extends Hack {
                 net.minecraft.block.Block block = blockState.getBlock();
 
                 if ((blockState.getCollisionBoundingBox(mc.world, blockPos) != Block.NULL_AABB) &&
-                        block.canCollideCheck(blockState, false) && !ignoreBlocks.contains(block)) {
+                        block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
                     RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
                     if (collisionInterCheck != null) return true;
                 }
@@ -774,7 +767,7 @@ public class CrystalAura extends Hack {
                     blockState = mc.world.getBlockState(blockPos);
                     block = blockState.getBlock();
 
-                    if (block.canCollideCheck(blockState, false) && !ignoreBlocks.contains(block)) {
+                    if (block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
                         RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
                         if (collisionInterCheck != null) return true;
                     }
@@ -807,14 +800,16 @@ public class CrystalAura extends Hack {
         return damage;
     }
 
-    public List<Block> getIgnoreBlocks() {
+    public List<Block> getBlocks() {
         List<Block> list = new ArrayList<Block>();
-        if (!ignoreTerrain.getValue()) {
-            return list;
-        }
-        list.add(Blocks.WEB);
-        list.add(Blocks.DIRT);
-        list.add(Blocks.CAKE);
+        list.add(Blocks.OBSIDIAN);
+        list.add(Blocks.BEDROCK);
+        list.add(Blocks.COMMAND_BLOCK);
+        list.add(Blocks.BARRIER);
+        list.add(Blocks.ENCHANTING_TABLE);
+        list.add(Blocks.END_PORTAL_FRAME);
+        list.add(Blocks.BEACON);
+        list.add(Blocks.ANVIL);
         return list;
     }
 
@@ -835,5 +830,4 @@ public class CrystalAura extends Hack {
             }
         }
     }
-*/
 }
