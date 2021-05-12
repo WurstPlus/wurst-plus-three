@@ -82,6 +82,10 @@ public class CrystalAura extends Hack {
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
 
+    BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this);
+    BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this);
+    IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this);
+
     EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost"), this);
 
     BooleanSetting thirteen = new BooleanSetting("1.13", false, this);
@@ -135,6 +139,7 @@ public class CrystalAura extends Hack {
     private int breakDelayCounter;
     private int placeDelayCounter;
     private int facePlaceDelayCounter;
+    private int obiFeetCounter;
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
@@ -252,6 +257,7 @@ public class CrystalAura extends Hack {
         breakDelayCounter++;
         placeDelayCounter++;
         facePlaceDelayCounter++;
+        obiFeetCounter++;
     }
 
     private void placeCrystal() {
@@ -499,7 +505,25 @@ public class CrystalAura extends Hack {
         if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return false;
         if (player.getName().equals(mc.player.getName())) return false;
         if (player.getDistanceSq(mc.player) > 13 * 13) return false;
+        if (this.palceObiFeet.getValue() && obiFeetCounter >= timeoutTicksObiFeet.getValue() && mc.player.getDistance(player) < 5) {
+            this.blockObiNextToPlayer(player);
+        }
         return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
+    }
+
+    private void blockObiNextToPlayer(EntityPlayer player) {
+        obiFeetCounter = 0;
+        BlockPos pos = EntityUtil.getFlooredPos(player).down();
+        if (EntityUtil.isInHole(player) || mc.world.getBlockState(pos).getBlock() == Blocks.AIR) return;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) continue;
+                BlockPos checkPos = pos.add(i, 0, j);
+                if (mc.world.getBlockState(checkPos).getMaterial().isReplaceable()) {
+                    BlockUtil.placeBlock(checkPos, PlayerUtil.findObiInHotbar(), rotateObiFeet.getValue(), rotateObiFeet.getValue(), swing);
+                }
+            }
+        }
     }
 
     private int findCrystalsHotbar() {
@@ -567,11 +591,12 @@ public class CrystalAura extends Hack {
         placeTimeoutFlag = false;
         alreadyAttacking = false;
         currentChainCounter = 0;
+        obiFeetCounter = 0;
     }
 
     @Override
     public String getDisplayInfo() {
-        return   (facePlacing ? "FacePlacing " : "Chasing ") + (this.ezTarget != null ? this.ezTarget.getName() : "");
+        return (facePlacing ? "FacePlacing " : "Chasing ") + (this.ezTarget != null ? this.ezTarget.getName() : "");
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

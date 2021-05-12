@@ -166,12 +166,10 @@ public class Trap extends Hack {
                 should_try_place = false;
 
             for (final Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(target_pos))) {
-
                 if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
                     should_try_place = false;
                     break;
                 }
-
             }
 
             if (should_try_place && BlockUtil.placeBlock(target_pos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
