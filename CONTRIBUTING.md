@@ -16,6 +16,8 @@ Before you contribute you must test your code for bugs!
 
 Please try to do small contributions so merging is easier!
 
+Please use the active brach that is not main e.g. 0.6.0 because if there was a file edited in that branch that was editied in you PR we cannot accept the PR
+
 Also join the discord to see the #todo section
 
 Finally, please don't write china code!!!!!
