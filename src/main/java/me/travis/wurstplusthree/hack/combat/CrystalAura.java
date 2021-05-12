@@ -654,7 +654,7 @@ public class CrystalAura extends Hack {
                 if ((blockState.getCollisionBoundingBox(mc.world, blockPos) != Block.NULL_AABB) &&
                         block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
                     RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
-                    if (collisionInterCheck != null) return true;
+                    return true;
                 }
 
                 double seDeltaX = end.x - start.x;
@@ -733,7 +733,7 @@ public class CrystalAura extends Hack {
 
                     if (block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
                         RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
-                        if (collisionInterCheck != null) return true;
+                        return true;
                     }
                 }
             }
@@ -765,16 +765,9 @@ public class CrystalAura extends Hack {
     }
 
     public List<Block> getBlocks() {
-        List<Block> list = new ArrayList<Block>();
-        list.add(Blocks.OBSIDIAN);
-        list.add(Blocks.BEDROCK);
-        list.add(Blocks.COMMAND_BLOCK);
-        list.add(Blocks.BARRIER);
-        list.add(Blocks.ENCHANTING_TABLE);
-        list.add(Blocks.END_PORTAL_FRAME);
-        list.add(Blocks.BEACON);
-        list.add(Blocks.ANVIL);
-        return list;
+        return Arrays.asList(
+            Blocks.OBSIDIAN, Blocks.BEDROCK, Blocks.COMMAND_BLOCK, Blocks.BARRIER, Blocks.ENCHANTING_TABLE, Blocks.ENDER_CHEST, Blocks.END_PORTAL_FRAME, Blocks.BEACON, Blocks.ANVIL
+        );
     }
 
     public float getDamageFromDifficulty(float damage, EnumDifficulty difficulty) {
