@@ -47,8 +47,6 @@ import java.util.*;
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
 
-    // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
-	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -74,7 +72,6 @@ public class CrystalAura extends Hack {
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
 
     BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
-    BooleanSetting crystalLogic = new BooleanSetting("Crystal Logic", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -169,7 +166,6 @@ public class CrystalAura extends Hack {
                     for (EntityPlayer player : mc.world.playerEntities) {
                         if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
                             BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
-
                         }
                     }
                 }
