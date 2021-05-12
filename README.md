@@ -2,7 +2,7 @@
 
 # Wurst+3
 
-[Discord](discord.gg/hvnZePKQHx) | [Donate](https://paypal.me/trvsf) | [Download]()
+[Discord](https://discord.com/invite/hvnZePKQHx) | [Donate](https://paypal.me/trvsf) | [Download](https://github.com/TrvsF/wurst-plus-three/releases/latest)
 
 1.12.2 forge minecraft client
 
