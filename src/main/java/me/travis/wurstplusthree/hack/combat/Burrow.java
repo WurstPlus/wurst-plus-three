@@ -77,10 +77,6 @@ public class Burrow extends Hack {
                 swapBlock = InventoryUtil.findHotbarBlock(BlockChest.class);
                 break;
             case "WhiteList":
-                if(blockW.equals(null)){
-                    ClientMessage.sendMessage("Please set the block with commands!");
-                    return;
-                }
                 swapBlock = InventoryUtil.findHotbarBlock(blockW.getClass());
         }
         if (swapBlock == -1) {
