@@ -24,7 +24,7 @@ public class RPC {
         discordRichPresence.largeImageKey = "logo";
         discordRichPresence.largeImageText = "With the_fellas";
         discordRichPresence.smallImageKey = "small";
-        discordRichPresence.smallImageText = "discord.gg/wurst";
+        discordRichPresence.smallImageText = "discord.gg/VGMVaMN6ka";
         discordRichPresence.state = null;
         discordRPC.Discord_UpdatePresence(discordRichPresence);
     }
