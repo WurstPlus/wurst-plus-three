@@ -46,6 +46,8 @@ import java.util.*;
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
 
+    // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
+	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -168,6 +170,7 @@ public class CrystalAura extends Hack {
             if (this.predictBlock.getValue() && place.getValue()) {
                 if (crystal != null && mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
                     for (EntityPlayer player : mc.world.playerEntities) {
+                        if(player == null || crystal == null)return;
                         if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
                             BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
                         }
@@ -431,6 +434,8 @@ public class CrystalAura extends Hack {
 
     private double isCrystalGood(EntityEnderCrystal crystal, EntityPlayer target) {
         if (this.isPlayerValid(target)) {
+            EntityPlayer player = target;
+
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
                     return 0;
