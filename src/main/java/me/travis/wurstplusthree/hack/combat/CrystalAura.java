@@ -25,17 +25,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
+import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.CombatRules;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.Explosion;
@@ -86,7 +85,7 @@ public class CrystalAura extends Hack {
     BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this);
     IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this);
 
-    EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost"), this);
+    EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this);
 
     BooleanSetting thirteen = new BooleanSetting("1.13", false, this);
 
@@ -99,7 +98,7 @@ public class CrystalAura extends Hack {
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
-    BooleanSetting ignoreTerrain = new BooleanSetting("WallTrace", true, this);
+    BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this);
 
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
@@ -220,6 +219,16 @@ public class CrystalAura extends Hack {
         if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
             ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
             RotationUtil.resetRotations();
+        }
+        if (event.getPacket() instanceof SPacketSoundEffect && fastMode.getValue().equals("Sound")) {
+            if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                for (Entity crystal : mc.world.loadedEntityList) {
+                    if (crystal instanceof EntityEnderCrystal)
+                        if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
+                            crystal.setDead();
+                        }
+                }
+            }
         }
     }
 
