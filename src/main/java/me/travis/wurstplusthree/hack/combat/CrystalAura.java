@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import com.mojang.authlib.GameProfile;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -14,8 +13,6 @@ import me.travis.wurstplusthree.util.elements.CrystalPos;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,6 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
@@ -222,7 +220,7 @@ public class CrystalAura extends Hack {
             }
         }
         if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
-            ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
+            //ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
             RotationUtil.resetRotations();
         }
         if (event.getPacket() instanceof SPacketSoundEffect && fastMode.getValue().equals("Sound")) {
