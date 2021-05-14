@@ -131,12 +131,12 @@ public class HoleFill extends Hack {
         for (BlockPos renderBlock : holes) {
             if(mc.world.getBlockState(renderBlock).getBlock() == Blocks.AIR) {
                 RenderUtil.drawBoxESP(renderBlock, new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), 40),
-                        new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), 255)
+                        renderBoxColour.getValue()
                         , 1, outline, solid, true);
             }
             else {
                 RenderUtil.drawBoxESP(renderBlock, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), 40),
-                        new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), 255)
+                        renderFillColour.getValue()
                         , 1, outline, solid, true);
             }
         }
