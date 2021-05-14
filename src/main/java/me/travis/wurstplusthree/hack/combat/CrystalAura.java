@@ -40,6 +40,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
@@ -47,7 +48,6 @@ import java.util.*;
 public class CrystalAura extends Hack {
 
     // TODO : FIGURE OUT WHY IT SOMETIMES JUST STOPS
-	//        Probably because of the shitty phobos event system
     public static CrystalAura INSTANCE;
 
     public CrystalAura() {
@@ -108,10 +108,11 @@ public class CrystalAura extends Hack {
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
-    
-
-    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Flat"), this);
+    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle"), this);
+    BooleanSetting flat = new BooleanSetting("Flat", false, this);
+    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 0.0, this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
+    DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
@@ -170,7 +171,7 @@ public class CrystalAura extends Hack {
             if (this.predictBlock.getValue() && place.getValue()) {
                 if (crystal != null && mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
                     for (EntityPlayer player : mc.world.playerEntities) {
-                        if(player == null || crystal == null)return;
+                        if (player == null || crystal == null) return;
                         if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
                             BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
                         }
@@ -243,10 +244,10 @@ public class CrystalAura extends Hack {
     }
 
     private void doCrystalAura() {
-    	if (nullCheck()) {
-    		this.disable();
-    		return;
-    	}
+        if (nullCheck()) {
+            this.disable();
+            return;
+        }
 
         didAnything = false;
         if (HackUtil.shouldPause(this)) return;
@@ -569,23 +570,25 @@ public class CrystalAura extends Hack {
 
         boolean outline = false;
         boolean solid = false;
-        switch (mode.getValue()) {
-            case "Pretty":
-                outline = true;
-                solid = true;
-                break;
-            case "Solid":
-                outline = false;
-                solid = true;
-                break;
-            case "Outline":
-                outline = true;
-                solid = false;
-                break;
+        if (!mode.is("Circle")) {
+            switch (mode.getValue()) {
+                case "Pretty":
+                    outline = true;
+                    solid = true;
+                    break;
+                case "Solid":
+                    outline = false;
+                    solid = true;
+                    break;
+                case "Outline":
+                    outline = true;
+                    solid = false;
+                    break;
+            }
+            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderBlock.getX(), renderBlock.getY()+1, renderBlock.getZ()) : renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
+        } else {
+            RenderUtil.drawCircle(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue());
         }
-        RenderUtil.drawBoxESP(renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true);
-
-
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
         }
@@ -616,7 +619,7 @@ public class CrystalAura extends Hack {
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
 
     public float calculateDamage(BlockPos pos, Entity target) {
-        return getExplosionDamage(target, new Vec3d (pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), 6.0f);
+        return getExplosionDamage(target, new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), 6.0f);
     }
 
     public float calculateDamage(Entity crystal, Entity target) {
@@ -659,14 +662,14 @@ public class CrystalAura extends Hack {
                 }
             }
 
-            blockDensity = (double)nonSolid / (double)total;
+            blockDensity = (double) nonSolid / (double) total;
         }
 
         double densityAdjust = (1.0 - distanceToSize) * blockDensity;
-        float damage = (float)(int)((densityAdjust * densityAdjust + densityAdjust) / 2.0 * 7.0 * explosionPower + 1.0);
+        float damage = (float) (int) ((densityAdjust * densityAdjust + densityAdjust) / 2.0 * 7.0 * explosionPower + 1.0);
 
         if (targetEntity instanceof EntityLivingBase)
-            damage = getBlastReduction((EntityLivingBase)targetEntity, getDamageFromDifficulty(damage, mc.world.getDifficulty()),
+            damage = getBlastReduction((EntityLivingBase) targetEntity, getDamageFromDifficulty(damage, mc.world.getDifficulty()),
                     new Explosion(mc.world, null, explosionPosition.x, explosionPosition.y, explosionPosition.z,
                             explosionPower / 2.0f, false, true));
 
@@ -783,7 +786,7 @@ public class CrystalAura extends Hack {
 
     public float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
         damage = CombatRules.getDamageAfterAbsorb(damage, entity.getTotalArmorValue(),
-                (float)entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+                (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
 
         float enchantmentModifierDamage = 0.0f;
         try {
@@ -805,7 +808,7 @@ public class CrystalAura extends Hack {
 
     public List<Block> getBlocks() {
         return Arrays.asList(
-            Blocks.OBSIDIAN, Blocks.BEDROCK, Blocks.COMMAND_BLOCK, Blocks.BARRIER, Blocks.ENCHANTING_TABLE, Blocks.ENDER_CHEST, Blocks.END_PORTAL_FRAME, Blocks.BEACON, Blocks.ANVIL
+                Blocks.OBSIDIAN, Blocks.BEDROCK, Blocks.COMMAND_BLOCK, Blocks.BARRIER, Blocks.ENCHANTING_TABLE, Blocks.ENDER_CHEST, Blocks.END_PORTAL_FRAME, Blocks.BEACON, Blocks.ANVIL
         );
     }
 
