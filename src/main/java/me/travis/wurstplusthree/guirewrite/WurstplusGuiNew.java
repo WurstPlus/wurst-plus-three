@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.manager.ConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,6 +16,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,8 +30,8 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
-    public static final int MODULE_WIDTH = 2;
-    public static final int MODULE_OFFSET = 1;
+    public static final int MODULE_WIDTH = 5;
+    public static final int MODULE_OFFSET = 0;
     public static final int SETTING_OFFSET = 5;
 
     public static final int FONT_HEIGHT = 4;
@@ -37,8 +39,9 @@ public class WurstplusGuiNew extends GuiScreen {
     public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
     public static final int COLOR_FONT_SIZE = 2 * SUB_FONT_SIZE;
 
-    public static final int GUI_COLOR = 0x99000000;
-    public static final int GUI_HOVERED_COLOR = 0x99222222;
+    public static final int GUI_MODULECOLOR = new Color(45, 45, 45, 255).hashCode();
+    public static final int GUI_COLOR = new Color(30, 30, 30, 255).hashCode();
+    public static final int GUI_HOVERED_COLOR = new Color(45, 45, 45, 250).hashCode();
     private boolean flag = false;
 
     public static ArrayList<CategoryComponent> categoryComponents;
@@ -148,6 +151,7 @@ public class WurstplusGuiNew extends GuiScreen {
         if (mc.entityRenderer.getShaderGroup() != null) {
             mc.entityRenderer.getShaderGroup().deleteShaderGroup();
         }
+        WurstplusThree.CONFIG_MANAGER.saveConfig();
     }
 
     private void scrollWheelCheck() {

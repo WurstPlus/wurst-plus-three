@@ -29,7 +29,6 @@ public class CategoryComponent {
 
     public CategoryComponent(Hack.Category cat) {
         this.category = cat;
-
         this.components = new ArrayList<>();
         this.width = WurstplusGuiNew.WIDTH;
         this.height = WurstplusGuiNew.HEIGHT;
@@ -69,17 +68,15 @@ public class CategoryComponent {
     }
 
     public void renderFrame() {
-        RenderUtil2D.drawGradientRect(this.x, this.y, this.x + width, this.y + height,
-                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
-                (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
+        RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.buttonColor.getValue().hashCode()), (Gui.INSTANCE.buttonColor.getValue().hashCode()));
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
-
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
                 int x = 0;
                 for (Component component : components) {
                     component.renderComponent();
                     x++;
+
                     if (component instanceof HackButton) {
                         if (((HackButton) component).isOpen) {
                             x += ((HackButton) component).subCompLength;
@@ -87,9 +84,7 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                RenderUtil2D.drawVLine(this.x, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Left
-                RenderUtil2D.drawVLine(this.x + WurstplusGuiNew.WIDTH - 1, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.lineColor.getValue().hashCode()); // Right
-                RenderUtil2D.drawHLine(this.x, this.y + WurstplusGuiNew.HEIGHT + x + 1, WurstplusGuiNew.WIDTH, Gui.INSTANCE.lineColor.getValue().hashCode()); // Bottom
+                RenderUtil2D.drawVLine(this.x + 4, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode()); // Left
             }
         }
     }

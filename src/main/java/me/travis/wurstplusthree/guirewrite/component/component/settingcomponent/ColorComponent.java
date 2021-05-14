@@ -28,10 +28,10 @@ public class ColorComponent extends Component {
     private final ColorSliderComponent g;
     private final ColorSliderComponent b;
     private final ColorSliderComponent a;
-    private final BoolComponent bc;
+    private final BooleanComponent bc;
     private final ArrayList<Component> colorComponents;
 
-    // TODO : ADD RAINBOW BUTTON
+    // TODO : make color picker
 
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
         this.set = value;
@@ -45,7 +45,7 @@ public class ColorComponent extends Component {
         this.g = new ColorSliderComponent(parent, offset, "Green", set.getValue().getGreen(), this);
         this.b = new ColorSliderComponent(parent, offset, "Blue", set.getValue().getBlue(), this);
         this.a = new ColorSliderComponent(parent, offset, "Alpha", set.getValue().getAlpha(), this);
-        this.bc = new BoolComponent(set, button, offset, this);
+        this.bc = new BooleanComponent(set, button, offset, this);
         this.colorComponents = new ArrayList<>();
         colorComponents.add(r);
         parent.addOpY(WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET);
@@ -62,8 +62,11 @@ public class ColorComponent extends Component {
 
     @Override
     public void renderComponent() {
-        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.set.getValue().hashCode());
-        // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset, WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, 1, this.set.getValue().hashCode(), WurstplusGuiNew.GUI_COLOR);
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             for (Component component : colorComponents) {

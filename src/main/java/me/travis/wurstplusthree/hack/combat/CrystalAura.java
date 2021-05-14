@@ -73,6 +73,7 @@ public class CrystalAura extends Hack {
     BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
+    BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
 
     BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
@@ -99,8 +100,8 @@ public class CrystalAura extends Hack {
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
     BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this);
+    BooleanSetting crystalLogic = new BooleanSetting("CrystalCheck", false, this);
 
-    BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
 
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
@@ -370,7 +371,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
+            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), !crystalLogic.getValue(), this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
