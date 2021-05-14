@@ -9,11 +9,18 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glDisable;
+
 /**
  * -> src from prism
  */
 
 public class RenderUtil2D {
+
+    private static BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+
+    private static Tessellator tessellator = Tessellator.getInstance();
 
     public static int deltaTime;
 
@@ -63,6 +70,76 @@ public class RenderUtil2D {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    public static void drawBorderedRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor) {
+        drawRectBase(left + borderWidth, top + borderWidth, right - borderWidth, bottom - borderWidth, insideColor);
+        drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, borderColor);
+        drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, borderColor);
+        drawRectBase(left, top, right, top + borderWidth, borderColor);
+        drawRectBase(left, bottom - borderWidth, right, bottom, borderColor);
+    }
+
+    public static void drawRectBase(int left,double top, double right, double bottom, int color) {
+        double side;
+
+        if (left < right) {
+            side = left;
+            left = (int) right;
+            right = (int) side;
+        }
+
+        if (top < bottom) {
+            side = top;
+            top = bottom;
+            bottom = side;
+        }
+
+        GlStateManager.enableBlend();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, (float) (color >> 24 & 255) / 255.0F);
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos(left, bottom, 0.0D).endVertex();
+        bufferbuilder.pos(right, bottom, 0.0D).endVertex();
+        bufferbuilder.pos(right, top, 0.0D).endVertex();
+        bufferbuilder.pos(left, top, 0.0D).endVertex();
+        tessellator.draw();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);;
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawRectBase(int left,double top, int right, double bottom, int color) {
+        double side;
+
+        if (left < right) {
+            side = left;
+            left = right;
+            right = (int) side;
+        }
+
+        if (top < bottom) {
+            side = top;
+            top = bottom;
+            bottom = side;
+        }
+
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, (float) (color >> 24 & 255) / 255.0F);
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos(left, bottom, 0.0D).endVertex();
+        bufferbuilder.pos(right, bottom, 0.0D).endVertex();
+        bufferbuilder.pos(right, top, 0.0D).endVertex();
+        bufferbuilder.pos(left, top, 0.0D).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static void drawSidewaysGradientRect(float left, float top, float right, float bottom, int startColor, int endColor) {
