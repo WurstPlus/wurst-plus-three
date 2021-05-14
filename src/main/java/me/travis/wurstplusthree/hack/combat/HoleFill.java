@@ -1,12 +1,16 @@
 package me.travis.wurstplusthree.hack.combat;
 
+import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
+import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
+import me.travis.wurstplusthree.util.RenderUtil;
+import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,6 +27,9 @@ public class HoleFill extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
+    EnumSetting mode = new EnumSetting("Render", "None", Arrays.asList("None", "Pretty", "Solid", "Outline"), this);
+    ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
+    ColourSetting renderBoxColour = new ColourSetting("Air Colour", new Colour(255, 255, 255, 255), this);
 
     private final List<BlockPos> holes = new ArrayList<>();
 
@@ -37,10 +44,10 @@ public class HoleFill extends Hack {
         this.findNewHoles();
 
         BlockPos posToFill = null;
-        if(holes.isEmpty() && toggle.getValue()){
+        if (holes.isEmpty() && toggle.getValue()) {
             this.disable();
             return;
-        }else {
+        } else {
             this.findNewHoles();
         }
         double bestDistance = 10;
@@ -83,12 +90,12 @@ public class HoleFill extends Hack {
                 continue;
             }
             boolean possible = true;
-            for (BlockPos seems_blocks : new BlockPos[] {
-                    new BlockPos( 0, -1,  0),
-                    new BlockPos( 0,  0, -1),
-                    new BlockPos( 1,  0,  0),
-                    new BlockPos( 0,  0,  1),
-                    new BlockPos(-1,  0,  0)
+            for (BlockPos seems_blocks : new BlockPos[]{
+                    new BlockPos(0, -1, 0),
+                    new BlockPos(0, 0, -1),
+                    new BlockPos(1, 0, 0),
+                    new BlockPos(0, 0, 1),
+                    new BlockPos(-1, 0, 0)
             }) {
                 Block block = mc.world.getBlockState(pos.add(seems_blocks)).getBlock();
                 if (block != Blocks.BEDROCK && block != Blocks.OBSIDIAN && block != Blocks.ENDER_CHEST && block != Blocks.ANVIL) {
@@ -98,6 +105,39 @@ public class HoleFill extends Hack {
             }
             if (possible) {
                 holes.add(pos);
+            }
+        }
+    }
+
+    @Override
+    public void onRender3D(Render3DEvent event) {
+        if (this.holes.isEmpty() || mode.is("None")) return;
+        boolean outline = false;
+        boolean solid = false;
+        switch (mode.getValue()) {
+            case "Pretty":
+                outline = true;
+                solid = true;
+                break;
+            case "Solid":
+                outline = false;
+                solid = true;
+                break;
+            case "Outline":
+                outline = true;
+                solid = false;
+                break;
+        }
+        for (BlockPos renderBlock : holes) {
+            if(mc.world.getBlockState(renderBlock).getBlock() == Blocks.AIR) {
+                RenderUtil.drawBoxESP(renderBlock, new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), 40),
+                        new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), 255)
+                        , 1, outline, solid, true);
+            }
+            else {
+                RenderUtil.drawBoxESP(renderBlock, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), 40),
+                        new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), 255)
+                        , 1, outline, solid, true);
             }
         }
     }
