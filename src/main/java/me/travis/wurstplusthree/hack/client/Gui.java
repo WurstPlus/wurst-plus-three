@@ -25,6 +25,7 @@ public class Gui extends Hack {
     public ColourSetting fontColor = new ColourSetting("Font", new Colour(255,255,255, 255), this);
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
     public EnumSetting type = new EnumSetting("Type", "None", Arrays.asList("None", "Rainbow", "Sin"), this);
+    public EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);
     public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
     public BooleanSetting blur = new BooleanSetting("Blur", true, this);
     public BooleanSetting gradient = new BooleanSetting("Gradient", false, this);
