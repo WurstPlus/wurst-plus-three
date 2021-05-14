@@ -23,6 +23,6 @@ public class ColorUtil {
     public static Color getSinColor(final Color c1, final Color c2, final int delay) {
 
     }
-    // max(1, abs(sin x/3)3)-1
+    // max(1, abs(sin x/3)3 - 2.7)-1
      */
 }
