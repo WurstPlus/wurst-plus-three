@@ -40,6 +40,13 @@ public class RenderUtil2D {
         Gui.drawRect(x, y, x + 1, y + length, color);
     }
 
+    public static void drawHLineG(int x, int y, int length, int color, int color2){
+        drawSidewaysGradientRect(x, y, x+length, y+1, color, color2);
+    }
+    public static void drawVLineG(int x, int y, int length, int color, int color2){
+        drawGradientRect(x, y, x+1, y+length, color, color2);
+    }
+
     public static void drawRectMC(int startX, int startY, int endX, int endY, int color) {
         Gui.drawRect(startX, startY, endX, endY, color);
     }

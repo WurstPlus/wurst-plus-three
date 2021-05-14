@@ -84,7 +84,21 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                RenderUtil2D.drawVLine(this.x + 4, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode()); // Left
+                switch (Gui.INSTANCE.type.getValue()) {
+                    case "Sin":
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                                ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), 1000, Gui.INSTANCE.buttonColor.getColor().getAlpha(), ColorUtil.type.SPECIAL).hashCode(),
+                                ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getColor().getAlpha(), ColorUtil.type.SPECIAL).hashCode());
+                        break;
+                    case "Rainbow":
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                                ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode(),
+                                ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode());
+                        break;
+                    case "None":
+                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode());
+                        break;
+                }
             }
         }
     }

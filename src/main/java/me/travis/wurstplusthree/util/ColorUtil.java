@@ -20,45 +20,44 @@ public class ColorUtil {
        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
     }
 
-    public static Color getSinState(final Color c1, final double delay, final int a,final type t, final mode m) {
+    public static Color getSinState(final Color c1, final double delay, final int a,final type t) {
         double sineState;
-        if(m.equals(mode.ASB)){
-            sineState = Math.abs(Math.sin(2400 - System.currentTimeMillis() / delay)+1);
-        }else {
-            sineState = Math.max(1.0, Math.sin(2400 - System.currentTimeMillis() / delay) + 1);
-        }
+            sineState = Math.sin(2400 - System.currentTimeMillis() / delay) * Math.sin(2400 - System.currentTimeMillis() / delay);
         float[] hsb = Color.RGBtoHSB(c1.getRed(), c1.getGreen(), c1.getBlue(), null);
         Color c = null;
         switch (t){
             case HUE:
-                sineState %= hsb[0];
+                sineState /= hsb[0];
+                sineState = Math.min(1.0, sineState);
                 c = Color.getHSBColor((float) sineState, 1f, 1f);
                 break;
             case SATURATION:
-                sineState %= hsb[1];
+                sineState /= hsb[1];
+                sineState = Math.min(1.0, sineState);
                 c = Color.getHSBColor(hsb[0], (float) sineState, 1f);
                 break;
             case BRIGHTNESS:
-                sineState %= hsb[2];
+                sineState /= hsb[2];
+                sineState = Math.min(1.0, sineState);
                 c = Color.getHSBColor(hsb[0], 1f, (float) sineState);
                 break;
             case SPECIAL:
-                sineState %= hsb[1];
+                sineState /= hsb[1];
+                sineState = Math.min(1.0, sineState);
                 c = Color.getHSBColor(hsb[0], 1f, (float) sineState);
                 break;
         }
         return new Color(c.getRed(), c.getGreen(), c.getBlue(), a);
     }
-
-    enum type{
+    public enum type{
         HUE,
         SATURATION,
         BRIGHTNESS,
         SPECIAL
     }
 
-    enum mode{
-        ASB,
-        MAX
-    }
+
 }
+
+
+
