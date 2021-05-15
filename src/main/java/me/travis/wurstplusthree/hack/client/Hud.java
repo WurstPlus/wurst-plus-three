@@ -60,7 +60,7 @@ public class Hud extends Hack {
         }
 
         this.doTopleft();
-        this.doTopRight();
+        // this.doTopRight();
         this.doBottomRight();
         this.doHelper();
         this.doBottomLeft();
@@ -164,9 +164,16 @@ public class Hud extends Hack {
         drawString(line, 7, scaledResolution.getScaledHeight() - 11);
     }
 
+
+
+    /*
     private void doTopRight() {
         int y = 10;
     }
+
+    Does this have any point? -A2H
+    */
+
 
     private int getRightX(String string, int x) {
         if (this.customFont.getValue()) {

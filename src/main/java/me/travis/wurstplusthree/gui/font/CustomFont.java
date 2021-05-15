@@ -38,7 +38,6 @@ public class CustomFont extends CFont {
     }
 
     public float drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        float shadowWidth = this.drawString(text, (double) (x - (float) (this.getStringWidth(text) / 2)) + 1.0, (double) y + 1.0, color, true);
         return this.drawString(text, x - (float) (this.getStringWidth(text) / 2), y, color);
     }
 

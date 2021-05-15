@@ -26,14 +26,15 @@ public class NametagRenderer {
         GlStateManager.color(red, green, blue, alpha);
     }
 
-    private void glColor(final int hex) {
+    
+/*     private void glColor(final int hex) {
         final float alpha = (hex >> 24 & 0xFF) / 255F;
         final float red = (hex >> 16 & 0xFF) / 255F;
         final float green = (hex >> 8 & 0xFF) / 255F;
         final float blue = (hex & 0xFF) / 255F;
 
         GlStateManager.color(red, green, blue, alpha);
-    }
+    } */
 
     public void resetCaps() {
         glCapMap.forEach(this::setGlState);

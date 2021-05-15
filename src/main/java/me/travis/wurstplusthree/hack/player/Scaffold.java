@@ -78,7 +78,6 @@ public class Scaffold extends Hack {
     }
 
     public void place(BlockPos posI, EnumFacing face) {
-        Block block;
         BlockPos pos = posI;
         if (face == EnumFacing.UP) {
             pos = pos.add(0, -1, 0);
@@ -104,7 +103,7 @@ public class Scaffold extends Hack {
             return;
         }
         boolean crouched = false;
-        if (!mc.player.isSneaking() && BlockUtil.emptyBlocks.contains(block = mc.world.getBlockState(pos).getBlock())) {
+        if (!mc.player.isSneaking() && BlockUtil.emptyBlocks.contains(mc.world.getBlockState(pos).getBlock())) {
             mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
             crouched = true;
         }

@@ -54,8 +54,6 @@ public abstract class MixinRenderEntityItem extends MixinRenderer<EntityItem>{
     private Minecraft mc = Minecraft.getMinecraft();
     private long tick;
     private double rotation;
-    private final ResourceLocation RES_ITEM_GLINT  = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-
     private double formPositiv(final float rotationPitch)
     {
         return (rotationPitch > 0.0f) ? rotationPitch : ((double)(-rotationPitch));
@@ -103,7 +101,6 @@ public abstract class MixinRenderEntityItem extends MixinRenderer<EntityItem>{
         {
             boolean flag = p_177077_9_.isGui3d();
             int i = this.getModelCount(itemstack);
-            float f = 0.25F;
             float f1 = shouldBob() ? MathHelper.sin(((float)itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F : 0;
             float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
             GlStateManager.translate((float)x, (float)y + f1 + 0.25F * f2, (float)z);

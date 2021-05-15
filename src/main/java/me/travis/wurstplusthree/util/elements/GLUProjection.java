@@ -93,12 +93,12 @@ public final class GLUProjection {
             return new Projection(0.0, 0.0, Projection.Type.FAIL);
         Vector3D posVec = new Vector3D(x, y, z);
         boolean[] frustum = this.doFrustumCheck(this.frustum, this.frustumPos, x, y, z);
-        boolean bl = outsideFrustum = frustum[0] || frustum[1] || frustum[2] || frustum[3];
+        outsideFrustum = frustum[0] || frustum[1] || frustum[2] || frustum[3];
         if (outsideFrustum) {
             boolean outsideInvertedFrustum;
             boolean opposite = posVec.sub(this.frustumPos).dot(this.viewVec) <= 0.0;
             boolean[] invFrustum = this.doFrustumCheck(this.invFrustum, this.frustumPos, x, y, z);
-            boolean bl2 = outsideInvertedFrustum = invFrustum[0] || invFrustum[1] || invFrustum[2] || invFrustum[3];
+            outsideInvertedFrustum = invFrustum[0] || invFrustum[1] || invFrustum[2] || invFrustum[3];
             if (extrudeInverted && !outsideInvertedFrustum || outsideInvertedFrustum && clampModeOutside != ClampMode.NONE) {
                 if (extrudeInverted && !outsideInvertedFrustum || clampModeOutside == ClampMode.DIRECT && outsideInvertedFrustum) {
                     double vecX = 0.0;

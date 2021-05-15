@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.MouseUtil;

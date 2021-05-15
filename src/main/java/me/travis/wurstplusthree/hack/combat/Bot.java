@@ -8,7 +8,6 @@ import me.travis.wurstplusthree.util.BotUtil;
 public class Bot extends Hack {
 
     private MovementStage currentMovementStage;
-    private ActionStage currentActionStage;
 
     @Override
     public void onEnable() {
@@ -18,13 +17,11 @@ public class Bot extends Hack {
         mc.player.rotationPitch = 0;
         // set stage to default
         this.currentMovementStage = MovementStage.WANDER;
-        this.currentActionStage = ActionStage.NONE;
     }
 
     @Override
     public void onDisable() {
         this.currentMovementStage = null;
-        this.currentActionStage = null;
     }
 
     @Override
@@ -63,15 +60,6 @@ public class Bot extends Hack {
         STILL,
         RUN,
         CHASE
-    }
-
-    private enum ActionStage {
-        CRYSTAL,
-        HIT,
-        MINE,
-        HOLEFILL,
-        BURROW,
-        NONE
     }
 
 }

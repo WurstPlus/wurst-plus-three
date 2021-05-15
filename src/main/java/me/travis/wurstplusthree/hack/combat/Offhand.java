@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.*;
@@ -14,8 +13,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
@@ -74,7 +71,7 @@ public class Offhand extends Hack {
                 return;
             }
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            if (hp > TotemHp.getValue() && !crystalDamage() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
+            if (hp > TotemHp.getValue() && lethalToLocalCheck() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
                 if (mode.getValue().equalsIgnoreCase("crystal") && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
                     swapItems(getItemSlot(Items.END_CRYSTAL), 0);
                     return;
@@ -103,7 +100,7 @@ public class Offhand extends Hack {
         }
     }
 
-    private boolean crystalDamage() {
+    private boolean lethalToLocalCheck() {
         if (!CrystalCheck.getValue()) {
             return false;
         }
@@ -120,10 +117,9 @@ public class Offhand extends Hack {
                 return;
         }
          */
-        double ris2 = 0;
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
-                if ((ris2 = CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
+                if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
                     return true;
                 }
             }

@@ -77,7 +77,6 @@ public class InstantBreak extends Hack {
     private BlockPos lastPos = null;
     private EnumFacing lastFacing = null;
     private int lastHotbarSlot = -1;
-    private int currentTargetSlot = 1;
     private boolean switched = false;
     private float yaw;
     private float pitch;
@@ -128,7 +127,6 @@ public class InstantBreak extends Hack {
             if (slot != mc.player.inventory.currentItem) {
                 this.lastHotbarSlot = mc.player.inventory.currentItem;
             }
-            this.currentTargetSlot = slot;
             mc.player.inventory.currentItem = slot;
             //BlockTweaks.mc.playerController.syncCurrentPlayItem();
             this.switched = equipTool;

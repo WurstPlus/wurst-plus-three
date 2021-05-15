@@ -8,17 +8,15 @@ import java.util.UUID;
 public class WurstplusPlayer implements Globals {
 
     private final String name;
-    private final UUID uuid;
     private String nickName;
 
     public WurstplusPlayer(String name) {
         this.name = name;
-        this.uuid = PlayerUtil.getUUIDFromName(name);
+        PlayerUtil.getUUIDFromName(name);
     }
 
     public WurstplusPlayer(String name, UUID uuid) {
         this.name = name;
-        this.uuid = uuid;
     }
 
     public String getName() {

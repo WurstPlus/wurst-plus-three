@@ -29,25 +29,16 @@ public class ConfigManager implements Globals {
     private final String configsFolder = mainFolder + "configs/";
     private String activeConfigFolder = configsFolder + "default/";
 
-    // STATIC FILES
-    private final String clientFile = "client.json";
-    private final String configFile = "config.txt";
     private final String drawnFile = "drawn.txt";
-    private final String ezFile = "ez.txt";
     private final String enemiesFile = "enemies.json";
     private final String friendsFile = "friends.json";
-    private final String hudFile = "hud.json";
     private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
 
-    // DIRS
-    private final String clientDir = mainFolder + clientFile;
-    private final String configDir = mainFolder + configFile;
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
     private final String burrowDir = mainFolder + burrowFile;
-    private final String ezDir = mainFolder + ezFile;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
 
@@ -59,19 +50,9 @@ public class ConfigManager implements Globals {
     private final Path configsFolderPath = Paths.get(configsFolder);
     private Path activeConfigFolderPath = Paths.get(activeConfigFolder);
 
-    // FILE PATHS
-    private final Path clientPath = Paths.get(clientDir);
-    private final Path configPath = Paths.get(configDir);
     private final Path drawnPath = Paths.get(drawnDir);
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
-    private final Path ezPath = Paths.get(ezDir);
-    private final Path enemiesPath = Paths.get(enemiesDir);
-    private final Path friendsPath = Paths.get(friendsDir);
-
-    private Path bindsPath = Paths.get(bindsDir);
-    private Path currentConfigPath = Paths.get(currentConfigDir);
-
     public void loadConfig() {
         try {
             this.loadEnemies();
@@ -113,10 +94,10 @@ public class ConfigManager implements Globals {
         this.activeConfigFolderPath = Paths.get(activeConfigFolder);
 
         this.currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
-        this.currentConfigPath = Paths.get(currentConfigDir);
+        Paths.get(currentConfigDir);
 
         this.bindsDir = currentConfigDir + bindsFile;
-        this.bindsPath = Paths.get(bindsDir);
+        Paths.get(bindsDir);
 
         try {
             this.loadSettings();
@@ -352,7 +333,8 @@ public class ConfigManager implements Globals {
     private void loadBurrowBlock() throws IOException {
         for (String l : Files.readAllLines(burrowPath)){
             Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
-            a.setBlock(new WhitelistUtil().findBlock(l));
+            new WhitelistUtil();
+            a.setBlock(WhitelistUtil.findBlock(l));
             WurstplusThree.COMMANDS.getBurrowCommand().setBBlock(l);
         }
     }

@@ -37,7 +37,6 @@ public class Surround extends Hack {
     private final Map<BlockPos, Integer> retries = new HashMap<>();
     private BlockPos startPos;
     private boolean didPlace = false;
-    private boolean switchedItem;
     private int lastHotbarSlot;
     private boolean isSneaking;
     private int placements = 0;

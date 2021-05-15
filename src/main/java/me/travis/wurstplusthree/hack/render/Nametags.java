@@ -13,13 +13,11 @@ import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.NametagRenderer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
@@ -121,7 +119,6 @@ public class Nametags extends Hack {
         name = name.replace(".0", "");
         float distance = mc.player.getDistance(player);
         float var15 = (float) (((distance / 5 <= 2 ? 2.0F : (distance / 5) * ((scale.getValue() * 10) + 1)) * 2.5f) * (scale.getValue() / 10));
-        float var14 = (float) (scale.getValue() * getNametagSize(player));
         boolean far = distance / 5 > 2;
         GL11.glTranslated((float) x, (float) y + height.getValue() - (player.isSneaking() ? 0.4 : 0) + (far ? distance / 12 - 0.7 : 0.25), (float) z);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -338,13 +335,6 @@ public class Nametags extends Hack {
 
     public boolean isMaxEnchants(ItemStack stack) {
         return stack.getEnchantmentTagList().tagCount() > 2;
-    }
-
-    private float getNametagSize(EntityLivingBase player) {
-        ScaledResolution scaledRes = new ScaledResolution(mc);
-        double twoDscale = scaledRes.getScaleFactor() / Math.pow(scaledRes.getScaleFactor(), 2.0D);
-
-        return (float) twoDscale + (mc.player.getDistance(player) / (0.7f * 10));
     }
 
     public String getHealth(float health) {
