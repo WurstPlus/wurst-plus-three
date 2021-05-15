@@ -1,12 +1,10 @@
 package me.travis.wurstplusthree.hack;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import it.unimi.dsi.fastutil.booleans.BooleanSet;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;

@@ -7,10 +7,7 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import org.lwjgl.opengl.GL11;
-
 import java.awt.*;
 
 /**

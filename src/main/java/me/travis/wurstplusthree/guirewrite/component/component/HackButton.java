@@ -10,10 +10,8 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

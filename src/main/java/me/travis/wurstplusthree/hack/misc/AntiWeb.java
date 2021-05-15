@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.hack.misc;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.player.Step;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 

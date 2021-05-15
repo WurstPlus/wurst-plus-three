@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

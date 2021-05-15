@@ -10,7 +10,6 @@ import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Arrays;

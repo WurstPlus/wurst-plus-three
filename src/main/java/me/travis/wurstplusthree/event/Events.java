@@ -37,8 +37,6 @@ import java.util.UUID;
 
 public class Events implements Globals {
 
-    private Object EventManager;
-
     private final Timer logoutTimer = new Timer();
     private long time = -1;
 
@@ -231,6 +229,8 @@ public class Events implements Globals {
                         }
                         MinecraftForge.EVENT_BUS.post(new ConnectionEvent(2, id, null));
                     }
+                    default:
+                        break;
                 }
             });
         } else if (event.getPacket() instanceof SPacketTimeUpdate) {

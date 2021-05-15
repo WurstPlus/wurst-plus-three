@@ -24,7 +24,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
@@ -38,7 +37,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
@@ -434,8 +432,6 @@ public class CrystalAura extends Hack {
 
     private double isCrystalGood(EntityEnderCrystal crystal, EntityPlayer target) {
         if (this.isPlayerValid(target)) {
-            EntityPlayer player = target;
-
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
                     return 0;
@@ -694,7 +690,6 @@ public class CrystalAura extends Hack {
 
                 if ((blockState.getCollisionBoundingBox(mc.world, blockPos) != Block.NULL_AABB) &&
                         block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
-                    RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
                     return true;
                 }
 
@@ -773,7 +768,6 @@ public class CrystalAura extends Hack {
                     block = blockState.getBlock();
 
                     if (block.canCollideCheck(blockState, false) && (getBlocks().contains(block) || !ignoreTerrain.getValue())) {
-                        RayTraceResult collisionInterCheck = blockState.collisionRayTrace(mc.world, blockPos, start, end);
                         return true;
                     }
                 }

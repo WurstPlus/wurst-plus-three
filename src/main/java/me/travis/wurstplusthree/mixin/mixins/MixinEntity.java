@@ -225,7 +225,6 @@ public abstract class MixinEntity {
             double d3 = y;
             double d4 = z;
             if ((type == MoverType.SELF || type == MoverType.PLAYER) && this.onGround && this.isSneaking() && _this instanceof EntityPlayer) {
-                double d5 = 0.05;
                 while (x != 0.0 && this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().offset(x, (double)(-this.stepHeight), 0.0)).isEmpty()) {
                     x = x < 0.05 && x >= -0.05 ? 0.0 : (x > 0.0 ? (x -= 0.05) : (x += 0.05));
                     d2 = x;
@@ -241,17 +240,15 @@ public abstract class MixinEntity {
                     d4 = z;
                 }
             }
-            List list1 = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(x, y, z));
+            List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(x, y, z));
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
             if (y != 0.0) {
-                int l = list1.size();
                 for (Object o : list1) {
                     y = ((AxisAlignedBB) o).calculateYOffset(this.getEntityBoundingBox(), y);
                 }
                 this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0, y, 0.0));
             }
             if (x != 0.0) {
-                int l5 = list1.size();
                 for (Object o : list1) {
                     x = ((AxisAlignedBB) o).calculateXOffset(this.getEntityBoundingBox(), x);
                 }
@@ -268,7 +265,7 @@ public abstract class MixinEntity {
                     this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0, 0.0, z));
                 }
             }
-            boolean bl = flag = this.onGround || d3 != y && d3 < 0.0;
+            flag = this.onGround || d3 != y && d3 < 0.0;
             if (this.stepHeight > 0.0f && flag && (d2 != x || d4 != z)) {
                 StepEvent preEvent = new StepEvent(0, _this);
                 MinecraftForge.EVENT_BUS.post((Event)preEvent);
@@ -278,7 +275,7 @@ public abstract class MixinEntity {
                 AxisAlignedBB axisalignedbb1 = this.getEntityBoundingBox();
                 this.setEntityBoundingBox(axisalignedbb);
                 y = preEvent.getHeight();
-                List list = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(d2, y, d4));
+                List<AxisAlignedBB> list = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(d2, y, d4));
                 AxisAlignedBB axisalignedbb2 = this.getEntityBoundingBox();
                 AxisAlignedBB axisalignedbb3 = axisalignedbb2.expand(d2, 0.0, d4);
                 double d8 = y;
