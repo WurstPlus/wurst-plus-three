@@ -89,8 +89,11 @@ public class HackButton extends Component {
         }
     }
 
+
+
+
     @Override
-    public void renderComponent() {
+    public void renderComponent(int MouseX, int MouseY) {
         subCompLength = 0;
         if (mod.isEnabled()) {
             RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET,
@@ -104,7 +107,7 @@ public class HackButton extends Component {
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
-                    comp.renderComponent();
+                    comp.renderComponent(MouseX, MouseY);
                     if (comp instanceof ColorComponent) {
                         if (((ColorComponent) comp).isOpen()) {
                             subCompLength += 6;

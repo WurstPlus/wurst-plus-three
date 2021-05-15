@@ -9,8 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * -> src from prism
@@ -78,6 +77,76 @@ public class RenderUtil2D {
         drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, borderColor);
         drawRectBase(left, top, right, top + borderWidth, borderColor);
         drawRectBase(left, bottom - borderWidth, right, bottom, borderColor);
+    }
+
+    public static void drawPickerBase(int pickerX, int pickerY, int pickerWidth, int pickerHeight, float red, float green, float blue, float alpha) {
+        glEnable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        glBegin(GL_POLYGON);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glVertex2f(pickerX, pickerY);
+        glVertex2f(pickerX, pickerY + pickerHeight);
+        glColor4f(red, green, blue, alpha);
+        glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
+        glVertex2f(pickerX + pickerWidth, pickerY);
+        glEnd();
+        glDisable(GL_ALPHA_TEST);
+        glBegin(GL_POLYGON);
+        glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+        glVertex2f(pickerX, pickerY);
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        glVertex2f(pickerX, pickerY + pickerHeight);
+        glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
+        glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+        glVertex2f(pickerX + pickerWidth, pickerY);
+        glEnd();
+        glEnable(GL_ALPHA_TEST);
+        glShadeModel(GL_FLAT);
+        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
+    }
+
+    public static void drawLeftGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.shadeModel(GL_SMOOTH);
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos(right, top, 0).color((float) (endColor >> 24 & 255) / 255.0F, (float) (endColor >> 16 & 255) / 255.0F, (float) (endColor >> 8 & 255) / 255.0F, (float) (endColor >> 24 & 255) / 255.0F).endVertex();
+        bufferbuilder.pos(left, top, 0).color((float) (startColor >> 16 & 255) / 255.0F, (float) (startColor >> 8 & 255) / 255.0F, (float) (startColor & 255) / 255.0F, (float) (startColor >> 24 & 255) / 255.0F).endVertex();
+        bufferbuilder.pos(left, bottom, 0).color((float) (startColor >> 16 & 255) / 255.0F, (float) (startColor >> 8 & 255) / 255.0F, (float) (startColor & 255) / 255.0F, (float) (startColor >> 24 & 255) / 255.0F).endVertex();
+        bufferbuilder.pos(right, bottom, 0).color((float) (endColor >> 24 & 255) / 255.0F, (float) (endColor >> 16 & 255) / 255.0F, (float) (endColor >> 8 & 255) / 255.0F, (float) (endColor >> 24 & 255) / 255.0F).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+    }
+
+    public static void gradient(int minX, int minY, int maxX, int maxY, int startColor, int endColor, boolean left) {
+        if (left) {
+            glEnable(GL_BLEND);
+            glDisable(GL_TEXTURE_2D);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glShadeModel(GL_SMOOTH);
+            glBegin(GL_POLYGON);
+            glColor4f((startColor >> 16 & 0xFF) / 255.0f, (startColor >> 8 & 0xFF) / 255.0f, (startColor & 0xFF) / 255.0f, (startColor >> 24 & 0xFF) / 255.0f);
+            glVertex2f(minX, minY);
+            glVertex2f(minX, maxY);
+            glColor4f((endColor >> 16 & 0xFF) / 255.0f, (endColor >> 8 & 0xFF) / 255.0f, (endColor & 0xFF) / 255.0f, (endColor >> 24 & 0xFF) / 255.0f);
+            glVertex2f(maxX, maxY);
+            glVertex2f(maxX, minY);
+            glEnd();
+            glShadeModel(GL_FLAT);
+            glEnable(GL_TEXTURE_2D);
+            glDisable(GL_BLEND);
+        }
+
+        else
+            drawGradientRect(minX, minY, maxX, maxY, startColor, endColor);
     }
 
     public static void drawRectBase(int left,double top, double right, double bottom, int color) {
