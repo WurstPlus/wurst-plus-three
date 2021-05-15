@@ -153,9 +153,6 @@ public class HoleESP extends Hack {
             case "Special":
                 type = ColorUtil.type.SPECIAL;
                 break;
-            case "Hue":
-                type = ColorUtil.type.HUE;
-                break;
             case "Saturation":
                 type = ColorUtil.type.SATURATION;
                 break;
@@ -173,10 +170,18 @@ public class HoleESP extends Hack {
                         rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                     }
                 }else {
-                    if (top) {
-                        rVal = ColorUtil.getSinState(obsidianColor.getColor(), 1000,(line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                    if(SinMode.is("Hue")){
+                        if (top) {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,1000,(line) ? LineFillUp.getValue() : FillUp.getValue());
+                        }else {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                        }
                     }else {
-                        rVal = ColorUtil.getSinState(obsidianColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        if (top) {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                        } else {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        }
                     }
                 }
             } else {
@@ -195,10 +200,18 @@ public class HoleESP extends Hack {
                         rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                     }
                 }else {
-                    if (top) {
-                        rVal = ColorUtil.getSinState(bedrockColor.getColor(), 1000,(line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                    if(SinMode.is("Hue")){
+                        if (top) {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(),bedrockColor2.getColor() ,1000,(line) ? LineFillUp.getValue() : FillUp.getValue());
+                        }else {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(),bedrockColor2.getColor() ,RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                        }
                     }else {
-                        rVal = ColorUtil.getSinState(bedrockColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        if (top) {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                        } else {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        }
                     }
                 }
             } else {
