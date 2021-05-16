@@ -24,6 +24,7 @@ public class ColorComponent extends Component {
     private int offset;
     private boolean isOpen;
     private boolean firstTimeOpen;
+    private int booleanButtonOffset = 80;
 
     // TODO : make color picker
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
@@ -35,7 +36,7 @@ public class ColorComponent extends Component {
     }
 
     @Override
-    public void renderComponent(int mouseX, int mousY) {
+    public void renderComponent(int mouseX, int mouseY) {
         RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
         RenderUtil2D.drawRectMC(parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
         RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
@@ -43,8 +44,12 @@ public class ColorComponent extends Component {
         RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, 1, this.set.getValue().hashCode(), WurstplusGuiNew.GUI_COLOR);
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
-            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 17, parent.parent.getX() + 100, parent.parent.getY() + offset + 17, parent.parent.getX() + 7, parent.parent.getY() + offset + 52 + 17, mouseX, mousY);
+            WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, WurstplusGuiNew.GUI_COLOR);
+            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 71, mouseX, mouseY);
             set.setValue(finalColor);
+            RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : WurstplusGuiNew.GUI_COLOR, new Color(0, 0, 0, 200).hashCode());
+            RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), parent.parent.getY() + offset + 6 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 5  + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
         }
     }
 
@@ -91,7 +96,9 @@ public class ColorComponent extends Component {
             }
             this.firstTimeOpen = false;
         }
-
+        if (this.isOpen && mouseOver(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, mouseX, mouseY)) {
+            this.set.setRainbow(!this.set.getRainbow());
+        }
     }
 
     public void drawPicker(ColourSetting subColor, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY, int mouseX, int mouseY) {
@@ -111,13 +118,12 @@ public class ColorComponent extends Component {
         boolean pickingHue = false;
         boolean pickingAlpha = false;
 
-        int pickerWidth = 80;
+        int pickerWidth = 90;
         int pickerHeight = 50;
         int hueSliderWidth = 10;
-        int hueSliderHeight = 50;
+        int hueSliderHeight = 59;
         int alphaSliderHeight = 10;
-        int alphaSliderWidth = 100;
-
+        int alphaSliderWidth = 90;
 
         if (Mouse.isButtonDown(0) && mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight, mouseX, mouseY))
             pickingColor = true;
