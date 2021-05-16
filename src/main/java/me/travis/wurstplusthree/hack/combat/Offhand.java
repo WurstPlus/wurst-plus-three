@@ -63,7 +63,7 @@ public class Offhand extends Hack {
         timer = timer + 1;
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            if (hp > TotemHp.getValue() && !crystalDamage() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
+            if (hp > TotemHp.getValue() && !lethalToLocalCheck() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
                 if (mode.getValue().equalsIgnoreCase("crystal") && (!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled()) && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
                     swapItems(getItemSlot(Items.END_CRYSTAL));
                     return;

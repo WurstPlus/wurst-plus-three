@@ -16,6 +16,7 @@ import java.awt.*;
  * @author Madmegsox1
  * @since 29/04/2021
  * @Author wallhacks0
+ * original picker was made by LinusTouchTips
  */
 
 public class ColorComponent extends Component {
