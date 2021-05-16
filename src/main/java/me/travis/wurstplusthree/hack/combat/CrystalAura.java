@@ -73,7 +73,7 @@ public class CrystalAura extends Hack {
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
 
-    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "Offhand", "None"), this);
+    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "None"), this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);

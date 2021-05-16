@@ -18,7 +18,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
-import java.util.Timer;
 
 @Hack.Registration(name = "Offhand", description = "puts things in ur offhand", category = Hack.Category.COMBAT, isListening = false)
 public class Offhand extends Hack {
@@ -32,12 +31,18 @@ public class Offhand extends Hack {
     BooleanSetting GapOnPick = new BooleanSetting("Pick Gap", false, this);
     BooleanSetting Always = new BooleanSetting("Always", false, this);
     BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
-    IntSetting cooldown = new IntSetting("cooldown", 0, 0, 40, this);
 
-    private int timer = 0;
+
+    private boolean switching;
+    private int lastSlot;
 
     @Override
     public void onUpdate() {
+
+        if (switching) {
+            swapItems(lastSlot, 2);
+            return;
+        }
         if (mc.currentScreen instanceof GuiContainer) {
             return;
         }
@@ -49,7 +54,7 @@ public class Offhand extends Hack {
             if (cancelMovement.getValue()) {
                 StopPlayerMovement.toggle(true);
             }
-            this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
+            this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             // Stop the cancelling of the MoveEvent after the totem has been swapped.
             if (cancelMovement.getValue()) {
                 StopPlayerMovement.toggle(false);
@@ -60,34 +65,37 @@ public class Offhand extends Hack {
 
     @Override
     public void onTick() {
-        timer = timer + 1;
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
+            if (switching) {
+                swapItems(lastSlot, 2);
+                return;
+            }
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            if (hp > TotemHp.getValue() && !lethalToLocalCheck() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
-                if (mode.getValue().equalsIgnoreCase("crystal") && (!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled()) && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
-                    swapItems(getItemSlot(Items.END_CRYSTAL));
+            if (hp > TotemHp.getValue() && lethalToLocalCheck() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
+                if (mode.getValue().equalsIgnoreCase("crystal") && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
+                    swapItems(getItemSlot(Items.END_CRYSTAL), 0);
                     return;
                 } else if (((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue()) {
-                    swapItems(getItemSlot(Items.GOLDEN_APPLE));
+                    swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                     if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
                         mc.playerController.isHittingBlock = true;
                     }
                     return;
                 }
-                if (mode.getValue().equalsIgnoreCase("totem") || !(!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled())) {
-                    swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
+                if (mode.getValue().equalsIgnoreCase("totem")) {
+                    swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
                     return;
                 }
                 if (mode.getValue().equalsIgnoreCase("gapple")) {
-                    swapItems(getItemSlot(Items.GOLDEN_APPLE));
+                    swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                     return;
                 }
             } else {
-                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
+                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
                 return;
             }
             if (mc.player.getHeldItemOffhand().getItem() == Items.AIR) {
-                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
+                swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             }
         }
     }
@@ -96,6 +104,19 @@ public class Offhand extends Hack {
         if (!CrystalCheck.getValue()) {
             return false;
         }
+        /*
+        switch (mode.getValue()) {
+            case "Totem":
+                this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
+                return;
+            case "Crystal":
+                this.swapItems(getItemSlot(Items.END_CRYSTAL), 1);
+                return;
+            case "Gapple":
+                this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
+                return;
+        }
+         */
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
                 if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
@@ -106,12 +127,24 @@ public class Offhand extends Hack {
         return false;
     }
 
-    public void swapItems(int slot) {
-        if (slot == -1 || (timer <= cooldown.getValue())) return;
-        timer = 0;
-        mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+    public void swapItems(int slot, int step) {
+        if (slot == -1) return;
+        if (step == 0) {
+            mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+            mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
+            mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+        }
+        if (step == 1) {
+            mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+            switching = true;
+            lastSlot = slot;
+        }
+        if (step == 2) {
+            mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
+            mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+            switching = false;
+
+        }
         mc.playerController.updateController();
     }
 
