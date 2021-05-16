@@ -84,7 +84,36 @@ public class CategoryComponent {
                     }
                 }
                 x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                RenderUtil2D.drawVLine(this.x + 4, this.y + WurstplusGuiNew.HEIGHT, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode()); // Left
+                switch (Gui.INSTANCE.type.getValue()) {
+                    case "Sin":
+                        ColorUtil.type type = null;
+                        switch (Gui.INSTANCE.SinMode.getValue()){
+                            case "Special":
+                                type = ColorUtil.type.SPECIAL;
+                                break;
+                            case "Hue":
+                                type = ColorUtil.type.HUE;
+                                break;
+                            case "Saturation":
+                                type = ColorUtil.type.SATURATION;
+                                break;
+                            case "Brightness":
+                                type = ColorUtil.type.BRIGHTNESS;
+                                break;
+                        }
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                                ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), 1000, 255, type).hashCode(),
+                                ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), Gui.INSTANCE.rainbowDelay.getValue(), 255, type).hashCode());
+                        break;
+                    case "Rainbow":
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                                ColorUtil.releasedDynamicRainbow(0, 255).hashCode(),
+                                ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), 255).hashCode());
+                        break;
+                    case "None":
+                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode());
+                        break;
+                }
             }
         }
     }

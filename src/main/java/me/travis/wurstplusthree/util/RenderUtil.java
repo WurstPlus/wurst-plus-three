@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -211,7 +210,6 @@ public class RenderUtil implements Globals {
             GL11.glEnable(2848);
             GL11.glHint(3154, 4354);
             GL11.glLineWidth(lineWidth);
-            double dist = mc.player.getDistance((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f) * 0.75;
             if (box) {
                 RenderGlobal.renderFilledBox(bb, (float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) boxAlpha / 255.0f);
             }
@@ -240,7 +238,6 @@ public class RenderUtil implements Globals {
             GL11.glEnable(2848);
             GL11.glHint(3154, 4354);
             GL11.glLineWidth((float) lineWidth);
-            double dist = mc.player.getDistance((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f) * 0.75;
             if (box) {
                 RenderGlobal.renderFilledBox(bb, (float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) color.getAlpha() / 255.0f);
             }

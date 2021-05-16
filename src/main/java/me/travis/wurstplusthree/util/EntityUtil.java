@@ -189,8 +189,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isObbyHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.OBSIDIAN) continue;
             return false;
@@ -199,8 +198,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isBedrockHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.BEDROCK) continue;
             return false;
@@ -209,8 +207,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isBothHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && (touchingState.getBlock() == Blocks.BEDROCK || touchingState.getBlock() == Blocks.OBSIDIAN))
                 continue;

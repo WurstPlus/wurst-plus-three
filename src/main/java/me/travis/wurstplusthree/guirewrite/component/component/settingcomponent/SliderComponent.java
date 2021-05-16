@@ -8,7 +8,6 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 

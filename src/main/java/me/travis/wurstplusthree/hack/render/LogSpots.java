@@ -135,7 +135,6 @@ public class LogSpots extends Hack {
 
     private static class LogoutPos {
         private final String name;
-        private final UUID uuid;
         private final EntityPlayer entity;
         private final boolean hasTotem;
         private final double x;
@@ -146,7 +145,6 @@ public class LogSpots extends Hack {
 
         public LogoutPos(String name, UUID uuid, EntityPlayer entity, double hp, boolean totem, int pops) {
             this.name = name;
-            this.uuid = uuid;
             this.entity = entity;
             this.x = entity.posX;
             this.y = entity.posY;
@@ -158,10 +156,6 @@ public class LogSpots extends Hack {
 
         public String getName() {
             return this.name;
-        }
-
-        public UUID getUuid() {
-            return this.uuid;
         }
 
         public EntityPlayer getEntity() {

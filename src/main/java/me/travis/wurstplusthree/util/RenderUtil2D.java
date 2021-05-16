@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -37,6 +36,13 @@ public class RenderUtil2D {
 
     public static void drawVLine(int x, int y, int length, int color) {
         Gui.drawRect(x, y, x + 1, y + length, color);
+    }
+
+    public static void drawHLineG(int x, int y, int length, int color, int color2){
+        drawSidewaysGradientRect(x, y, x+length, y+1, color, color2);
+    }
+    public static void drawVLineG(int x, int y, int length, int color, int color2){
+        drawGradientRect(x, y, x+1, y+length, color, color2);
     }
 
     public static void drawRectMC(int startX, int startY, int endX, int endY, int color) {

@@ -17,7 +17,6 @@ import org.lwjgl.input.Keyboard;
  */
 
 public class ModuleBindComponent extends Component {
-    private String name;
     private boolean isHovered;
     private boolean isBinding;
     private HackButton parent;
@@ -31,7 +30,6 @@ public class ModuleBindComponent extends Component {
 
     public ModuleBindComponent(HackButton button, int offset) {
         this.parent = button;
-        this.name = "Bind";
         this.offset = offset;
         this.normal = true;
         this.x = button.parent.getX() + button.parent.getWidth();
@@ -41,7 +39,7 @@ public class ModuleBindComponent extends Component {
     public ModuleBindComponent(KeySetting setting, HackButton button, int offset) {
         this.parent = button;
         this.setting = setting;
-        this.name = setting.getName();
+        setting.getName();
         this.offset = offset;
         this.normal = false;
         this.x = button.parent.getX() + button.parent.getWidth();

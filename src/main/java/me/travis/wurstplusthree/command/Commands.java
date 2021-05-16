@@ -42,13 +42,6 @@ public class Commands implements Globals {
         return result.toArray(input);
     }
 
-    private static String strip(String str, String key) {
-        if (str.startsWith(key) && str.endsWith(key)) {
-            return str.substring(key.length(), str.length() - key.length());
-        }
-        return str;
-    }
-
     public void executeCommand(String command) {
         String[] split = command.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
         String command1 = split[0];

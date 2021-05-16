@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
 import me.travis.wurstplusthree.guirewrite.component.Component;
 import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
-import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
 import java.math.BigDecimal;

@@ -10,7 +10,6 @@ import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -31,6 +30,8 @@ public class HoleESP extends Hack {
     ColourSetting bedrockColor2 = new ColourSetting("Bedrock Outline", new Colour(0, 255, 0, 100), this);
     ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0, 100), this);
     ColourSetting obsidianColor2 = new ColourSetting("Obsidian Outline", new Colour(255, 0, 0, 100), this);
+    EnumSetting RMode = new EnumSetting("Color Mode", "Rainbow", Arrays.asList("Rainbow", "Sin"), this);
+    EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);
     IntSetting RDelay = new IntSetting("Rainbow Delay", 500, 0, 2500, this);
     IntSetting FillUp = new IntSetting("Fill Up", 80, 0, 255, this);
     IntSetting FillDown = new IntSetting("Fill Down", 0, 0, 255, this);
@@ -38,7 +39,6 @@ public class HoleESP extends Hack {
     IntSetting LineFillDown = new IntSetting("Line Fill Down", 0, 0, 255, this);
     BooleanSetting invertLine = new BooleanSetting("Invert Line", false, this);
     BooleanSetting invertFill = new BooleanSetting("Invert Fill", false, this);
-
 
 
     private final ConcurrentHashMap<BlockPos, Pair<Colour, Boolean>> holes = new ConcurrentHashMap<>();
@@ -136,9 +136,9 @@ public class HoleESP extends Hack {
         } else {
             if (mode.is("Gradient")) {
                 RenderUtil.drawGlowBox(hole, Height.getValue() - 1, lineWidth.getValue().floatValue(), safe ? bedrockColor.getValue() : obsidianColor.getValue(), safe ? bedrockColor2.getValue() : obsidianColor2.getValue());
-            }else {
+            } else {
                 RenderUtil.drawOpenGradientBox(hole, (!invertFill.getValue()) ? getGColor(safe, false, false) : getGColor(safe, true, false),
-                       (!invertFill.getValue()) ? getGColor(safe, true, false) : getGColor(safe, false, false), 0);
+                        (!invertFill.getValue()) ? getGColor(safe, true, false) : getGColor(safe, false, false), 0);
                 RenderUtil.drawGradientBlockOutline(hole, (invertLine.getValue()) ? getGColor(safe, false, true) : getGColor(safe, true, true),
                         (invertLine.getValue()) ? getGColor(safe, true, true) : getGColor(safe, false, true), 2f, 0);
             }
@@ -147,12 +147,41 @@ public class HoleESP extends Hack {
 
     private Color getGColor(boolean safe, boolean top, boolean line) {
         Color rVal;
+        ColorUtil.type type = null;
+        switch (SinMode.getValue()){
+            case "Special":
+                type = ColorUtil.type.SPECIAL;
+                break;
+            case "Saturation":
+                type = ColorUtil.type.SATURATION;
+                break;
+            case "Brightness":
+                type = ColorUtil.type.BRIGHTNESS;
+                break;
+        }
+
         if (!safe) {
             if (obsidianColor.getRainbow()) {
-                if (top) {
-                    rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                if (RMode.is("Rainbow")) {
+                    if (top) {
+                        rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
+                    } else {
+                        rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                    }
+                }else {
+                    if(SinMode.is("Hue")){
+                        if (top) {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,1000,(line) ? LineFillUp.getValue() : FillUp.getValue());
+                        }else {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                        }
+                    }else {
+                        if (top) {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                        } else {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        }
+                    }
                 }
             } else {
                 if (top) {
@@ -163,10 +192,26 @@ public class HoleESP extends Hack {
             }
         } else {
             if (bedrockColor.getRainbow()) {
-                if (top) {
-                    rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
-                } else {
-                    rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                if (RMode.is("Rainbow")) {
+                    if (top) {
+                        rVal = ColorUtil.releasedDynamicRainbow(0, (line) ? LineFillUp.getValue() : FillUp.getValue());
+                    } else {
+                        rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                    }
+                }else {
+                    if(SinMode.is("Hue")){
+                        if (top) {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(),bedrockColor2.getColor() ,1000,(line) ? LineFillUp.getValue() : FillUp.getValue());
+                        }else {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(),bedrockColor2.getColor() ,RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                        }
+                    }else {
+                        if (top) {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue(), type);
+                        } else {
+                            rVal = ColorUtil.getSinState(bedrockColor.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue(), type);
+                        }
+                    }
                 }
             } else {
                 if (top) {
@@ -178,7 +223,6 @@ public class HoleESP extends Hack {
         }
         return rVal;
     }
-
 
 
     @Override
