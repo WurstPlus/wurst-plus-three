@@ -73,11 +73,8 @@ public class Offhand extends Hack {
                         mc.playerController.isHittingBlock = true;
                     }
                     return;
-                } else if (CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") && CrystalAura.INSTANCE.renderBlock == null && CrystalAura.INSTANCE.isEnabled() && mode.getValue().equals("Crystal")){
-                    swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
-                    return;
                 }
-                if (mode.getValue().equalsIgnoreCase("totem")) {
+                if (mode.getValue().equalsIgnoreCase("totem") || !(!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled())) {
                     swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
                     return;
                 }
@@ -99,19 +96,6 @@ public class Offhand extends Hack {
         if (!CrystalCheck.getValue()) {
             return false;
         }
-        /*
-        switch (mode.getValue()) {
-            case "Totem":
-                this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
-                return;
-            case "Crystal":
-                this.swapItems(getItemSlot(Items.END_CRYSTAL), 1);
-                return;
-            case "Gapple":
-                this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
-                return;
-        }
-         */
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
                 if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
@@ -123,7 +107,7 @@ public class Offhand extends Hack {
     }
 
     public void swapItems(int slot) {
-        if (slot == -1 || (timer <= cooldown.getValue()) && mc.player.inventory.getStackInSlot(slot).getItem() != Items.TOTEM_OF_UNDYING) return;
+        if (slot == -1 || (timer <= cooldown.getValue())) return;
         timer = 0;
         mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
