@@ -67,14 +67,14 @@ public class CategoryComponent {
         this.isOpen = open;
     }
 
-    public void renderFrame() {
+    public void renderFrame(int mouseX, int mouseY) {
         RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.buttonColor.getValue().hashCode()), (Gui.INSTANCE.buttonColor.getValue().hashCode()));
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
                 int x = 0;
                 for (Component component : components) {
-                    component.renderComponent();
+                    component.renderComponent(mouseX, mouseY);
                     x++;
 
                     if (component instanceof HackButton) {

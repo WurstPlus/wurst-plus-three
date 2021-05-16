@@ -83,7 +83,7 @@ public class WurstplusGuiNew extends GuiScreen {
             animate(sr);
         }
         for(CategoryComponent categoryComponent : categoryComponents){
-            categoryComponent.renderFrame();
+            categoryComponent.renderFrame(mouseX, mouseY);
             categoryComponent.updatePosition(mouseX, mouseY);
             for (Component comp : categoryComponent.getComponents()) {
                 comp.updateComponent(mouseX, mouseY);

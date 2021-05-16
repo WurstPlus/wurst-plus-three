@@ -16,12 +16,17 @@ public class ColourSetting extends Setting<Colour> {
 
     @Override
     public Colour getValue() {
-        if (rainbow) {
-            Color c = Colour.fromHSB((System.currentTimeMillis() % (360 * 32)) / (360f * 32), 1, 1);
-            return new Colour(c.getRed(), c.getGreen(), c.getBlue(), value.getAlpha());
-        }
-        else return this.value;
+        this.doRainBow();
+        return this.value;
     }
+
+    private void doRainBow() {
+        if (rainbow) {
+            Color c = Colour.fromHSB((System.currentTimeMillis() % (360 * 32)) / (360f * 32), value.getSaturation(), value.getBrightness());
+            setValue(new Colour(c.getRed(), c.getGreen(), c.getBlue(), value.getAlpha()));
+        }
+    }
+
 
     public void setValue(Color value) {
         this.value = new Colour(value);

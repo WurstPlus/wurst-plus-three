@@ -8,8 +8,9 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
  */
 
 public abstract class Component {
-    public void renderComponent() {
+    public void renderComponent(int mouseX, int mouseY) {
     }
+
 
     public void updateComponent(int mouseX, int mouseY) {
     }

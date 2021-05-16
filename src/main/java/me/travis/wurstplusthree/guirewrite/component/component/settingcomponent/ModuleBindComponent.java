@@ -47,7 +47,7 @@ public class ModuleBindComponent extends Component {
     }
 
     @Override
-    public void renderComponent() {
+    public void renderComponent(int mouseX, int mouseY) {
         if (normal) {
             module = this.parent.mod;
             RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);

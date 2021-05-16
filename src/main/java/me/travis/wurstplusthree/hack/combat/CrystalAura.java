@@ -73,7 +73,7 @@ public class CrystalAura extends Hack {
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
 
-    BooleanSetting autoSwitch = new BooleanSetting("Auto Switch", true, this);
+    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "Offhand", "None"), this);
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);
@@ -117,7 +117,7 @@ public class CrystalAura extends Hack {
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
     public EntityPlayer ezTarget = null;
-    private BlockPos renderBlock = null;
+    public BlockPos renderBlock = null;
 
     private double renderDamageVal = 0;
 
@@ -280,7 +280,7 @@ public class CrystalAura extends Hack {
         boolean offhandCheck = false;
 
         if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
-            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue()) {
+            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue().equals("Mainhand")) {
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
                 mc.playerController.syncCurrentPlayItem();
