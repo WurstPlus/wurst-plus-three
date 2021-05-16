@@ -81,6 +81,7 @@ public class CrystalAura extends Hack {
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
 
     BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this);
+    BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this);
     BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this);
     IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this);
 
@@ -522,6 +523,7 @@ public class CrystalAura extends Hack {
     }
 
     private void blockObiNextToPlayer(EntityPlayer player) {
+        if(ObiYCheck.getValue() && Math.floor(player.posY) == Math.floor(mc.player.posY))return;
         obiFeetCounter = 0;
         BlockPos pos = EntityUtil.getFlooredPos(player).down();
         if (EntityUtil.isInHole(player) || mc.world.getBlockState(pos).getBlock() == Blocks.AIR) return;
