@@ -7,6 +7,7 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -25,6 +26,7 @@ public class ColorComponent extends Component {
     private boolean isOpen;
     private boolean firstTimeOpen;
     private int booleanButtonOffset = 80;
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     // TODO : make color picker
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
@@ -135,6 +137,8 @@ public class ColorComponent extends Component {
         if (pickingHue) {
             float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
             color[0] = (restrictedY - (float) hueSliderY) / hueSliderHeight;
+            color[0] = (float) Math.min(0.97, color[0]);
+            //mc.player.sendChatMessage(""+color[0]);
         }
 
         if (pickingAlpha) {
@@ -147,6 +151,8 @@ public class ColorComponent extends Component {
             float restrictedY = (float) Math.min(Math.max(pickerY, mouseY), pickerY + pickerHeight);
             color[1] = (restrictedX - (float) pickerX) / pickerWidth;
             color[2] = 1 - (restrictedY - (float) pickerY) / pickerHeight;
+            color[2] = (float) Math.max(0.04000002, color[2]);
+            color[1] = (float) Math.max(0.022222223, color[1]);
         }
 
         int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
@@ -178,7 +184,6 @@ public class ColorComponent extends Component {
 
     public void drawHueSlider(int x, int y, int width, int height, float hue) {
         int step = 0;
-
         if (height > width) {
             RenderUtil2D.drawRectMC(x, y, x + width, y + 4, 0xFFFF0000);
             y += 4;
@@ -189,8 +194,7 @@ public class ColorComponent extends Component {
                 RenderUtil2D.drawGradientRect(x, y + step * (height / 6), x + width, y + (step + 1) * (height / 6), previousStep, nextStep);
                 step++;
             }
-
-            int sliderMinY = (int) (y + (height * hue)) - 4;
+            int sliderMinY = (int) (y + height*hue) - 4;
             RenderUtil2D.drawRectMC(x, sliderMinY - 1, x + width, sliderMinY + 1,-1);
         } else {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
