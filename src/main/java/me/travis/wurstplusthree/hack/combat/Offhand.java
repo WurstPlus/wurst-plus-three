@@ -26,7 +26,6 @@ import java.util.Arrays;
 
 @Hack.Registration(name = "Offhand", description = "puts things in ur offhand", category = Hack.Category.COMBAT, isListening = false)
 public class Offhand extends Hack {
-
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
     IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
     IntSetting HoleHP = new IntSetting("Hole HP", 16, 0, 36, this);
@@ -71,7 +70,7 @@ public class Offhand extends Hack {
             mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
             mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
             mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
-            step = -1;
+            this.step = -1;
         }
         if (step == 2) {
             mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
