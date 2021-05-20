@@ -44,3 +44,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.discordwebhook }}
         with:
           args: ./build/libs/wurst-plus-three-TEST-*.jar
+      - uses: fateyan/action-discord-notifier@v1
+        with:
+          message-title: A new test version has been released <@&844994959274803245>
+          webhook: ${{ secrets.discordwebhook }}
