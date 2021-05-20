@@ -37,10 +37,10 @@ jobs:
       - name: Prepare Artifact for Discord upload
         env:
           RUN_ID: ${{ github.run_number }}
-        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-build-BETA-${RUN_ID}.jar
+        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-build-TEST-${RUN_ID}.jar
       - name: Upload Artifact to Discord
         uses: sinshutu/upload-to-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.discordwebhook }}
         with:
-          args: ./build/libs/*-BETA.jar
+          args: ./build/libs/wurst-plus-three-TEST-*.jar
