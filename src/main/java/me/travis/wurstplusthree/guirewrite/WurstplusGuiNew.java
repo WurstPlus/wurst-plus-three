@@ -38,9 +38,18 @@ public class WurstplusGuiNew extends GuiScreen {
     public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
     public static final int COLOR_FONT_SIZE = 2 * SUB_FONT_SIZE;
 
-    public static final int GUI_MODULECOLOR = new Color(45, 45, 45, 255).hashCode();
-    public static final int GUI_COLOR = new Color(30, 30, 30, 255).hashCode();
-    public static final int GUI_HOVERED_COLOR = new Color(45, 45, 45, 250).hashCode();
+    public static int GUI_MODULECOLOR() {
+        return new Color(45, 45, 45, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
+    }
+
+    public static int GUI_COLOR() {
+        return new Color(30, 30, 30, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
+    }
+
+    public static int GUI_HOVERED_COLOR() {
+        return new Color(20, 20, 20, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
+    }
+
     private boolean flag = false;
 
     public static ArrayList<CategoryComponent> categoryComponents;
