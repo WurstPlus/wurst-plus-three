@@ -11,10 +11,14 @@ public class TotemPopCounter extends Hack {
     public void onUpdate() {
         if (nullCheck()) return;
         if (!WurstplusThree.POP_MANAGER.toAnnouce.isEmpty()) {
-            for (String string : WurstplusThree.POP_MANAGER.toAnnouce) {
-                ClientMessage.sendOverwriteClientMessage(string);
+            try {
+                for (String string : WurstplusThree.POP_MANAGER.toAnnouce) {
+                    ClientMessage.sendOverwriteClientMessage(string);
+                }
+                WurstplusThree.POP_MANAGER.toAnnouce.clear();
+            } catch (Exception e) {
+                //empty catchblock goo brrrrrrrrr
             }
-            WurstplusThree.POP_MANAGER.toAnnouce.clear();
         }
     }
 }
