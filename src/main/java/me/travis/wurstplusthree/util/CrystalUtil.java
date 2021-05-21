@@ -166,30 +166,6 @@ public class CrystalUtil implements Globals {
         }
     }
 
-    private static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
-        double distancedsize = entity.getDistance(posX, posY, posZ) / 12.0;
-        Vec3d vec3d = new Vec3d(posX, posY, posZ);
-        double blockDensity = 0.0;
-        try {
-            BlockPos block = new BlockPos(vec3d.x, vec3d.y, vec3d.z);
-            if (getBlockResistance(block) == BlockResistance.Breakable) {
-                blockDensity = 0.0;
-            }
-            else {
-                blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        double v = (1.0 - distancedsize) * blockDensity;
-        float damage = (int) ((v * v + v) / 2.0 * 7.0 * 12.0 + 1.0);
-        double finald = 1.0;
-        if (entity instanceof EntityLivingBase) {
-            finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
-        }
-        return (float) finald;
-    }
-
     public static float calculateDamage(BlockPos pos, Entity target, boolean shouldIgnore) {
         return getExplosionDamage(target, new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), 6.0f, shouldIgnore);
     }
@@ -274,22 +250,6 @@ public class CrystalUtil implements Globals {
 
         damage = Math.max(damage, 0.0f);
         return damage;
-    }
-
-    public static BlockResistance getBlockResistance(BlockPos block) {
-        if (mc.world.isAirBlock(block))
-            return BlockResistance.Blank;
-
-        else if (mc.world.getBlockState(block).getBlock().getBlockHardness(mc.world.getBlockState(block), mc.world, block) != -1 && !(mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST)))
-            return BlockResistance.Breakable;
-
-        else if (mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST))
-            return BlockResistance.Resistant;
-
-        else if (mc.world.getBlockState(block).getBlock().equals(Blocks.BEDROCK))
-            return BlockResistance.Unbreakable;
-
-        return null;
     }
 
     public enum BlockResistance {

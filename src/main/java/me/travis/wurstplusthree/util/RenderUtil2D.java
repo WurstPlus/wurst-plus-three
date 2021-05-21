@@ -16,9 +16,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil2D {
 
-    private static BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+    private static final BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 
-    private static Tessellator tessellator = Tessellator.getInstance();
+    private static final Tessellator tessellator = Tessellator.getInstance();
 
     public static int deltaTime;
 

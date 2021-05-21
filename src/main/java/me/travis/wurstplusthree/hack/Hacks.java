@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.hack;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.chat.*;
 import me.travis.wurstplusthree.hack.client.Cosmetics;
 import me.travis.wurstplusthree.hack.client.Gui;

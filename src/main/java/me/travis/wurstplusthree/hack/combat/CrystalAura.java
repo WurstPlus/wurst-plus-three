@@ -67,7 +67,6 @@ public class CrystalAura extends Hack {
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
 
-    BooleanSetting detectRubberBand = new BooleanSetting("Detect Rubberband", false, this);
     BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
@@ -216,10 +215,6 @@ public class CrystalAura extends Hack {
                     e.printStackTrace();
                 }
             }
-        }
-        if (event.getPacket() instanceof SPacketPlayerPosLook && detectRubberBand.getValue()) {
-            //ClientMessage.sendErrorMessage("Rubberband detected, resetting rotations!");
-            RotationUtil.resetRotations();
         }
         if (event.getPacket() instanceof SPacketSoundEffect && fastMode.getValue().equals("Sound")) {
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
