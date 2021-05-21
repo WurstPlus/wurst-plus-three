@@ -6,32 +6,38 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 import java.util.Arrays;
 
 // TODO : FIX THIS
 
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
-public class AnvilAura extends Hack {
+public class AnvilAura extends Hack implements Globals {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
+    BooleanSetting airplace = new BooleanSetting("airplace", false, this);
     IntSetting range = new IntSetting("Range", 4, 0, 6, this);
 
     private int placedAmmount;
+    private boolean trapped;
 
     @Override
     public void onEnable() {
         this.placedAmmount = 0;
+        this.trapped = false;
         if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
             this.disable();
         }
@@ -40,14 +46,12 @@ public class AnvilAura extends Hack {
     @Override
     public void onTick() {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
-        if (target == null || placedAmmount >= ammount.getValue()) return;
-        BlockPos anvilPos = EntityUtil.getFlooredPos(target).up(2);
-        if (BlockUtil.canPlaceBlock(anvilPos)) {
-            placeAnvil(anvilPos);
-            placedAmmount++;
-        } else {
-            placeObi(anvilPos.down().east());
-            placeObi(anvilPos.east());
+        
+        if (mode.is("Self")) {
+        	if (airplace.isOn() && !target.isAirBorne) {
+        		placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
+        	}
+        	
         }
     }
 
