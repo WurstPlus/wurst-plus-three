@@ -100,17 +100,17 @@ public class CategoryComponent {
                                 type = ColorUtil.type.BRIGHTNESS;
                                 break;
                         }
-                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x,
                                 ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), 1000, 255, type).hashCode(),
                                 ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), Gui.INSTANCE.rainbowDelay.getValue(), 255, type).hashCode());
                         break;
                     case "Rainbow":
-                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1,
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x,
                                 ColorUtil.releasedDynamicRainbow(0, 255).hashCode(),
                                 ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), 255).hashCode());
                         break;
                     case "None":
-                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 2, x + 1, Gui.INSTANCE.buttonColor.getValue().hashCode());
+                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x, Gui.INSTANCE.buttonColor.getValue().hashCode());
                         break;
                 }
             }

@@ -27,9 +27,7 @@ public class ColorComponent extends Component {
     private boolean isOpen;
     private boolean firstTimeOpen;
     private final int booleanButtonOffset = 80;
-    private final Minecraft mc = Minecraft.getMinecraft();
 
-    // TODO : make color picker
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
         this.set = value;
         this.parent = button;
@@ -122,7 +120,7 @@ public class ColorComponent extends Component {
         boolean pickingAlpha = false;
 
         int pickerWidth = 90;
-        int pickerHeight = 50;
+        int pickerHeight = 51;
         int hueSliderWidth = 10;
         int hueSliderHeight = 59;
         int alphaSliderHeight = 10;
@@ -139,7 +137,6 @@ public class ColorComponent extends Component {
             float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
             color[0] = (restrictedY - (float) hueSliderY) / hueSliderHeight;
             color[0] = (float) Math.min(0.97, color[0]);
-            //mc.player.sendChatMessage(""+color[0]);
         }
 
         if (pickingAlpha) {
@@ -171,9 +168,9 @@ public class ColorComponent extends Component {
 
         RenderUtil2D.drawRectMC(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
 
-        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, color[3]);
-
         finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), color[3]);
+
+        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, finalColor.getRed() / 255f, finalColor.getGreen() / 255f, finalColor.getBlue() / 255f, color[3]);
     }
 
     public static Color alphaIntegrate(Color color, float alpha) {
@@ -192,7 +189,7 @@ public class ColorComponent extends Component {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step + 1) / 6, 1.0f, 1.0f);
-                RenderUtil2D.drawGradientRect(x, y + step * (height / 6), x + width, y + (step + 1) * (height / 6), previousStep, nextStep);
+                RenderUtil2D.drawGradientRect(x, y + step * (height / 6f), x + width, y + (step + 1) * (height / 6f), previousStep, nextStep);
                 step++;
             }
             int sliderMinY = (int) (y + height*hue) - 4;
