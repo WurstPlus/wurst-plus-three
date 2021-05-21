@@ -20,6 +20,8 @@ import java.util.Arrays;
 
 // TODO : FIX THIS
 
+// UNFINISHED
+
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
 
