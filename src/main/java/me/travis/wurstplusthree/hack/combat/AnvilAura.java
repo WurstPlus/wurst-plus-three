@@ -26,7 +26,8 @@ public class AnvilAura extends Hack {
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
-    BooleanSetting airplace = new BooleanSetting("airplace", false, this);
+    BooleanSetting breakAnvil = new BooleanSetting("Break anvils", true, this);
+    BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
     IntSetting range = new IntSetting("Range", 4, 0, 6, this);
 
     private int placedAmmount;
@@ -67,6 +68,10 @@ public class AnvilAura extends Hack {
         }
         
         else {
+        	if (mc.world.getBlockState(target.getPosition()) == Blocks.ANVIL) {
+        		
+        	}
+        	
         	for (Vec3d vec : EntityUtil.getUnsafeBlockArray(target, 4, true)) {
         		placeObi(new BlockPos(vec.x, vec.y, vec.z));
         	} 
@@ -85,6 +90,10 @@ public class AnvilAura extends Hack {
         this.switchToSlot(PlayerUtil.findObiInHotbar());
         BlockUtil.placeBlock(pos, EnumHand.MAIN_HAND, rotate.getValue(), true, false);
         this.switchToSlot(old);
+    }
+    
+    private void breakBlock(BlockPos pos) {
+    	int old = mc.player.inventory.currentItem;
     }
 
     private EntityPlayer getTarget() {
