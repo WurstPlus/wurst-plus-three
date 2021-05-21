@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.combat;
 
+import com.mojang.authlib.GameProfile;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -10,6 +11,8 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +31,7 @@ import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -72,6 +76,8 @@ public class CrystalAura extends Hack {
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
+    BooleanSetting entityPredict = new BooleanSetting("Entity Motion Predict", true, this);
+    IntSetting predictedTicks = new IntSetting("Predicted Ticks", 3, 0, 20, this);
 
     BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this);
     BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this);
@@ -345,6 +351,155 @@ public class CrystalAura extends Hack {
         return bestCrystal;
     }
 
+
+    public static Entity getPredictedPosition(Entity entity, double x) {
+        if (x == 0) return entity;
+        EntityPlayer e = null;
+        double motionX = entity.posX - entity.lastTickPosX;
+        double motionY = entity.posY - entity.lastTickPosY;
+        double motionZ = entity.posZ - entity.lastTickPosZ;
+        boolean shouldPredict = false;
+        boolean shouldStrafe = false;
+        double motion = Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionZ, 2) + Math.pow(motionY, 2));
+        if (motion > 0.1) {
+            shouldPredict = true;
+        }
+        if (!shouldPredict) {
+            return entity;
+        }
+        if (motion > 0.31) {
+            shouldStrafe = true;
+        }
+        for (int i = 0; i < x; i++) {
+            if (e == null) {
+                if (isOnGround(0, 0, 0, entity)) {
+                    motionY = shouldStrafe ? 0.4 : -0.07840015258789;
+                }else {
+                    motionY -= 0.08;
+                    motionY *= 0.9800000190734863D;
+                }
+                e = placeValue(motionX, motionY, motionZ, (EntityPlayer) entity);
+            }else {
+                if (isOnGround(0, 0, 0, e)) {
+                    motionY = shouldStrafe ? 0.4 : -0.07840015258789;
+                }else {
+                    motionY -= 0.08;
+                    motionY *= 0.9800000190734863D;
+                }
+                e = placeValue(motionX, motionY, motionZ, e);
+            }
+        }
+        return e;
+    }
+    public static boolean isOnGround(double x, double y, double z, Entity entity) {
+        double d3 = y;
+        List<AxisAlignedBB> list1 = Minecraft.getMinecraft().world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
+        if (y != 0.0D) {
+            int k = 0;
+            for (int l = list1.size(); k < l; ++k) {
+                y = (list1.get(k)).calculateYOffset(entity.getEntityBoundingBox(), y);
+            }
+        }
+        return d3 != y && d3 < 0.0D;
+    }
+
+    public static EntityPlayer placeValue(double x, double y, double z, EntityPlayer entity) {
+        List<AxisAlignedBB> list1 = Minecraft.getMinecraft().world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
+        if (y != 0.0D) {
+            int k = 0;
+            for (int l = list1.size(); k < l; ++k)
+            {
+                y = (list1.get(k)).calculateYOffset(entity.getEntityBoundingBox(), y);
+            }
+            if (y != 0.0D) {
+                entity.setEntityBoundingBox(entity.getEntityBoundingBox().offset(0.0D, y, 0.0D));
+            }
+        }
+        if (x != 0.0D)
+        {
+            int j5 = 0;
+
+            for (int l5 = list1.size(); j5 < l5; ++j5)
+            {
+                x = calculateXOffset(entity.getEntityBoundingBox(), x, list1.get(j5));
+            }
+
+            if (x != 0.0D) {
+                entity.setEntityBoundingBox(entity.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
+            }
+        }
+
+
+        if (z != 0.0D)
+        {
+            int k5 = 0;
+
+            for (int i6 = list1.size(); k5 < i6; ++k5)
+            {
+                z = calculateZOffset(entity.getEntityBoundingBox(), z, list1.get(k5));
+            }
+
+            if (z != 0.0D)
+            {
+                entity.setEntityBoundingBox(entity.getEntityBoundingBox().offset(0.0D, 0.0D, z));
+            }
+        }
+        return entity;
+    }
+    public static double calculateXOffset(AxisAlignedBB other, double offsetX, AxisAlignedBB this1)
+    {
+        if (other.maxY > this1.minY && other.minY < this1.maxY && other.maxZ > this1.minZ && other.minZ < this1.maxZ)
+        {
+            if (offsetX > 0.0D && other.maxX <= this1.minX)
+            {
+                double d1 = (this1.minX - 0.3) - other.maxX;
+
+                if (d1 < offsetX)
+                {
+                    offsetX = d1;
+                }
+            }
+            else if (offsetX < 0.0D && other.minX >= this1.maxX)
+            {
+                double d0 = (this1.maxX + 0.3) - other.minX;
+
+                if (d0 > offsetX)
+                {
+                    offsetX = d0;
+                }
+            }
+
+        }
+        return offsetX;
+    }
+    public static double calculateZOffset(AxisAlignedBB other, double offsetZ, AxisAlignedBB this1)
+    {
+        if (other.maxX > this1.minX && other.minX < this1.maxX && other.maxY > this1.minY && other.minY < this1.maxY)
+        {
+            if (offsetZ > 0.0D && other.maxZ <= this1.minZ)
+            {
+                double d1 = (this1.minZ - 0.3) - other.maxZ;
+
+                if (d1 < offsetZ)
+                {
+                    offsetZ = d1;
+                }
+            }
+            else if (offsetZ < 0.0D && other.minZ >= this1.maxZ)
+            {
+                double d0 = (this1.maxZ + 0.3) - other.minZ;
+
+                if (d0 > offsetZ)
+                {
+                    offsetZ = d0;
+                }
+            }
+
+        }
+        return offsetZ;
+    }
+
+
     private BlockPos getBestBlock() {
         if (getBestCrystal() != null && fastMode.is("Off")) {
             placeTimeoutFlag = true;
@@ -361,6 +516,11 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
+            if (target.getDistance(mc.player) > 15) continue;
+            float f = target.width / 2.0F, f1 = target.height;
+            target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
+            Entity y = getPredictedPosition(target, predictedTicks.getValue());
+            target.setEntityBoundingBox(y.getEntityBoundingBox());
             for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), !crystalLogic.getValue(), this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
