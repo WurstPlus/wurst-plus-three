@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
 
@@ -48,7 +49,27 @@ public class AnvilAura extends Hack {
         	if (airplace.getValue() && !target.isAirBorne) {
         		placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
         	}
-        	
+        }	
+        if (mode.is("Self") && mc.world.getBlockState(target.getPosition().up()) != Blocks.AIR) {
+        	if (airplace.getValue()) {
+        		placeAnvil(EntityUtil.getFlooredPos(target).up(range.getValue()));
+        	} else {
+        		if (!BlockUtil.canPlaceBlock(target.getPosition().up(3))) {
+        			for (int i = 0; i < range.getValue() / 2; i ++) {
+        				BlockPos pos = new BlockPos(target.posX - 1, target.posY - i - 1, target.posZ);
+	        			if (mc.world.getBlockState(pos) != Blocks.AIR) {
+	        				placeObi(pos);
+	        			}
+        			}
+        		} 
+        		placeAnvil(target.getPosition().up(range.getValue() / 2));
+        	}
+        }
+        
+        else {
+        	for (Vec3d vec : EntityUtil.getUnsafeBlockArray(target, 4, true)) {
+        		placeObi(new BlockPos(vec.x, vec.y, vec.z));
+        	} 
         }
     }
 
