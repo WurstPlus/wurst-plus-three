@@ -12,8 +12,12 @@ public class ReverseStep extends Hack {
     @Override
     public void onUpdate() {
         if (nullCheck()) return;
-        if (mc.player.isInLava() || mc.player.isInWater() || mc.player.isOnLadder() || WurstplusThree.HACKS.ishackEnabled("Speed")) return;
-
+        try {
+            if (mc.player.isInLava() || mc.player.isInWater() || mc.player.isOnLadder() || WurstplusThree.HACKS.ishackEnabled("Speed")) return;
+        } catch (Exception ignored) {
+            return;
+        }
+        
         if (mc.player.onGround) { // idk if this makes the other checks invalid, probably does
             for (double y = 0.0; y < this.height.getValue() + 0.5; y += 0.01) {
                 if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, -y, 0.0)).isEmpty()) {
