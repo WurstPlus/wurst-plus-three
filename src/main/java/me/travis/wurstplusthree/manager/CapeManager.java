@@ -22,7 +22,7 @@ public class CapeManager implements Globals {
 
     public CapeManager() {
         try { // og
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/ogs.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/ogs.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -32,7 +32,7 @@ public class CapeManager implements Globals {
             e.printStackTrace();
         }
         try { // dev
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/dev.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/dev.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -42,7 +42,7 @@ public class CapeManager implements Globals {
             e.printStackTrace();
         }
         try { // cool dudes
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cooldude.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/cooldude.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -56,14 +56,14 @@ public class CapeManager implements Globals {
             if (!tmp.exists()) {
                 tmp.mkdirs();
             }
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/donator.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/donator.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 String colune = inputLine.trim();
                 String uuid = colune.split(":")[0];
                 String cape = colune.split(":")[1];
-                URL capeUrl = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/capes/" + cape + ".png");
+                URL capeUrl = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/capes/" + cape + ".png");
                 BufferedImage capeImage = ImageIO.read(capeUrl);
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
@@ -75,7 +75,7 @@ public class CapeManager implements Globals {
 
     public void reload(){
         try { // og
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/ogs.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/ogs.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -85,7 +85,7 @@ public class CapeManager implements Globals {
             e.printStackTrace();
         }
         try { // dev
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/dev.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/dev.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -95,7 +95,7 @@ public class CapeManager implements Globals {
             e.printStackTrace();
         }
         try { // cool dudes
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cooldude.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/cooldude.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -109,14 +109,14 @@ public class CapeManager implements Globals {
             if (!tmp.exists()) {
                 tmp.mkdirs();
             }
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/donator.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/donator.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 String colune = inputLine.trim();
                 String uuid = colune.split(":")[0];
                 String cape = colune.split(":")[1];
-                URL capeUrl = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/capes/" + cape + ".png");
+                URL capeUrl = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/capes/" + cape + ".png");
                 BufferedImage capeImage = ImageIO.read(capeUrl);
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));

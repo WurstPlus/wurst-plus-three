@@ -1,0 +1,50 @@
+name: Gradle Build
+
+# thx moondark for making this a thing
+
+on:
+  push:
+    branches: [ 0.6.0 ]
+  pull_request:
+    branches: [ 0.6.0 ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: |
+          ./gradlew setupDecompWorkspace
+          ./gradlew build
+      - name: List files
+        run: ls
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          # Artifact name
+          name: WurstPlus3
+          # A file, directory or wildcard pattern that describes what to upload
+          path: ./build/libs/*-release.jar
+      - name: Prepare Artifact for Discord upload
+        env:
+          RUN_ID: ${{ github.run_number }}
+        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-TEST-${RUN_ID}.jar
+      - name: Upload Artifact to Discord
+        uses: sinshutu/upload-to-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.discordwebhook }}
+        with:
+          args: ./build/libs/wurst-plus-three-TEST-*.jar
+      - uses: WurstPlus/action-discord-notifier@v1
+        with:
+          message-title: A new test version has been released
+          webhook: ${{ secrets.discordwebhook }}

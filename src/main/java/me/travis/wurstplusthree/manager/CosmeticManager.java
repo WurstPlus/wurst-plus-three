@@ -22,7 +22,7 @@ public class CosmeticManager implements Globals {
 
     public CosmeticManager() {
         try {
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cosmetics.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/cosmetics.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -42,7 +42,7 @@ public class CosmeticManager implements Globals {
     public void reload() {
         cosmeticMap.clear();
         try {
-            URL capesList = new URL("https://raw.githubusercontent.com/TrvsF/capes/main/cosmetics.txt");
+            URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/cosmetics.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
