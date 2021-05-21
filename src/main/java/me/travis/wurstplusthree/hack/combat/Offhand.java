@@ -113,7 +113,7 @@ public class Offhand extends Hack {
          */
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
-                if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player)) >= mc.player.getHealth()) {
+                if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player, true)) >= mc.player.getHealth()) {
                     return true;
                 }
             }

@@ -23,7 +23,7 @@ import java.util.Arrays;
 // TODO : FIX THIS
 
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
-public class AnvilAura extends Hack implements Globals {
+public class AnvilAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);
@@ -48,7 +48,7 @@ public class AnvilAura extends Hack implements Globals {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
         
         if (mode.is("Self")) {
-        	if (airplace.isOn() && !target.isAirBorne) {
+        	if (airplace.getValue() && !target.isAirBorne) {
         		placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
         	}
         	

@@ -13,10 +13,6 @@ public class BooleanSetting extends Setting<Boolean> {
         value = !value;
     }
 
-    public boolean isOn() {
-        return this.value;
-    }
-
     public Boolean getValue() {
         return value;
     }

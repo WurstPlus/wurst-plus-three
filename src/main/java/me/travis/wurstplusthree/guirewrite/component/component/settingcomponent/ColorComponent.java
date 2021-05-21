@@ -15,7 +15,7 @@ import java.awt.*;
 /**
  * @author Madmegsox1
  * @since 29/04/2021
- * @Author wallhacks0
+ * @author wallhacks0
  * original picker was made by LinusTouchTips
  */
 
@@ -26,7 +26,7 @@ public class ColorComponent extends Component {
     private int offset;
     private boolean isOpen;
     private boolean firstTimeOpen;
-    private int booleanButtonOffset = 80;
+    private final int booleanButtonOffset = 80;
     private final Minecraft mc = Minecraft.getMinecraft();
 
     // TODO : make color picker
