@@ -6,17 +6,14 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.block.BlockAnvil;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 
 import java.util.Arrays;
 

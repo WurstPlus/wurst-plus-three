@@ -1,7 +1,5 @@
 package me.travis.wurstplusthree.util.elements;
 
-import me.travis.wurstplusthree.util.elements.Colour;
-
 import java.awt.*;
 
 public class Rainbow {

@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWeb;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

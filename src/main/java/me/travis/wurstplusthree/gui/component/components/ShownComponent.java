@@ -1,9 +1,9 @@
-package me.travis.wurstplusthree.gui.components.component.settingcomponent;
+package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
-import me.travis.wurstplusthree.gui.components.Component;
-import me.travis.wurstplusthree.gui.components.component.HackButton;
+import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;

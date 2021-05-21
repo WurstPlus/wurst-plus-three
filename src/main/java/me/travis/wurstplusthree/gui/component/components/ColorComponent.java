@@ -1,13 +1,12 @@
-package me.travis.wurstplusthree.gui.components.component.settingcomponent;
+package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
-import me.travis.wurstplusthree.gui.components.Component;
-import me.travis.wurstplusthree.gui.components.component.HackButton;
+import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -46,7 +45,7 @@ public class ColorComponent extends Component {
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, WurstplusGuiNew.GUI_COLOR());
-            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 71, mouseX, mouseY);
+            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 72, mouseX, mouseY);
             set.setValue(finalColor);
             RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode());
             RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), parent.parent.getY() + offset + 6 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());

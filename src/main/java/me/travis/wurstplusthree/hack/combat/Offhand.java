@@ -2,8 +2,11 @@ package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.*;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
+import me.travis.wurstplusthree.setting.type.EnumSetting;
+import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.util.CrystalUtil;
+import me.travis.wurstplusthree.util.EntityUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
@@ -11,11 +14,11 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 

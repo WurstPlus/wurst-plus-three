@@ -17,7 +17,7 @@ public class ReverseStep extends Hack {
         } catch (Exception ignored) {
             return;
         }
-        
+
         if (mc.player.onGround) { // idk if this makes the other checks invalid, probably does
             for (double y = 0.0; y < this.height.getValue() + 0.5; y += 0.01) {
                 if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, -y, 0.0)).isEmpty()) {

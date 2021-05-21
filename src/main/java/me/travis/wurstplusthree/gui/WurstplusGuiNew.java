@@ -1,8 +1,8 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.components.CategoryComponent;
-import me.travis.wurstplusthree.gui.components.Component;
+import me.travis.wurstplusthree.gui.component.CategoryComponent;
+import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import net.minecraft.client.audio.PositionedSoundRecord;

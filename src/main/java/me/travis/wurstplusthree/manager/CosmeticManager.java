@@ -1,9 +1,10 @@
 package me.travis.wurstplusthree.manager;
 
-import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.player.EntityPlayer;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
