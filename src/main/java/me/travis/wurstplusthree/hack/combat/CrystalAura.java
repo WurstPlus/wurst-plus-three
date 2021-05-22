@@ -106,11 +106,12 @@ public class CrystalAura extends Hack {
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
-    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle"), this);
+    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
     BooleanSetting flat = new BooleanSetting("Flat", false, this);
     DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 0.0, this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this);
+    DoubleSetting columnHight = new DoubleSetting("ColumnHight", 1.5, 0.0, 10.0, this);
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
@@ -567,7 +568,7 @@ public class CrystalAura extends Hack {
 
         boolean outline = false;
         boolean solid = false;
-        if (!mode.is("Circle")) {
+        if (!mode.is("Circle") && !mode.is("Column")) {
             switch (mode.getValue()) {
                 case "Pretty":
                     outline = true;
@@ -583,8 +584,10 @@ public class CrystalAura extends Hack {
                     break;
             }
             RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderBlock.getX(), renderBlock.getY()+1, renderBlock.getZ()) : renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
-        } else {
+        } else if(mode.is("Circle")){
             RenderUtil.drawCircle(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue());
+        }else {
+            RenderUtil.drawColumn(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue(), 5, columnHight.getValue());
         }
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");

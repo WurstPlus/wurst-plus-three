@@ -365,4 +365,16 @@ public class EntityUtil implements Globals {
         return false;
     }
 
+    public static double sigmoid(final double x){
+        return (1/(1+Math.pow(Math.E, (-1*x))));
+    }
+
+    public static double predictPos(final double motion, final double threshold){
+        double m = Math.abs(motion);
+        m = m - threshold;
+        m = sigmoid(m);
+        return m;
+    }
+
+
 }

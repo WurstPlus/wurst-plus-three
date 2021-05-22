@@ -9,6 +9,7 @@ import me.travis.wurstplusthree.util.BlockUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import net.minecraft.block.BlockWeb;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -33,6 +34,7 @@ public class AutoWeb extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     IntSetting type = new IntSetting("Type", 3, 1, 3,this);
     IntSetting delayTick = new IntSetting("Delay", 1, 0, 10, this);
+    BooleanSetting PredictPlace = new BooleanSetting("Predict", false, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);
     BooleanSetting lowFeet = new BooleanSetting("Low Feet", false, this);
     BooleanSetting legs = new BooleanSetting("Legs", true, this);
@@ -146,6 +148,22 @@ public class AutoWeb extends Hack {
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
         mc.playerController.updateController();
         mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));
+    }
+
+    private Vec3d predict(Vec3d startPos){
+        final double defSpeed = 0.4913640415;
+        final double x = this.player.motionX;
+        final double z = this.player.motionZ;
+
+        if(x < 0.5 && x > -0.5){
+            return startPos;
+        }
+        if(z < 0.5 && z > -0.5){
+            return startPos;
+        }
+        final double predictX = EntityUtil.predictPos(x, 0.152);
+        final double predictZ = EntityUtil.predictPos(z, 0.152);
+        return startPos;
     }
 
 }

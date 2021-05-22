@@ -852,6 +852,26 @@ public class RenderUtil implements Globals {
         }
     }
 
+    public static void drawColumn(float x, float y, float z, float radius, Colour colour, int amount, double height){
+        double Hincrement = height/amount;
+        float Rincrement = (radius/amount) * (float) height;
+
+
+        BlockPos pos = new BlockPos(x, y, z);
+        AxisAlignedBB bb = new AxisAlignedBB((double) pos.getX() - RenderUtil.mc.getRenderManager().viewerPosX, (double) pos.getY() - RenderUtil.mc.getRenderManager().viewerPosY,
+                (double) pos.getZ() - RenderUtil.mc.getRenderManager().viewerPosZ,
+                (double) (pos.getX() + 1) - RenderUtil.mc.getRenderManager().viewerPosX,
+                (double) (pos.getY() + 1) - RenderUtil.mc.getRenderManager().viewerPosY, (double) (pos.getZ() + 1) - RenderUtil.mc.getRenderManager().viewerPosZ);
+        camera.setPosition(Objects.requireNonNull(RenderUtil.mc.getRenderViewEntity()).posX, RenderUtil.mc.getRenderViewEntity().posY, RenderUtil.mc.getRenderViewEntity().posZ);
+
+        if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + RenderUtil.mc.getRenderManager().viewerPosX, bb.minY + RenderUtil.mc.getRenderManager().viewerPosY, bb.minZ + RenderUtil.mc.getRenderManager().viewerPosZ, bb.maxX + RenderUtil.mc.getRenderManager().viewerPosX, bb.maxY + RenderUtil.mc.getRenderManager().viewerPosY, bb.maxZ + RenderUtil.mc.getRenderManager().viewerPosZ))) {
+            for (int i =0; i<=amount;i++) {
+                bb = new AxisAlignedBB(bb.minX, bb.minY + Hincrement*i , bb.minZ, bb.maxX, bb.maxY+ Hincrement*i, bb.maxZ);
+                drawCircleVertices(bb, Rincrement*i, colour);
+            }
+        }
+    }
+
     public static void drawCircleVertices(AxisAlignedBB bb, float radius, Colour colour){
         float r = (float) colour.getRed() / 255.0f;
         float g = (float) colour.getGreen() / 255.0f;
