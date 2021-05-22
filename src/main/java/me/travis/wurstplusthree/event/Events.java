@@ -37,8 +37,6 @@ import java.util.UUID;
 
 public class Events implements Globals {
 
-    private Object EventManager;
-
     private final Timer logoutTimer = new Timer();
     private long time = -1;
 
@@ -203,7 +201,7 @@ public class Events implements Globals {
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
             try {
-                if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
+                if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
                     MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
                     WurstplusThree.POP_MANAGER.onTotemPop(player);
@@ -231,6 +229,8 @@ public class Events implements Globals {
                         }
                         MinecraftForge.EVENT_BUS.post(new ConnectionEvent(2, id, null));
                     }
+                    default:
+                        break;
                 }
             });
         } else if (event.getPacket() instanceof SPacketTimeUpdate) {

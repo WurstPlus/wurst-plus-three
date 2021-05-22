@@ -2,7 +2,7 @@ package me.travis.wurstplusthree;
 
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.DonatorFont;
@@ -25,7 +25,7 @@ public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
     public static final String MODNAME = "Wurst+3";
-    public static final String MODVER = "0.5.0";
+    public static final String MODVER = "0.6.0";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 

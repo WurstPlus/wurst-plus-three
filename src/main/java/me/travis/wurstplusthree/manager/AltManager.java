@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.net.Proxy;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -119,8 +120,8 @@ public class AltManager {
             session.setAccessible(true);
             session.set(Minecraft.getMinecraft(), newSession);
             session.setAccessible(false);
-        } catch (Exception exeption) {
-            exeption.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -132,7 +133,7 @@ public class AltManager {
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
             writer.write(content);
             writer.close();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

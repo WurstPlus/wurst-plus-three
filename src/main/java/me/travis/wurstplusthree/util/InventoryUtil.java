@@ -82,7 +82,7 @@ public class InventoryUtil implements Globals {
             if (s.getItem() == Items.AIR || !(s.getItem() instanceof ItemArmor) || (armor = (ItemArmor) s.getItem()).getEquipmentSlot() != type)
                 continue;
             float currentDamage = armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, s);
-            boolean bl = cursed = binding && EnchantmentHelper.hasBindingCurse(s);
+            cursed = binding && EnchantmentHelper.hasBindingCurse(s);
             if (!(currentDamage > damage) || cursed) continue;
             damage = currentDamage;
             slot = i;
@@ -124,7 +124,7 @@ public class InventoryUtil implements Globals {
                 if (craftingStack.getItem() == Items.AIR || !(craftingStack.getItem() instanceof ItemArmor) || (armor = (ItemArmor) craftingStack.getItem()).getEquipmentSlot() != type)
                     continue;
                 float currentDamage = armor.damageReduceAmount + EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION, craftingStack);
-                boolean bl = cursed = binding && EnchantmentHelper.hasBindingCurse(craftingStack);
+                cursed = binding && EnchantmentHelper.hasBindingCurse(craftingStack);
                 if (!(currentDamage > damage) || cursed) continue;
                 damage = currentDamage;
                 slot = i;

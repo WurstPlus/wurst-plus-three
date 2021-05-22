@@ -4,8 +4,13 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.util.*;
-import net.minecraft.block.*;
+import me.travis.wurstplusthree.util.BlockUtil;
+import me.travis.wurstplusthree.util.InventoryUtil;
+import me.travis.wurstplusthree.util.MappingUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -77,10 +82,6 @@ public class Burrow extends Hack {
                 swapBlock = InventoryUtil.findHotbarBlock(BlockChest.class);
                 break;
             case "WhiteList":
-                if(blockW.equals(null)){
-                    ClientMessage.sendMessage("Please set the block with commands!");
-                    return;
-                }
                 swapBlock = InventoryUtil.findHotbarBlock(blockW.getClass());
         }
         if (swapBlock == -1) {

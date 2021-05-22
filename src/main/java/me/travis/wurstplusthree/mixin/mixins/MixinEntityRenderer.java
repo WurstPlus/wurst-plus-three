@@ -34,7 +34,7 @@ import java.util.List;
 
 @Mixin(value={EntityRenderer.class})
 public abstract class MixinEntityRenderer {
-    private boolean injection = true;
+
     @Shadow
     public ItemStack itemActivationItem;
     @Shadow
@@ -44,7 +44,7 @@ public abstract class MixinEntityRenderer {
     @Shadow
     public abstract void getMouseOver(float var1);
 
-    @Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
+    /*@Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
     public void getMouseOverHook(float partialTicks, CallbackInfo info) {
         if (this.injection) {
             block3: {
@@ -59,7 +59,7 @@ public abstract class MixinEntityRenderer {
             }
             this.injection = true;
         }
-    }
+    }*/
 
     @Redirect(method={"setupCameraTransform"}, at=@At(value="FIELD", target="Lnet/minecraft/client/entity/EntityPlayerSP;prevTimeInPortal:F"))
     public float prevTimeInPortalHook(EntityPlayerSP entityPlayerSP) {

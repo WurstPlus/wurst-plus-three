@@ -22,8 +22,6 @@ public class MixinRenderEnderCrystal {
     @Shadow
     @Final
     private static ResourceLocation ENDER_CRYSTAL_TEXTURES;
-    private static ResourceLocation glint;
-
     @Redirect(method={"doRender"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     public void renderModelBaseHook(ModelBase model, Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (CrystalRender.INSTANCE.isEnabled()) {
@@ -98,7 +96,7 @@ public class MixinRenderEnderCrystal {
     }
 
     static {
-        glint = new ResourceLocation("textures/glint.png");
+        new ResourceLocation("textures/glint.png");
     }
 }
 

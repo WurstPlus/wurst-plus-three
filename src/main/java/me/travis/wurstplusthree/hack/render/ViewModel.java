@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.render;
 
-import me.travis.wurstplusthree.event.events.PerspectiveEvent;
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;

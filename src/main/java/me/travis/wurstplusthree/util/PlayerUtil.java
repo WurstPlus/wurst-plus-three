@@ -14,13 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.BlockPos;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class PlayerUtil implements Globals {
 
@@ -97,10 +98,19 @@ public class PlayerUtil implements Globals {
         return -1;
     }
 
-    public static String convertStreamToString(final InputStream is) {
-        final Scanner s = new Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "/";
-    }
+    /*
+        Fixed a memory leak - A2H
+    */
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+          sb.append(line + "\n");
+        }
+        is.close();
+        return sb.toString();
+      }
 
     public static boolean isInHole() {
 

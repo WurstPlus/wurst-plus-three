@@ -1,6 +1,4 @@
-package me.travis.wurstplusthree.guirewrite.component;
-
-import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
+package me.travis.wurstplusthree.gui.component;
 
 /**
  * @author Madmegsox1
@@ -8,8 +6,9 @@ import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
  */
 
 public abstract class Component {
-    public void renderComponent() {
+    public void renderComponent(int mouseX, int mouseY) {
     }
+
 
     public void updateComponent(int mouseX, int mouseY) {
     }

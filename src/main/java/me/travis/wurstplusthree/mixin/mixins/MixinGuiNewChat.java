@@ -21,7 +21,6 @@ extends Gui {
     @Shadow
     @Final
     public List<ChatLine> drawnChatLines;
-    private ChatLine chatLine;
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V", ordinal = 0))
     private void overrideChatBackgroundColour(int left, int top, int right, int bottom, int color) {

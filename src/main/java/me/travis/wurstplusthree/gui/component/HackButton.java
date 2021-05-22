@@ -1,19 +1,15 @@
-package me.travis.wurstplusthree.guirewrite.component.component;
+package me.travis.wurstplusthree.gui.component;
 
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
-import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
-import me.travis.wurstplusthree.guirewrite.component.Component;
-import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.*;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.component.components.*;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -55,7 +51,7 @@ public class HackButton extends Component {
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
                 if (s instanceof BooleanSetting) {
-                    this.subcomponents.add(new BoolComponent((BooleanSetting) s, this, opY));
+                    this.subcomponents.add(new BooleanComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
                     this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
@@ -74,7 +70,7 @@ public class HackButton extends Component {
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
                 }
             }
-            this.subcomponents.add(new KeyBindComponent(this, opY));
+            this.subcomponents.add(new ModuleBindComponent(this, opY));
             this.subcomponents.add(new ShownComponent(this, opY));
         }
     }
@@ -89,22 +85,25 @@ public class HackButton extends Component {
         }
     }
 
+
+
+
     @Override
-    public void renderComponent() {
+    public void renderComponent(int MouseX, int MouseY) {
         subCompLength = 0;
         if (mod.isEnabled()) {
             RenderUtil2D.drawGradientRect(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET,
                     parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_OFFSET,
-                    (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(0, Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()),
-                    (Gui.INSTANCE.rainbow.getValue() ? ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), Gui.INSTANCE.buttonColor.getValue().getAlpha()).hashCode() : Gui.INSTANCE.buttonColor.getValue().hashCode()));
+                    (Gui.INSTANCE.buttonColor.getValue().hashCode()),
+                    (Gui.INSTANCE.buttonColor.getValue().hashCode()));
         } else {
-            RenderUtil2D.drawRectMC(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR : WurstplusGuiNew.GUI_COLOR);
+            RenderUtil2D.drawRectMC(parent.getX() + WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET, parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH, this.parent.getY() + WurstplusGuiNew.HEIGHT + this.offset + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_MODULECOLOR());
         }
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), parent.getX() + WurstplusGuiNew.MODULE_FONT_SIZE, parent.getY() + this.offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT / 2 - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
-                    comp.renderComponent();
+                    comp.renderComponent(MouseX, MouseY);
                     if (comp instanceof ColorComponent) {
                         if (((ColorComponent) comp).isOpen()) {
                             subCompLength += 6;

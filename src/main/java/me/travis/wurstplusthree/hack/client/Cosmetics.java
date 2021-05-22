@@ -5,13 +5,10 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.elements.cosmetics.GlassesModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 
 /**
  * @author Madmegsox1
