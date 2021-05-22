@@ -1,6 +1,4 @@
-package me.travis.wurstplusthree.gui.components;
-
-import me.travis.wurstplusthree.util.elements.Colour;
+package me.travis.wurstplusthree.util.elements;
 
 import java.awt.*;
 

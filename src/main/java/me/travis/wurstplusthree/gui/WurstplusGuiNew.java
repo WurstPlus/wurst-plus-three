@@ -1,11 +1,10 @@
-package me.travis.wurstplusthree.guirewrite;
+package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
-import me.travis.wurstplusthree.guirewrite.component.Component;
+import me.travis.wurstplusthree.gui.component.CategoryComponent;
+import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -83,7 +82,7 @@ public class WurstplusGuiNew extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        ScaledResolution sr = new ScaledResolution(mc);
         boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
         if (gradientShadow) {
             drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Gui.INSTANCE.gradientStartColor.getValue().getRGB(), Gui.INSTANCE.gradientEndColor.getValue().getRGB());

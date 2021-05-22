@@ -2,7 +2,7 @@ package me.travis.wurstplusthree;
 
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.DonatorFont;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
-//test
+
 /**
  * @author travis - began work on 8th april 2021
  */
@@ -75,7 +75,7 @@ public class WurstplusThree {
     public void init(FMLInitializationEvent event) {
         this.load();
         LOGGER.info(MODNAME + " : " + MODVER + " has been loaded");
-        Display.setTitle(MODNAME + " v" + MODVER);
+        Display.setTitle("Wurst+3 | v" + MODVER);
     }
 
     public void load() {

@@ -1,13 +1,12 @@
-package me.travis.wurstplusthree.guirewrite.component.component.settingcomponent;
+package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
-import me.travis.wurstplusthree.guirewrite.component.Component;
-import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -15,7 +14,7 @@ import java.awt.*;
 /**
  * @author Madmegsox1
  * @since 29/04/2021
- * @Author wallhacks0
+ * @author wallhacks0
  * original picker was made by LinusTouchTips
  */
 
@@ -26,10 +25,8 @@ public class ColorComponent extends Component {
     private int offset;
     private boolean isOpen;
     private boolean firstTimeOpen;
-    private int booleanButtonOffset = 80;
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private final int booleanButtonOffset = 80;
 
-    // TODO : make color picker
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
         this.set = value;
         this.parent = button;
@@ -48,7 +45,7 @@ public class ColorComponent extends Component {
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, WurstplusGuiNew.GUI_COLOR());
-            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 71, mouseX, mouseY);
+            this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 72, mouseX, mouseY);
             set.setValue(finalColor);
             RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode());
             RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), parent.parent.getY() + offset + 6 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
@@ -122,7 +119,7 @@ public class ColorComponent extends Component {
         boolean pickingAlpha = false;
 
         int pickerWidth = 90;
-        int pickerHeight = 50;
+        int pickerHeight = 51;
         int hueSliderWidth = 10;
         int hueSliderHeight = 59;
         int alphaSliderHeight = 10;
@@ -139,7 +136,6 @@ public class ColorComponent extends Component {
             float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
             color[0] = (restrictedY - (float) hueSliderY) / hueSliderHeight;
             color[0] = (float) Math.min(0.97, color[0]);
-            //mc.player.sendChatMessage(""+color[0]);
         }
 
         if (pickingAlpha) {
@@ -171,9 +167,9 @@ public class ColorComponent extends Component {
 
         RenderUtil2D.drawRectMC(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
 
-        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, color[3]);
-
         finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), color[3]);
+
+        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, finalColor.getRed() / 255f, finalColor.getGreen() / 255f, finalColor.getBlue() / 255f, color[3]);
     }
 
     public static Color alphaIntegrate(Color color, float alpha) {
@@ -192,7 +188,7 @@ public class ColorComponent extends Component {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step + 1) / 6, 1.0f, 1.0f);
-                RenderUtil2D.drawGradientRect(x, y + step * (height / 6), x + width, y + (step + 1) * (height / 6), previousStep, nextStep);
+                RenderUtil2D.drawGradientRect(x, y + step * (height / 6f), x + width, y + (step + 1) * (height / 6f), previousStep, nextStep);
                 step++;
             }
             int sliderMinY = (int) (y + height*hue) - 4;

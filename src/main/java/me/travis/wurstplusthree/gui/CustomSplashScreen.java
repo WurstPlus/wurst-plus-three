@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.DonatorItem;
+import me.travis.wurstplusthree.util.elements.Rainbow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;

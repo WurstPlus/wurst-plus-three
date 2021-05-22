@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.manager.fonts;
 
-import me.travis.wurstplusthree.gui.components.Rainbow;
 import me.travis.wurstplusthree.gui.font.CustomFont;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.RenderUtil;
+import me.travis.wurstplusthree.util.elements.Rainbow;
 
 import java.awt.*;
 import java.util.Locale;

@@ -1,11 +1,9 @@
-package me.travis.wurstplusthree.guirewrite.component.component;
+package me.travis.wurstplusthree.gui.component;
 
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
-import me.travis.wurstplusthree.guirewrite.component.CategoryComponent;
-import me.travis.wurstplusthree.guirewrite.component.Component;
-import me.travis.wurstplusthree.guirewrite.component.component.settingcomponent.*;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.component.components.*;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;

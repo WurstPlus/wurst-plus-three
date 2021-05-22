@@ -1,13 +1,14 @@
-package me.travis.wurstplusthree.guirewrite.component.component.settingcomponent;
+package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
-import me.travis.wurstplusthree.guirewrite.component.Component;
-import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+
 import java.awt.*;
 
 /**

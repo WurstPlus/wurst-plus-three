@@ -1,6 +1,4 @@
-package me.travis.wurstplusthree.guirewrite.component;
-
-import me.travis.wurstplusthree.guirewrite.component.component.HackButton;
+package me.travis.wurstplusthree.gui.component;
 
 /**
  * @author Madmegsox1
