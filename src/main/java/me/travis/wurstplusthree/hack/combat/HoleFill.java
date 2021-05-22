@@ -1,7 +1,9 @@
 package me.travis.wurstplusthree.hack.combat;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.manager.FriendManager;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -24,6 +26,8 @@ import java.util.List;
 public class HoleFill extends Hack {
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
+    BooleanSetting smart = new BooleanSetting("Smart", false, this);
+    IntSetting smartRange = new IntSetting("SmartRange", 3, 1, 6, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
@@ -54,6 +58,8 @@ public class HoleFill extends Hack {
         for (BlockPos pos : new ArrayList<>(holes)) {
             for (EntityPlayer target : mc.world.playerEntities) {
                 if (pos == null) continue;
+                if (target == mc.player) continue;
+                if (WurstplusThree.FRIEND_MANAGER.isFriend(mc.player.getName())) continue;
                 double distance = target.getDistance(pos.getX(), pos.getY(), pos.getZ());
                 if (distance > 4) continue;
                 BlockUtil.ValidResult result = BlockUtil.valid(pos);
