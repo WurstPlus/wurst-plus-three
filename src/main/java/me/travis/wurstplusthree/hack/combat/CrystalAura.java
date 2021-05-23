@@ -62,6 +62,7 @@ public class CrystalAura extends Hack {
 
     IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this);
     IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this);
+    BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, this);
     IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
 
     EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
@@ -610,7 +611,10 @@ public class CrystalAura extends Hack {
 
             double targetDamage = CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue());
             if (targetDamage < miniumDamage && EntityUtil.getHealth(target) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(crystal, mc.player, ignoreTerrain.getValue());
+            double selfDamage = 0;
+            if(!ignoreSelfDamage.getValue()) {
+                selfDamage = CrystalUtil.calculateDamage(crystal, mc.player, ignoreTerrain.getValue());
+            }
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
@@ -651,7 +655,10 @@ public class CrystalAura extends Hack {
 
             double targetDamage = CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue());
             if (targetDamage < miniumDamage && EntityUtil.getHealth(target) - targetDamage > 0) return 0;
-            double selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player, ignoreTerrain.getValue());
+            double selfDamage = 0;
+            if(!ignoreSelfDamage.getValue()) {
+                selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player, ignoreTerrain.getValue());
+            }
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 

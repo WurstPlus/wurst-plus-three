@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.CustomSplashScreen;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -61,14 +62,14 @@ public abstract class MixinMinecraft {
 
     @Inject(method={"runTick()V"}, at={@At(value="RETURN")})
     private void runTick(CallbackInfo callbackInfo) {
-        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu && Gui.INSTANCE.customScreen.getValue()) {
             Minecraft.getMinecraft().displayGuiScreen(new CustomSplashScreen());
         }
     }
 
     @Inject(method={"displayGuiScreen"}, at={@At(value="HEAD")})
     private void displayGuiScreen(GuiScreen screen, CallbackInfo ci) {
-        if (screen instanceof GuiMainMenu) {
+        if (screen instanceof GuiMainMenu && Gui.INSTANCE.customScreen.getValue()) {
             this.displayGuiScreen(new CustomSplashScreen());
         }
     }
