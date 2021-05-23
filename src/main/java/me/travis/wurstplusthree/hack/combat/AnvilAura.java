@@ -58,6 +58,8 @@ public class AnvilAura extends Hack implements Globals {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
         placedAmmount = 0;
         
+        if (target == null) return;
+        
         if (mode.is("Self")) {
             if (airplace.getValue() && !target.isAirBorne) {
                 placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
