@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiScreen;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(value={GuiScreen.class})
-public class MixinGuiScreen
-extends Gui {
+public class MixinGuiScreen extends Gui {
 }
 
