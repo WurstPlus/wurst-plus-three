@@ -131,7 +131,7 @@ public class RenderUtil implements Globals {
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(left, bottom-0., 0.0D).color(r, g, b, a).endVertex();
+        bufferbuilder.pos(left, bottom, 0.0D).color(r, g, b, a).endVertex();
         bufferbuilder.pos(right, bottom, 0.0D).color(r, g, b, a).endVertex();
         bufferbuilder.pos(right, top, 0.0D).color(r, g, b, a).endVertex();
         bufferbuilder.pos(left, top, 0.0D).color(r, g, b, a).endVertex();
