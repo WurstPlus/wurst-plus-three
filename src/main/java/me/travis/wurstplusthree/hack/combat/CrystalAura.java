@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import com.mojang.authlib.GameProfile;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -12,7 +11,6 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,12 +39,6 @@ import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
-
-    public static CrystalAura INSTANCE;
-
-    public CrystalAura() {
-        INSTANCE = this;
-    }
 
     BooleanSetting place = new BooleanSetting("Place", true, this);
     BooleanSetting breaK = new BooleanSetting("Break", true, this);
