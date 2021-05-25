@@ -27,7 +27,7 @@ public class AnvilAura extends Hack {
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
-    IntSetting range = new IntSetting("Range", 3, 0, 6, this);
+    IntSetting range = new IntSetting("Range", 6, 0, 10, this);
     IntSetting bpt = new IntSetting("Blocks per tick", 4, 0, 10, this);
     IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
@@ -141,11 +141,9 @@ public class AnvilAura extends Hack {
         EntityPlayer target = null;
         double shortestRange = 10;
         for (EntityPlayer player : mc.world.playerEntities) {
-            double range = mc.player.getDistance(player);
-            if (range > this.range.getValue() || !EntityUtil.isInHole(player) || !this.isValid(player)) continue;
-            if (range < shortestRange) {
-                target = player;
-                shortestRange = range;
+            if (mc.player.getDistance(player) < shortestRange) {
+            	shortestRange = mc.player.getDistance(player);
+            	target = player;
             }
         }
         return target;
