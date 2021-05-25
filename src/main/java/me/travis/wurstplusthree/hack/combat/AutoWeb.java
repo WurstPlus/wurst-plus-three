@@ -75,7 +75,6 @@ public class AutoWeb extends Hack {
         }
     }
 
-
     private void trap() {
         if(delay < this.delayTick.getValue()){
             delay++;
@@ -139,7 +138,7 @@ public class AutoWeb extends Hack {
 
     private void placeBlock(BlockPos pos) {
         int oldSlot = mc.player.inventory.currentItem;
-        if(InventoryUtil.findHotbarBlock(BlockWeb.class) == -1)return;
+        if(InventoryUtil.findHotbarBlock(BlockWeb.class) == -1) return;
         mc.player.connection.sendPacket(new CPacketHeldItemChange(InventoryUtil.findHotbarBlock(BlockWeb.class)));
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
         mc.playerController.updateController();

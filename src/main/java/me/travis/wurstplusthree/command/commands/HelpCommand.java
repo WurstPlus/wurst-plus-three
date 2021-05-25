@@ -6,8 +6,6 @@ import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.ClientMessage;
 
-;
-
 public class HelpCommand extends Command {
 
     public HelpCommand() {

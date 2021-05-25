@@ -89,6 +89,7 @@ public class ConfigManager implements Globals {
         if (folder.equals(this.activeConfigFolder)) {
             return false;
         }
+        this.saveConfig();
 
         this.activeConfigFolder = configsFolder + folder;
         this.activeConfigFolderPath = Paths.get(activeConfigFolder);
@@ -99,11 +100,7 @@ public class ConfigManager implements Globals {
         this.bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
 
-        try {
-            this.loadSettings();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.loadConfig();
         return true;
     }
 
@@ -277,9 +274,7 @@ public class ConfigManager implements Globals {
                     Hack hack = WurstplusThree.HACKS.getHackByName(tag);
                     hack.setBind(Integer.parseInt(bind));
                     hack.setHold(Boolean.parseBoolean(hold));
-                    if (Boolean.parseBoolean(active)) {
-                        hack.enable();
-                    }
+                    hack.setEnabled(Boolean.parseBoolean(active));
                 }
 
             } catch (Exception ignored) {}

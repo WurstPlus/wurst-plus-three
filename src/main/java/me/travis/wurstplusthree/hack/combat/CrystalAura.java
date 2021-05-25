@@ -56,7 +56,7 @@ public class CrystalAura extends Hack {
     DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this);
 
     IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this);
-    IntSetting breakDelay = new IntSetting("Break Delay", 1, 0, 10, this);
+    IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this);
 
     IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this);
     IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this);
@@ -127,6 +127,7 @@ public class CrystalAura extends Hack {
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
+    private boolean confirmPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
     private boolean facePlacing;
@@ -196,6 +197,7 @@ public class CrystalAura extends Hack {
                             }
                             if (packetSafe.getValue()) {
                                 this.hasPacketBroke = true;
+                                this.confirmPacketBroke = false;
                             }
                         }
                         break;
@@ -223,6 +225,9 @@ public class CrystalAura extends Hack {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
                             crystal.setDead();
+                            if (!confirmPacketBroke && hasPacketBroke) {
+                                confirmPacketBroke = true;
+                            }
                         }
                 }
             }
@@ -247,7 +252,7 @@ public class CrystalAura extends Hack {
         if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
             this.placeCrystal();
         }
-        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !hasPacketBroke) {
+        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !confirmPacketBroke) {
             this.breakCrystal();
         }
 
@@ -619,6 +624,7 @@ public class CrystalAura extends Hack {
         hasPacketBroke = false;
         placeTimeoutFlag = false;
         alreadyAttacking = false;
+        confirmPacketBroke = false;
         currentChainCounter = 0;
         obiFeetCounter = 0;
     }
