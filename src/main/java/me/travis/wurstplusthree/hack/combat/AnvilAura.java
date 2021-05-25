@@ -22,30 +22,28 @@ import java.util.Arrays;
 
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack implements Globals {
-    
-    public static AnvilAura INSTANCE;
-    
-    public AnvilAura() {
-        INSTANCE = this;
-    }
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
-    IntSetting ammount = new IntSetting("Ammount", 1, 1, 2, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     BooleanSetting breakAnvil = new BooleanSetting("Break anvils", true, this);
     BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
     IntSetting range = new IntSetting("Range", 3, 0, 6, this);
     IntSetting bpt = new IntSetting("Blocks per tick", 4, 0, 10, this);
-    IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 10, this);
+    IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
-
-    private int placedAmmount;
+    
+    private static int placedAmmount = 0;
+    private static int tickspassed = 0;
     
     @Override
     public void onEnable() {
-        this.placedAmmount = 0;
         if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
             this.disable();
+            tickspassed = 0;
+        }
+        
+        if (mode.is("Self")) {
+        	placeAnvil(new BlockPos(mc.player.getPosition().up(3)));
         }
     }
 
@@ -61,7 +59,7 @@ public class AnvilAura extends Hack implements Globals {
                 placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
             }
         }    
-        if (mode.is("Self") && mc.world.getBlockState(target.getPosition().up()) != Blocks.AIR) {
+        if (mode.is("Self")) {
             if (airplace.getValue()) {
                 placeAnvil(EntityUtil.getFlooredPos(target).up(range.getValue()));
             } else {
@@ -73,11 +71,18 @@ public class AnvilAura extends Hack implements Globals {
                         }
                     }
                 }
-                if (airplace.getValue() || mc.world.getBlockState(target.getPosition().up(3).south()) != Blocks.AIR) {
-                	placeAnvil(target.getPosition().up(3));
+                if (tickspassed == 0) {
+	                if (airplace.getValue() || mc.world.getBlockState(target.getPosition().up(3).south()) != Blocks.AIR) {
+	                	placeAnvil(target.getPosition().up(3));
+	                } else {
+	                	placeObi(target.getPosition().up(3).south());
+	                	placeAnvil(target.getPosition().up(3));
+	                }
+	                tickspassed ++;
+                } else if (tickspassed == placeDelay.getValue()) {
+                	tickspassed = 0;
                 } else {
-                	placeObi(target.getPosition().up(3).south());
-                	placeAnvil(target.getPosition().up(3));
+                	tickspassed ++;
                 }
             }
         }

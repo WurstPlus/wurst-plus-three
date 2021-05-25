@@ -39,12 +39,6 @@ import java.util.*;
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
 
-    public static CrystalAura INSTANCE;
-
-    public CrystalAura() {
-        INSTANCE = this;
-    }
-
     BooleanSetting place = new BooleanSetting("Place", true, this);
     BooleanSetting breaK = new BooleanSetting("Break", true, this);
     BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, this);
