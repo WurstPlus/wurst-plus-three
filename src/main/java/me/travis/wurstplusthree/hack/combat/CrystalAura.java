@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
+import me.travis.wurstplusthree.hack.render.CameraClip;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -38,6 +39,12 @@ import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
 public class CrystalAura extends Hack {
+
+    public static CrystalAura INSTANCE;
+
+    public CrystalAura() {
+        INSTANCE = this;
+    }
 
     BooleanSetting place = new BooleanSetting("Place", true, this);
     BooleanSetting breaK = new BooleanSetting("Break", true, this);

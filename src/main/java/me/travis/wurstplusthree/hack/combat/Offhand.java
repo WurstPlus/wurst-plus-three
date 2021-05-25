@@ -4,12 +4,10 @@ package me.travis.wurstplusthree.hack.combat;
  * @Author wallhacks0
  * @Author TrvsF
  */
-
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.util.CrystalUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
@@ -19,7 +17,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 
@@ -27,9 +24,10 @@ import java.util.Arrays;
 public class Offhand extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
-    IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
-    IntSetting HoleHP = new IntSetting("Hole HP", 16, 0, 36, this);
-    BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
+    IntSetting totemHp = new IntSetting("Totem HP", 16, 0, 36, this);
+    IntSetting holeHp = new IntSetting("Hole HP", 16, 0, 36, this);
+    BooleanSetting crystalCheck = new BooleanSetting("CrystalCheck", false, this);
+    IntSetting crystalDistance = new IntSetting("Crystal Distance", 10, 0, 14, this);
     EnumSetting gapSwap = new EnumSetting("GapSwap", "Never", Arrays.asList("Never", "Sword", "Pickaxe", "Both",  "Always"), this);
     IntSetting steps = new IntSetting("Steps", 1, 1, 3, this);
 
@@ -49,7 +47,7 @@ public class Offhand extends Hack {
                 return;
             }
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            if ((hp <= (EntityUtil.isInHole(mc.player) ? HoleHP.getValue() : TotemHp.getValue()) || lethalToLocalCheck() || (mode.getValue().equals("Totem") && !shouldGapSwap()))) {
+            if ((hp <= (EntityUtil.isInHole(mc.player) ? holeHp.getValue() : totemHp.getValue()) || lethalToLocalCheck() || (mode.getValue().equals("Totem") && !shouldGapSwap()))) {
                 swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), steps.getValue());
                 return;
             }
@@ -59,7 +57,6 @@ public class Offhand extends Hack {
             }
             if (mode.getValue().equals("Crystal")) {
                 swapItems(getItemSlot(Items.END_CRYSTAL), steps.getValue());
-                return;
             }
         }
     }
@@ -114,14 +111,12 @@ public class Offhand extends Hack {
     }
 
     private boolean lethalToLocalCheck() {
-        if (!CrystalCheck.getValue()) {
+        if (!crystalCheck.getValue()) {
             return false;
         }
         for (Entity entity : mc.world.loadedEntityList) {
-            if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
-                if ((CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player, true)) >= mc.player.getHealth()) {
-                    return true;
-                }
+            if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= crystalDistance.getValue()) {
+                return true;
             }
         }
         return false;

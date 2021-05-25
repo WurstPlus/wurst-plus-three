@@ -208,7 +208,6 @@ public class CrystalUtil implements Globals {
                     }
                 }
             }
-
             blockDensity = (double) nonSolid / (double) total;
         }
 
