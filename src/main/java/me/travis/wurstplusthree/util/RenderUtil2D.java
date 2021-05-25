@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -43,14 +45,18 @@ public class RenderUtil2D {
         drawSidewaysGradientRect(x, y, x+length, y+1, color, color2);
     }
     public static void drawVLineG(int x, int y, int length, int color, int color2){
-        drawGradientRect(x, y, x+1, y+length, color, color2);
+        drawGradientRect(x, y, x+1, y+length, color, color2, false);
     }
 
     public static void drawRectMC(int startX, int startY, int endX, int endY, int color) {
         Gui.drawRect(startX, startY, endX, endY, color);
     }
 
-    public static void drawGradientRect(float left, float top, float right, float bottom, int startColor, int endColor) {
+    public static void drawGradientRect(float left, float top, float right, float bottom, int startColor, int endColor, boolean hovered) {
+        if (hovered) {
+            startColor = ColorUtil.shadeColour(startColor, -20);
+            endColor = ColorUtil.shadeColour(endColor, -20);
+        }
         float c = (float) (startColor >> 24 & 255) / 255.0F;
         float c1 = (float) (startColor >> 16 & 255) / 255.0F;
         float c2 = (float) (startColor >> 8 & 255) / 255.0F;
@@ -78,7 +84,11 @@ public class RenderUtil2D {
         GlStateManager.enableTexture2D();
     }
 
-    public static void drawBorderedRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor) {
+    public static void drawBorderedRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor, boolean hover) {
+        if (hover) {
+            insideColor = ColorUtil.shadeColour(insideColor, -20);
+            borderColor = ColorUtil.shadeColour(borderColor, -20);
+        }
         drawRectBase(left + borderWidth, top + borderWidth, right - borderWidth, bottom - borderWidth, insideColor);
         drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, borderColor);
         drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, borderColor);
@@ -153,7 +163,7 @@ public class RenderUtil2D {
         }
 
         else
-            drawGradientRect(minX, minY, maxX, maxY, startColor, endColor);
+            drawGradientRect(minX, minY, maxX, maxY, startColor, endColor, false);
     }
 
     public static void drawRectBase(int left,double top, double right, double bottom, int color) {

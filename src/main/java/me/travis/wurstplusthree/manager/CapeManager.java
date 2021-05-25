@@ -28,9 +28,7 @@ public class CapeManager implements Globals {
             while ((inputLine = in.readLine()) != null) {
                 ogCapes.add(UUID.fromString(inputLine));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         try { // dev
             URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/dev.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
@@ -48,9 +46,7 @@ public class CapeManager implements Globals {
             while ((inputLine = in.readLine()) != null) {
                 poggersCapes.add(UUID.fromString(inputLine));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         try { // donator
             File tmp = new File("Wurstplus3"+ File.separator + "capes");
             if (!tmp.exists()) {
@@ -68,9 +64,7 @@ public class CapeManager implements Globals {
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     public void reload(){
@@ -81,9 +75,7 @@ public class CapeManager implements Globals {
             while ((inputLine = in.readLine()) != null) {
                 ogCapes.add(UUID.fromString(inputLine));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         try { // dev
             URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/dev.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
@@ -91,9 +83,7 @@ public class CapeManager implements Globals {
             while ((inputLine = in.readLine()) != null) {
                 contributorCapes.add(UUID.fromString(inputLine));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         try { // cool dudes
             URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/cooldude.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
@@ -101,9 +91,7 @@ public class CapeManager implements Globals {
             while ((inputLine = in.readLine()) != null) {
                 poggersCapes.add(UUID.fromString(inputLine));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         try { // donator
             File tmp = new File("Wurstplus3"+ File.separator + "capes");
             if (!tmp.exists()) {
@@ -121,7 +109,7 @@ public class CapeManager implements Globals {
                 ImageIO.write(capeImage, "png", new File("Wurstplus3/capes/" + uuid + ".png"));
                 donatorCapes.add(new Pair<>(UUID.fromString(uuid), capeImage));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception ignored) {}
     }
 
     public boolean isOg(UUID uuid) {

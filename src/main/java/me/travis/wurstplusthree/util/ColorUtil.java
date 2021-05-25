@@ -11,6 +11,19 @@ import java.awt.*;
 
 public class ColorUtil {
 
+    public static Color shadeColour(Color color, int precent) {
+        int r = (color.getRed() * (100 + precent) / 100);
+        int g = (color.getGreen() * (100 + precent) / 100);
+        int b = (color.getBlue() * (100 + precent) / 100);
+        return new Color(r,g,b);
+    }
+
+    public static int shadeColour(int color, int precent) {
+        int r = (((color & 0xFF0000) >> 16) * (100 + precent) / 100);
+        int g = (((color & 0xFF00) >> 8) * (100 + precent) / 100);
+        int b = ((color & 0xFF) * (100 + precent) / 100);
+        return new Color(r,g,b).hashCode();
+    }
 
     public static Color releasedDynamicRainbow(final int delay, int alpha) {
         double rainbowState = Math.ceil((System.currentTimeMillis() + delay) / 20.0);

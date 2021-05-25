@@ -106,7 +106,7 @@ public class CrystalAura extends Hack {
     IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
     BooleanSetting flat = new BooleanSetting("Flat", false, this);
-    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 0.0, this);
+    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, this);
     IntSetting width = new IntSetting("Width", 1, 1, 10, this);
     DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this);
     DoubleSetting columnHight = new DoubleSetting("ColumnHight", 1.5, 0.0, 10.0, this);

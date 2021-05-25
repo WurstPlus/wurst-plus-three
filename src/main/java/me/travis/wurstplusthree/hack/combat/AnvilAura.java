@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,7 @@ public class AnvilAura extends Hack {
     IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
 
-    private static int ticksPassed = 0;
+    private int ticksPassed = 0;
     
     @Override
     public void onEnable() {
@@ -50,7 +51,11 @@ public class AnvilAura extends Hack {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
         int placedAmmount = 0;
         
-        if (target == null) return;
+        if (target == null) {
+            ClientMessage.sendErrorMessage("Cannot find target");
+            this.disable();
+            return;
+        }
         
         if (mode.is("Self")) {
             if (airplace.getValue() && !target.isAirBorne) {
@@ -83,10 +88,8 @@ public class AnvilAura extends Hack {
                 	ticksPassed++;
                 }
             }
-        }
-        
-        else {
-            if (mc.world.getBlockState(target.getPosition()) == Blocks.ANVIL) {
+        } else {
+            if (mc.world.getBlockState(target.getPosition()).getBlock() == Blocks.ANVIL) {
                 this.breakBlock(target.getPosition());
             } else {
                 for (int i = 0; placedAmmount < this.bpt.getValue(); i ++) {
@@ -128,7 +131,7 @@ public class AnvilAura extends Hack {
         for (int i = 0; i < 9; i ++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() instanceof ItemPickaxe) {
                 this.switchToSlot(i);
-                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, null));
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.EAST));
                 break;
             }
         } this.switchToSlot(old);

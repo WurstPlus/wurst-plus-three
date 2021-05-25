@@ -67,7 +67,7 @@ public class CategoryComponent {
     }
 
     public void renderFrame(int mouseX, int mouseY) {
-        RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.headButtonColor.getValue().hashCode()), (Gui.INSTANCE.headButtonColor.getValue().hashCode()));
+        RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.headButtonColor.getValue().hashCode()), (Gui.INSTANCE.headButtonColor.getValue().hashCode()), false);
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         if (this.isOpen) {
             if (!this.components.isEmpty()) {

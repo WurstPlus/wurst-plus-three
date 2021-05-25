@@ -25,8 +25,8 @@ import java.util.List;
 public class HoleFill extends Hack {
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
-    BooleanSetting smart = new BooleanSetting("Smart", false, this);
-    IntSetting smartRange = new IntSetting("SmartRange", 3, 1, 6, this);
+    EnumSetting fillMode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "Smart", "Auto"), this);
+    IntSetting smartRange = new IntSetting("Auto Range", 2, 1, 5, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
@@ -56,11 +56,12 @@ public class HoleFill extends Hack {
         double bestDistance = 10;
         for (BlockPos pos : new ArrayList<>(holes)) {
             for (EntityPlayer target : mc.world.playerEntities) {
-                if (pos == null) continue;
-                if (target == mc.player) continue;
-                if (WurstplusThree.FRIEND_MANAGER.isFriend(mc.player.getName())) continue;
                 double distance = target.getDistance(pos.getX(), pos.getY(), pos.getZ());
-                if (distance > 4) continue;
+                if (!fillMode.is("Normal")) {
+                    if (target == mc.player) continue;
+                    if (WurstplusThree.FRIEND_MANAGER.isFriend(mc.player.getName())) continue;
+                    if (distance > (fillMode.is("Auto") ? smartRange.getValue() : 5)) continue;
+                }
                 BlockUtil.ValidResult result = BlockUtil.valid(pos);
                 if (result != BlockUtil.ValidResult.Ok) {
                     holes.remove(pos);

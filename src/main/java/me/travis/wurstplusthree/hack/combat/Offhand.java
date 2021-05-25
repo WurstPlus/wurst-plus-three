@@ -31,7 +31,6 @@ public class Offhand extends Hack {
     EnumSetting gapSwap = new EnumSetting("GapSwap", "Never", Arrays.asList("Never", "Sword", "Pickaxe", "Both",  "Always"), this);
     IntSetting steps = new IntSetting("Steps", 1, 1, 3, this);
 
-
     private int step;
     private int lastSlot;
 

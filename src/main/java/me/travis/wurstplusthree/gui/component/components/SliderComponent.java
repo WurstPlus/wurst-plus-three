@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
@@ -23,9 +24,9 @@ import java.math.RoundingMode;
 public class SliderComponent extends Component {
     private boolean hovered;
 
+    private final HackButton parent;
     private DoubleSetting setD = null;
     private IntSetting setI = null;
-    private HackButton parent;
     private int offset;
     private int x;
     private int y;
@@ -56,7 +57,7 @@ public class SliderComponent extends Component {
         net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
         RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET,
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()),
-                (Gui.INSTANCE.buttonColor.getValue().hashCode()));
+                (Gui.INSTANCE.buttonColor.getValue().hashCode()), hovered);
 
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + MathsUtil.round(this.setI.getValue(), 2) : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
     }
@@ -107,7 +108,6 @@ public class SliderComponent extends Component {
     }
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        //WurstplusThree.LOGGER.info("D " + isMouseOnButtonD(mouseX, mouseY) + " I " + isMouseOnButtonI(mouseX, mouseY));
         if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             dragging = true;
         }
