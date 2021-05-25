@@ -21,25 +21,23 @@ import java.util.Arrays;
 // UNFINISHED
 
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
-public class AnvilAura extends Hack implements Globals {
+public class AnvilAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
-    BooleanSetting breakAnvil = new BooleanSetting("Break anvils", true, this);
     BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
     IntSetting range = new IntSetting("Range", 3, 0, 6, this);
     IntSetting bpt = new IntSetting("Blocks per tick", 4, 0, 10, this);
     IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
-    
-    private static int placedAmmount = 0;
-    private static int tickspassed = 0;
+
+    private static int ticksPassed = 0;
     
     @Override
     public void onEnable() {
         if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
             this.disable();
-            tickspassed = 0;
+            ticksPassed = 0;
         }
         
         if (mode.is("Self")) {
@@ -50,7 +48,7 @@ public class AnvilAura extends Hack implements Globals {
     @Override
     public void onTick() {
         EntityPlayer target = mode.is("Self") ? mc.player : this.getTarget();
-        placedAmmount = 0;
+        int placedAmmount = 0;
         
         if (target == null) return;
         
@@ -66,23 +64,23 @@ public class AnvilAura extends Hack implements Globals {
                 if (!BlockUtil.canPlaceBlock(target.getPosition().up(3))) {
                     for (int i = 0; i < range.getValue() / 2; i ++) {
                         BlockPos pos = new BlockPos(target.posX - 1, target.posY - i - 1, target.posZ);
-                        if (mc.world.getBlockState(pos) != Blocks.AIR) {
+                        if (mc.world.getBlockState(pos).getBlock() != Blocks.AIR) {
                             placeObi(pos);
                         }
                     }
                 }
-                if (tickspassed == 0) {
-	                if (airplace.getValue() || mc.world.getBlockState(target.getPosition().up(3).south()) != Blocks.AIR) {
+                if (ticksPassed == 0) {
+	                if (airplace.getValue() || mc.world.getBlockState(target.getPosition().up(3).south()).getBlock() != Blocks.AIR) {
 	                	placeAnvil(target.getPosition().up(3));
 	                } else {
 	                	placeObi(target.getPosition().up(3).south());
 	                	placeAnvil(target.getPosition().up(3));
 	                }
-	                tickspassed ++;
-                } else if (tickspassed == placeDelay.getValue()) {
-                	tickspassed = 0;
+	                ticksPassed++;
+                } else if (ticksPassed == placeDelay.getValue()) {
+                	ticksPassed = 0;
                 } else {
-                	tickspassed ++;
+                	ticksPassed++;
                 }
             }
         }
@@ -93,18 +91,18 @@ public class AnvilAura extends Hack implements Globals {
             } else {
                 for (int i = 0; placedAmmount < this.bpt.getValue(); i ++) {
                     if (i > layers.getValue()) break;
-                    if (mc.world.getBlockState(new BlockPos(target.posX - 1, target.posY + i, target.posZ)) == Blocks.AIR) {
+                    if (mc.world.getBlockState(new BlockPos(target.posX - 1, target.posY + i, target.posZ)).getBlock() == Blocks.AIR) {
 						placeObi(new BlockPos(target.posX - 1, target.posY + i, target.posZ));
-                        placedAmmount ++;
-                    } if (mc.world.getBlockState(new BlockPos(target.posX, target.posY + i, target.posZ - 1)) == Blocks.AIR) {
+                        placedAmmount++;
+                    } if (mc.world.getBlockState(new BlockPos(target.posX, target.posY + i, target.posZ - 1)).getBlock() == Blocks.AIR) {
                         placeObi(new BlockPos(target.posX, target.posY + i, target.posZ - 1));
-                        placedAmmount ++;
-                    } if (mc.world.getBlockState(new BlockPos(target.posX + 1, target.posY + i, target.posZ)) == Blocks.AIR) {
+                        placedAmmount++;
+                    } if (mc.world.getBlockState(new BlockPos(target.posX + 1, target.posY + i, target.posZ)).getBlock() == Blocks.AIR) {
                         placeObi(new BlockPos(target.posX + 1, target.posY + i, target.posZ));
-                        placedAmmount ++;
-                    } if (mc.world.getBlockState(new BlockPos(target.posX, target.posY + i, target.posZ + 1)) == Blocks.AIR) {
+                        placedAmmount++;
+                    } if (mc.world.getBlockState(new BlockPos(target.posX, target.posY + i, target.posZ + 1)).getBlock() == Blocks.AIR) {
                         placeObi(new BlockPos(target.posX, target.posY + i, target.posZ + 1));
-                        placedAmmount ++;
+                        placedAmmount++;
                     }
                 } placeAnvil(target.getPosition().up(3));
             }
@@ -127,10 +125,8 @@ public class AnvilAura extends Hack implements Globals {
     
     private void breakBlock(BlockPos pos) {
         int old = mc.player.inventory.currentItem;
-        boolean found = false;
-        for (int i = 0; i < 9 && !found; i ++) {
+        for (int i = 0; i < 9; i ++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() instanceof ItemPickaxe) {
-                found = true;
                 this.switchToSlot(i);
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, null));
                 break;
