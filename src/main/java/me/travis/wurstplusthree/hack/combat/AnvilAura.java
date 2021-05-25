@@ -155,7 +155,7 @@ public class AnvilAura extends Hack implements Globals {
     private boolean isValid(EntityPlayer player) {
         BlockPos pos = EntityUtil.getFlooredPos(player);
         if (mc.world.getBlockState(pos.up(2)).getBlock() != Blocks.AIR || mc.world.getBlockState(pos.up()).getBlock() != Blocks.AIR) return false;
-        return mc.world.getBlockState(pos.down()).getBlock() == Blocks.AIR || ammount.getValue() != 1;
+        return mc.world.getBlockState(pos.down()).getBlock() == Blocks.AIR;
     }
 
     private void switchToSlot(final int slot) {
