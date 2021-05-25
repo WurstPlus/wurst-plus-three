@@ -24,7 +24,7 @@ public class AutoEz extends Hack {
         INSTANCE = this;
     }
 
-    BooleanSetting discord = new BooleanSetting("Discord", true, this);
+    BooleanSetting discord = new BooleanSetting("Discord", false, this);
 
     private int delayCount;
     public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
