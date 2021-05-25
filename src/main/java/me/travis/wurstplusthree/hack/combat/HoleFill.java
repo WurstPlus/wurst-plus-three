@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.hack.combat;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.manager.FriendManager;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;

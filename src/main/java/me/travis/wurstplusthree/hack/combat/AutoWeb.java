@@ -9,7 +9,6 @@ import me.travis.wurstplusthree.util.BlockUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import net.minecraft.block.BlockWeb;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;

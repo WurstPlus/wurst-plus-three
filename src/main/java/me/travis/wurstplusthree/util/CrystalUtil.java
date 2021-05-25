@@ -251,13 +251,6 @@ public class CrystalUtil implements Globals {
         return damage;
     }
 
-    public enum BlockResistance {
-        Blank,
-        Breakable,
-        Resistant,
-        Unbreakable
-    }
-
     public static float getDamageMultiplied(float damage) {
         int diff = DamageUtil.mc.world.getDifficulty().getId();
         return damage * (diff == 0 ? 0.0f : (diff == 2 ? 1.0f : (diff == 1 ? 0.5f : 1.5f)));
@@ -386,6 +379,7 @@ public class CrystalUtil implements Globals {
         }
         return e;
     }
+
     public static boolean isOnGround(double x, double y, double z, Entity entity) {
         double d3 = y;
         List<AxisAlignedBB> list1 = mc.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
@@ -432,6 +426,7 @@ public class CrystalUtil implements Globals {
         }
         return entity;
     }
+
     public static double calculateXOffset(AxisAlignedBB other, double offsetX, AxisAlignedBB this1) {
         if (other.maxY > this1.minY && other.minY < this1.maxY && other.maxZ > this1.minZ && other.minZ < this1.maxZ) {
             if (offsetX > 0.0D && other.maxX <= this1.minX) {
@@ -452,6 +447,7 @@ public class CrystalUtil implements Globals {
         }
         return offsetX;
     }
+
     public static double calculateZOffset(AxisAlignedBB other, double offsetZ, AxisAlignedBB this1) {
         if (other.maxX > this1.minX && other.minX < this1.maxX && other.maxY > this1.minY && other.minY < this1.maxY) {
             if (offsetZ > 0.0D && other.maxZ <= this1.minZ) {
