@@ -19,8 +19,6 @@ import java.util.Arrays;
 
 // TODO : FIX THIS
 
-// UNFINISHED
-
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
 
@@ -32,18 +30,16 @@ public class AnvilAura extends Hack {
     IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
 
-    private int ticksPassed = 0;
+    private int ticksPassed;
     
     @Override
     public void onEnable() {
         if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
             this.disable();
-            ticksPassed = 0;
-        }
-        
-        if (mode.is("Self")) {
+        } else if (mode.is("Self") && airplace.getValue()) {
         	placeAnvil(new BlockPos(mc.player.getPosition().up(3)));
-        }
+        	this.disable();
+        } ticksPassed = placeDelay.getValue();
     }
 
     @Override
@@ -74,16 +70,14 @@ public class AnvilAura extends Hack {
                         }
                     }
                 }
-                if (ticksPassed == 0) {
+                if (ticksPassed == placeDelay.getValue()) {
 	                if (airplace.getValue() || mc.world.getBlockState(target.getPosition().up(3).south()).getBlock() != Blocks.AIR) {
 	                	placeAnvil(target.getPosition().up(3));
 	                } else {
 	                	placeObi(target.getPosition().up(3).south());
 	                	placeAnvil(target.getPosition().up(3));
 	                }
-	                ticksPassed++;
-                } else if (ticksPassed == placeDelay.getValue()) {
-                	ticksPassed = 0;
+	                ticksPassed = 0;
                 } else {
                 	ticksPassed++;
                 }
@@ -107,7 +101,7 @@ public class AnvilAura extends Hack {
                         placeObi(new BlockPos(target.posX, target.posY + i, target.posZ + 1));
                         placedAmmount++;
                     }
-                } placeAnvil(target.getPosition().up(3));
+                } placeAnvil(target.getPosition().up(layers.getValue()));
             }
         }
     }
@@ -139,9 +133,9 @@ public class AnvilAura extends Hack {
 
     private EntityPlayer getTarget() {
         EntityPlayer target = null;
-        double shortestRange = 10;
+        double shortestRange = range.getValue();
         for (EntityPlayer player : mc.world.playerEntities) {
-            if (mc.player.getDistance(player) < shortestRange) {
+            if (mc.player.getDistance(player) < shortestRange && this.isValid(player)) {
             	shortestRange = mc.player.getDistance(player);
             	target = player;
             }
