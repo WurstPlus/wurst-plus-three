@@ -120,9 +120,10 @@ public class Hack implements Globals {
     }
 
     public void setEnabled(boolean enabled) {
-        if (enabled) {
+        if (enabled && !this.isEnabled()) {
             this.enable();
-        } else {
+        }
+        if (!enabled && this.isEnabled()) {
             this.disable();
         }
     }
