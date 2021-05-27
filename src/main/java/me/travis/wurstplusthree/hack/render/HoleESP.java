@@ -77,7 +77,7 @@ public class HoleESP extends Hack {
             }
         }
 
-        possibleHoles.forEach(pos -> {
+        for (BlockPos pos : possibleHoles) {
             HoleUtil.HoleInfo holeInfo = HoleUtil.isHole(pos, false, false);
             HoleUtil.HoleType holeType = holeInfo.getType();
             if (holeType != HoleUtil.HoleType.NONE) {
@@ -86,7 +86,7 @@ public class HoleESP extends Hack {
                 AxisAlignedBB centreBlocks = holeInfo.getCentre();
 
                 if (centreBlocks == null)
-                    return;
+                    continue;
 
                 Colour colour;
                 if (holeSafety == HoleUtil.BlockSafety.UNBREAKABLE) {
@@ -106,7 +106,7 @@ public class HoleESP extends Hack {
                     holes.put(pos, p);
                 }
             }
-        });
+        }
     }
 
     private void renderHoles(BlockPos hole, Pair<Colour, Boolean> pair) {

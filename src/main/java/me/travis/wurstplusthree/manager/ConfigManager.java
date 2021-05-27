@@ -274,11 +274,7 @@ public class ConfigManager implements Globals {
                     Hack hack = WurstplusThree.HACKS.getHackByName(tag);
                     hack.setBind(Integer.parseInt(bind));
                     hack.setHold(Boolean.parseBoolean(hold));
-                    if (Boolean.parseBoolean(active)) {
-                        hack.enable();
-                    } else {
-                        hack.disable();
-                    }
+                    hack.setEnabled(Boolean.parseBoolean(active));
                 }
 
             } catch (Exception ignored) {}

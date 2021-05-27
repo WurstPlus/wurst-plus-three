@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
-import me.travis.wurstplusthree.hack.render.CameraClip;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -214,9 +213,7 @@ public class CrystalAura extends Hack {
                     Entity entity = mc.world.getEntityByID(id);
                     if (!(entity instanceof EntityEnderCrystal)) continue;
                     this.attemptedCrystals.remove(entity);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception ignored) {}
             }
         }
         if (event.getPacket() instanceof SPacketSoundEffect && fastMode.getValue().equals("Sound")) {
@@ -631,7 +628,7 @@ public class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return (facePlacing ? "FacePlacing " : "Chasing ") + (this.ezTarget != null ? this.ezTarget.getName() : "");
+        return this.ezTarget != null ? this.ezTarget.getName() : null;
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
