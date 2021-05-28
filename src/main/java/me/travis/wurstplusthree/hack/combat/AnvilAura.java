@@ -11,18 +11,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 
-// TODO : FIX THIS
-
 @Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
+    EnumSetting switchMode = new EnumSetting("Switch", "Packet", Arrays.asList("Normal", "Packet"), this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
     IntSetting range = new IntSetting("Range", 6, 0, 10, this);
@@ -35,10 +33,8 @@ public class AnvilAura extends Hack {
     @Override
     public void onEnable() {
         if (InventoryUtil.findHotbarBlock(BlockAnvil.class) == -1 || PlayerUtil.findObiInHotbar() == -1) {
+        	ClientMessage.sendErrorMessage("Cannot find resources in hotbar");
             this.disable();
-        } else if (mode.is("Self") && airplace.getValue()) {
-        	placeAnvil(new BlockPos(mc.player.getPosition().up(3)));
-        	this.disable();
         } ticksPassed = placeDelay.getValue();
     }
 
@@ -48,26 +44,16 @@ public class AnvilAura extends Hack {
         int placedAmmount = 0;
         
         if (target == null) {
-            ClientMessage.sendErrorMessage("Cannot find target");
-            this.disable();
             return;
-        }
-        
-        if (mode.is("Self")) {
-            if (airplace.getValue() && !target.isAirBorne) {
-                placeAnvil(new BlockPos(EntityUtil.getFlooredPos(target)).up(range.getValue()));
-            }
-        }    
-        if (mode.is("Self")) {
+        }  
+        if (mode.is("Self") && mc.world.getBlockState(target.getPosition()).getBlock() == Blocks.ANVIL) {
             if (airplace.getValue()) {
-                placeAnvil(EntityUtil.getFlooredPos(target).up(range.getValue()));
+                placeAnvil(EntityUtil.getFlooredPos(target).up(2));
             } else {
                 if (!BlockUtil.canPlaceBlock(target.getPosition().up(3))) {
-                    for (int i = 0; i < range.getValue() / 2; i ++) {
+                    for (int i = 0; i < 3; i ++) {
                         BlockPos pos = new BlockPos(target.posX - 1, target.posY - i - 1, target.posZ);
-                        if (mc.world.getBlockState(pos).getBlock() != Blocks.AIR) {
-                            placeObi(pos);
-                        }
+                        if (mc.world.getBlockState(pos).getBlock() != Blocks.AIR) placeObi(pos);
                     }
                 }
                 if (ticksPassed == placeDelay.getValue()) {
@@ -86,8 +72,7 @@ public class AnvilAura extends Hack {
             if (mc.world.getBlockState(target.getPosition()).getBlock() == Blocks.ANVIL) {
                 this.breakBlock(target.getPosition());
             } else {
-                for (int i = 0; placedAmmount < this.bpt.getValue(); i ++) {
-                    if (i > layers.getValue()) break;
+                for (int i = 0; placedAmmount < this.bpt.getValue() || i > layers.getValue(); i ++) {
                     if (mc.world.getBlockState(new BlockPos(target.posX - 1, target.posY + i, target.posZ)).getBlock() == Blocks.AIR) {
 						placeObi(new BlockPos(target.posX - 1, target.posY + i, target.posZ));
                         placedAmmount++;
@@ -125,7 +110,7 @@ public class AnvilAura extends Hack {
         for (int i = 0; i < 9; i ++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() instanceof ItemPickaxe) {
                 this.switchToSlot(i);
-                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, EnumFacing.EAST));
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, mc.player.getHorizontalFacing()));
                 break;
             }
         } this.switchToSlot(old);
@@ -145,14 +130,15 @@ public class AnvilAura extends Hack {
 
     private boolean isValid(EntityPlayer player) {
         BlockPos pos = EntityUtil.getFlooredPos(player);
-        if (mc.world.getBlockState(pos.up(2)).getBlock() != Blocks.AIR || mc.world.getBlockState(pos.up()).getBlock() != Blocks.AIR) return false;
-        return mc.world.getBlockState(pos.down()).getBlock() == Blocks.AIR;
+        return mc.world.getBlockState(pos.up(2)).getBlock() == Blocks.AIR || mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR;
     }
 
     private void switchToSlot(final int slot) {
         mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-        mc.player.inventory.currentItem = slot;
-        mc.playerController.updateController();
+        if (switchMode.is("Normal")) {
+        	mc.player.inventory.currentItem = slot;
+        	mc.playerController.updateController();
+        }
     }
 
 }
