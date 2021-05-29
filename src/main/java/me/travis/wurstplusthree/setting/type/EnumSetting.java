@@ -31,10 +31,6 @@ public class EnumSetting extends Setting<String> {
         value = modes.get((modes.indexOf(this.value) + 1) % modes.size());
     }
 
-    public String getValueName() {
-        return this.value;
-    }
-
     public String getValue() {
         return this.value;
     }

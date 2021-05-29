@@ -192,6 +192,10 @@ public class Hack implements Globals {
         return null;
     }
 
+    public boolean isShown() {
+        return this.shown;
+    }
+
     public enum Category {
         CHAT("Chat"),
         COMBAT("Combat"),

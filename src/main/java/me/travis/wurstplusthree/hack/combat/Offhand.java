@@ -25,9 +25,11 @@ public class Offhand extends Hack {
     BooleanSetting gapHole = new BooleanSetting("Gap In Hole", true, this);
     IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
     KeySetting gapKey = new KeySetting("Gap Key", Keyboard.KEY_NONE, this);
+    KeySetting cycle = new KeySetting("Cycle Mode", Keyboard.KEY_NONE, this);
 
     private boolean switching;
-    private boolean keyPressed;
+    private boolean keyGapPressed;
+    private boolean keyCyclePressed;
     private int lastSlot;
 
     @Override
@@ -49,35 +51,55 @@ public class Offhand extends Hack {
             this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
             return;
         }
+
         if (gapKey.getKey() < -1) {
             if (Mouse.isButtonDown(MouseUtil.convertToMouse(gapKey.getKey()))) {
-                if (!keyPressed && mc.currentScreen == null) {
+                if (!keyGapPressed && mc.currentScreen == null) {
                     this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 }
-                keyPressed = true;
+                keyGapPressed = true;
                 return;
             } else {
-                keyPressed = false;
+                keyGapPressed = false;
             }
         } else if (gapKey.getKey() > -1) {
             if (Keyboard.isKeyDown(gapKey.getKey())) {
-                if (!keyPressed && mc.currentScreen == null) {
+                if (!keyGapPressed && mc.currentScreen == null) {
                     this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
                 }
-                keyPressed = true;
+                keyGapPressed = true;
                 return;
             } else {
-                keyPressed = false;
+                keyGapPressed = false;
             }
         }
 
+        if (cycle.getKey() < -1) {
+            if (Mouse.isButtonDown(MouseUtil.convertToMouse(cycle.getKey()))) {
+                if (!keyCyclePressed && mc.currentScreen == null) {
+                    this.mode.increment();
+                }
+                keyCyclePressed = true;
+                return;
+            } else {
+                keyCyclePressed = false;
+            }
+        } else if (cycle.getKey() > -1) {
+            if (Keyboard.isKeyDown(cycle.getKey())) {
+                if (!keyCyclePressed && mc.currentScreen == null) {
+                    this.mode.increment();
+                }
+                keyCyclePressed = true;
+                return;
+            } else {
+                keyCyclePressed = false;
+            }
+        }
 
         if (PlayerUtil.isInHole() && gapHole.getValue() && !WurstplusThree.HACKS.ishackEnabled("Crystal Aura")) {
             this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
             return;
         }
-
-
 
         switch (mode.getValue()) {
             case "Totem":
@@ -132,4 +154,10 @@ public class Offhand extends Hack {
         }
         return -1;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return this.mode.getValue();
+    }
+
 }

@@ -100,6 +100,6 @@ public class Speed extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return this.mode.getValueName();
+        return this.mode.getValue();
     }
 }

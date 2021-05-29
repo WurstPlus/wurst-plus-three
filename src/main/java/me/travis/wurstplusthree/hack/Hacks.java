@@ -104,6 +104,7 @@ public class Hacks implements Globals {
         this.hacks.add(new VoidESP());
         this.hacks.add(new Aspect());
         this.hacks.add(new ItemPhysics());
+        this.hacks.add(new ShulkerPreview());
     }
 
     public List<Hack> getHacks() {

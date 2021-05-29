@@ -287,6 +287,11 @@ public class ConfigManager implements Globals {
         for (Hack hack : WurstplusThree.HACKS.getDrawnHacks()) {
             writer.write(hack.getName() + System.lineSeparator());
         }
+        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
+            if (!hack.isShown()) {
+                writer.write(hack.getName() + System.lineSeparator());
+            }
+        }
         writer.close();
     }
 

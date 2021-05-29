@@ -183,27 +183,23 @@ public class CrystalAura extends Hack {
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
-            try { // minecraft may update player list during us looping through it
-                for (EntityPlayer target : mc.world.playerEntities) {
-                    if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
-                        if (this.predictCrystal.getValue()) {
-                            CPacketUseEntity predict = new CPacketUseEntity();
-                            predict.entityId = packet.getEntityID();
-                            predict.action = CPacketUseEntity.Action.ATTACK;
-                            mc.player.connection.sendPacket(predict);
-                            if (!this.swing.is("None")) {
-                                BlockUtil.swingArm(swing);
-                            }
-                            if (packetSafe.getValue()) {
-                                this.hasPacketBroke = true;
-                                this.confirmPacketBroke = false;
-                            }
+            for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
+                if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
+                    if (this.predictCrystal.getValue()) {
+                        CPacketUseEntity predict = new CPacketUseEntity();
+                        predict.entityId = packet.getEntityID();
+                        predict.action = CPacketUseEntity.Action.ATTACK;
+                        mc.player.connection.sendPacket(predict);
+                        if (!this.swing.is("None")) {
+                            BlockUtil.swingArm(swing);
                         }
-                        break;
+                        if (packetSafe.getValue()) {
+                            this.hasPacketBroke = true;
+                            this.confirmPacketBroke = false;
+                        }
                     }
+                    break;
                 }
-            } catch (ConcurrentModificationException e) {
-                e.printStackTrace();
             }
         }
         if (event.getPacket() instanceof SPacketDestroyEntities) {

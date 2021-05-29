@@ -115,7 +115,7 @@ public class KillAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return target instanceof EntityPlayer ? target.getName() : "";
+        return target instanceof EntityPlayer ? target.getName() : null;
     }
 
 }
