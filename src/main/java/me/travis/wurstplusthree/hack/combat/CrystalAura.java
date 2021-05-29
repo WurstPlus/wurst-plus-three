@@ -220,7 +220,7 @@ public class CrystalAura extends Hack {
         }
         if (event.getPacket() instanceof SPacketSoundEffect) {
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
-                for (Entity crystal : mc.world.loadedEntityList) {
+                for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
                             crystalLatency = System.currentTimeMillis() - start;
