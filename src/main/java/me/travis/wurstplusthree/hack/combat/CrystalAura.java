@@ -34,6 +34,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
@@ -131,6 +133,10 @@ public class CrystalAura extends Hack {
     private boolean didAnything;
     private boolean facePlacing;
 
+    private int crystalsPlaced;
+    private long start = 0;
+    private long crystalLatency;
+
     private int currentChainCounter;
     private int chainCount;
     private int placeTimeout;
@@ -216,12 +222,15 @@ public class CrystalAura extends Hack {
                 } catch (Exception ignored) {}
             }
         }
-        if (event.getPacket() instanceof SPacketSoundEffect && fastMode.getValue().equals("Sound")) {
+        if (event.getPacket() instanceof SPacketSoundEffect) {
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 for (Entity crystal : mc.world.loadedEntityList) {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
-                            crystal.setDead();
+                            crystalLatency = System.currentTimeMillis() - start;
+                            if(fastMode.getValue().equals("Sound")) {
+                                crystal.setDead();
+                            }
                             if (!confirmPacketBroke && hasPacketBroke) {
                                 confirmPacketBroke = true;
                             }
@@ -243,10 +252,10 @@ public class CrystalAura extends Hack {
             this.disable();
             return;
         }
-
         didAnything = false;
 
         if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
+            start = System.currentTimeMillis();
             this.placeCrystal();
         }
         if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !confirmPacketBroke) {
@@ -621,14 +630,16 @@ public class CrystalAura extends Hack {
         hasPacketBroke = false;
         placeTimeoutFlag = false;
         alreadyAttacking = false;
-        confirmPacketBroke = false;
         currentChainCounter = 0;
         obiFeetCounter = 0;
+        crystalsPlaced = 0;
+        crystalLatency = System.currentTimeMillis();
+        start = 0;
     }
 
     @Override
     public String getDisplayInfo() {
-        return this.ezTarget != null ? this.ezTarget.getName() : null;
+        return (crystalLatency + " ms");
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
