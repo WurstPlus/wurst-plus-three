@@ -30,7 +30,7 @@ public class NoRender extends Hack {
     public BooleanSetting time = new BooleanSetting("Change Time", false, this);
     public BooleanSetting block = new BooleanSetting("Block", true , this);
     public BooleanSetting water = new BooleanSetting("Water", true, this);
-    public IntSetting newTime = new IntSetting("Time", 0, 0, 23000, this);
+    public IntSetting newTime = new IntSetting("Time", 0, 0, 23000, this, s -> time.getValue());
 
     @Override
     public void onUpdate() {

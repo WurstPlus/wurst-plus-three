@@ -52,7 +52,7 @@ public class Nametags extends Hack {
     public IntSetting arrowPos = new IntSetting("Arrow Pos", 28, 0, 50, this);
     public DoubleSetting scale = new DoubleSetting("Scale", 0.05, 0.01, 0.1, this);
     public DoubleSetting height = new DoubleSetting("Height", 2.5, 0.5, 5.0, this);
-    public IntSetting textOffset = new IntSetting("TextOffset", 0, -5, 5, this);
+    public IntSetting textOffset = new IntSetting("TextOffset", 0, -5, 5, this, s -> customFont.getValue());
 
     public BooleanSetting outline = new BooleanSetting("Outline", true, this);
     public DoubleSetting outlineWidth = new DoubleSetting("Width", 1.5, 0.1, 3.0, this);

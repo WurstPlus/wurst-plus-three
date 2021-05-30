@@ -227,6 +227,7 @@ public class CrystalAura extends Hack {
                 for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
+                            crystalLatency = System.currentTimeMillis() - start;
                             if(fastMode.getValue().equals("Sound")) {
                                 crystal.setDead();
                             }
@@ -273,8 +274,6 @@ public class CrystalAura extends Hack {
             chainCount = chainStep.getValue();
             currentChainCounter = 0;
         }
-
-        crystalLatency = System.currentTimeMillis() - start;
 
         currentChainCounter++;
         breakDelayCounter++;
@@ -646,7 +645,7 @@ public class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return ((ezTarget != null) ? String.valueOf(crystalLatency) : "0" + "ms");
+        return ((ezTarget != null) ? crystalLatency + "ms" : "0" + "ms");
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

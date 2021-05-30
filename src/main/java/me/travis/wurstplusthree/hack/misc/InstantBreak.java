@@ -70,7 +70,7 @@ public class InstantBreak extends Hack {
     public BooleanSetting webSwitch = new BooleanSetting("Web Switch", false, this);
     public EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), this);
     public BooleanSetting render = new BooleanSetting("Render", false, this);
-    public BooleanSetting box = new BooleanSetting("Box", false, this);
+    public BooleanSetting box = new BooleanSetting("Box", false, this, s -> render.getValue());
     public BlockPos currentPos;
     public IBlockState currentBlockState;
     private boolean isMining = false;

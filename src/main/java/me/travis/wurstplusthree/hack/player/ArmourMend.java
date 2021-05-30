@@ -21,12 +21,12 @@ public class ArmourMend extends Hack {
 
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);
     BooleanSetting mendingTakeOff = new BooleanSetting("Auto Mend", true, this);
-    IntSetting enemyRange = new IntSetting("Enemy Range", 8, 0, 25, this);
-    IntSetting helmetThreshold = new IntSetting("Helmet", 80, 0, 100, this);
-    IntSetting chestThreshold = new IntSetting("Chest", 80, 0, 100, this);
-    IntSetting legThreshold = new IntSetting("Leggings", 80, 0, 100, this);
-    IntSetting bootsThreshold = new IntSetting("Boots", 80, 0, 100, this);
-    IntSetting actions = new IntSetting("Actions", 3, 1, 10, this);
+    IntSetting enemyRange = new IntSetting("Enemy Range", 8, 0, 25, this, s -> mendingTakeOff.getValue());
+    IntSetting helmetThreshold = new IntSetting("Helmet", 80, 0, 100, this, s -> mendingTakeOff.getValue());
+    IntSetting chestThreshold = new IntSetting("Chest", 80, 0, 100, this, s -> mendingTakeOff.getValue());
+    IntSetting legThreshold = new IntSetting("Leggings", 80, 0, 100, this, s -> mendingTakeOff.getValue());
+    IntSetting bootsThreshold = new IntSetting("Boots", 80, 0, 100, this, s -> mendingTakeOff.getValue());
+    IntSetting actions = new IntSetting("Actions", 3, 1, 10, this, s -> mendingTakeOff.getValue());
     private final Timer timer = new Timer();
     private final Queue<InventoryUtil.Task> taskList = new ConcurrentLinkedQueue<>();
     private final List<Integer> doneSlots = new ArrayList<>();

@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 public class AntiWeb extends Hack {
 
     BooleanSetting disableBB = new BooleanSetting("Add BB", true, this);
-    DoubleSetting bbOffset = new DoubleSetting("BB Offset", 0.0, -2.0, 2.0,this);
+    DoubleSetting bbOffset = new DoubleSetting("BB Offset", 0.0, -2.0, 2.0,this, s -> disableBB.getValue());
     BooleanSetting onGround = new BooleanSetting("On Ground", true, this);
     DoubleSetting motionY = new DoubleSetting("Set MotionY", 1.0, 0.0, 20.0, this);
     DoubleSetting motionX = new DoubleSetting("Set MotionX", 0.84, -1.0, 5.0, this);
