@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
 
@@ -53,6 +55,7 @@ public class ConfigManager implements Globals {
     private final Path drawnPath = Paths.get(drawnDir);
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
+
     public void loadConfig() {
         try {
             this.loadEnemies();
@@ -62,6 +65,15 @@ public class ConfigManager implements Globals {
             this.loadDrawn();
             this.loadFont();
             this.loadBurrowBlock();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reloadConfig() {
+        try {
+            this.loadSettings();
+            this.loadBinds();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,7 +112,7 @@ public class ConfigManager implements Globals {
         this.bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
 
-        this.loadConfig();
+        this.reloadConfig();
         return true;
     }
 
@@ -287,17 +299,14 @@ public class ConfigManager implements Globals {
         for (Hack hack : WurstplusThree.HACKS.getDrawnHacks()) {
             writer.write(hack.getName() + System.lineSeparator());
         }
-        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
-            if (!hack.isShown()) {
-                writer.write(hack.getName() + System.lineSeparator());
-            }
-        }
         writer.close();
     }
 
     private void loadDrawn() throws IOException {
-        for (String hackName : Files.readAllLines(drawnPath)) {
-            WurstplusThree.HACKS.addDrawHack(WurstplusThree.HACKS.getHackByName(hackName));
+        for (String hackName : Files.readAllLines(drawnPath).stream().distinct().collect(Collectors.toList())) {
+            Hack hack = WurstplusThree.HACKS.getHackByName(hackName);
+            if (hack == null) continue;
+            WurstplusThree.HACKS.addDrawHack(hack);
         }
     }
 

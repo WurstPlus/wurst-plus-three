@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.combat;
 
+import ca.weblite.objc.Client;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -34,8 +35,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
@@ -96,7 +95,7 @@ public class CrystalAura extends Hack {
     BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this);
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
 
-    BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
+    BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this);
     BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this);
     BooleanSetting crystalLogic = new BooleanSetting("CrystalCheck", false, this);
 
@@ -114,6 +113,8 @@ public class CrystalAura extends Hack {
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
+
+    BooleanSetting debug = new BooleanSetting("Debug", false, this);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
@@ -133,7 +134,6 @@ public class CrystalAura extends Hack {
     private boolean didAnything;
     private boolean facePlacing;
 
-    private int crystalsPlaced;
     private long start = 0;
     private long crystalLatency;
 
@@ -223,11 +223,10 @@ public class CrystalAura extends Hack {
                 for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
-                            crystalLatency = System.currentTimeMillis() - start;
                             if(fastMode.getValue().equals("Sound")) {
                                 crystal.setDead();
                             }
-                            if (!confirmPacketBroke && hasPacketBroke) {
+                            if (!confirmPacketBroke && hasPacketBroke && packetSafe.getValue()) {
                                 confirmPacketBroke = true;
                             }
                         }
@@ -251,10 +250,16 @@ public class CrystalAura extends Hack {
         didAnything = false;
 
         if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("placing");
+            }
             start = System.currentTimeMillis();
             this.placeCrystal();
         }
-        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && !confirmPacketBroke) {
+        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && (!confirmPacketBroke)) {
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("breaking");
+            }
             this.breakCrystal();
         }
 
@@ -264,6 +269,8 @@ public class CrystalAura extends Hack {
             chainCount = chainStep.getValue();
             currentChainCounter = 0;
         }
+
+        crystalLatency = System.currentTimeMillis() - start;
 
         currentChainCounter++;
         breakDelayCounter++;
@@ -628,14 +635,14 @@ public class CrystalAura extends Hack {
         alreadyAttacking = false;
         currentChainCounter = 0;
         obiFeetCounter = 0;
-        crystalsPlaced = 0;
-        crystalLatency = System.currentTimeMillis();
+        crystalLatency = 0;
         start = 0;
+        confirmPacketBroke = false;
     }
 
     @Override
     public String getDisplayInfo() {
-        return (crystalLatency + " ms");
+        return (crystalLatency + "ms");
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

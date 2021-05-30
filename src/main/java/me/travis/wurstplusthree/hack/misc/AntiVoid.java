@@ -15,7 +15,7 @@ import static me.travis.wurstplusthree.util.PlayerUtil.getPlayerPos;
  * @since 28/04/2021
  *  - not china code i promise!
  */
-@Hack.Registration(name = "AntiVoid", description = "stops dumb ppl (you) falling into the void", category = Hack.Category.MISC, isListening = false)
+@Hack.Registration(name = "Anti Void", description = "stops dumb ppl (you) falling into the void", category = Hack.Category.MISC, isListening = false)
 public class AntiVoid extends Hack {
 
     private ConcurrentSet<BlockPos> voidHoles;
