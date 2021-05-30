@@ -35,6 +35,7 @@ public class KeyBindComponent extends Component {
         this.normal = true;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     public KeyBindComponent(KeySetting setting, HackButton button, int offset) {
@@ -45,10 +46,12 @@ public class KeyBindComponent extends Component {
         this.normal = false;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     @Override
     public void renderComponent(int mouseX, int mouseY) {
+        if(!isShown())return;
         if (normal) {
             module = this.parent.mod;
             RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.isHovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
@@ -78,6 +81,11 @@ public class KeyBindComponent extends Component {
         this.isHovered = isMouseOnButton(mouseX, mouseY);
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
+        boolean old = isShown();
+        setShown(this.setting.isShown());
+        if(old != isShown()){
+            this.parent.init(parent.mod, parent.parent, parent.offset, true);
+        }
     }
 
     public boolean isMouseOnButton(int x, int y) {
@@ -86,6 +94,7 @@ public class KeyBindComponent extends Component {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        if(!isShown())return;
         if (this.isBinding) {
             this.isBinding = false;
             if (normal) {
@@ -136,6 +145,7 @@ public class KeyBindComponent extends Component {
 
     @Override
     public void keyTyped(char typedChar, int key) {
+        if(!isShown())return;
         if (this.isBinding) {
             if (this.normal) {
                 module.setBind(key);

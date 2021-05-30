@@ -6,6 +6,7 @@ package me.travis.wurstplusthree.gui.component;
  */
 
 public abstract class Component {
+    private boolean shown;
     public void renderComponent(int mouseX, int mouseY) {
     }
 
@@ -36,4 +37,14 @@ public abstract class Component {
     public int getOffset() {
         return 0;
     }
+
+    public boolean isShown() {
+        return this.shown;
+    }
+
+    public boolean setShown(boolean shown) {
+        this.shown = shown;
+        return this.shown;
+    }
+
 }

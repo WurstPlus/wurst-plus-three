@@ -41,6 +41,7 @@ public class SliderComponent extends Component {
 
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     public SliderComponent(IntSetting value, HackButton button, int offset) {
@@ -50,10 +51,12 @@ public class SliderComponent extends Component {
 
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     @Override
     public void renderComponent(int mouseX, int mouseY) {
+        if(!isShown())return;
         net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
         RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET,
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()),
@@ -69,6 +72,15 @@ public class SliderComponent extends Component {
 
     @Override
     public void updateComponent(int mouseX, int mouseY) {
+        boolean old = isShown();
+        if(setD == null){
+            setShown(setI.isShown());
+        }else {
+            setShown(setD.isShown());
+        }
+        if(old != isShown()){
+            this.parent.init(parent.mod, parent.parent, parent.offset, true);
+        }
         this.hovered = isMouseOnButton(mouseX, mouseY);
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
@@ -108,6 +120,7 @@ public class SliderComponent extends Component {
     }
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        if(!isShown())return;
         if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             dragging = true;
         }

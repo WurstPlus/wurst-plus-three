@@ -34,6 +34,7 @@ public class ModuleBindComponent extends Component {
         this.normal = true;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     @Override

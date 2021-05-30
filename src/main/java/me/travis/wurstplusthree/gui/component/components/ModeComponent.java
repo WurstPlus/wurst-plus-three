@@ -34,9 +34,11 @@ public class ModeComponent extends Component {
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
         this.modeIndex = 0;
+        setShown(true);
     }
     @Override
     public void renderComponent(int mouseX, int mouseY) {
+        if(!isShown())return;
         RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
         // RenderUtil2D.drawVerticalLine(parent.parent.getX() + WurstplusGuiNew.SETTING_WIDTH_OFFSET, parent.parent.getY() + offset,WurstplusGuiNew.HEIGHT + 2, GuiRewrite.INSTANCE.lineColor.getValue().hashCode());
         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName() + ": " + set.getValue(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
@@ -52,9 +54,15 @@ public class ModeComponent extends Component {
         this.hovered = isMouseOnButton(mouseX, mouseY);
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
+        boolean old = isShown();
+        setShown(this.set.isShown());
+        if(old != isShown()){
+            this.parent.init(parent.mod, parent.parent, parent.offset, true);
+        }
     }
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        if(!isShown())return;
         if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
             int maxIndex = set.getModes().size();
 

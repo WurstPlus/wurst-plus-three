@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class EnumSetting extends Setting<String> {
 
@@ -11,6 +12,12 @@ public class EnumSetting extends Setting<String> {
 
     public EnumSetting(String name, String value, List<String> modes, Hack parent) {
         super(name, value, parent);
+
+        this.modes = modes;
+    }
+
+    public EnumSetting(String name, String value, List<String> modes, Hack parent, Predicate<String> shown) {
+        super(name, value, parent, shown);
 
         this.modes = modes;
     }
@@ -37,6 +44,13 @@ public class EnumSetting extends Setting<String> {
 
     public String getValue() {
         return this.value;
+    }
+
+    public boolean isShown(){
+        if(shown == null){
+            return true;
+        }
+        return shown.test(this.getValue());
     }
 
     @Override

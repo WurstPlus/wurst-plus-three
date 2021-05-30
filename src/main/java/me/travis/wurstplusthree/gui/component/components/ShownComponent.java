@@ -30,6 +30,7 @@ public class ShownComponent extends Component {
 
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
+        setShown(true);
     }
 
     @Override

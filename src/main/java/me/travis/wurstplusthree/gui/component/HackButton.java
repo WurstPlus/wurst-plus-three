@@ -23,7 +23,9 @@ public class HackButton extends Component {
 
     public Hack mod;
     public CategoryComponent parent;
-    private final ArrayList<Component> subcomponents;
+    private ArrayList<Component> subcomponents;
+    private ArrayList<Setting> notInitSettings;
+    private ArrayList<Boolean> oldVals;
     public boolean isOpen;
     private boolean isHovered;
     public int offset;
@@ -40,38 +42,73 @@ public class HackButton extends Component {
         return children;
     }
 
-    public HackButton(Hack mod, CategoryComponent parent, int offset) {
-        this.mod = mod;
-        this.parent = parent;
-        this.offset = offset;
+
+    public void init(Hack mod, CategoryComponent parent, int offset, boolean update) {
+        if (!update) {
+            this.mod = mod;
+            this.parent = parent;
+            this.offset = offset;
+        }
 
         this.subcomponents = new ArrayList<>();
-        this.isOpen = false;
+        this.notInitSettings = new ArrayList<>();
+        this.oldVals = new ArrayList<>();
+        if (!update) {
+            this.isOpen = false;
+        }
         opY = offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
                 if (s instanceof BooleanSetting) {
+                    if (!((BooleanSetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new BooleanComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
+                    if (!((EnumSetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof IntSetting) {
+                    if (!((IntSetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new SliderComponent((IntSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof DoubleSetting) {
+                    if (!((DoubleSetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof ColourSetting) {
+                    if (!((ColourSetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                }
-                else if (s instanceof KeySetting){
+                } else if (s instanceof KeySetting) {
+                    if (!((KeySetting) s).isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 }
             }
             this.subcomponents.add(new ModuleBindComponent(this, opY));
+            opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
             this.subcomponents.add(new ShownComponent(this, opY));
+            if(update){
+                parent.refresh();
+            }
         }
     }
 
@@ -84,8 +121,6 @@ public class HackButton extends Component {
             opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
         }
     }
-
-
 
 
     @Override
@@ -103,6 +138,7 @@ public class HackButton extends Component {
         if (this.isOpen) {
             if (!this.subcomponents.isEmpty()) {
                 for (Component comp : this.subcomponents) {
+                    if (!comp.isShown()) continue;
                     comp.renderComponent(MouseX, MouseY);
                     if (comp instanceof ColorComponent) {
                         if (((ColorComponent) comp).isOpen()) {
@@ -124,6 +160,9 @@ public class HackButton extends Component {
         if (this.isOpen) {
             int val = 0;
             for (Component c : subcomponents) {
+                if (!c.isShown()) {
+                    val -= 1;
+                }
                 if (c instanceof ColorComponent) {
                     if (((ColorComponent) c).isOpen()) {
                         val += 5;
@@ -143,6 +182,62 @@ public class HackButton extends Component {
                 comp.updateComponent(mouseX, mouseY);
             }
         }
+        if (!this.notInitSettings.isEmpty()) {
+            if (oldVals.isEmpty()) {
+                for (Setting s : this.notInitSettings) {
+                    if (s instanceof BooleanSetting) {
+                        this.oldVals.add(((BooleanSetting) s).isShown());
+                    } else if (s instanceof EnumSetting) {
+                        this.oldVals.add(((EnumSetting) s).isShown());
+                    } else if (s instanceof IntSetting) {
+                        this.oldVals.add(((IntSetting) s).isShown());
+                    } else if (s instanceof DoubleSetting) {
+                        this.oldVals.add(((DoubleSetting) s).isShown());
+                    } else if (s instanceof ColourSetting) {
+                        this.oldVals.add(((ColourSetting) s).isShown());
+                    } else if (s instanceof KeySetting) {
+                        this.oldVals.add(((KeySetting) s).isShown());
+                    }
+                }
+            } else {
+                int index = 0;
+                for (Setting s : this.notInitSettings) {
+                    boolean old = oldVals.get(index);
+                    boolean init = false;
+                    if (s instanceof BooleanSetting) {
+                        if (((BooleanSetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    } else if (s instanceof EnumSetting) {
+                        if (((EnumSetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    } else if (s instanceof IntSetting) {
+                        if (((IntSetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    } else if (s instanceof DoubleSetting) {
+                        if (((DoubleSetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    } else if (s instanceof ColourSetting) {
+                        if (((ColourSetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    } else if (s instanceof KeySetting) {
+                        if (((KeySetting) s).isShown() != old) {
+                            init = true;
+                        }
+                    }
+                    index++;
+                    if (init) {
+                        oldVals.clear();
+                        this.init(mod, parent, offset, true);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -153,12 +248,12 @@ public class HackButton extends Component {
         if (isMouseOnButton(mouseX, mouseY) && button == 1) {
             this.isOpen = !this.isOpen;
             this.parent.refresh();
-            for(Component comp : parent.getComponents()){
-                if(comp instanceof HackButton){
-                    if(((HackButton) comp).isOpen){
-                        if(((HackButton) comp).isOpen){
-                            for(Component comp2 : ((HackButton) comp).getChildren()){
-                                if(comp2 instanceof ColorComponent){
+            for (Component comp : parent.getComponents()) {
+                if (comp instanceof HackButton) {
+                    if (((HackButton) comp).isOpen) {
+                        if (((HackButton) comp).isOpen) {
+                            for (Component comp2 : ((HackButton) comp).getChildren()) {
+                                if (comp2 instanceof ColorComponent) {
                                     ((ColorComponent) comp2).setOpen(false);
                                     this.parent.refresh();
                                 }
@@ -195,33 +290,27 @@ public class HackButton extends Component {
         return false;
     }
 
-    private void renderArrow(){
-        switch (Gui.INSTANCE.arrowType.getValue()){
+    private void renderArrow() {
+        switch (Gui.INSTANCE.arrowType.getValue()) {
             case "Type1":
-                if(this.isOpen){
-                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
-                }
-                else {
-                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 1, 2, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                if (this.isOpen) {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
+                } else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 1, 2, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
                 }
                 break;
             case "Type2":
-                if(this.isOpen){
+                if (this.isOpen) {
                     GL11.glPushMatrix();
                     GL11.glTranslated(parent.getX() + 102f, parent.getY() + offset + 12f, 0);
                     GL11.glRotatef(-90f, 0f, 0f, 1f);
                     GL11.glTranslated(-(parent.getX() + 102f), -(parent.getY() + offset + 12f), 0);
-                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
                     GL11.glPopMatrix();
-                }
-                else {
-                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1,Gui.INSTANCE.fontColor.getValue().hashCode());
+                } else {
+                    RenderUtil.drawTriangleOutline(parent.getX() + 105f, parent.getY() + offset + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
                 }
                 break;
         }
-    }
-
-    public void addOpY(int v) {
-        opY += v;
     }
 }

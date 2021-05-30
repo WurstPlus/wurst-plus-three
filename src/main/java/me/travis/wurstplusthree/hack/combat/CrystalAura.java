@@ -49,68 +49,70 @@ public class CrystalAura extends Hack {
 
     BooleanSetting place = new BooleanSetting("Place", true, this);
     BooleanSetting breaK = new BooleanSetting("Break", true, this);
-    BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, this);
+    BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, this, s -> breaK.getValue());
 
-    DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, this);
-    DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this);
-    DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this);
-    DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this);
+    DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, this, s -> breaK.getValue());
+    DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
+    DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
+    DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
 
-    IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this);
-    IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this);
+    IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
+    IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
 
-    IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this);
-    IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this);
+    IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this, s -> place.getValue());
+    IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this, s -> breaK.getValue());
     BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, this);
-    IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this);
-
-    EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this);
-
-    BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this);
-    EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
-    BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this);
-
-    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "None"), this);
+    IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
     BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
-    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this);
-    BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this);
-    BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this);
-    BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this);
-    IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this);
+    EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this);
-    BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this);
-    BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this);
-    IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this);
+    BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this, s -> place.getValue() || breaK.getValue());
+    EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this, s -> place.getValue());
 
-    EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this);
+    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "None"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting thirteen = new BooleanSetting("1.13", false, this);
+    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this);
-    IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this);
-    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 5, 0, 10, this);
-    KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this);
+    BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this, s -> place.getValue() || breaK.getValue());
+    IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this, s -> entityPredict.getValue() && (place.getValue() || breaK.getValue()));
 
-    BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this);
-    IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this);
+    BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this, s -> palceObiFeet.getValue());
+    BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this, s -> palceObiFeet.getValue());
+    IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this, s -> palceObiFeet.getValue());
 
-    BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this);
-    BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this);
-    BooleanSetting crystalLogic = new BooleanSetting("CrystalCheck", false, this);
+    EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this);
+    BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this);
-    IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this);
-    IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this);
+    BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this, s -> place.getValue() || breaK.getValue());
+    IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 5, 0, 10, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+
+    BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this, s -> place.getValue() || breaK.getValue());
+    IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this, s -> fuckArmour.getValue() && (place.getValue() || breaK.getValue()));
+
+    BooleanSetting stopFPWhenSword = new BooleanSetting("Stop Faceplace Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting crystalLogic = new BooleanSetting("CrystalCheck", false, this, s -> place.getValue() || breaK.getValue());
+
+    BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
+
+    BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this, s -> place.getValue() || breaK.getValue());
+    IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
+    IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this, s -> chainMode.getValue()&& (place.getValue() || breaK.getValue()));
+
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
     BooleanSetting flat = new BooleanSetting("Flat", false, this);
-    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, this);
-    IntSetting width = new IntSetting("Width", 1, 1, 10, this);
-    DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this);
-    DoubleSetting columnHight = new DoubleSetting("ColumnHight", 1.5, 0.0, 10.0, this);
+    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, this, s -> flat.getValue());
+    IntSetting width = new IntSetting("Width", 1, 1, 10, this, s -> !mode.is("Circle") || !mode.is("Column"));
+    DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this, s -> mode.is("Circle") || mode.is("Column"));
+    DoubleSetting columnHight = new DoubleSetting("ColumnHight", 1.5, 0.0, 10.0, this, s -> mode.is("Column"));
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
     BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
@@ -639,7 +641,7 @@ public class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return (crystalLatency + " ms");
+        return ((ezTarget != null) ? String.valueOf(crystalLatency) : "0" + " ms");
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

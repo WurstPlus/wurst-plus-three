@@ -33,6 +33,7 @@ public class ColorComponent extends Component {
         this.offset = offset;
         this.isOpen = false;
         this.firstTimeOpen = true;
+        setShown(true);
     }
 
     @Override
@@ -57,11 +58,11 @@ public class ColorComponent extends Component {
     @Override
     public void setOff(int newOff) {
         offset = newOff;
-
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        if(!isShown())return;
         if (isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 1) {
             for (Component comp : parent.parent.getComponents()) {
                 if (comp instanceof HackButton) {
@@ -256,6 +257,15 @@ public class ColorComponent extends Component {
     @Override
     public int getOffset() {
         return offset;
+    }
+
+    @Override
+    public void updateComponent(int mouseX, int mouseY) {
+        boolean old = isShown();
+        setShown(this.set.isShown());
+        if(old != isShown()){
+            this.parent.init(parent.mod, parent.parent, parent.offset, true);
+        }
     }
 
     public static boolean mouseOver(int minX, int minY, int maxX, int maxY, int mX, int mY) {

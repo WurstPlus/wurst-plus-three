@@ -41,7 +41,8 @@ public class CategoryComponent {
 
         for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
             if (mod.getCategory().equals(category)) {
-                HackButton moduleButton = new HackButton(mod, this, tY);
+                HackButton moduleButton = new HackButton();
+                moduleButton.init(mod, this, tY, false);
                 this.components.add(moduleButton);
                 tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
             }

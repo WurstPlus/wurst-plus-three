@@ -33,12 +33,12 @@ public class AutoWeb extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     IntSetting type = new IntSetting("Type", 3, 1, 3,this);
     IntSetting delayTick = new IntSetting("Delay", 1, 0, 10, this);
-    BooleanSetting PredictPlace = new BooleanSetting("Predict", false, this);
+    //BooleanSetting PredictPlace = new BooleanSetting("Predict", false, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);
     BooleanSetting lowFeet = new BooleanSetting("Low Feet", false, this);
     BooleanSetting legs = new BooleanSetting("Legs", true, this);
-    BooleanSetting chest = new BooleanSetting("Chest", true, this);
-    BooleanSetting head = new BooleanSetting("Head", false , this);
+    BooleanSetting chest = new BooleanSetting("Chest", true, this, s -> legs.getValue());
+    BooleanSetting head = new BooleanSetting("Head", false , this, s -> legs.getValue() && chest.getValue());
 
     EntityPlayer player;
     boolean r = false;

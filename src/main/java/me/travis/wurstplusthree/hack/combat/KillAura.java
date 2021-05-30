@@ -24,7 +24,7 @@ public class KillAura extends Hack {
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting raytrace = new BooleanSetting("Walls", true, this);
     public BooleanSetting swingArm = new BooleanSetting("Swing", true, this);
-    public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this);
+    public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this, s -> mode.is("32k"));
 
     private Entity target;
     private int ticksPassed;

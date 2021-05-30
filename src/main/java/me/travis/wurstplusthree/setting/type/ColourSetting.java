@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
 import java.awt.*;
+import java.util.function.Predicate;
 
 public class ColourSetting extends Setting<Colour> {
 
@@ -12,6 +13,10 @@ public class ColourSetting extends Setting<Colour> {
 
     public ColourSetting(String name, Colour value, Hack parent) {
         super(name, value, parent);
+    }
+
+    public ColourSetting(String name, Colour value, Hack parent, Predicate<Colour> shown) {
+        super(name, value, parent, shown);
     }
 
     @Override
@@ -46,6 +51,13 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
+    }
+
+    public boolean isShown(){
+        if(shown == null){
+            return true;
+        }
+        return shown.test(this.getValue());
     }
 
     @Override
