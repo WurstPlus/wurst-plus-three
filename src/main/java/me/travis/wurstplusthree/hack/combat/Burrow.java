@@ -204,7 +204,7 @@ public class Burrow extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return this.type.getValueName();
+        return this.type.getValue();
     }
 
     public void setBlock(Block b){

@@ -33,6 +33,6 @@ public class Sprint extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return mode.getValueName();
+        return mode.getValue();
     }
 }
