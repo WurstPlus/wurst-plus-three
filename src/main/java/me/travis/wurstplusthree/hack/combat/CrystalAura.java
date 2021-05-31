@@ -10,6 +10,7 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,8 +35,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
@@ -89,7 +88,7 @@ public class CrystalAura extends Hack {
 
     BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this, s -> place.getValue() || breaK.getValue());
     IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
-    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 5, 0, 10, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 0, 0, 10, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
     KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
@@ -137,7 +136,6 @@ public class CrystalAura extends Hack {
     private boolean didAnything;
     private boolean facePlacing;
 
-    private int crystalsPlaced;
     private long start = 0;
     private long crystalLatency;
 
@@ -255,16 +253,10 @@ public class CrystalAura extends Hack {
         didAnything = false;
 
         if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
-            if (debug.getValue()) {
-                ClientMessage.sendMessage("placing");
-            }
             start = System.currentTimeMillis();
             this.placeCrystal();
         }
         if (this.breaK.getValue() && breakDelayCounter > breakTimeout && (!confirmPacketBroke)) {
-            if (debug.getValue()) {
-                ClientMessage.sendMessage("breaking");
-            }
             this.breakCrystal();
         }
 
@@ -305,6 +297,9 @@ public class CrystalAura extends Hack {
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal) {
             setYawPitch(targetBlock);
             BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("placing");
+            }
         }
     }
 
@@ -341,6 +336,9 @@ public class CrystalAura extends Hack {
         EntityUtil.attackEntity(crystal, this.attackPacket.getValue());
         if (!this.swing.is("None")) {
             BlockUtil.swingArm(swing);
+        }
+        if (debug.getValue()) {
+            ClientMessage.sendMessage("breaking");
         }
         breakDelayCounter = 0;
     }
@@ -475,7 +473,7 @@ public class CrystalAura extends Hack {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
-                miniumDamage = EntityUtil.isInHole(target) ? 0.5 : 2;
+                miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
                 facePlacing = false;
@@ -512,14 +510,14 @@ public class CrystalAura extends Hack {
                 }
             }
 
-            // set min damage to 2/.5 if we want to kill the dude fast
+            // set min damage to 2/1 if we want to kill the dude fast
             double miniumDamage;
             if (CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
             } else if ((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) ||
                     (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
-                miniumDamage = EntityUtil.isInHole(target) ? 0.5 : 2;
+                miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
                 miniumDamage = this.minHpPlace.getValue();
@@ -645,7 +643,7 @@ public class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return ((ezTarget != null) ? crystalLatency + "ms" : "0" + "ms");
+        return ((ezTarget != null) ? crystalLatency : "0") + "ms";
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

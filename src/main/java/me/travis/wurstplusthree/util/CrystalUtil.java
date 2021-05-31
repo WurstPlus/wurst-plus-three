@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,12 +18,10 @@ import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -182,9 +181,9 @@ public class CrystalUtil implements Globals {
         // Offset to "fake position"
         AxisAlignedBB bbox = targetEntity.getEntityBoundingBox().offset(targetEntity.getPositionVector().subtract(entityPosition));
         Vec3d bboxDelta = new Vec3d(
-                1.0 / ((bbox.maxX - bbox.minX) * 2.0 + 1),
-                1.0 / ((bbox.maxY - bbox.minY) * 2.0 + 1),
-                1.0 / ((bbox.maxZ - bbox.minZ) * 2.0 + 1)
+                1.0 / ((bbox.maxX - bbox.minX) * 2.0 + 1.0),
+                1.0 / ((bbox.maxY - bbox.minY) * 2.0 + 1.0),
+                1.0 / ((bbox.maxZ - bbox.minZ) * 2.0 + 1.0)
         );
 
         double xOff = (1.0 - Math.floor(1.0 / bboxDelta.x) * bboxDelta.x) / 2.0;
@@ -221,6 +220,7 @@ public class CrystalUtil implements Globals {
 
         return damage;
     }
+
 
     public static List<Block> getBlocks() {
         return Arrays.asList(

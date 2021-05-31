@@ -81,7 +81,6 @@ public class HoleESP extends Hack {
             HoleUtil.HoleInfo holeInfo = HoleUtil.isHole(pos, false, false);
             HoleUtil.HoleType holeType = holeInfo.getType();
             if (holeType != HoleUtil.HoleType.NONE) {
-
                 HoleUtil.BlockSafety holeSafety = holeInfo.getSafety();
                 AxisAlignedBB centreBlocks = holeInfo.getCentre();
 
@@ -106,6 +105,7 @@ public class HoleESP extends Hack {
                     holes.put(pos, p);
                 }
             }
+
         }
     }
 

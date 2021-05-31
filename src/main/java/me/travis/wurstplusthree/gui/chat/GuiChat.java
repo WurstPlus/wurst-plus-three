@@ -115,21 +115,19 @@ public class GuiChat extends GuiNewChat implements Globals {
                                         if (messageAdd > 0) messageAdd = 0;
                                         this.messageTimer.reset();
                                     }
-                                    if(CustomChat.INSTANCE.rainbow.getValue()){
+                                    if (CustomChat.INSTANCE.rainbow.getValue()){
                                         WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(s, 0.0f + (CustomChat.INSTANCE.type.is("Vertical") ? messageAdd : 0), (j2 - 8), true);
-                                    }else if(CustomChat.INSTANCE.customFont.getValue()){
+                                    } else if(CustomChat.INSTANCE.customFont.getValue()){
                                         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(s, 0.0f + (CustomChat.INSTANCE.type.is("Vertical") ? messageAdd : 0), (j2 - 8), 16777215 + ((l1) << 24));
-                                    }
-                                    else {
-                                        this.mc.fontRenderer.drawStringWithShadow(s, 0.0F+ (CustomChat.INSTANCE.type.is("Vertical") ? messageAdd : 0), (j2 - 8), 16777215 + ((l1) << 24));
+                                    } else {
+                                        this.mc.fontRenderer.drawStringWithShadow(s, 0.0F + (CustomChat.INSTANCE.type.is("Vertical") ? messageAdd : 0), (j2 - 8), 16777215 + ((l1) << 24));
                                     }
                                 } else {
-                                    if(CustomChat.INSTANCE.rainbow.getValue()) {
+                                    if (CustomChat.INSTANCE.rainbow.getValue()) {
                                         WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(s, 0.0f, (j2 - 8), true);
-                                    }else if(CustomChat.INSTANCE.customFont.getValue()){
+                                    } else if(CustomChat.INSTANCE.customFont.getValue()){
                                         WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(s, i2, (j2 - 8), 16777215 + (l1 << 24));
-                                    }
-                                    else {
+                                    } else {
                                         this.mc.fontRenderer.drawStringWithShadow(s, i2, (j2 - 8), 16777215 + (l1 << 24));
                                     }
                                 }

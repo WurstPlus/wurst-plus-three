@@ -1,11 +1,13 @@
 package me.travis.wurstplusthree.gui.component;
 
+import me.travis.wurstplusthree.util.Globals;
+
 /**
  * @author Madmegsox1
  * @since 27/04/2021
  */
 
-public abstract class Component {
+public abstract class Component implements Globals {
     private boolean shown;
     public void renderComponent(int mouseX, int mouseY) {
     }

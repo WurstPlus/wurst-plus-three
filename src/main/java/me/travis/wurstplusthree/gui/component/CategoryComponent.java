@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.ColorUtil;
+import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @since 27/04/2021
  */
 
-public class CategoryComponent {
+public class CategoryComponent implements Globals {
     public ArrayList<Component> components;
     public Hack.Category category;
     private final int width;
@@ -69,7 +70,11 @@ public class CategoryComponent {
 
     public void renderFrame(int mouseX, int mouseY) {
         RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.headButtonColor.getValue().hashCode()), (Gui.INSTANCE.headButtonColor.getValue().hashCode()), false);
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+        if (Gui.INSTANCE.customFont.getValue()) {
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+        } else {
+            mc.fontRenderer.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+        }
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
                 int x = 0;

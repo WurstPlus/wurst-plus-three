@@ -37,6 +37,7 @@ public class Gui extends Hack {
     public EnumSetting arrowType = new EnumSetting("ArrowType", "Off", Arrays.asList("Off", "Type1", "Type2"), this);
     public IntSetting mouseDelay = new IntSetting("MouseDelay", 250, 100, 300, this);
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);
+    public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
 
     public Gui(){
         INSTANCE = this;
