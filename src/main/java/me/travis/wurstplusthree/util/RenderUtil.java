@@ -763,7 +763,7 @@ public class RenderUtil implements Globals {
         tessellator.draw();
     }
 
-    public static void drawText(BlockPos pos, String text) {
+    public static void drawText(BlockPos pos, String text, boolean custom) {
         if (pos == null || text == null) {
             return;
         }
@@ -771,7 +771,11 @@ public class RenderUtil implements Globals {
         glBillboardDistanceScaled((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f, RenderUtil.mc.player, 1.0f);
         GlStateManager.disableDepth();
         GlStateManager.translate(-((double)  WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text) / 2.0), 0.0, 0.0);
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        if (custom) {
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        } else {
+            mc.fontRenderer.drawStringWithShadow(text, 0.0f, 0.0f, -5592406);
+        }
         GlStateManager.popMatrix();
     }
 

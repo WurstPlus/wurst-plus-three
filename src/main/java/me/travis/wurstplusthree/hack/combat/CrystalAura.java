@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
+import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -24,14 +25,13 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.network.play.server.SPacketDestroyEntities;
-import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.network.play.server.*;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -122,6 +122,7 @@ public class CrystalAura extends Hack {
 
     public EntityPlayer ezTarget = null;
     public BlockPos renderBlock = null;
+    private BlockPos predictBlockpos = null;
 
     private double renderDamageVal = 0;
 
@@ -172,22 +173,12 @@ public class CrystalAura extends Hack {
                 Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).setDead();
                 mc.world.removeEntityFromWorld(packet.entityId);
             }
-            EntityEnderCrystal crystal = (EntityEnderCrystal) packet.getEntityFromWorld(mc.world);
-            if (this.predictBlock.getValue() && place.getValue()) {
-                if (crystal != null && mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal) {
-                    for (EntityPlayer player : mc.world.playerEntities) {
-                        if (player == null || crystal == null) return;
-                        if (this.isBlockGood(crystal.getPosition().down(), player) != 0) {
-                            BlockUtil.placeCrystalOnBlock(crystal.getPosition().down(), EnumHand.MAIN_HAND, true);
-                        }
-                    }
-                }
-            }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketReceive(PacketEvent.Receive event) {
+        ClientMessage.sendMessage("packet : " + event.getPacket().toString());
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
@@ -233,6 +224,22 @@ public class CrystalAura extends Hack {
                                 confirmPacketBroke = true;
                             }
                         }
+                }
+            }
+        }
+        if (event.getPacket() instanceof SPacketExplosion) {
+            ClientMessage.sendMessage("EXP");
+            SPacketExplosion packet2 = event.getPacket();
+            BlockPos pos = new BlockPos(Math.floor(packet2.getX()), Math.floor(packet2.getY()), Math.floor(packet2.getZ()));
+            PlayerUtil.getPlayerPos();
+            ClientMessage.sendMessage(pos.getX() + " " + (pos.getY() - 1) + " " + pos.getZ());
+            predictBlockpos = pos;
+            if (this.predictBlock.getValue()) {
+                for (EntityPlayer player : mc.world.playerEntities) {
+                    if (this.isBlockGood(pos.down(), player) > 0) {
+                        ClientMessage.sendMessage("PLACING PREDICT");
+                        BlockUtil.placeCrystalOnBlock(pos.down(), EnumHand.MAIN_HAND, true);
+                    }
                 }
             }
         }
@@ -617,7 +624,7 @@ public class CrystalAura extends Hack {
             RenderUtil.drawColumn(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue(), 5, columnHight.getValue());
         }
         if (renderDamage.getValue()) {
-            RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "");
+            RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "", Gui.INSTANCE.customFont.getValue());
         }
     }
 
