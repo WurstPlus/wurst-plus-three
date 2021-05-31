@@ -122,7 +122,6 @@ public class CrystalAura extends Hack {
 
     public EntityPlayer ezTarget = null;
     public BlockPos renderBlock = null;
-    private BlockPos predictBlockpos = null;
 
     private double renderDamageVal = 0;
 
@@ -178,7 +177,6 @@ public class CrystalAura extends Hack {
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onPacketReceive(PacketEvent.Receive event) {
-        ClientMessage.sendMessage("packet : " + event.getPacket().toString());
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             this.hasPacketBroke = false;
@@ -228,17 +226,12 @@ public class CrystalAura extends Hack {
             }
         }
         if (event.getPacket() instanceof SPacketExplosion) {
-            ClientMessage.sendMessage("EXP");
             SPacketExplosion packet2 = event.getPacket();
-            BlockPos pos = new BlockPos(Math.floor(packet2.getX()), Math.floor(packet2.getY()), Math.floor(packet2.getZ()));
-            PlayerUtil.getPlayerPos();
-            ClientMessage.sendMessage(pos.getX() + " " + (pos.getY() - 1) + " " + pos.getZ());
-            predictBlockpos = pos;
+            BlockPos pos = new BlockPos(Math.floor(packet2.getX()), Math.floor(packet2.getY()), Math.floor(packet2.getZ())).down();
             if (this.predictBlock.getValue()) {
                 for (EntityPlayer player : mc.world.playerEntities) {
-                    if (this.isBlockGood(pos.down(), player) > 0) {
-                        ClientMessage.sendMessage("PLACING PREDICT");
-                        BlockUtil.placeCrystalOnBlock(pos.down(), EnumHand.MAIN_HAND, true);
+                    if (this.isBlockGood(pos, player) > 0) {
+                        BlockUtil.placeCrystalOnBlock(pos, EnumHand.MAIN_HAND, true);
                     }
                 }
             }
