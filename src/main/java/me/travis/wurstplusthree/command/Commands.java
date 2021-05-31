@@ -32,6 +32,7 @@ public class Commands implements Globals {
         this.commands.add(new NameMcCommand());
         this.commands.add(new BurrowBlockCommand());
         this.commands.add(new ConfigCommand());
+        this.commands.add(new IrcChat());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {

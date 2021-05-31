@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
@@ -37,10 +36,12 @@ public class ConfigManager implements Globals {
     private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
+    private final String IRCtoken = "IRCtoken.dat";
 
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
     private final String burrowDir = mainFolder + burrowFile;
+    private final String IRCdir = mainFolder + IRCtoken;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
 
@@ -55,6 +56,7 @@ public class ConfigManager implements Globals {
     private final Path drawnPath = Paths.get(drawnDir);
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
+    private final Path IRCpath = Paths.get(IRCdir);
 
     public void loadConfig() {
         try {
@@ -346,6 +348,22 @@ public class ConfigManager implements Globals {
             a.setBlock(WhitelistUtil.findBlock(l));
             WurstplusThree.COMMANDS.getBurrowCommand().setBBlock(l);
         }
+    }
+
+    public void saveIRCtoken(String token) throws IOException {
+        FileWriter writer = new FileWriter(IRCdir);
+        writer.append( mc.player.getName()+":"+mc.player.getUniqueID()+":"+token);
+        writer.close();
+    }
+
+    public String loadIRCtoken() throws IOException {
+        String line="";
+        for (String l : Files.readAllLines(IRCpath)){
+            line = l;
+            break;
+        }
+        String[] split = line.split(":");
+        return split[2];
     }
 
     public boolean deleteFile(final String path) throws IOException {

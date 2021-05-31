@@ -14,8 +14,11 @@ import java.net.Socket;
 public class NewClientPacket extends Packet {
     @Override
     public String[] run() throws IOException {
+        String client = mc.player.getName() + ":" + mc.player.getUniqueID();
         Socket s = Sockets.createConnection();
         Sockets.sendData(s, "client:newclient:"+client);
-        return Sockets.getData(s);
+        String[] data = Sockets.getData(s);
+        s.close();
+        return data;
     }
 }

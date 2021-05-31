@@ -13,9 +13,12 @@ import java.net.Socket;
 public class PostToGlobalPacket extends Packet {
 
     public String[] run(String key, String... arguments) throws IOException {
+        String client = mc.player.getName() + ":" + mc.player.getUniqueID();
         Socket s = Sockets.createConnection();
         Sockets.sendData(s, "client:postglobal:"+client+":"+key+":"+arguments[0]);
-        return Sockets.getData(s);
+        String[] data = Sockets.getData(s);
+        s.close();
+        return data;
     }
 
 }

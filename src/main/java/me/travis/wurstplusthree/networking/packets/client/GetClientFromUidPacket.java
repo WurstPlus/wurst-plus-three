@@ -11,11 +11,13 @@ import java.net.Socket;
  * @since 20/05/2021
  */
 
-public class GetClientPacket extends Packet {
+public class GetClientFromUidPacket extends Packet {
     @Override
     public String[] run(String... arguments) throws IOException {
         Socket s = Sockets.createConnection();
         Sockets.sendData(s, "client:getclientuuid:"+arguments[0]);
-        return Sockets.getData(s);
+        String[] data = Sockets.getData(s);
+        s.close();
+        return data;
     }
 }

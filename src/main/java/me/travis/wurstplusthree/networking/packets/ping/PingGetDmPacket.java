@@ -13,8 +13,11 @@ import java.net.Socket;
 
 public class PingGetDmPacket extends Packet {
     public String[] run(String key) throws IOException {
+        String client = mc.player.getName() + ":" + mc.player.getUniqueID();
         Socket s = Sockets.createConnection();
         Sockets.sendData(s, "client:pinggetdm:"+client+":"+key);
-        return Sockets.getData(s);
+        String[] data = Sockets.getData(s);
+        s.close();
+        return data;
     }
 }

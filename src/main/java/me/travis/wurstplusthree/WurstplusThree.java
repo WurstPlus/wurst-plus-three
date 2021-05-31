@@ -8,6 +8,8 @@ import me.travis.wurstplusthree.manager.*;
 import me.travis.wurstplusthree.manager.fonts.DonatorFont;
 import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
+import me.travis.wurstplusthree.networking.handler.ChatHandling;
+import me.travis.wurstplusthree.networking.handler.ClientHandling;
 import me.travis.wurstplusthree.setting.Settings;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraftforge.fml.common.Mod;
@@ -59,6 +61,8 @@ public class WurstplusThree {
     public static CapeManager CAPE_MANAGER;
     public static CosmeticManager COSMETIC_MANAGER;
     public static AltManager ALT_MANAGER;
+    public static ClientHandling CLIENT_HANDLING;
+    public static ChatHandling CHAT_HANDLING;
 
     // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
@@ -85,6 +89,8 @@ public class WurstplusThree {
         COMMANDS = new Commands();
         HACKS = new Hacks();
         this.loadManagers();
+        CLIENT_HANDLING = new ClientHandling();
+        CHAT_HANDLING = new ChatHandling();
         CONFIG_MANAGER.loadConfig();
         GUI2 = new WurstplusGuiNew();
     }

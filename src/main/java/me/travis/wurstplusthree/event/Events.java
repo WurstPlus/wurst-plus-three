@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.event;
 import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
+import me.travis.wurstplusthree.gui.CustomSplashScreen;
 import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
@@ -13,12 +14,14 @@ import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -239,10 +242,10 @@ public class Events implements Globals {
     @SubscribeEvent
     public void GuiEvent(GuiScreenEvent.InitGuiEvent.Post event){
         GuiScreen gui = event.getGui();
+
         if(gui instanceof GuiMainMenu){
             event.getButtonList().add(new GuiAltButton(69, gui.width / 2 + 104, (gui.height /4 + 48)+ 72 + 12, 20, 20, "Alt"));
         }
     }
-
 
 }

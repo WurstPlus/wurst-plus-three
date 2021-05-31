@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.networking.packets.ping;
+package me.travis.wurstplusthree.networking.packets.client;
 
 import me.travis.wurstplusthree.networking.Packet;
 import me.travis.wurstplusthree.networking.Sockets;
@@ -11,11 +11,11 @@ import java.net.Socket;
  * @since 20/05/2021
  */
 
-public class PingUpPacket extends Packet {
-    public String[] run(String key) throws IOException {
-        String client = mc.player.getName() + ":" + mc.player.getUniqueID();
+public class GetClientFromNamePacket extends Packet {
+    @Override
+    public String[] run(String... arguments) throws IOException {
         Socket s = Sockets.createConnection();
-        Sockets.sendData(s, "client:pingup:"+client+":"+key);
+        Sockets.sendData(s, "client:getclientname:"+arguments[0]);
         String[] data = Sockets.getData(s);
         s.close();
         return data;
