@@ -7,6 +7,7 @@ import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.misc.AutoClip;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -367,6 +368,7 @@ public class CrystalAura extends Hack {
         }
         if (this.ezTarget != null) {
             AutoEz.INSTANCE.targets.put(this.ezTarget.getName(), 20);
+            AutoClip.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
         return bestCrystal;
     }
@@ -412,6 +414,7 @@ public class CrystalAura extends Hack {
 
         if (this.ezTarget != null) {
             AutoEz.INSTANCE.targets.put(this.ezTarget.getName(), 20);
+            AutoClip.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
 
         /*

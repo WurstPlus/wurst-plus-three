@@ -33,6 +33,7 @@ public class Commands implements Globals {
         this.commands.add(new BurrowBlockCommand());
         this.commands.add(new ConfigCommand());
         this.commands.add(new IrcChat());
+        this.commands.add(new ClipBind());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
