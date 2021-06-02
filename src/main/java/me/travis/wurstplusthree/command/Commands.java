@@ -34,6 +34,7 @@ public class Commands implements Globals {
         this.commands.add(new ConfigCommand());
         this.commands.add(new IrcChat());
         this.commands.add(new ClipBind());
+        this.commands.add(new Debug());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
