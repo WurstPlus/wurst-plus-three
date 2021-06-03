@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.combat;
 
+import jdk.nashorn.internal.ir.Block;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -55,6 +56,8 @@ public class CrystalAura extends Hack {
     DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
     DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
     DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
+    DoubleSetting targetBreakRange = new DoubleSetting("Target Break Range", 6.0, 0.0, 20.0, this, s -> breaK.getValue());
+    DoubleSetting targetPlaceRange = new DoubleSetting("Target Place Range", 6.0, 0.0, 20.0, this, s -> breaK.getValue());
 
     IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
     IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
@@ -74,6 +77,8 @@ public class CrystalAura extends Hack {
     EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "None"), this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this, s -> place.getValue() || breaK.getValue());
+
+    BooleanSetting threaded = new BooleanSetting("Threaded", false, this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
     BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
@@ -105,7 +110,7 @@ public class CrystalAura extends Hack {
 
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this, s -> place.getValue() || breaK.getValue());
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
-    IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this, s -> chainMode.getValue()&& (place.getValue() || breaK.getValue()));
+    IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
 
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
     BooleanSetting flat = new BooleanSetting("Flat", false, this);
@@ -148,6 +153,9 @@ public class CrystalAura extends Hack {
     private int placeDelayCounter;
     private int facePlaceDelayCounter;
     private int obiFeetCounter;
+
+    public BlockPos staticPos;
+    public EntityEnderCrystal staticEnderCrystal;
 
     @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
@@ -207,7 +215,8 @@ public class CrystalAura extends Hack {
                     Entity entity = mc.world.getEntityByID(id);
                     if (!(entity instanceof EntityEnderCrystal)) continue;
                     this.attemptedCrystals.remove(entity);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         }
         if (event.getPacket() instanceof SPacketSoundEffect) {
@@ -216,7 +225,7 @@ public class CrystalAura extends Hack {
                     if (crystal instanceof EntityEnderCrystal)
                         if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
                             crystalLatency = System.currentTimeMillis() - start;
-                            if(fastMode.getValue().equals("Sound")) {
+                            if (fastMode.getValue().equals("Sound")) {
                                 crystal.setDead();
                             }
                             if (!confirmPacketBroke && hasPacketBroke && packetSafe.getValue()) {
@@ -276,7 +285,14 @@ public class CrystalAura extends Hack {
     }
 
     private void placeCrystal() {
-        BlockPos targetBlock = this.getBestBlock();
+        BlockPos targetBlock;
+        if (threaded.getValue()) {
+            Threads threads = new Threads(ThreadType.BLOCK);
+            threads.start();
+            targetBlock = staticPos;
+        } else {
+            targetBlock = this.getBestBlock();
+        }
         if (targetBlock == null) return;
 
         placeDelayCounter = 0;
@@ -305,7 +321,14 @@ public class CrystalAura extends Hack {
     }
 
     private void breakCrystal() {
-        EntityEnderCrystal crystal = this.getBestCrystal();
+        EntityEnderCrystal crystal;
+        if (threaded.getValue()) {
+            Threads threads = new Threads(ThreadType.CRYSTAL);
+            threads.start();
+            crystal = staticEnderCrystal;
+        } else {
+            crystal = this.getBestCrystal();
+        }
         if (crystal == null) return;
         if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
             boolean shouldWeakness = true;
@@ -344,13 +367,14 @@ public class CrystalAura extends Hack {
         breakDelayCounter = 0;
     }
 
-    private EntityEnderCrystal getBestCrystal() {
+    public EntityEnderCrystal getBestCrystal() {
         double bestDamage = 0;
         EntityEnderCrystal bestCrystal = null;
         for (Entity e : mc.world.loadedEntityList) {
             if (!(e instanceof EntityEnderCrystal)) continue;
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
             for (EntityPlayer target : mc.world.playerEntities) {
+                if(mc.player.getDistanceSq(target) > MathsUtil.square(targetBreakRange.getValue().floatValue()))continue;
                 if (entityPredict.getValue()) {
                     float f = target.width / 2.0F, f1 = target.height;
                     target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
@@ -374,7 +398,7 @@ public class CrystalAura extends Hack {
     }
 
 
-    private BlockPos getBestBlock() {
+    public BlockPos getBestBlock() {
         if (getBestCrystal() != null && fastMode.is("Off")) {
             placeTimeoutFlag = true;
             return null;
@@ -390,6 +414,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
+            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetPlaceRange.getValue().floatValue())) continue;
             if (entityPredict.getValue()) {
                 float f = target.width / 2.0F, f1 = target.height;
                 target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
@@ -486,7 +511,7 @@ public class CrystalAura extends Hack {
             double targetDamage = CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue());
             if (targetDamage < miniumDamage && EntityUtil.getHealth(target) - targetDamage > 0) return 0;
             double selfDamage = 0;
-            if(!ignoreSelfDamage.getValue()) {
+            if (!ignoreSelfDamage.getValue()) {
                 selfDamage = CrystalUtil.calculateDamage(crystal, mc.player, ignoreTerrain.getValue());
             }
             if (selfDamage > maxSelfDamage.getValue()) return 0;
@@ -530,7 +555,7 @@ public class CrystalAura extends Hack {
             double targetDamage = CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue());
             if (targetDamage < miniumDamage && EntityUtil.getHealth(target) - targetDamage > 0) return 0;
             double selfDamage = 0;
-            if(!ignoreSelfDamage.getValue()) {
+            if (!ignoreSelfDamage.getValue()) {
                 selfDamage = CrystalUtil.calculateDamage(blockPos, mc.player, ignoreTerrain.getValue());
             }
             if (selfDamage > maxSelfDamage.getValue()) return 0;
@@ -554,7 +579,7 @@ public class CrystalAura extends Hack {
     }
 
     private void blockObiNextToPlayer(EntityPlayer player) {
-        if(ObiYCheck.getValue() && Math.floor(player.posY) == Math.floor(mc.player.posY))return;
+        if (ObiYCheck.getValue() && Math.floor(player.posY) == Math.floor(mc.player.posY)) return;
         obiFeetCounter = 0;
         BlockPos pos = EntityUtil.getFlooredPos(player).down();
         if (EntityUtil.isInHole(player) || mc.world.getBlockState(pos).getBlock() == Blocks.AIR) return;
@@ -613,11 +638,11 @@ public class CrystalAura extends Hack {
                     solid = false;
                     break;
             }
-            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderBlock.getX(), renderBlock.getY()+1, renderBlock.getZ()) : renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
-        } else if(mode.is("Circle")){
-            RenderUtil.drawCircle(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue());
-        }else {
-            RenderUtil.drawColumn(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1: renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue(), 5, columnHight.getValue());
+            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderBlock.getX(), renderBlock.getY() + 1, renderBlock.getZ()) : renderBlock, renderFillColour.getValue(), renderBoxColour.getValue(), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
+        } else if (mode.is("Circle")) {
+            RenderUtil.drawCircle(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1 : renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue());
+        } else {
+            RenderUtil.drawColumn(renderBlock.getX(), (flat.getValue()) ? renderBlock.getY() + 1 : renderBlock.getY(), renderBlock.getZ(), radius.getValue().floatValue(), renderBoxColour.getValue(), 5, columnHight.getValue());
         }
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "", Gui.INSTANCE.customFont.getValue());
@@ -642,6 +667,8 @@ public class CrystalAura extends Hack {
         crystalLatency = 0;
         start = 0;
         confirmPacketBroke = false;
+        staticEnderCrystal = null;
+        staticPos = null;
     }
 
     @Override
@@ -651,4 +678,30 @@ public class CrystalAura extends Hack {
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
     // moved to CyrstalUtil ~travis
+}
+
+class Threads extends Thread {
+    ThreadType type;
+    BlockPos bestBlock;
+    EntityEnderCrystal bestCrystal;
+
+    public Threads(ThreadType type) {
+        this.type = type;
+    }
+
+    @Override
+    public void run() {
+        if (this.type == ThreadType.BLOCK) {
+            bestBlock = CrystalAura.INSTANCE.getBestBlock();
+            CrystalAura.INSTANCE.staticPos = bestBlock;
+        } else if (this.type == ThreadType.CRYSTAL) {
+            bestCrystal = CrystalAura.INSTANCE.getBestCrystal();
+            CrystalAura.INSTANCE.staticEnderCrystal = bestCrystal;
+        }
+    }
+}
+
+enum ThreadType {
+    BLOCK,
+    CRYSTAL
 }
