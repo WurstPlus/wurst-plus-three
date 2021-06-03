@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.ConnectionEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.ClientMessage;
@@ -27,6 +28,7 @@ public class LogSpots extends Hack {
 
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);
     IntSetting range = new IntSetting("Distance", 250, 0, 500, this);
+    BooleanSetting announce = new BooleanSetting("Announce", false, this);
 
     private final List<LogoutPos> spots = new CopyOnWriteArrayList<>();
 
@@ -68,7 +70,7 @@ public class LogSpots extends Hack {
         if (event.getStage() == 0) {
             UUID uuid = event.getUuid();
             EntityPlayer entity = mc.world.getPlayerEntityByUUID(uuid);
-            if (entity != null) {
+            if (entity != null && announce.getValue()) {
                 ClientMessage.sendMessage("\u00a7a" + entity.getName() + " just logged in" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
             }
             this.spots.removeIf(pos -> pos.getName().equalsIgnoreCase(event.getName()));
@@ -76,7 +78,9 @@ public class LogSpots extends Hack {
             EntityPlayer entity = event.getEntity();
             UUID uuid = event.getUuid();
             String name = event.getName();
-            ClientMessage.sendMessage("\u00a7c" + event.getName() + " just logged out" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
+            if (announce.getValue()) {
+                ClientMessage.sendMessage("\u00a7c" + event.getName() + " just logged out" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
+            }
             if (name != null && uuid != null) {
                 this.spots.add(new LogoutPos(name, uuid, entity, Math.round(entity.getHealth() + entity.getAbsorptionAmount()),
                         entity.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING, WurstplusThree.POP_MANAGER.getTotemPops(entity)));

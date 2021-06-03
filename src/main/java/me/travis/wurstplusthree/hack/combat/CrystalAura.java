@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.combat;
 
-import jdk.nashorn.internal.ir.Block;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
@@ -13,7 +12,6 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,8 +54,7 @@ public class CrystalAura extends Hack {
     DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
     DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
     DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
-    DoubleSetting targetBreakRange = new DoubleSetting("Target Break Range", 6.0, 0.0, 20.0, this, s -> breaK.getValue());
-    DoubleSetting targetPlaceRange = new DoubleSetting("Target Place Range", 6.0, 0.0, 20.0, this, s -> breaK.getValue());
+    DoubleSetting targetBreakRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, this, s -> breaK.getValue());
 
     IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
     IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
@@ -414,7 +411,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetPlaceRange.getValue().floatValue())) continue;
+            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetBreakRange.getValue().floatValue())) continue;
             if (entityPredict.getValue()) {
                 float f = target.width / 2.0F, f1 = target.height;
                 target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
