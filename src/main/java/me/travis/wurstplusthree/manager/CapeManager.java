@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.manager;
 
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Pair;
+import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,9 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CapeManager implements Globals {
 
@@ -20,7 +19,29 @@ public class CapeManager implements Globals {
     private final List<UUID> poggersCapes = new ArrayList<>();
     private final List<UUID> contributorCapes = new ArrayList<>();
 
+    private final List<ResourceLocation> capeFrames = new ArrayList<>();
+
+    public static int capeFrameCount = 0;
+
+    static class gifCapeCounter extends TimerTask {
+        @Override
+        public void run() {
+            capeFrameCount++;
+        }
+    }
+
+    public ResourceLocation getGifCape() {
+        return capeFrames.get(capeFrameCount % 35);
+    }
+
     public CapeManager() {
+        Timer timer = new Timer();
+        timer.schedule(new gifCapeCounter(), 0, 41);
+
+        for (int i = 0; i < 35; i++) {
+            capeFrames.add(new ResourceLocation("textures/gifcape/cape-" + i + ".png"));
+        }
+
         try { // og
             URL capesList = new URL("https://raw.githubusercontent.com/WurstPlus/capes/main/ogs.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
