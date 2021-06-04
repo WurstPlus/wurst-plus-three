@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CommitEvent {
-    public EventPriority priority() default EventPriority.LOW;
+    public EventPriority priority() default EventPriority.NONE;
 }
