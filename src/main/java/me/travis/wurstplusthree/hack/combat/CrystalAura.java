@@ -31,7 +31,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -54,7 +53,7 @@ public class CrystalAura extends Hack {
     DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
     DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
     DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
-    DoubleSetting targetBreakRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, this, s -> breaK.getValue());
+    DoubleSetting targetRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, this, s -> breaK.getValue() || place.getValue());
 
     IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
     IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
@@ -71,7 +70,7 @@ public class CrystalAura extends Hack {
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
     BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this, s -> place.getValue());
 
-    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Mainhand", "None"), this, s -> place.getValue() || breaK.getValue());
+    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this, s -> place.getValue() || breaK.getValue());
 
@@ -95,8 +94,8 @@ public class CrystalAura extends Hack {
     KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
 
     BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
-    BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting crystalLogic = new BooleanSetting("CrystalCheck", false, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting crystalLogic = new BooleanSetting("Crystal Check", false, this, s -> place.getValue() || breaK.getValue());
     BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
@@ -111,13 +110,13 @@ public class CrystalAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
     BooleanSetting flat = new BooleanSetting("Flat", false, this);
-    DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, this, s -> flat.getValue());
+    DoubleSetting hight = new DoubleSetting("Flat Height", 0.2, -2.0, 2.0, this, s -> flat.getValue());
     IntSetting width = new IntSetting("Width", 1, 1, 10, this, s -> !mode.is("Circle") || !mode.is("Column"));
     DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this, s -> mode.is("Circle") || mode.is("Column"));
-    DoubleSetting columnHight = new DoubleSetting("ColumnHight", 1.5, 0.0, 10.0, this, s -> mode.is("Column"));
+    DoubleSetting columnHight = new DoubleSetting("Column Height", 1.5, 0.0, 10.0, this, s -> mode.is("Column"));
     ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
     ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
-    BooleanSetting renderDamage = new BooleanSetting("RenderDamage", true, this);
+    BooleanSetting renderDamage = new BooleanSetting("Render Damage", true, this);
 
     BooleanSetting debug = new BooleanSetting("Debug", false, this);
 
@@ -298,7 +297,12 @@ public class CrystalAura extends Hack {
         boolean offhandCheck = false;
 
         if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
-            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValue().equals("Mainhand")) {
+            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && (autoSwitch.getValue().equals("Allways") || autoSwitch.is("NoGap"))) {
+                if(autoSwitch.is("NoGap")){
+                    if(mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE){
+                        return;
+                    }
+                }
                 if (this.findCrystalsHotbar() == -1) return;
                 mc.player.inventory.currentItem = this.findCrystalsHotbar();
                 mc.playerController.syncCurrentPlayItem();
@@ -371,7 +375,7 @@ public class CrystalAura extends Hack {
             if (!(e instanceof EntityEnderCrystal)) continue;
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
             for (EntityPlayer target : mc.world.playerEntities) {
-                if(mc.player.getDistanceSq(target) > MathsUtil.square(targetBreakRange.getValue().floatValue()))continue;
+                if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue()))continue;
                 if (entityPredict.getValue()) {
                     float f = target.width / 2.0F, f1 = target.height;
                     target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
@@ -411,7 +415,7 @@ public class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : mc.world.playerEntities) {
-            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetBreakRange.getValue().floatValue())) continue;
+            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
             if (entityPredict.getValue()) {
                 float f = target.width / 2.0F, f1 = target.height;
                 target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
