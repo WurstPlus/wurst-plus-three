@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PushEvent;
 import me.travis.wurstplusthree.event.events.StepEvent;
 import net.minecraft.block.Block;
@@ -22,8 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -268,7 +267,7 @@ public abstract class MixinEntity {
             flag = this.onGround || d3 != y && d3 < 0.0;
             if (this.stepHeight > 0.0f && flag && (d2 != x || d4 != z)) {
                 StepEvent preEvent = new StepEvent(0, _this);
-                MinecraftForge.EVENT_BUS.post((Event)preEvent);
+                WurstplusThree.EVENT_PROCESSOR.postEvent(preEvent);
                 double d14 = x;
                 double d6 = y;
                 double d7 = z;
@@ -340,7 +339,7 @@ public abstract class MixinEntity {
                     this.setEntityBoundingBox(axisalignedbb1);
                 } else {
                     StepEvent postEvent = new StepEvent(1, _this);
-                    MinecraftForge.EVENT_BUS.post((Event)postEvent);
+                    WurstplusThree.EVENT_PROCESSOR.postEvent(postEvent);
                 }
             }
             this.world.profiler.endSection();
@@ -437,8 +436,8 @@ public abstract class MixinEntity {
     @Redirect(method={"applyEntityCollision"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;addVelocity(DDD)V"))
     public void addVelocityHook(Entity entity, double x, double y, double z) {
         PushEvent event = new PushEvent(entity, x, y, z, true);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (!event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.addEventListener(event);
+        if (!event.isCancelled()) {
             entity.motionX += event.x;
             entity.motionY += event.y;
             entity.motionZ += event.z;

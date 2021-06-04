@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PushEvent;
 import me.travis.wurstplusthree.hack.render.NoRender;
 import net.minecraft.entity.Entity;
@@ -32,8 +33,8 @@ public class MixinWorld {
     @Redirect(method={"handleMaterialAcceleration"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;isPushedByWater()Z"))
     public boolean isPushedbyWaterHook(Entity entity) {
         PushEvent event = new PushEvent(2, entity);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        return entity.isPushedByWater() && !event.isCanceled();
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        return entity.isPushedByWater() && !event.isCancelled();
     }
 
     @Inject(method={"checkLightFor"}, at={@At(value="HEAD")}, cancellable=true)

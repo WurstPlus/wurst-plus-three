@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +17,7 @@ public abstract class MixinRenderGlobal {
     @Inject(method={"sendBlockBreakProgress"}, at={@At(value="HEAD")})
     public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress, CallbackInfo ci) {
         BlockBreakingEvent event = new BlockBreakingEvent(pos, breakerId, progress);
-        MinecraftForge.EVENT_BUS.post((Event)event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
     }
 
 }

@@ -2,6 +2,7 @@ package me.travis.wurstplusthree;
 
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
+import me.travis.wurstplusthree.event.processor.EventProcessor;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
@@ -33,6 +34,7 @@ public class WurstplusThree {
 
     // events
     public static Events EVENTS;
+    public static EventProcessor EVENT_PROCESSOR;
 
     // commands
     public static Commands COMMANDS;
@@ -83,6 +85,7 @@ public class WurstplusThree {
     }
 
     public void load() {
+        EVENT_PROCESSOR = new EventProcessor();
         EVENTS = new Events();
         SETTINGS = new Settings();
         RENDER_UTIL_2D = new RenderUtil2D();

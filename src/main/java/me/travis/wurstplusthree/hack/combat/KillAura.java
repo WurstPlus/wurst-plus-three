@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -11,7 +12,6 @@ import me.travis.wurstplusthree.util.DamageUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -43,7 +43,7 @@ public class KillAura extends Hack {
         this.ticksPassed++;
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotate.getValue()) {
             if ((this.target = this.getTarget()) != null) {

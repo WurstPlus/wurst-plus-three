@@ -1,6 +1,6 @@
-//package me.travis.wurstplusthree.event.events;
+//package me.travis.wurstplusthree.org.madmeg.wurstplus.event.events;
 //
-//import me.travis.wurstplusthree.event.EventStage;
+//import me.travis.wurstplusthree.org.madmeg.wurstplus.event.EventStage;
 //import me.travis.wurstplusthree.features.setting.Setting;
 //
 //public class ValueChangeEvent

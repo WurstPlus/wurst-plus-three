@@ -2,12 +2,12 @@ package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWeb;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -24,12 +24,12 @@ public class AntiWeb extends Hack {
     DoubleSetting motionY = new DoubleSetting("Set MotionY", 1.0, 0.0, 20.0, this);
     DoubleSetting motionX = new DoubleSetting("Set MotionX", 0.84, -1.0, 5.0, this);
 
-    @SubscribeEvent
+    @CommitEvent
     public void bbEvent(BlockCollisionBoundingBoxEvent event){
         if(nullCheck())return;
         if(mc.world.getBlockState(event.getPos()).getBlock() instanceof BlockWeb){
             if(disableBB.getValue()) {
-                event.setCanceledE(true);
+                event.setCancelled(true);
                 event.setBoundingBox(Block.FULL_BLOCK_AABB.contract(0, bbOffset.getValue(), 0));
             }
         }

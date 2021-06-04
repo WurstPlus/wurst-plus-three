@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.ProcessRightClickBlockEvent;
 import me.travis.wurstplusthree.hack.misc.InstantBreak;
@@ -43,13 +44,13 @@ public class MixinPlayerControllerMP {
     @Inject(method={"clickBlock"}, at={@At(value="HEAD")}, cancellable=true)
     private void clickBlockHook(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> info) {
         BlockEvent event = new BlockEvent(3, pos, face);
-        MinecraftForge.EVENT_BUS.post((Event)event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
     }
 
     @Inject(method={"onPlayerDamageBlock"}, at={@At(value="HEAD")}, cancellable=true)
     private void onPlayerDamageBlockHook(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> info) {
         BlockEvent event = new BlockEvent(4, pos, face);
-        MinecraftForge.EVENT_BUS.post((Event)event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
     }
 
     @Redirect(method={"processRightClickBlock"}, at=@At(value="INVOKE", target="Lnet/minecraft/item/ItemBlock;canPlaceBlockOnSide(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;)Z"))
@@ -73,8 +74,8 @@ public class MixinPlayerControllerMP {
     @Inject(method={"processRightClickBlock"}, at={@At(value="HEAD")}, cancellable=true)
     public void processRightClickBlock(EntityPlayerSP player, WorldClient worldIn, BlockPos pos, EnumFacing direction, Vec3d vec, EnumHand hand, CallbackInfoReturnable<EnumActionResult> cir) {
         ProcessRightClickBlockEvent event = new ProcessRightClickBlockEvent(pos, hand, Minecraft.getMinecraft().player.getHeldItem(hand));
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if (event.isCancelled()) {
             cir.cancel();
         }
     }

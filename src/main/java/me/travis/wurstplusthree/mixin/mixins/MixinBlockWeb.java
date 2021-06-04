@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
 import net.minecraft.block.BlockWeb;
 import net.minecraft.block.state.IBlockState;
@@ -23,8 +24,8 @@ public class MixinBlockWeb {
     public void getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos, final CallbackInfoReturnable<AxisAlignedBB> callbackInfoReturnable)
     {
         BlockCollisionBoundingBoxEvent bb = new BlockCollisionBoundingBoxEvent(pos);
-        MinecraftForge.EVENT_BUS.post(bb);
-        if(bb.isCanceledE()){
+        WurstplusThree.EVENT_PROCESSOR.postEvent(bb);
+        if(bb.isCancelled()){
             callbackInfoReturnable.setReturnValue(bb.getBoundingBox());
             callbackInfoReturnable.cancel();
         }

@@ -2,8 +2,8 @@ package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.commands.ClipBind;
-import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -86,7 +86,7 @@ public class AutoClip extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onSendAttackPacket(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).getName())) {

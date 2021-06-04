@@ -2,15 +2,13 @@ package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.MoveEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.CrystalUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.MouseUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
@@ -21,10 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 import java.util.Arrays;
 
@@ -155,22 +149,21 @@ public class Offhand extends Hack {
         }
         return -1;
     }
-
     public static class StopPlayerMovement {
         private static StopPlayerMovement stopPlayerMovement = new StopPlayerMovement();
 
         public static void toggle(boolean on) {
             if (on) {
-                MinecraftForge.EVENT_BUS.register(stopPlayerMovement);
+                WurstplusThree.EVENT_PROCESSOR.addEventListener(stopPlayerMovement);
             } else {
-                MinecraftForge.EVENT_BUS.unregister(stopPlayerMovement);
+                WurstplusThree.EVENT_PROCESSOR.removeEventListener(stopPlayerMovement);
             }
         }
 
         // Cancel the MoveEvent.
-        @SubscribeEvent
+        @CommitEvent
         public void onMove(MoveEvent event) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 

@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.player;
 import me.travis.wurstplusthree.event.events.KeyEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.PushEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import net.minecraft.client.gui.*;
@@ -57,21 +58,21 @@ public class NoKnockback extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onKeyEvent(KeyEvent event) {
         if (event.getStage() == 0 && !(mc.currentScreen instanceof GuiChat)) {
             event.info = event.pressed;
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacket(PacketEvent.Receive event) {
         if (event.getStage() == 0 && mc.player != null) {
             Entity entity;
             SPacketEntityStatus packet;
             if (event.getPacket() instanceof SPacketEntityVelocity) {
                 if (((SPacketEntityVelocity) event.getPacket()).getEntityID() == mc.player.entityId) {
-                    event.setCanceled(true);
+                    event.setCancelled(true);
                     return;
                 }
             }
@@ -80,7 +81,7 @@ public class NoKnockback extends Hack {
                     && (entity = packet.getEntity(mc.world)) instanceof EntityFishHook) {
                 EntityFishHook fishHook = (EntityFishHook) entity;
                 if (fishHook.caughtEntity == mc.player) {
-                    event.setCanceled(true);
+                    event.setCancelled(true);
                 }
             }
             if (event.getPacket() instanceof SPacketExplosion) {
@@ -92,15 +93,15 @@ public class NoKnockback extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPush(PushEvent event) {
         if (event.getStage() == 0 && this.noPush.getValue() && event.entity.equals(mc.player)) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         } else if (event.getStage() == 1 && this.blocks.getValue()) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         } else if (event.getStage() == 2 && this.water.getValue() && mc.player != null
                 && mc.player.equals(event.entity)) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 

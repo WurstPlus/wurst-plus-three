@@ -21,7 +21,7 @@ public class MixinNetHandlerPlayClient {
         Entity entity;
         if (Globals.mc.world != null && (entity = Globals.mc.world.getEntityByID(packetIn.getEntityId())) instanceof EntityPlayer
                 && (player = (EntityPlayer)entity).getHealth() <= 0.0f) {
-            MinecraftForge.EVENT_BUS.post(new DeathEvent(player));
+            WurstplusThree.EVENT_PROCESSOR.postEvent(new DeathEvent(player));
             WurstplusThree.POP_MANAGER.onDeath(player);
         }
     }

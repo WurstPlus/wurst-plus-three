@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
 import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import me.travis.wurstplusthree.hack.render.CameraClip;
@@ -119,21 +120,21 @@ public abstract class MixinEntityRenderer {
     @Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onSetupCameraTransform(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
     @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderWorldPass(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
     @Redirect(method = "renderCloudsCheck", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderCloudsCheck(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 

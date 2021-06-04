@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -15,7 +16,6 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,7 +59,7 @@ public class AutoWeb extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onWalingEvent(UpdateWalkingPlayerEvent event){
         if(event.getStage() == 0 && type.getValue() == 2){
             r = rotate.getValue();

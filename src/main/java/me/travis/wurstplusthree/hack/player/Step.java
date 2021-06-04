@@ -2,12 +2,12 @@ package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.StepEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import net.minecraft.block.material.Material;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Hack.Registration(name = "Step", description = "steps up things", category = Hack.Category.PLAYER, isListening = false)
 public class Step extends Hack {
@@ -15,7 +15,7 @@ public class Step extends Hack {
     BooleanSetting vanilla = new BooleanSetting("Vanilla", false, this);
     IntSetting height = new IntSetting("Height", 2, 1, 2, this);
 
-    @SubscribeEvent
+    @CommitEvent
     public void onStep(StepEvent event) {
         if (nullCheck()) return;
         if (mc.player.onGround && !mc.player.isInsideOfMaterial(Material.WATER) && !mc.player.isInsideOfMaterial(Material.LAVA) && mc.player.collidedVertically && mc.player.fallDistance == 0.0f && !mc.gameSettings.keyBindJump.pressed && !mc.player.isOnLadder() && !WurstplusThree.HACKS.ishackEnabled("Speed")) {

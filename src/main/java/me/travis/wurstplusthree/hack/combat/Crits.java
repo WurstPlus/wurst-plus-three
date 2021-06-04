@@ -1,13 +1,13 @@
 package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public class Crits extends Hack {
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);
     private final Timer timer = new Timer();
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacketSend(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK) {

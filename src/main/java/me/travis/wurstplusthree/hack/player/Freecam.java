@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.PushEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -14,7 +15,6 @@ import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSetPassengers;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Hack.Registration(name = "Freecam", description = "lets u see freely", category = Hack.Category.PLAYER, isListening = false)
 public class Freecam extends Hack {
@@ -104,18 +104,18 @@ public class Freecam extends Hack {
         this.disable();
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacketSend(final PacketEvent.Send event) {
         if (this.packet.getValue()) {
             if (event.getPacket() instanceof CPacketPlayer) {
-                event.setCanceled(true);
+                event.setCancelled(true);
             }
         } else if (!(event.getPacket() instanceof CPacketUseEntity) && !(event.getPacket() instanceof CPacketPlayerTryUseItem) && !(event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock) && !(event.getPacket() instanceof CPacketPlayer) && !(event.getPacket() instanceof CPacketVehicleMove) && !(event.getPacket() instanceof CPacketChatMessage) && !(event.getPacket() instanceof CPacketKeepAlive)) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacketReceive(final PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketSetPassengers) {
             final SPacketSetPassengers packet = event.getPacket();
@@ -133,14 +133,14 @@ public class Freecam extends Hack {
                 this.position = new Vec3d(packet2.getX(), packet2.getY(), packet2.getZ());
                 Freecam.mc.player.connection.sendPacket(new CPacketConfirmTeleport(packet2.getTeleportId()));
             }
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPush(final PushEvent event) {
         if (event.getStage() == 1) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 

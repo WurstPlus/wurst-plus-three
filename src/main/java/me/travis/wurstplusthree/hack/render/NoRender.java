@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
@@ -55,13 +56,13 @@ public class NoRender extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacket(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketTimeUpdate && time.getValue()) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
         if (event.getPacket() instanceof SPacketUpdateBossInfo && bossbar.getValue()) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 

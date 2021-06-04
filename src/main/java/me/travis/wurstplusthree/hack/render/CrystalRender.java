@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.RenderEntityModelEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -63,7 +63,7 @@ public class CrystalRender extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacket(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketDestroyEntities) {
             SPacketDestroyEntities packet = event.getPacket();

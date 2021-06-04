@@ -4,6 +4,8 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.chat.AutoEz;
 import me.travis.wurstplusthree.hack.client.Gui;
@@ -31,8 +33,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
 
@@ -153,7 +153,7 @@ public class CrystalAura extends Hack {
     public BlockPos staticPos;
     public EntityEnderCrystal staticEnderCrystal;
 
-    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    @CommitEvent(priority = EventPriority.HIGH)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotateMode.is("Full")) {
             if (this.isRotating) {
@@ -163,7 +163,7 @@ public class CrystalAura extends Hack {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    @CommitEvent(priority = EventPriority.HIGH)
     public void onPacketSend(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
             final CPacketPlayer p = event.getPacket();
@@ -180,7 +180,7 @@ public class CrystalAura extends Hack {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    @CommitEvent(priority = EventPriority.HIGH)
     public void onPacketReceive(PacketEvent.Receive event) {
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {

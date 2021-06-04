@@ -5,6 +5,8 @@ import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -35,7 +37,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -81,7 +82,7 @@ public class InstantBreak extends Hack {
     private float yaw;
     private float pitch;
 
-    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    @CommitEvent(priority = EventPriority.HIGH)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if(this.currentPos != null){
             this.setYawPitch(currentPos);
@@ -181,7 +182,7 @@ public class InstantBreak extends Hack {
         }
     }
 
-    @SubscribeEvent()
+    @CommitEvent
     public void onPacketSend(PacketEvent.Send event) {
         if (nullCheck()) {
             return;
@@ -194,7 +195,7 @@ public class InstantBreak extends Hack {
         if (event.getStage() == 0) {
             CPacketPlayerDigging packet;
             if (this.noSwing.getValue() && event.getPacket() instanceof CPacketAnimation) {
-                event.setCanceled(true);
+                event.setCancelled(true);
             }
             if (this.noBreakAnim.getValue() && event.getPacket() instanceof CPacketPlayerDigging
                     && (packet = event.getPacket()) != null) {
@@ -218,7 +219,7 @@ public class InstantBreak extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onBlockEvent(BlockEvent event) {
         if (nullCheck()) {
             return;
@@ -245,7 +246,7 @@ public class InstantBreak extends Hack {
                         mc.player.swingArm(EnumHand.MAIN_HAND);
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
-                        event.setCanceled(true);
+                        event.setCancelled(true);
                         break;
                     }
                     case "Damage": {

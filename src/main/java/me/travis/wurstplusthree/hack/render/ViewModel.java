@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author Madmegsox1
@@ -37,7 +37,7 @@ public class ViewModel extends Hack {
 
     // Like look at all this shit xd
 
-    @SubscribeEvent
+    @CommitEvent
     public void onItemRender(RenderItemEvent event) {
         event.setMainX(mainX.getValue());
         event.setMainY(mainY.getValue());

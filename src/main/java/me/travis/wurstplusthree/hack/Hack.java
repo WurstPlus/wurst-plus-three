@@ -98,6 +98,7 @@ public class Hack implements Globals {
         this.onEnable();
         if (this.isEnabled() && this.isListening()) {
             MinecraftForge.EVENT_BUS.register(this);
+            WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
         }
         if(this.shown) ClientMessage.sendToggleMessage(this, true);
     }
@@ -105,6 +106,7 @@ public class Hack implements Globals {
     public void disable() {
         if (this.isListening != 0) {
             MinecraftForge.EVENT_BUS.unregister(this);
+            WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
         }
         this.isEnabled = false;
         this.onDisable();

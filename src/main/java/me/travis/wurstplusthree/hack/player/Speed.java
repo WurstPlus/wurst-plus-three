@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.event.events.MoveEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -9,7 +10,6 @@ import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.MobEffects;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -64,7 +64,7 @@ public class Speed extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onMove(MoveEvent event) {
         if (mc.player.isInLava() || mc.player.isInWater() || mc.player.isOnLadder() || mc.player.isInWeb) {
             return;
