@@ -1,6 +1,8 @@
 package me.travis.wurstplusthree.event.processor;
 
-import javafx.util.Pair;
+
+
+import me.travis.wurstplusthree.util.elements.Pair;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
