@@ -133,7 +133,6 @@ public class CrystalAura extends Hack {
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
-    private boolean confirmPacketBroke;
     private boolean isRotating;
     private boolean didAnything;
     private boolean facePlacing;
@@ -184,7 +183,6 @@ public class CrystalAura extends Hack {
     public void onPacketReceive(PacketEvent.Receive event) {
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
-            this.hasPacketBroke = false;
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
                 if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
                     if (this.predictCrystal.getValue()) {
@@ -196,8 +194,8 @@ public class CrystalAura extends Hack {
                             BlockUtil.swingArm(swing);
                         }
                         if (packetSafe.getValue()) {
-                            this.hasPacketBroke = true;
-                            this.confirmPacketBroke = false;
+                            hasPacketBroke = true;
+                            didAnything = true;
                         }
                     }
                     break;
@@ -223,9 +221,6 @@ public class CrystalAura extends Hack {
                             crystalLatency = System.currentTimeMillis() - start;
                             if (fastMode.getValue().equals("Sound")) {
                                 crystal.setDead();
-                            }
-                            if (!confirmPacketBroke && hasPacketBroke && packetSafe.getValue()) {
-                                confirmPacketBroke = true;
                             }
                         }
                 }
@@ -262,11 +257,12 @@ public class CrystalAura extends Hack {
             start = System.currentTimeMillis();
             this.placeCrystal();
         }
-        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && (!confirmPacketBroke)) {
+        if (this.breaK.getValue() && breakDelayCounter > breakTimeout && (!hasPacketBroke || !packetSafe.getValue())) {
             this.breakCrystal();
         }
 
         if (!didAnything) {
+            hasPacketBroke = false;
             ezTarget = null;
             isRotating = false;
             chainCount = chainStep.getValue();
@@ -667,7 +663,6 @@ public class CrystalAura extends Hack {
         obiFeetCounter = 0;
         crystalLatency = 0;
         start = 0;
-        confirmPacketBroke = false;
         staticEnderCrystal = null;
         staticPos = null;
     }
