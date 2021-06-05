@@ -42,8 +42,8 @@ public abstract class MixinEntityRenderer {
     @Final
     public Minecraft mc;
 
-    @Shadow
-    public abstract void getMouseOver(float var1);
+    //@Shadow
+    //public abstract void getMouseOver(float var1);
 
     /*@Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
     public void getMouseOverHook(float partialTicks, CallbackInfo info) {
