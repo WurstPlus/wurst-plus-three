@@ -70,6 +70,7 @@ public class BreakHighlight extends Hack {
     @Override
     public void onRender3D(Render3DEvent event){
         for(int i : breakingBlockList.keySet()){
+            if(breakingBlockList.get(i).getValue() == null)continue;
             BlockPos pos = breakingBlockList.get(i).getValue();
             int state = breakingBlockList.get(i).getKey();
             EntityPlayer player = (EntityPlayer) mc.world.getEntityByID(i);
