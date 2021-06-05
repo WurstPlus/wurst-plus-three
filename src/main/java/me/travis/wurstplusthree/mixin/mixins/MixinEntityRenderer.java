@@ -36,31 +36,35 @@ import java.util.List;
 @Mixin(value={EntityRenderer.class})
 public abstract class MixinEntityRenderer {
 
+    private boolean injection = true;
+
     @Shadow
     public ItemStack itemActivationItem;
     @Shadow
     @Final
     public Minecraft mc;
 
-    //@Shadow
-    //public abstract void getMouseOver(float var1);
+    @Shadow
+    public abstract void getMouseOver(float var1);
 
-    /*@Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
+    @Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
     public void getMouseOverHook(float partialTicks, CallbackInfo info) {
         if (this.injection) {
-            block3: {
-                info.cancel();
-                this.injection = false;
-                try {
-                    this.getMouseOver(partialTicks);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+            info.cancel();
+            this.injection = false;
+            try {
+                this.getMouseOver(partialTicks);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             this.injection = true;
         }
-    }*/
+    }
+
+    @Redirect(method = {"getMouseOver"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
+    public List<Entity> getEntitiesInAABBexcluding(final WorldClient worldClient, final Entity entityIn, final AxisAlignedBB boundingBox, final Predicate predicate) {
+        return (List<Entity>)worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
+    }
 
     @Redirect(method={"setupCameraTransform"}, at=@At(value="FIELD", target="Lnet/minecraft/client/entity/EntityPlayerSP;prevTimeInPortal:F"))
     public float prevTimeInPortalHook(EntityPlayerSP entityPlayerSP) {
