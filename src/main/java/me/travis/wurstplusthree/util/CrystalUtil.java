@@ -380,6 +380,9 @@ public class CrystalUtil implements Globals {
     }
 
     public static boolean isOnGround(double x, double y, double z, Entity entity) {
+        if (entity == null) {
+            return false;
+        }
         double d3 = y;
         List<AxisAlignedBB> list1 = mc.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
         if (y != 0.0D) {

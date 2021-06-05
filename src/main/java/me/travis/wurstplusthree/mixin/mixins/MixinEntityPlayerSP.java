@@ -36,10 +36,10 @@ extends AbstractClientPlayer {
         WurstplusThree.EVENT_PROCESSOR.postEvent(chatEvent);
     }
 
-    @Redirect(method={"onLivingUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal=2))
-    public void onLivingUpdate(EntityPlayerSP entityPlayerSP, boolean sprinting) {
-        entityPlayerSP.setSprinting(sprinting);
-    }
+//    @Redirect(method={"onLivingUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal=2))
+//    public void onLivingUpdate(EntityPlayerSP entityPlayerSP, boolean sprinting) {
+//        entityPlayerSP.setSprinting(sprinting);
+//    }
 
     @Inject(method={"pushOutOfBlocks"}, at={@At(value="HEAD")}, cancellable=true)
     private void pushOutOfBlocksHook(double x, double y, double z, CallbackInfoReturnable<Boolean> info) {

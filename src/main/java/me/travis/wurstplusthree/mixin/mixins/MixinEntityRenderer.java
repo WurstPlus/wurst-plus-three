@@ -72,18 +72,18 @@ public abstract class MixinEntityRenderer {
         return ActiveRenderInfo.getBlockStateAtEntityViewpoint((World)worldIn, (Entity)entityIn, (float)p_186703_2_);
     }
 
-    @Redirect(method={"getMouseOver"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
-    public List<Entity> getEntitiesInAABBexcludingHook(WorldClient worldClient, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && (!InstantBreak.INSTANCE.pickaxe.getValue()
-                || this.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) {
-            return new ArrayList<Entity>();
-        }
-        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && InstantBreak.INSTANCE.noGapTrace.getValue()
-                && this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
-            return new ArrayList<Entity>();
-        }
-        return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
-    }
+//    @Redirect(method={"getMouseOver"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
+//    public List<Entity> getEntitiesInAABBexcludingHook(WorldClient worldClient, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+//        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && (!InstantBreak.INSTANCE.pickaxe.getValue()
+//                || this.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) {
+//            return new ArrayList<Entity>();
+//        }
+//        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && InstantBreak.INSTANCE.noGapTrace.getValue()
+//                && this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
+//            return new ArrayList<Entity>();
+//        }
+//        return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
+//    }
 
     @Inject(method={"hurtCameraEffect"}, at={@At(value="HEAD")}, cancellable=true)
     public void hurtCameraEffectHook(float ticks, CallbackInfo info) {
