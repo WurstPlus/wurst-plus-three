@@ -72,7 +72,7 @@ public class CrystalAura extends Hack {
 
     EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", false, this, s -> place.getValue() || breaK.getValue());
+    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting threaded = new BooleanSetting("Threaded", false, this, s -> place.getValue() || breaK.getValue());
 
@@ -86,7 +86,7 @@ public class CrystalAura extends Hack {
     BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this, s -> palceObiFeet.getValue());
     IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this, s -> palceObiFeet.getValue());
 
-    EnumSetting fastMode = new EnumSetting("Fast", "Ghost", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this, s -> place.getValue() || breaK.getValue());
+    EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this, s -> place.getValue() || breaK.getValue());
 
     BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this, s -> place.getValue() || breaK.getValue());
     IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
@@ -230,7 +230,7 @@ public class CrystalAura extends Hack {
             SPacketExplosion packet2 = event.getPacket();
             BlockPos pos = new BlockPos(Math.floor(packet2.getX()), Math.floor(packet2.getY()), Math.floor(packet2.getZ())).down();
             if (this.predictBlock.getValue()) {
-                for (EntityPlayer player : mc.world.playerEntities) {
+                for (EntityPlayer player : new ArrayList<>(mc.world.playerEntities)) {
                     if (this.isBlockGood(pos, player) > 0) {
                         BlockUtil.placeCrystalOnBlock(pos, EnumHand.MAIN_HAND, true);
                     }
@@ -370,7 +370,7 @@ public class CrystalAura extends Hack {
         for (Entity e : mc.world.loadedEntityList) {
             if (!(e instanceof EntityEnderCrystal)) continue;
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
-            for (EntityPlayer target : mc.world.playerEntities) {
+            for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
                 if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue()))continue;
                 if (entityPredict.getValue()) {
                     float f = target.width / 2.0F, f1 = target.height;
@@ -410,7 +410,7 @@ public class CrystalAura extends Hack {
 
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
-        for (EntityPlayer target : mc.world.playerEntities) {
+        for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
             if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
             if (entityPredict.getValue()) {
                 float f = target.width / 2.0F, f1 = target.height;

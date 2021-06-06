@@ -49,21 +49,16 @@ public abstract class MixinEntityRenderer {
 
     @Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
     public void getMouseOverHook(float partialTicks, CallbackInfo info) {
-        if (this.injection) {
+        if (injection) {
+            injection = false;
             info.cancel();
-            this.injection = false;
             try {
                 this.getMouseOver(partialTicks);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            this.injection = true;
+            injection = true;
         }
-    }
-
-    @Redirect(method = {"getMouseOver"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
-    public List<Entity> getEntitiesInAABBexcluding(final WorldClient worldClient, final Entity entityIn, final AxisAlignedBB boundingBox, final Predicate predicate) {
-        return (List<Entity>)worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
     }
 
     @Redirect(method={"setupCameraTransform"}, at=@At(value="FIELD", target="Lnet/minecraft/client/entity/EntityPlayerSP;prevTimeInPortal:F"))

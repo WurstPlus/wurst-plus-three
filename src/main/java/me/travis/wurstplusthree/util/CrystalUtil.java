@@ -380,18 +380,19 @@ public class CrystalUtil implements Globals {
     }
 
     public static boolean isOnGround(double x, double y, double z, Entity entity) {
-        if (entity == null) {
+        try {
+            double d3 = y;
+            List<AxisAlignedBB> list1 = mc.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
+            if (y != 0.0D) {
+                int k = 0;
+                for (int l = list1.size(); k < l; ++k) {
+                    y = (list1.get(k)).calculateYOffset(entity.getEntityBoundingBox(), y);
+                }
+            }
+            return d3 != y && d3 < 0.0D;
+        } catch (Exception ignored) {
             return false;
         }
-        double d3 = y;
-        List<AxisAlignedBB> list1 = mc.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().expand(x, y, z));
-        if (y != 0.0D) {
-            int k = 0;
-            for (int l = list1.size(); k < l; ++k) {
-                y = (list1.get(k)).calculateYOffset(entity.getEntityBoundingBox(), y);
-            }
-        }
-        return d3 != y && d3 < 0.0D;
     }
 
     public static EntityPlayer placeValue(double x, double y, double z, EntityPlayer entity) {
