@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Aspect extends Hack{
     DoubleSetting aspect = new DoubleSetting("Aspect",  mc.displayWidth / mc.displayHeight + 0.0, 0.0 ,3.0, this);
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPerspectiveEvent(PerspectiveEvent event){
         event.setAspect(aspect.getValue().floatValue());
     }
