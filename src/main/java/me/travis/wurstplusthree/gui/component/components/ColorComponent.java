@@ -167,7 +167,7 @@ public class ColorComponent extends Component {
         float selectedGreen = (selectedColor >> 8 & 0xFF) / 255.0f;
         float selectedBlue = (selectedColor & 0xFF) / 255.0f;
 
-        RenderUtil2D.drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, color[3]);
+        RenderUtil2D.drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, 255);
 
         drawHueSlider(hueSliderX, hueSliderY, hueSliderWidth, hueSliderHeight, color[0]);
 
