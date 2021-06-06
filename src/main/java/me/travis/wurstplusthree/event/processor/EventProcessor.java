@@ -1,24 +1,19 @@
 package me.travis.wurstplusthree.event.processor;
 
-
-
-import me.travis.wurstplusthree.util.elements.Pair;
-
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @author Madmegsox1
  * @since 04/06/2021
  */
 
-public class EventProcessor {
+public final class EventProcessor {
 
-    private final HashMap<Method, Pair<Object, Class<?>>> eventMap;
+    private final List<Listener> events;
 
     public EventProcessor() {
-        eventMap = new HashMap<>();
+        events = new ArrayList<>();
     }
 
     /**
@@ -30,14 +25,14 @@ public class EventProcessor {
     }
 
     public void removeEventListener(Object object) {
-        ArrayList<Method> toRemove = new ArrayList<>();
-        for (Method method : eventMap.keySet()) {
-            if (object == eventMap.get(method).getKey()) {
-                toRemove.add(method);
+        List<Listener> toRemove = new ArrayList<>();
+        for(Listener listener : events){
+            if(object == listener.object){
+                toRemove.add(listener);
             }
         }
-        for (Method method : toRemove) {
-            eventMap.remove(method);
+        for (Listener listener : toRemove) {
+            events.remove(listener);
         }
     }
 
@@ -52,29 +47,13 @@ public class EventProcessor {
                 if (prams.length != 1) {
                     throw new IllegalArgumentException("Method " + method + " doesnt have any event parameters");
                 }
-                Class<?> eventType = prams[0];
-                if (!Event.class.isAssignableFrom(eventType)) {
+                if (!Event.class.isAssignableFrom(prams[0])) {
                     throw new IllegalArgumentException("Method " + method + " doesnt have any event parameters only non event parameters");
                 }
-                Pair<Object, Class<?>> pair = new Pair<>(object, eventType);
-                if (getPriority(method) == EventPriority.HIGH) {
-                    HashMap<Method, Pair<Object, Class<?>>> tempMap = new HashMap<>();
-                    tempMap.put(method, pair);
-                    tempMap.putAll(this.eventMap);
-                    this.eventMap.clear();
-                    this.eventMap.putAll(tempMap);
-                } else {
-                    this.eventMap.put(method, pair);
-                }
+                this.events.add(new Listener(method, object, prams[0], getPriority(method)));
+                this.events.sort(Comparator.comparing(o -> o.priority));
             }
         }
-    }
-
-    /**
-     * @return the event map
-     */
-    public HashMap<Method, Pair<Object, Class<?>>> getEventMap() {
-        return eventMap;
     }
 
     /**
@@ -82,48 +61,15 @@ public class EventProcessor {
      * @return if the event was posted or not at a boolean
      */
     public boolean postEvent(Event event) {
-        for (Method method : getEventMap().keySet()) {
-            EventPriority priority = getPriority(method);
-            if(priority == EventPriority.HIGH) {
-                Pair<Object, Class<?>> pair = getEventMap().get(method);
-                if (pair.getValue() == event.getClass()) {
-                    try {
-                        method.setAccessible(true);
-                        method.invoke(pair.getKey(), event);
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        return false;
-                    }
-                }
-            }
-        }
-        for (Method method : getEventMap().keySet()) {
-            EventPriority priority = getPriority(method);
-            if(priority == EventPriority.NONE) {
-                Pair<Object, Class<?>> pair = getEventMap().get(method);
-                if (pair.getValue() == event.getClass()) {
-                    try {
-                        method.setAccessible(true);
-                        method.invoke(pair.getKey(), event);
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        return false;
-                    }
-                }
-            }
-        }
-        for (Method method : getEventMap().keySet()) {
-            EventPriority priority = getPriority(method);
-            if(priority == EventPriority.LOW) {
-                Pair<Object, Class<?>> pair = getEventMap().get(method);
-                if (pair.getValue() == event.getClass()) {
-                    try {
-                        method.setAccessible(true);
-                        method.invoke(pair.getKey(), event);
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        return false;
-                    }
+
+        for (Listener listener : events){
+            if(listener.event == event.getClass()){
+                try {
+                    listener.method.setAccessible(true);
+                    listener.method.invoke(listener.object, event);
+                } catch (Exception e) {
+                    System.out.println(e);
+                    return false;
                 }
             }
         }
