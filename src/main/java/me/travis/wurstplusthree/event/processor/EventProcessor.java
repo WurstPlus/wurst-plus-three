@@ -59,7 +59,7 @@ public final class EventProcessor {
      */
     public final boolean postEvent(@NotNull Event event) {
         events.spliterator().forEachRemaining(listener -> {
-            if(listener.event == event.getClass()){
+            if(listener != null && listener.event != null && listener.event == event.getClass()){
                 try {
                     listener.method.setAccessible(true);
                     listener.method.invoke(listener.object, event);
