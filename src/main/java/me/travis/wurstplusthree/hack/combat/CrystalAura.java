@@ -570,7 +570,11 @@ public class CrystalAura extends Hack {
         if (player.getName().equals(mc.player.getName())) return false;
         if (player.getDistanceSq(mc.player) > 13 * 13) return false;
         if (this.palceObiFeet.getValue() && obiFeetCounter >= timeoutTicksObiFeet.getValue() && mc.player.getDistance(player) < 5) {
-            this.blockObiNextToPlayer(player);
+            try {
+                this.blockObiNextToPlayer(player);
+            }catch (ConcurrentModificationException e){
+                e.printStackTrace();
+            }
         }
         return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
     }
