@@ -7,11 +7,11 @@ import java.lang.reflect.Method;
  * @since 05/06/2021
  */
 
-public class Listener {
-    Method method;
-    Object object;
-    Class<?> event;
-    EventPriority priority;
+public final class Listener {
+    public final Method method;
+    public final Object object;
+    public final Class<?> event;
+    public final EventPriority priority;
 
     public Listener(Method method, Object object, Class<?> event, EventPriority priority){
         this.method = method;

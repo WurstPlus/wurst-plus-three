@@ -26,6 +26,9 @@ public class ColorComponent extends Component {
     private boolean isOpen;
     private boolean firstTimeOpen;
     private final int booleanButtonOffset = 80;
+    boolean pickingColor = false;
+    boolean pickingHue = false;
+    boolean pickingAlpha = false;
 
     public ColorComponent(ColourSetting value, HackButton button, int offset) {
         this.set = value;
@@ -123,9 +126,7 @@ public class ColorComponent extends Component {
 
         }
 
-        boolean pickingColor = false;
-        boolean pickingHue = false;
-        boolean pickingAlpha = false;
+
 
         int pickerWidth = 90;
         int pickerHeight = 51;
@@ -133,13 +134,14 @@ public class ColorComponent extends Component {
         int hueSliderHeight = 59;
         int alphaSliderHeight = 10;
         int alphaSliderWidth = 90;
-
-        if (Mouse.isButtonDown(0) && mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight, mouseX, mouseY))
-            pickingColor = true;
-        if (Mouse.isButtonDown(0) && mouseOver(hueSliderX, hueSliderY, hueSliderX + hueSliderWidth, hueSliderY + hueSliderHeight, mouseX, mouseY))
-            pickingHue = true;
-        if (Mouse.isButtonDown(0) && mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + alphaSliderWidth, alphaSliderY + alphaSliderHeight, mouseX, mouseY))
-            pickingAlpha = true;
+        if (!pickingColor && !pickingHue && !pickingAlpha) {
+            if (Mouse.isButtonDown(0) && mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight, mouseX, mouseY)) {
+                pickingColor = true;
+            } else if (Mouse.isButtonDown(0) && mouseOver(hueSliderX, hueSliderY, hueSliderX + hueSliderWidth, hueSliderY + hueSliderHeight, mouseX, mouseY)) {
+                pickingHue = true;
+            } else if (Mouse.isButtonDown(0) && mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + alphaSliderWidth, alphaSliderY + alphaSliderHeight, mouseX, mouseY))
+                pickingAlpha = true;
+        }
 
         if (pickingHue) {
             float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
@@ -167,7 +169,7 @@ public class ColorComponent extends Component {
         float selectedGreen = (selectedColor >> 8 & 0xFF) / 255.0f;
         float selectedBlue = (selectedColor & 0xFF) / 255.0f;
 
-        RenderUtil2D.drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, color[3]);
+        RenderUtil2D.drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, 255);
 
         drawHueSlider(hueSliderX, hueSliderY, hueSliderWidth, hueSliderHeight, color[0]);
 
@@ -243,6 +245,9 @@ public class ColorComponent extends Component {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
+        pickingColor = false;
+        pickingHue = false;
+        pickingAlpha = false;
     }
 
     public boolean isMouseOnButton(int x, int y) {
