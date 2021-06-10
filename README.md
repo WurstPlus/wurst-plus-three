@@ -1,6 +1,8 @@
 ![logo](src/main/resources/logo.png)
 
-# Wurst+3
+# Wurst+3 
+
+<img src="https://img.shields.io/github/downloads/WurstPlus/wurst-plus-three/total" alt="dwnlds" />
 
 [Discord](https://discord.com/invite/hvnZePKQHx) | [Donate](https://paypal.me/trvsf) | [Download](https://github.com/TrvsF/wurst-plus-three/releases/latest)
 
