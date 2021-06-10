@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
@@ -37,7 +38,7 @@ public class ViewModel extends Hack {
 
     // Like look at all this shit xd
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onItemRender(RenderItemEvent event) {
         event.setMainX(mainX.getValue());
         event.setMainY(mainY.getValue());

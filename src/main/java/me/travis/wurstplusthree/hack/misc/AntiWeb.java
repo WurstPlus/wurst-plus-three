@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.misc;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockCollisionBoundingBoxEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -24,7 +25,7 @@ public class AntiWeb extends Hack {
     DoubleSetting motionY = new DoubleSetting("Set MotionY", 1.0, 0.0, 20.0, this);
     DoubleSetting motionX = new DoubleSetting("Set MotionX", 0.84, -1.0, 5.0, this);
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void bbEvent(BlockCollisionBoundingBoxEvent event){
         if(nullCheck())return;
         if(mc.world.getBlockState(event.getPos()).getBlock() instanceof BlockWeb){

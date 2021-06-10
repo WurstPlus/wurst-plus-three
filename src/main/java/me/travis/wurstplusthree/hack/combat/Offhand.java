@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.combat;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -161,7 +162,7 @@ public class Offhand extends Hack {
         }
 
         // Cancel the MoveEvent.
-        @CommitEvent
+        @CommitEvent(priority = EventPriority.HIGH)
         public void onMove(MoveEvent event) {
             event.setCancelled(true);
         }

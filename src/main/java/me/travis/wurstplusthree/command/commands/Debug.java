@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.event.events.TestEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
+import me.travis.wurstplusthree.hack.client.Hud;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.logview.Threads;
 
@@ -41,6 +42,9 @@ public class Debug extends Command {
             TestEvent event = new TestEvent();
             WurstplusThree.EVENT_PROCESSOR.postEvent(event);
             WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
+        }
+        else if(message[0].equals("hud")){
+            Hud.INSTANCE.debugHud = message[1].equals("true");
         }
         else {
             ClientMessage.sendErrorMessage(message[0] + " inst supported!");

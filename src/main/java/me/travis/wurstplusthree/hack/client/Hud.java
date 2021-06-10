@@ -3,9 +3,13 @@ package me.travis.wurstplusthree.hack.client;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
+import me.travis.wurstplusthree.event.events.TestEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.HudUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
@@ -42,9 +46,45 @@ public class Hud extends Hack {
 
     private ScaledResolution scaledResolution;
 
+    public boolean debugHud;
+    public static Hud INSTANCE;
+    private Runtime runtime;
+
+    public Hud(){
+        INSTANCE = this;
+        debugHud = false;
+        runtime = Runtime.getRuntime();
+    }
+
+    private void runEvents(){
+        long start = System.currentTimeMillis();
+        while (true){
+            if(start > System.currentTimeMillis() - 100){
+                TestEvent testEvent = new TestEvent();
+                WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
+                WurstplusThree.EVENT_PROCESSOR.postEvent(testEvent);
+                WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
+            }
+        }
+    }
+
     @Override
     public void onRender2D(Render2DEvent event) {
         scaledResolution = new ScaledResolution(mc);
+
+        if(debugHud){
+            int y = 284;
+            long maxMemory = runtime.maxMemory() /1024/1024;
+            long allocatedMemory = runtime.totalMemory()/1024/1024;
+            long freeMemory = runtime.freeMemory()/1024/1024;
+            drawString("MAX MEMORY: " + ChatFormatting.AQUA + maxMemory + " Mb", 10, y);
+            y+=12;
+            drawString("ALLOCATED MEMORY: " + ChatFormatting.AQUA + allocatedMemory + " Mb", 10, y);
+            y+= 12;
+            drawString("FREE MEMORY: " + ChatFormatting.AQUA + freeMemory + " Mb", 10, y);
+            y+= 12;
+            drawString("TOTAL FREE MEMORY: " + ChatFormatting.AQUA + (freeMemory + (maxMemory - allocatedMemory)) + " Mb", 10, y);
+        }
 
         if (welcomer.getValue()) {
             String line = HudUtil.getWelcomerLine();

@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.player;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.PushEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -104,7 +105,7 @@ public class Freecam extends Hack {
         this.disable();
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketSend(final PacketEvent.Send event) {
         if (this.packet.getValue()) {
             if (event.getPacket() instanceof CPacketPlayer) {
@@ -115,7 +116,7 @@ public class Freecam extends Hack {
         }
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketReceive(final PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketSetPassengers) {
             final SPacketSetPassengers packet = event.getPacket();
@@ -137,7 +138,7 @@ public class Freecam extends Hack {
         }
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPush(final PushEvent event) {
         if (event.getStage() == 1) {
             event.setCancelled(true);

@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.elements.Timer;
@@ -17,7 +18,7 @@ public class Crits extends Hack {
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);
     private final Timer timer = new Timer();
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketSend(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK) {

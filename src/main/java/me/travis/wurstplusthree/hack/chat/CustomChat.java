@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.chat;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.gui.chat.GuiChat;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
@@ -58,7 +59,7 @@ public class CustomChat extends Hack {
         ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChat, "field_73840_e");
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketSend(PacketEvent.Send event) {
         if (event.getStage() == 0 && event.getPacket() instanceof CPacketChatMessage) {
             CPacketChatMessage packet = event.getPacket();
@@ -76,7 +77,7 @@ public class CustomChat extends Hack {
         }
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketChat) {
             if (((SPacketChat) event.getPacket()).getType() == ChatType.GAME_INFO) {

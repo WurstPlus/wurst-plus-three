@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.render;
 import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil;
@@ -35,7 +36,7 @@ public class BreakHighlight extends Hack {
         breakingBlockList.clear();
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void damageBlockEvent(BlockBreakingEvent event){
         if (mc.world.getBlockState(event.pos).getBlock() == Blocks.BEDROCK) return;
         if(breakingBlockList.isEmpty()){

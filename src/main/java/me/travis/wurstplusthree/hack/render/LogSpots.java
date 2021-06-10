@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.ConnectionEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
@@ -65,7 +66,7 @@ public class LogSpots extends Hack {
         this.spots.removeIf(spot -> mc.player.getDistanceSq(spot.getEntity()) >= MathsUtil.square(this.range.getValue().floatValue()));
     }
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onConnection(ConnectionEvent event) {
         if (event.getStage() == 0) {
             UUID uuid = event.getUuid();

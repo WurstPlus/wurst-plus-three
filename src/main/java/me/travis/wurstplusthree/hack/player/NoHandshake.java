@@ -5,6 +5,7 @@ package me.travis.wurstplusthree.hack.player;
 import io.netty.buffer.Unpooled;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 @Hack.Registration(name = "NoHandshake", description = "Do not shake hand", category = Hack.Category.PLAYER, isListening = false)
 public class NoHandshake extends Hack {
 
-    @CommitEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onPacketSend(PacketEvent.Send event) {
         CPacketCustomPayload packet;
         if (event.getPacket() instanceof FMLProxyPacket && !mc.isSingleplayer()) {
