@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.command.commands.Debug;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Mixin(value={AbstractClientPlayer.class})
 public abstract class MixinAbstractClientPlayer {
+
     @Shadow
     @Nullable
     protected abstract NetworkPlayerInfo getPlayerInfo();
@@ -27,6 +29,7 @@ public abstract class MixinAbstractClientPlayer {
     @Inject(method = "getLocationCape", at = @At("HEAD"), cancellable = true)
     public void getLocationCape(CallbackInfoReturnable<ResourceLocation> callbackInfoReturnable) {
         UUID uuid = Objects.requireNonNull(getPlayerInfo()).getGameProfile().getId();
+        if(!Debug.INSTANCE.capes)return;
 
         if (WurstplusThree.CAPE_MANAGER.isOg(uuid)) {
             // callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));

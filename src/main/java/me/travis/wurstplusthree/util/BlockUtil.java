@@ -1,5 +1,7 @@
 package me.travis.wurstplusthree.util;
 
+import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.manager.ServerManager;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -9,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -378,6 +381,25 @@ public class BlockUtil implements Globals {
         if (setting.is("Offhand")) {
             mc.player.swingArm(EnumHand.OFF_HAND);
         }
+    }
+
+    public static double getMineTime(Block block, ItemStack stack){
+        float speedMultiplier = stack.getDestroySpeed(block.getDefaultState());
+        float damage;
+
+        if (!mc.player.onGround) {
+            speedMultiplier /= 5;
+        }
+
+        if (stack.canHarvestBlock(block.getDefaultState())) {
+            damage = speedMultiplier / block.blockHardness / 30;
+        } else {
+            damage = speedMultiplier / block.blockHardness / 100;
+        }
+
+        float ticks = (float) Math.ceil(1 / damage);
+
+        return ticks / WurstplusThree.SERVER_MANAGER.getTPS();
     }
 
 }

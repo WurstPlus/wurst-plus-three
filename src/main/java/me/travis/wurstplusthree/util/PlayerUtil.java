@@ -9,6 +9,8 @@ import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -208,6 +210,32 @@ public class PlayerUtil implements Globals {
         public String getName() {
             return this.name;
         }
+    }
+
+    public static Item getBestItem(Block block) {
+        String tool = block.getHarvestTool(block.getDefaultState());
+        if (tool != null) {
+            switch (tool) {
+                case "axe":
+                    return Items.DIAMOND_AXE;
+                case "shovel":
+                    return Items.DIAMOND_SHOVEL;
+                default:
+                    return Items.DIAMOND_PICKAXE;
+            }
+        } else {
+            return Items.DIAMOND_PICKAXE;
+        }
+
+    }
+
+    public static ItemStack getItemStackFromItem(Item item) {
+        if (mc.player == null) return null;
+        for (int slot = 0; slot <= 9; slot++) {
+            if (mc.player.inventory.getStackInSlot(slot).getItem() == item)
+                return mc.player.inventory.getStackInSlot(slot);
+        }
+        return null;
     }
 
 }

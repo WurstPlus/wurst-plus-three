@@ -34,23 +34,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value={PlayerControllerMP.class})
 public class MixinPlayerControllerMP {
+    /*
     @Inject(method={"resetBlockRemoving"}, at={@At(value="HEAD")}, cancellable=true)
     public void resetBlockRemovingHook(CallbackInfo info) {
         if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.reset.getValue()) {
             info.cancel();
         }
     }
+     */
 
     @Inject(method={"clickBlock"}, at={@At(value="HEAD")}, cancellable=true)
     private void clickBlockHook(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> info) {
         BlockEvent event = new BlockEvent(3, pos, face);
         WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if(event.isCancelled()){
+            info.cancel();
+        }
     }
 
     @Inject(method={"onPlayerDamageBlock"}, at={@At(value="HEAD")}, cancellable=true)
     private void onPlayerDamageBlockHook(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> info) {
         BlockEvent event = new BlockEvent(4, pos, face);
         WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if(event.isCancelled()){
+            info.cancel();
+        }
     }
 
     @Redirect(method={"processRightClickBlock"}, at=@At(value="INVOKE", target="Lnet/minecraft/item/ItemBlock;canPlaceBlockOnSide(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;)Z"))

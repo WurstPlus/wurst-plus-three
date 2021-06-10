@@ -7,6 +7,7 @@ import me.travis.wurstplusthree.event.events.TestEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.client.Hud;
+import me.travis.wurstplusthree.mixin.mixins.MixinAbstractClientPlayer;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.logview.Threads;
 
@@ -16,9 +17,16 @@ import me.travis.wurstplusthree.util.logview.Threads;
  */
 
 public class Debug extends Command {
+
+    public static Debug INSTANCE;
+    public boolean capes;
+
     public Debug(){
         super("debug");
+        INSTANCE = this;
+        capes = true;
     }
+
 
     @Override
     public void execute(String[] message) {
@@ -45,6 +53,10 @@ public class Debug extends Command {
         }
         else if(message[0].equals("hud")){
             Hud.INSTANCE.debugHud = message[1].equals("true");
+        }
+        else if(message[0].equals("capes")){
+            capes = message[1].equals("true");
+            ClientMessage.sendMessage("Capes Toggled");
         }
         else {
             ClientMessage.sendErrorMessage(message[0] + " inst supported!");

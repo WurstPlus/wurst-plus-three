@@ -93,7 +93,7 @@ public abstract class MixinMinecraft {
         WurstplusThree.unLoad();
         System.out.println("wurst+3 has been unloaded");
     }
-
+    /*
     @Redirect(method={"sendClickBlockToController"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;isHandActive()Z"))
     private boolean isHandActiveWrapper(EntityPlayerSP playerSP) {
         return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerSP.isHandActive();
@@ -103,5 +103,6 @@ public abstract class MixinMinecraft {
     private boolean isHittingBlockHook(PlayerControllerMP playerControllerMP) {
         return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerControllerMP.getIsHittingBlock();
     }
+     */
 }
 

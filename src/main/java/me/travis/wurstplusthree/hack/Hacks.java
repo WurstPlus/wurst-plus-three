@@ -59,7 +59,7 @@ public class Hacks implements Globals {
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
-        this.hacks.add(new InstantBreak());
+        //this.hacks.add(new InstantBreak());
         this.hacks.add(new Blink());
         this.hacks.add(new Replenish());
         this.hacks.add(new EntityMine());
@@ -70,6 +70,7 @@ public class Hacks implements Globals {
         this.hacks.add(new DiscordRPC());
         this.hacks.add(new AntiWeb());
         this.hacks.add(new AutoClip());
+        this.hacks.add(new SpeedMine());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
