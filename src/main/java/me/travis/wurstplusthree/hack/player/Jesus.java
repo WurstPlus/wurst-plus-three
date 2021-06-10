@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.JesusEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -12,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.server.SPacketMoveVehicle;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -34,7 +34,7 @@ public class Jesus extends Hack {
 
     private boolean grounded = false;
 
-    @SubscribeEvent
+    @CommitEvent
     public void updateWalkingPlayer(UpdateWalkingPlayerEvent event) {
         if (nullCheck() || WurstplusThree.HACKS.ishackEnabled("Freecam")) {
             return;
@@ -49,7 +49,7 @@ public class Jesus extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void sendPacket(PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && WurstplusThree.HACKS.ishackEnabled("Freecam")
                 && (mode.is("Bounce") || mode.is("Normal"))
@@ -61,7 +61,7 @@ public class Jesus extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onLiquidCollision(JesusEvent event) {
         if (nullCheck() || WurstplusThree.HACKS.ishackEnabled("Freecam")) {
             return;
@@ -73,14 +73,14 @@ public class Jesus extends Hack {
             } else {
                 event.setBoundingBox(Block.FULL_BLOCK_AABB);
             }
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacketReceived(PacketEvent.Receive event) {
         if (this.cancelVehicle.getValue() && event.getPacket() instanceof SPacketMoveVehicle) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 

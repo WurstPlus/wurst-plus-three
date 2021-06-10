@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.ChatEvent;
 import me.travis.wurstplusthree.event.events.MoveEvent;
 import me.travis.wurstplusthree.event.events.PushEvent;
@@ -32,19 +33,19 @@ extends AbstractClientPlayer {
     @Inject(method={"sendChatMessage"}, at={@At(value="HEAD")}, cancellable=true)
     public void sendChatMessage(String message, CallbackInfo callback) {
         ChatEvent chatEvent = new ChatEvent(message);
-        MinecraftForge.EVENT_BUS.post((Event)chatEvent);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(chatEvent);
     }
 
-    @Redirect(method={"onLivingUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal=2))
-    public void onLivingUpdate(EntityPlayerSP entityPlayerSP, boolean sprinting) {
-        entityPlayerSP.setSprinting(sprinting);
-    }
+//    @Redirect(method={"onLivingUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal=2))
+//    public void onLivingUpdate(EntityPlayerSP entityPlayerSP, boolean sprinting) {
+//        entityPlayerSP.setSprinting(sprinting);
+//    }
 
     @Inject(method={"pushOutOfBlocks"}, at={@At(value="HEAD")}, cancellable=true)
     private void pushOutOfBlocksHook(double x, double y, double z, CallbackInfoReturnable<Boolean> info) {
         PushEvent event = new PushEvent(1);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if (event.isCancelled()) {
             info.setReturnValue(false);
         }
     }
@@ -52,8 +53,8 @@ extends AbstractClientPlayer {
     @Inject(method={"onUpdateWalkingPlayer"}, at={@At(value="HEAD")}, cancellable=true)
     private void preMotion(CallbackInfo info) {
         UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(0);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if (event.isCancelled()) {
             info.cancel();
         }
     }
@@ -66,14 +67,14 @@ extends AbstractClientPlayer {
     @Inject(method={"onUpdateWalkingPlayer"}, at={@At(value="RETURN")})
     private void postMotion(CallbackInfo info) {
         UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(1);
-        MinecraftForge.EVENT_BUS.post((Event)event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
     }
 
     @Redirect(method={"move"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/AbstractClientPlayer;move(Lnet/minecraft/entity/MoverType;DDD)V"))
     public void move(AbstractClientPlayer player, MoverType moverType, double x, double y, double z) {
         MoveEvent event = new MoveEvent(0, moverType, x, y, z);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (!event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if (!event.isCancelled()) {
             super.move(event.getType(), event.getX(), event.getY(), event.getZ());
         }
     }

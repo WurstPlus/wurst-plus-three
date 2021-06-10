@@ -31,6 +31,10 @@ public class Commands implements Globals {
         this.commands.add(new ReloadCosmeticsCommand());
         this.commands.add(new NameMcCommand());
         this.commands.add(new BurrowBlockCommand());
+        this.commands.add(new ConfigCommand());
+        this.commands.add(new IrcChat());
+        this.commands.add(new ClipBind());
+        this.commands.add(new Debug());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
@@ -40,13 +44,6 @@ public class Commands implements Globals {
             result.add(input[i]);
         }
         return result.toArray(input);
-    }
-
-    private static String strip(String str, String key) {
-        if (str.startsWith(key) && str.endsWith(key)) {
-            return str.substring(key.length(), str.length() - key.length());
-        }
-        return str;
     }
 
     public void executeCommand(String command) {

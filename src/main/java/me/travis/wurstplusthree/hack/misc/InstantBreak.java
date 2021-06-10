@@ -5,6 +5,8 @@ import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -16,11 +18,14 @@ import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.BlockEndPortalFrame;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -31,13 +36,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.Arrays;
 
-@Hack.Registration(name = "Instant Break", description = "breaks blocks in strange ways", category = Hack.Category.MISC, isListening = false)
+@Hack.Registration(name = "Better Mine", description = "breaks blocks in strange ways", category = Hack.Category.MISC, isListening = false)
 public class InstantBreak extends Hack {
 
     public static InstantBreak INSTANCE;
@@ -50,7 +55,7 @@ public class InstantBreak extends Hack {
 
     public DoubleSetting range = new DoubleSetting("Range", 10.0, 0.0, 50.0, this);
     public BooleanSetting tweaks = new BooleanSetting("Tweaks", true, this);
-    public EnumSetting mode = new EnumSetting("Mode", "Packet", Arrays.asList("Packet", "Damage", "Instant"), this);
+    public EnumSetting mode = new EnumSetting("Mode", "None", Arrays.asList("Packet", "Damage", "Instant", "None"), this);
     public BooleanSetting reset = new BooleanSetting("Reset", true, this);
     public DoubleSetting damage = new DoubleSetting("Damage", 0.7, 0.0, 1.0, this);
     public BooleanSetting noBreakAnim = new BooleanSetting("No Break Animation", false, this);
@@ -61,20 +66,23 @@ public class InstantBreak extends Hack {
     public BooleanSetting allow = new BooleanSetting("Allow", false, this);
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting pickaxe = new BooleanSetting("Pickaxe", false, this);
+    public BooleanSetting dualUse = new BooleanSetting("DualUse", false, this);
     public BooleanSetting doubleBreak = new BooleanSetting("Double Break", false, this);
     public BooleanSetting webSwitch = new BooleanSetting("Web Switch", false, this);
-    public BooleanSetting silentSwitch = new BooleanSetting("Silent Switch", false, this);
+    public EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), this);
     public BooleanSetting render = new BooleanSetting("Render", false, this);
-    public BooleanSetting box = new BooleanSetting("Box", false, this);
+    public BooleanSetting box = new BooleanSetting("Box", false, this, s -> render.getValue());
     public BlockPos currentPos;
     public IBlockState currentBlockState;
     private boolean isMining = false;
     private BlockPos lastPos = null;
     private EnumFacing lastFacing = null;
+    private int lastHotbarSlot = -1;
+    private boolean switched = false;
     private float yaw;
     private float pitch;
 
-    @SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+    @CommitEvent(priority = EventPriority.HIGH)
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if(this.currentPos != null){
             this.setYawPitch(currentPos);
@@ -94,7 +102,7 @@ public class InstantBreak extends Hack {
                 this.currentBlockState = null;
                 return;
             }
-            if (mc.player != null && this.silentSwitch.getValue() && this.timer.passedMs((int) (2000.0f * WurstplusThree.SERVER_MANAGER.getTpsFactor()))
+            if (mc.player != null && this.switchMode.getValue().equals("Silent") && this.timer.passedMs((int) (2000.0f * WurstplusThree.SERVER_MANAGER.getTpsFactor()))
                     && this.getPickSlot() != -1) {
                 mc.player.connection.sendPacket(new CPacketHeldItemChange(this.getPickSlot()));
             }
@@ -106,6 +114,44 @@ public class InstantBreak extends Hack {
                 InventoryUtil.switchToHotbarSlot(ItemSword.class, false);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onBlockInteract(final PlayerInteractEvent.LeftClickBlock event) {
+        if (switchMode.getValue().equals("Normal")) {
+            this.equipBestTool(mc.world.getBlockState(event.getPos()));
+        }
+    }
+
+    private void equip(final int slot, final boolean equipTool) {
+        if (slot != -1) {
+            if (slot != mc.player.inventory.currentItem) {
+                this.lastHotbarSlot = mc.player.inventory.currentItem;
+            }
+            mc.player.inventory.currentItem = slot;
+            //BlockTweaks.mc.playerController.syncCurrentPlayItem();
+            this.switched = equipTool;
+        }
+    }
+
+    private void equipBestTool(final IBlockState blockState) {
+        int bestSlot = -1;
+        double max = 0.0;
+        for (int i = 0; i < 9; ++i) {
+            final ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                float speed = stack.getDestroySpeed(blockState);
+                if (speed > 1.0f) {
+                    final int eff;
+                    speed += (float)(((eff = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack)) > 0) ? (Math.pow(eff, 2.0) + 1.0) : 0.0);
+                    if (speed > max) {
+                        max = speed;
+                        bestSlot = i;
+                    }
+                }
+            }
+        }
+        this.equip(bestSlot, true);
     }
 
     @Override
@@ -122,6 +168,9 @@ public class InstantBreak extends Hack {
         if (this.reset.getValue() && mc.gameSettings.keyBindUseItem.isKeyDown() && !this.allow.getValue()) {
             mc.playerController.isHittingBlock = false;
         }
+        if (!mc.gameSettings.keyBindAttack.isKeyDown() && this.switched && switchMode.getValue().equals("Normal")) {
+            this.equip(this.lastHotbarSlot, false);
+        }
     }
 
     @Override
@@ -133,7 +182,7 @@ public class InstantBreak extends Hack {
         }
     }
 
-    @SubscribeEvent()
+    @CommitEvent
     public void onPacketSend(PacketEvent.Send event) {
         if (nullCheck()) {
             return;
@@ -146,7 +195,7 @@ public class InstantBreak extends Hack {
         if (event.getStage() == 0) {
             CPacketPlayerDigging packet;
             if (this.noSwing.getValue() && event.getPacket() instanceof CPacketAnimation) {
-                event.setCanceled(true);
+                event.setCancelled(true);
             }
             if (this.noBreakAnim.getValue() && event.getPacket() instanceof CPacketPlayerDigging
                     && (packet = event.getPacket()) != null) {
@@ -170,7 +219,7 @@ public class InstantBreak extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onBlockEvent(BlockEvent event) {
         if (nullCheck()) {
             return;
@@ -197,7 +246,7 @@ public class InstantBreak extends Hack {
                         mc.player.swingArm(EnumHand.MAIN_HAND);
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
-                        event.setCanceled(true);
+                        event.setCancelled(true);
                         break;
                     }
                     case "Damage": {

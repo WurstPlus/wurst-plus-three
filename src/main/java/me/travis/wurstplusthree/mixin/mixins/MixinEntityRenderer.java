@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import com.google.common.base.Predicate;
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
 import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import me.travis.wurstplusthree.hack.render.CameraClip;
@@ -34,7 +35,9 @@ import java.util.List;
 
 @Mixin(value={EntityRenderer.class})
 public abstract class MixinEntityRenderer {
+
     private boolean injection = true;
+
     @Shadow
     public ItemStack itemActivationItem;
     @Shadow
@@ -46,18 +49,15 @@ public abstract class MixinEntityRenderer {
 
     @Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
     public void getMouseOverHook(float partialTicks, CallbackInfo info) {
-        if (this.injection) {
-            block3: {
-                info.cancel();
-                this.injection = false;
-                try {
-                    this.getMouseOver(partialTicks);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (injection) {
+            injection = false;
+            info.cancel();
+            try {
+                this.getMouseOver(partialTicks);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            this.injection = true;
+            injection = true;
         }
     }
 
@@ -71,18 +71,18 @@ public abstract class MixinEntityRenderer {
         return ActiveRenderInfo.getBlockStateAtEntityViewpoint((World)worldIn, (Entity)entityIn, (float)p_186703_2_);
     }
 
-    @Redirect(method={"getMouseOver"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
-    public List<Entity> getEntitiesInAABBexcludingHook(WorldClient worldClient, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && (!InstantBreak.INSTANCE.pickaxe.getValue()
-                || this.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) {
-            return new ArrayList<Entity>();
-        }
-        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && InstantBreak.INSTANCE.noGapTrace.getValue()
-                && this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
-            return new ArrayList<Entity>();
-        }
-        return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
-    }
+//    @Redirect(method={"getMouseOver"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/WorldClient;getEntitiesInAABBexcluding(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/AxisAlignedBB;Lcom/google/common/base/Predicate;)Ljava/util/List;"))
+//    public List<Entity> getEntitiesInAABBexcludingHook(WorldClient worldClient, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+//        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && (!InstantBreak.INSTANCE.pickaxe.getValue()
+//                || this.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) {
+//            return new ArrayList<Entity>();
+//        }
+//        if (InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.noTrace.getValue() && InstantBreak.INSTANCE.noGapTrace.getValue()
+//                && this.mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
+//            return new ArrayList<Entity>();
+//        }
+//        return worldClient.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
+//    }
 
     @Inject(method={"hurtCameraEffect"}, at={@At(value="HEAD")}, cancellable=true)
     public void hurtCameraEffectHook(float ticks, CallbackInfo info) {
@@ -119,21 +119,21 @@ public abstract class MixinEntityRenderer {
     @Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onSetupCameraTransform(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
     @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderWorldPass(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
     @Redirect(method = "renderCloudsCheck", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderCloudsCheck(float fovy, float aspect, float zNear, float zFar) {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 

@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.KeyEvent;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,7 +19,7 @@ public class MixinKeyBinding {
     @Inject(method={"isKeyDown"}, at={@At(value="RETURN")}, cancellable=true)
     private void isKeyDown(CallbackInfoReturnable<Boolean> info) {
         KeyEvent event = new KeyEvent(0, info.getReturnValue(), this.pressed);
-        MinecraftForge.EVENT_BUS.post((Event)event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         info.setReturnValue(event.info);
     }
 }

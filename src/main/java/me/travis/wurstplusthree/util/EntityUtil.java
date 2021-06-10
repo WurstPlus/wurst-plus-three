@@ -189,8 +189,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isObbyHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.OBSIDIAN) continue;
             return false;
@@ -199,8 +198,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isBedrockHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && touchingState.getBlock() == Blocks.BEDROCK) continue;
             return false;
@@ -209,8 +207,7 @@ public class EntityUtil implements Globals {
     }
 
     public static boolean isBothHole(BlockPos blockPos) {
-        BlockPos[] touchingBlocks;
-        for (BlockPos pos : touchingBlocks = new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
+        for (BlockPos pos : new BlockPos[]{blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west(), blockPos.down()}) {
             IBlockState touchingState = mc.world.getBlockState(pos);
             if (touchingState.getBlock() != Blocks.AIR && (touchingState.getBlock() == Blocks.BEDROCK || touchingState.getBlock() == Blocks.OBSIDIAN))
                 continue;
@@ -367,5 +364,17 @@ public class EntityUtil implements Globals {
         }
         return false;
     }
+
+    public static double sigmoid(final double x){
+        return (1/(1+Math.pow(Math.E, (-1*x))));
+    }
+
+    public static double predictPos(final double motion, final double threshold){
+        double m = Math.abs(motion);
+        m = m - threshold;
+        m = sigmoid(m);
+        return m;
+    }
+
 
 }

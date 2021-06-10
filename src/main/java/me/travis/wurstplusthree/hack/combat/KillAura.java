@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -11,7 +12,6 @@ import me.travis.wurstplusthree.util.DamageUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public class KillAura extends Hack {
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting raytrace = new BooleanSetting("Walls", true, this);
     public BooleanSetting swingArm = new BooleanSetting("Swing", true, this);
-    public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this);
+    public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this, s -> mode.is("32k"));
 
     private Entity target;
     private int ticksPassed;
@@ -43,7 +43,7 @@ public class KillAura extends Hack {
         this.ticksPassed++;
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotate.getValue()) {
             if ((this.target = this.getTarget()) != null) {
@@ -115,7 +115,7 @@ public class KillAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return target instanceof EntityPlayer ? target.getName() : "";
+        return target instanceof EntityPlayer ? target.getName() : null;
     }
 
 }

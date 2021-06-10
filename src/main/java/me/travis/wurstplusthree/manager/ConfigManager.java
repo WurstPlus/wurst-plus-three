@@ -20,33 +20,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
+
 
     // FOLDERS
     private final String mainFolder = "Wurstplus3/";
     private final String configsFolder = mainFolder + "configs/";
     private String activeConfigFolder = configsFolder + "default/";
 
-    // STATIC FILES
-    private final String clientFile = "client.json";
-    private final String configFile = "config.txt";
     private final String drawnFile = "drawn.txt";
-    private final String ezFile = "ez.txt";
     private final String enemiesFile = "enemies.json";
     private final String friendsFile = "friends.json";
-    private final String hudFile = "hud.json";
     private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
+    private final String IRCtoken = "IRCtoken.dat";
 
-    // DIRS
-    private final String clientDir = mainFolder + clientFile;
-    private final String configDir = mainFolder + configFile;
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
     private final String burrowDir = mainFolder + burrowFile;
-    private final String ezDir = mainFolder + ezFile;
+    private final String IRCdir = mainFolder + IRCtoken;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
 
@@ -58,18 +53,10 @@ public class ConfigManager implements Globals {
     private final Path configsFolderPath = Paths.get(configsFolder);
     private Path activeConfigFolderPath = Paths.get(activeConfigFolder);
 
-    // FILE PATHS
-    private final Path clientPath = Paths.get(clientDir);
-    private final Path configPath = Paths.get(configDir);
     private final Path drawnPath = Paths.get(drawnDir);
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
-    private final Path ezPath = Paths.get(ezDir);
-    private final Path enemiesPath = Paths.get(enemiesDir);
-    private final Path friendsPath = Paths.get(friendsDir);
-
-    private Path bindsPath = Paths.get(bindsDir);
-    private Path currentConfigPath = Paths.get(currentConfigDir);
+    private final Path IRCpath = Paths.get(IRCdir);
 
     public void loadConfig() {
         try {
@@ -80,6 +67,15 @@ public class ConfigManager implements Globals {
             this.loadDrawn();
             this.loadFont();
             this.loadBurrowBlock();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reloadConfig() {
+        try {
+            this.loadSettings();
+            this.loadBinds();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,21 +103,18 @@ public class ConfigManager implements Globals {
         if (folder.equals(this.activeConfigFolder)) {
             return false;
         }
+        this.saveConfig();
 
         this.activeConfigFolder = configsFolder + folder;
         this.activeConfigFolderPath = Paths.get(activeConfigFolder);
 
         this.currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
-        this.currentConfigPath = Paths.get(currentConfigDir);
+        Paths.get(currentConfigDir);
 
         this.bindsDir = currentConfigDir + bindsFile;
-        this.bindsPath = Paths.get(bindsDir);
+        Paths.get(bindsDir);
 
-        try {
-            this.loadSettings();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.reloadConfig();
         return true;
     }
 
@@ -268,7 +261,7 @@ public class ConfigManager implements Globals {
         final BufferedWriter br = new BufferedWriter(new FileWriter(file));
         br.write(Commands.prefix + "\r\n");
         for (Hack module : WurstplusThree.HACKS.getHacks()) {
-            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + "\r\n");
+            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + ":" + module.isHold() + "\r\n");
         }
         br.close();
     }
@@ -291,11 +284,11 @@ public class ConfigManager implements Globals {
                     final String tag = colune.split(":")[0];
                     final String bind = colune.split(":")[1];
                     final String active = colune.split(":")[2];
+                    final String hold = colune.split(":")[3];
                     Hack hack = WurstplusThree.HACKS.getHackByName(tag);
                     hack.setBind(Integer.parseInt(bind));
-                    if (Boolean.parseBoolean(active)) {
-                        hack.enable();
-                    }
+                    hack.setHold(Boolean.parseBoolean(hold));
+                    hack.setEnabled(Boolean.parseBoolean(active));
                 }
 
             } catch (Exception ignored) {}
@@ -312,8 +305,10 @@ public class ConfigManager implements Globals {
     }
 
     private void loadDrawn() throws IOException {
-        for (String hackName : Files.readAllLines(drawnPath)) {
-            WurstplusThree.HACKS.addDrawHack(WurstplusThree.HACKS.getHackByName(hackName));
+        for (String hackName : Files.readAllLines(drawnPath).stream().distinct().collect(Collectors.toList())) {
+            Hack hack = WurstplusThree.HACKS.getHackByName(hackName);
+            if (hack == null) continue;
+            WurstplusThree.HACKS.addDrawHack(hack);
         }
     }
 
@@ -349,9 +344,26 @@ public class ConfigManager implements Globals {
     private void loadBurrowBlock() throws IOException {
         for (String l : Files.readAllLines(burrowPath)){
             Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
-            a.setBlock(new WhitelistUtil().findBlock(l));
+            new WhitelistUtil();
+            a.setBlock(WhitelistUtil.findBlock(l));
             WurstplusThree.COMMANDS.getBurrowCommand().setBBlock(l);
         }
+    }
+
+    public void saveIRCtoken(String token) throws IOException {
+        FileWriter writer = new FileWriter(IRCdir);
+        writer.append( mc.player.getName()+":"+mc.player.getUniqueID()+":"+token);
+        writer.close();
+    }
+
+    public String loadIRCtoken() throws IOException {
+        String line="";
+        for (String l : Files.readAllLines(IRCpath)){
+            line = l;
+            break;
+        }
+        String[] split = line.split(":");
+        return split[2];
     }
 
     public boolean deleteFile(final String path) throws IOException {

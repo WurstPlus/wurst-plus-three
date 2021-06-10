@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.hack.render;
 
 import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil;
@@ -11,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class BreakHighlight extends Hack {
         breakingBlockList.clear();
     }
 
-    @SubscribeEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void damageBlockEvent(BlockBreakingEvent event){
         if (mc.world.getBlockState(event.pos).getBlock() == Blocks.BEDROCK) return;
         if(breakingBlockList.isEmpty()){
@@ -70,6 +71,7 @@ public class BreakHighlight extends Hack {
     @Override
     public void onRender3D(Render3DEvent event){
         for(int i : breakingBlockList.keySet()){
+            if(breakingBlockList.get(i).getValue() == null)continue;
             BlockPos pos = breakingBlockList.get(i).getValue();
             int state = breakingBlockList.get(i).getKey();
             EntityPlayer player = (EntityPlayer) mc.world.getEntityByID(i);

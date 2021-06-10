@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
@@ -12,7 +13,6 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 import java.util.Queue;
@@ -29,9 +29,9 @@ public class Blink extends Hack {
 
     public EnumSetting mode = new EnumSetting("mode", "Manual", Arrays.asList("Manual", "Time", "Distance", "Packets"), this);
     public BooleanSetting cPacketPlayer = new BooleanSetting("CPacketPlayer", true, this);
-    public IntSetting timeLimit = new IntSetting("Time Limit", 20, 1, 500, this);
-    public IntSetting packetLimit = new IntSetting("Packet Limit", 20, 1, 500, this);
-    public DoubleSetting distance = new DoubleSetting("Distance", 10.0, 1.0, 100.0, this);
+    public IntSetting timeLimit = new IntSetting("Time Limit", 20, 1, 500, this, s -> mode.is("Time"));
+    public IntSetting packetLimit = new IntSetting("Packet Limit", 20, 1, 500, this, s -> mode.is("Packets"));
+    public DoubleSetting distance = new DoubleSetting("Distance", 10.0, 1.0, 100.0, this, s -> mode.is("Distance"));
 
     private final Timer timer = new Timer();
     private final Queue<Packet<?>> packets = new ConcurrentLinkedQueue();
@@ -71,12 +71,12 @@ public class Blink extends Hack {
         this.disable();
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onSendPacket(PacketEvent.Send event) {
         if (event.getStage() == 0 && Blink.mc.world != null && !mc.isSingleplayer()) {
             Object packet = event.getPacket();
             if (this.cPacketPlayer.getValue() && packet instanceof CPacketPlayer) {
-                event.setCanceled(true);
+                event.setCancelled(true);
                 this.packets.add((Packet<?>) packet);
                 ++this.packetsCanceled;
             }
@@ -85,7 +85,7 @@ public class Blink extends Hack {
                     return;
                 }
                 this.packets.add((Packet<?>) packet);
-                event.setCanceled(true);
+                event.setCancelled(true);
                 ++this.packetsCanceled;
             }
         }

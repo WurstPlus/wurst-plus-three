@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.chat;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 @Hack.Registration(name = "Auto Ez", description = "lets people know ur clouted", category = Hack.Category.CHAT, isListening = false)
 public class AutoEz extends Hack {
 
@@ -24,7 +26,7 @@ public class AutoEz extends Hack {
         INSTANCE = this;
     }
 
-    BooleanSetting discord = new BooleanSetting("Discord", true, this);
+    BooleanSetting discord = new BooleanSetting("Discord", false, this);
 
     private int delayCount;
     public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
@@ -65,7 +67,7 @@ public class AutoEz extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onSendAttackPacket(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).getName())) {
@@ -73,7 +75,7 @@ public class AutoEz extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onEntityDeath(DeathEvent event) {
         if (this.targets.containsKey(event.player.getName())) {
             this.announceDeath();

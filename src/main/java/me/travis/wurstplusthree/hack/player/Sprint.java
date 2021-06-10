@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.event.events.MoveEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -12,11 +12,11 @@ public class Sprint extends Hack {
 
     public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);
 
-    @SubscribeEvent
+    @CommitEvent
     public void onMove(MoveEvent event) {
         if (event.getStage() == 1 && this.mode.is("Rage") && (mc.player.movementInput.moveForward != 0f ||
                 mc.player.moveStrafing != 0f)) {
-            event.setCanceled(true);
+            event.setCancelled(true);
         }
     }
 
@@ -33,6 +33,6 @@ public class Sprint extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return mode.getValueName();
+        return mode.getValue();
     }
 }

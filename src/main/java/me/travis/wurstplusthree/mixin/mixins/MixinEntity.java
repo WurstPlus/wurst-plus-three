@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PushEvent;
 import me.travis.wurstplusthree.event.events.StepEvent;
 import net.minecraft.block.Block;
@@ -22,8 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -225,7 +224,6 @@ public abstract class MixinEntity {
             double d3 = y;
             double d4 = z;
             if ((type == MoverType.SELF || type == MoverType.PLAYER) && this.onGround && this.isSneaking() && _this instanceof EntityPlayer) {
-                double d5 = 0.05;
                 while (x != 0.0 && this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().offset(x, (double)(-this.stepHeight), 0.0)).isEmpty()) {
                     x = x < 0.05 && x >= -0.05 ? 0.0 : (x > 0.0 ? (x -= 0.05) : (x += 0.05));
                     d2 = x;
@@ -241,17 +239,15 @@ public abstract class MixinEntity {
                     d4 = z;
                 }
             }
-            List list1 = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(x, y, z));
+            List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(x, y, z));
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
             if (y != 0.0) {
-                int l = list1.size();
                 for (Object o : list1) {
                     y = ((AxisAlignedBB) o).calculateYOffset(this.getEntityBoundingBox(), y);
                 }
                 this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0, y, 0.0));
             }
             if (x != 0.0) {
-                int l5 = list1.size();
                 for (Object o : list1) {
                     x = ((AxisAlignedBB) o).calculateXOffset(this.getEntityBoundingBox(), x);
                 }
@@ -268,17 +264,17 @@ public abstract class MixinEntity {
                     this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0, 0.0, z));
                 }
             }
-            boolean bl = flag = this.onGround || d3 != y && d3 < 0.0;
+            flag = this.onGround || d3 != y && d3 < 0.0;
             if (this.stepHeight > 0.0f && flag && (d2 != x || d4 != z)) {
                 StepEvent preEvent = new StepEvent(0, _this);
-                MinecraftForge.EVENT_BUS.post((Event)preEvent);
+                WurstplusThree.EVENT_PROCESSOR.postEvent(preEvent);
                 double d14 = x;
                 double d6 = y;
                 double d7 = z;
                 AxisAlignedBB axisalignedbb1 = this.getEntityBoundingBox();
                 this.setEntityBoundingBox(axisalignedbb);
                 y = preEvent.getHeight();
-                List list = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(d2, y, d4));
+                List<AxisAlignedBB> list = this.world.getCollisionBoxes(_this, this.getEntityBoundingBox().expand(d2, y, d4));
                 AxisAlignedBB axisalignedbb2 = this.getEntityBoundingBox();
                 AxisAlignedBB axisalignedbb3 = axisalignedbb2.expand(d2, 0.0, d4);
                 double d8 = y;
@@ -343,7 +339,7 @@ public abstract class MixinEntity {
                     this.setEntityBoundingBox(axisalignedbb1);
                 } else {
                     StepEvent postEvent = new StepEvent(1, _this);
-                    MinecraftForge.EVENT_BUS.post((Event)postEvent);
+                    WurstplusThree.EVENT_PROCESSOR.postEvent(postEvent);
                 }
             }
             this.world.profiler.endSection();
@@ -440,8 +436,8 @@ public abstract class MixinEntity {
     @Redirect(method={"applyEntityCollision"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;addVelocity(DDD)V"))
     public void addVelocityHook(Entity entity, double x, double y, double z) {
         PushEvent event = new PushEvent(entity, x, y, z, true);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (!event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.addEventListener(event);
+        if (!event.isCancelled()) {
             entity.motionX += event.x;
             entity.motionY += event.y;
             entity.motionZ += event.z;

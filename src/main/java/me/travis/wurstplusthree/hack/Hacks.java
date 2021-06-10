@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.hack;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.guirewrite.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.chat.*;
 import me.travis.wurstplusthree.hack.client.Cosmetics;
 import me.travis.wurstplusthree.hack.client.Gui;
@@ -14,6 +14,7 @@ import me.travis.wurstplusthree.hack.player.*;
 import me.travis.wurstplusthree.hack.render.*;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,7 +59,7 @@ public class Hacks implements Globals {
         // misc
         this.hacks.add(new FakePlayer());
         this.hacks.add(new MCF());
-        this.hacks.add(new InstantBreak());
+        //this.hacks.add(new InstantBreak());
         this.hacks.add(new Blink());
         this.hacks.add(new Replenish());
         this.hacks.add(new EntityMine());
@@ -68,6 +69,8 @@ public class Hacks implements Globals {
         this.hacks.add(new KeyPearl());
         this.hacks.add(new DiscordRPC());
         this.hacks.add(new AntiWeb());
+        this.hacks.add(new AutoClip());
+        this.hacks.add(new SpeedMine());
         // player
         this.hacks.add(new Sprint());
         this.hacks.add(new ReverseStep());
@@ -103,6 +106,7 @@ public class Hacks implements Globals {
         this.hacks.add(new VoidESP());
         this.hacks.add(new Aspect());
         this.hacks.add(new ItemPhysics());
+        this.hacks.add(new ShulkerPreview());
     }
 
     public List<Hack> getHacks() {
@@ -149,7 +153,21 @@ public class Hacks implements Globals {
 
     public void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onUpdate);
+        for (Hack hack : hacks) {
+            if (hack.isHold() && hack.getBind() >= 0) {
+                if (Keyboard.isKeyDown(hack.getBind())) {
+                    if (!hack.isEnabled()) {
+                        hack.enable();
+                    }
+                } else {
+                    if (hack.isEnabled()) {
+                        hack.disable();
+                    }
+                }
+            }
+        }
     }
+
 
     public void onTick() {
         this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onTick);
@@ -187,6 +205,7 @@ public class Hacks implements Globals {
             return;
         }
         for (Hack hack : this.hacks) {
+            if (hack.isHold()) continue;
             if (hack.getBind() == key) {
                 hack.toggle();
             }
@@ -241,11 +260,11 @@ public class Hacks implements Globals {
 
     public List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
         if (customFont) {
-            return this.getEnabledAndShownHacks().stream().sorted(Comparator.comparing(hack ->
+            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
                     WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
                             * (reverse ? -1 : 1))).collect(Collectors.toList());
         } else {
-            return this.getEnabledAndShownHacks().stream().sorted(Comparator.comparing(hack ->
+            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
                     mc.fontRenderer.getStringWidth(hack.getFullArrayString())
                             * (reverse ? -1 : 1))).collect(Collectors.toList());
         }

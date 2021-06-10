@@ -87,7 +87,7 @@ public class HudUtil implements Globals {
     }
 
     public static String getDate() {
-        return TimeUtil.get_year() + "/" + TimeUtil.get_month() + "/" + TimeUtil.get_day();
+        return TimeUtil.get_year() + "/" + (TimeUtil.get_month() + 1) + "/" + TimeUtil.get_day();
     }
 
 }

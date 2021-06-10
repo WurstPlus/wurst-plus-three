@@ -7,7 +7,7 @@ import club.minnced.discord.rpc.DiscordRichPresence;
 
 public class RPC {
 
-    private static String discordID = "838078740344471623"; //change to whatever u wamt
+    private static String discordID = "838078740344471623"; //change to whatever u want
     private static DiscordRichPresence discordRichPresence = new DiscordRichPresence();
     private static DiscordRPC discordRPC = DiscordRPC.INSTANCE;
 
@@ -24,7 +24,7 @@ public class RPC {
         discordRichPresence.largeImageKey = "logo";
         discordRichPresence.largeImageText = "With the_fellas";
         discordRichPresence.smallImageKey = "small";
-        discordRichPresence.smallImageText = "discord.gg/wurst";
+        discordRichPresence.smallImageText = "discord.gg/VGMVaMN6ka";
         discordRichPresence.state = null;
         discordRPC.Discord_UpdatePresence(discordRichPresence);
     }

@@ -9,18 +9,21 @@ import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.BlockPos;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class PlayerUtil implements Globals {
 
@@ -97,10 +100,19 @@ public class PlayerUtil implements Globals {
         return -1;
     }
 
-    public static String convertStreamToString(final InputStream is) {
-        final Scanner s = new Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "/";
-    }
+    /*
+        Fixed a memory leak - A2H
+    */
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+          sb.append(line + "\n");
+        }
+        is.close();
+        return sb.toString();
+      }
 
     public static boolean isInHole() {
 
@@ -198,6 +210,32 @@ public class PlayerUtil implements Globals {
         public String getName() {
             return this.name;
         }
+    }
+
+    public static Item getBestItem(Block block) {
+        String tool = block.getHarvestTool(block.getDefaultState());
+        if (tool != null) {
+            switch (tool) {
+                case "axe":
+                    return Items.DIAMOND_AXE;
+                case "shovel":
+                    return Items.DIAMOND_SHOVEL;
+                default:
+                    return Items.DIAMOND_PICKAXE;
+            }
+        } else {
+            return Items.DIAMOND_PICKAXE;
+        }
+
+    }
+
+    public static ItemStack getItemStackFromItem(Item item) {
+        if (mc.player == null) return null;
+        for (int slot = 0; slot <= 9; slot++) {
+            if (mc.player.inventory.getStackInSlot(slot).getItem() == item)
+                return mc.player.inventory.getStackInSlot(slot);
+        }
+        return null;
     }
 
 }

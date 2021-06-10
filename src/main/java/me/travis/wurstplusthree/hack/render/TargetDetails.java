@@ -24,8 +24,8 @@ public class TargetDetails extends Hack {
     BooleanSetting onePointT = new BooleanSetting("1.13+", false, this);
     BooleanSetting showBurrow = new BooleanSetting("Burrowed", true, this);
 
-    ColourSetting fuckedColour = new ColourSetting("Fucked Colour", new Colour(255, 20, 20, 150), this);
-    ColourSetting burrowedColour = new ColourSetting("Burrowed Colour", new Colour(20, 255, 255, 150), this);
+    ColourSetting fuckedColour = new ColourSetting("Fucked Colour", new Colour(255, 20, 20, 150), this, s -> showFucked.getValue());
+    ColourSetting burrowedColour = new ColourSetting("Burrowed Colour", new Colour(20, 255, 255, 150), this, s -> showBurrow.getValue());
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
 
     private final ArrayList<BlockPos> fuckedBlocks = new ArrayList<>();

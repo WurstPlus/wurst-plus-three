@@ -18,17 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hack implements Globals {
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Registration {
         String name();
         String description();
-        Category category(); //TODO travis fix this it needs to be null for server manager
+        Category category();
         boolean isListening();
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
         boolean shown() default true;
+        boolean hold() default false;
     }
 
     private Registration getMod(){
@@ -39,6 +39,7 @@ public class Hack implements Globals {
     private final String description = getMod().description();
     private final Category category = getMod().category();
     private int bind = getMod().bind();
+    private boolean hold = getMod().hold();
     private boolean shown = getMod().shown();
     private boolean isEnabled = getMod().enabled();
     private int isListening = (getMod().isListening() ? 0 : 1);
@@ -80,6 +81,14 @@ public class Hack implements Globals {
         return this.isEnabled;
     }
 
+    public boolean isHold() {return this.hold;}
+
+    public void toggleHold() {this.hold = !this.hold;}
+
+    public void setHold(boolean hold) {
+        this.hold = hold;
+    }
+
     public void stopListening() {
         this.isListening = -1;
     }
@@ -89,17 +98,19 @@ public class Hack implements Globals {
         this.onEnable();
         if (this.isEnabled() && this.isListening()) {
             MinecraftForge.EVENT_BUS.register(this);
+            WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
         }
-        if(this.shown) {ClientMessage.sendToggleMessage(this, true);}
+        if(this.shown) ClientMessage.sendToggleMessage(this, true);
     }
 
     public void disable() {
         if (this.isListening != 0) {
             MinecraftForge.EVENT_BUS.unregister(this);
+            WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
         }
         this.isEnabled = false;
         this.onDisable();
-        if(this.shown) {ClientMessage.sendToggleMessage(this, false);}
+        if(this.shown) ClientMessage.sendToggleMessage(this, false);
     }
 
     public void toggle() {
@@ -111,7 +122,12 @@ public class Hack implements Globals {
     }
 
     public void setEnabled(boolean enabled) {
-        this.isEnabled = enabled;
+        if (enabled && !this.isEnabled()) {
+            this.enable();
+        }
+        if (!enabled && this.isEnabled()) {
+            this.disable();
+        }
     }
 
     public boolean isListening() {
@@ -176,6 +192,10 @@ public class Hack implements Globals {
             }
         }
         return null;
+    }
+
+    public boolean isShown() {
+        return this.shown;
     }
 
     public enum Category {

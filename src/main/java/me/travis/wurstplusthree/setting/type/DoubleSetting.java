@@ -2,6 +2,9 @@ package me.travis.wurstplusthree.setting.type;
 
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
+import me.travis.wurstplusthree.util.elements.Colour;
+
+import java.util.function.Predicate;
 
 public class DoubleSetting extends Setting<Double> {
 
@@ -10,6 +13,12 @@ public class DoubleSetting extends Setting<Double> {
 
     public DoubleSetting(String name, Double value, Double min, Double max, Hack parent) {
         super(name, value, parent);
+        this.min = min;
+        this.max = max;
+    }
+
+    public DoubleSetting(String name, Double value, Double min, Double max, Hack parent, Predicate<Double> shown) {
+        super(name, value, parent, shown);
         this.min = min;
         this.max = max;
     }
@@ -44,6 +53,13 @@ public class DoubleSetting extends Setting<Double> {
 
     public int getPrecision() {
         return 2;
+    }
+
+    public boolean isShown(){
+        if(shown == null){
+            return true;
+        }
+        return shown.test(this.getValue());
     }
 
     @Override

@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.CustomSplashScreen;
+import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.misc.InstantBreak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -60,14 +62,14 @@ public abstract class MixinMinecraft {
 
     @Inject(method={"runTick()V"}, at={@At(value="RETURN")})
     private void runTick(CallbackInfo callbackInfo) {
-        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu && Gui.INSTANCE.customScreen.getValue()) {
             Minecraft.getMinecraft().displayGuiScreen(new CustomSplashScreen());
         }
     }
 
     @Inject(method={"displayGuiScreen"}, at={@At(value="HEAD")})
     private void displayGuiScreen(GuiScreen screen, CallbackInfo ci) {
-        if (screen instanceof GuiMainMenu) {
+        if (screen instanceof GuiMainMenu && Gui.INSTANCE.customScreen.getValue()) {
             this.displayGuiScreen(new CustomSplashScreen());
         }
     }
@@ -91,16 +93,15 @@ public abstract class MixinMinecraft {
         WurstplusThree.unLoad();
         System.out.println("wurst+3 has been unloaded");
     }
-
+    /*
     @Redirect(method={"sendClickBlockToController"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/entity/EntityPlayerSP;isHandActive()Z"))
     private boolean isHandActiveWrapper(EntityPlayerSP playerSP) {
-        return playerSP.isHandActive();
+        return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerSP.isHandActive();
     }
 
-    /*
-    @Redirect(method={"rightClickMouse"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/PlayerControllerMP;getIsHittingBlock()Z", ordinal=0), require=1)
+    @Redirect(method={"rightClickMouse"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/multiplayer/PlayerControllerMP;getIsHittingBlock()Z", ordinal=0))
     private boolean isHittingBlockHook(PlayerControllerMP playerControllerMP) {
-        return playerControllerMP.getIsHittingBlock();
+        return !(InstantBreak.INSTANCE.isEnabled() && InstantBreak.INSTANCE.dualUse.getValue()) && playerControllerMP.getIsHittingBlock();
     }
      */
 }

@@ -1,12 +1,12 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.hack.render.NoRender;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +31,7 @@ public abstract class MixinItemRenderer {
                 1.0, 1.0, 1.0,
                 1.0, 1.0, 1.0
         );
-        MinecraftForge.EVENT_BUS.post(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         if (hand == EnumHandSide.RIGHT) {
             GlStateManager.translate(event.getMainX(), event.getMainY(), event.getMainZ());
             GlStateManager.scale(event.getMainHandScaleX(), event.getMainHandScaleY(), event.getMainHandScaleZ());

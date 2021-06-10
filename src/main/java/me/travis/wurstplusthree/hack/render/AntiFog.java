@@ -12,9 +12,9 @@ public class AntiFog extends Hack {
 
     public BooleanSetting clear = new BooleanSetting("Remove Fog", true, this);
     public BooleanSetting colour = new BooleanSetting("Colour Fog", true, this);
-    public ColourSetting overworldColour = new ColourSetting("Overworld", new Colour(255, 255, 255, 255), this);
-    public ColourSetting netherColour = new ColourSetting("Nether", new Colour(255, 255, 255, 255), this);
-    public ColourSetting endColour = new ColourSetting("End", new Colour(255, 255, 255, 255), this);
+    public ColourSetting overworldColour = new ColourSetting("Overworld", new Colour(255, 255, 255, 255), this, s -> colour.getValue());
+    public ColourSetting netherColour = new ColourSetting("Nether", new Colour(255, 255, 255, 255), this, s -> colour.getValue());
+    public ColourSetting endColour = new ColourSetting("End", new Colour(255, 255, 255, 255), this, s -> colour.getValue());
 
     @SubscribeEvent
     public void fogDensity(EntityViewRenderEvent.FogDensity event) {

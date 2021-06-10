@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
@@ -19,7 +20,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Hack.Registration(name = "Scaffold", description = "puts block mc.player.down()", category = Hack.Category.PLAYER, isListening = false)
 public class Scaffold extends Hack {
@@ -33,7 +33,7 @@ public class Scaffold extends Hack {
         this.timer.reset();
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onUpdateWalkingPlayerPost(UpdateWalkingPlayerEvent event) {
         BlockPos playerBlock;
         if (nullCheck() || event.getStage() == 0) {
@@ -78,7 +78,6 @@ public class Scaffold extends Hack {
     }
 
     public void place(BlockPos posI, EnumFacing face) {
-        Block block;
         BlockPos pos = posI;
         if (face == EnumFacing.UP) {
             pos = pos.add(0, -1, 0);
@@ -104,7 +103,7 @@ public class Scaffold extends Hack {
             return;
         }
         boolean crouched = false;
-        if (!mc.player.isSneaking() && BlockUtil.emptyBlocks.contains(block = mc.world.getBlockState(pos).getBlock())) {
+        if (!mc.player.isSneaking() && BlockUtil.emptyBlocks.contains(mc.world.getBlockState(pos).getBlock())) {
             mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
             crouched = true;
         }

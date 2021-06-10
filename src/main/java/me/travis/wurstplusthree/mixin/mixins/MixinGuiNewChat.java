@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.chat.CustomChat;
+import me.travis.wurstplusthree.util.elements.Rainbow;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -21,7 +22,6 @@ extends Gui {
     @Shadow
     @Final
     public List<ChatLine> drawnChatLines;
-    private ChatLine chatLine;
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V", ordinal = 0))
     private void overrideChatBackgroundColour(int left, int top, int right, int bottom, int color) {
@@ -34,15 +34,19 @@ extends Gui {
     private int drawStringWithShadowMaybe(FontRenderer fontRenderer, String message, float x, float y, int color) {
         if (!CustomChat.INSTANCE.isEnabled()) return fontRenderer.drawStringWithShadow(message, x, y, color);
         if (CustomChat.INSTANCE.customFont.getValue()) {
-            if (!CustomChat.INSTANCE.rainbow.getValue()) {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(message, x, y, color);
-            } else {
+            if (CustomChat.INSTANCE.rainbow.getValue()) {
                 WurstplusThree.GUI_FONT_MANAGER.drawStringRainbow(message, x, y, true);
+            } else {
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(message, x, y, color);
             }
-            return 0;
         } else {
-            return fontRenderer.drawStringWithShadow(message, x, y, color);
+            if (CustomChat.INSTANCE.rainbow.getValue()) {
+                fontRenderer.drawStringWithShadow(message, x, y, Rainbow.getColour().getRGB());
+            } else {
+                fontRenderer.drawStringWithShadow(message, x, y, color);
+            }
         }
+        return 0;
     }
 
     @Redirect(method={"setChatLine"}, at=@At(value="INVOKE", target="Ljava/util/List;size()I", ordinal=0, remap=false))

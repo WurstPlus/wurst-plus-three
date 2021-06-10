@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.JesusEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -26,8 +27,8 @@ extends Block {
     @Inject(method={"getCollisionBoundingBox"}, at={@At(value="HEAD")}, cancellable=true)
     public void getCollisionBoundingBoxHook(IBlockState blockState, IBlockAccess worldIn, BlockPos pos, CallbackInfoReturnable<AxisAlignedBB> info) {
         JesusEvent event = new JesusEvent(0, pos);
-        MinecraftForge.EVENT_BUS.post((Event)event);
-        if (event.isCanceled()) {
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        if (event.isCancelled()) {
             info.setReturnValue(event.getBoundingBox());
         }
     }

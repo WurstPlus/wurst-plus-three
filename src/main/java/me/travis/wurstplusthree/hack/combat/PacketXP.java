@@ -4,7 +4,6 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
-import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.MouseUtil;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
@@ -26,10 +25,10 @@ import org.lwjgl.input.Mouse;
 public class PacketXP extends Hack{
 
     KeySetting bind = new KeySetting("PacketBind", Keyboard.KEY_NONE, this);
-    IntSetting takeOffVal = new IntSetting("TakeOffVal", 100, 1, 100, this);
     IntSetting lookPitch = new IntSetting("LookPitch", 90, 0, 100, this);
     BooleanSetting allowTakeOff = new BooleanSetting("AllowTakeOff", true, this);
-    IntSetting delay = new IntSetting("Delay", 0, 0, 5, this);
+    IntSetting takeOffVal = new IntSetting("TakeOffVal", 100, 1, 100, this, s -> allowTakeOff.getValue());
+    IntSetting delay = new IntSetting("Delay", 0, 0, 5, this, s -> allowTakeOff.getValue());
 
     private int delay_count;
     int prvSlot;

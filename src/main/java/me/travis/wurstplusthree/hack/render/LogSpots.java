@@ -3,7 +3,10 @@ package me.travis.wurstplusthree.hack.render;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.ConnectionEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.ClientMessage;
@@ -16,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,7 @@ public class LogSpots extends Hack {
 
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);
     IntSetting range = new IntSetting("Distance", 250, 0, 500, this);
+    BooleanSetting announce = new BooleanSetting("Announce", false, this);
 
     private final List<LogoutPos> spots = new CopyOnWriteArrayList<>();
 
@@ -63,12 +66,12 @@ public class LogSpots extends Hack {
         this.spots.removeIf(spot -> mc.player.getDistanceSq(spot.getEntity()) >= MathsUtil.square(this.range.getValue().floatValue()));
     }
 
-    @SubscribeEvent
+    @CommitEvent(priority = EventPriority.LOW)
     public void onConnection(ConnectionEvent event) {
         if (event.getStage() == 0) {
             UUID uuid = event.getUuid();
             EntityPlayer entity = mc.world.getPlayerEntityByUUID(uuid);
-            if (entity != null) {
+            if (entity != null && announce.getValue()) {
                 ClientMessage.sendMessage("\u00a7a" + entity.getName() + " just logged in" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
             }
             this.spots.removeIf(pos -> pos.getName().equalsIgnoreCase(event.getName()));
@@ -76,7 +79,9 @@ public class LogSpots extends Hack {
             EntityPlayer entity = event.getEntity();
             UUID uuid = event.getUuid();
             String name = event.getName();
-            ClientMessage.sendMessage("\u00a7c" + event.getName() + " just logged out" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
+            if (announce.getValue()) {
+                ClientMessage.sendMessage("\u00a7c" + event.getName() + " just logged out" + " at (" + (int) entity.posX + ", " + (int) entity.posY + ", " + (int) entity.posZ + ")");
+            }
             if (name != null && uuid != null) {
                 this.spots.add(new LogoutPos(name, uuid, entity, Math.round(entity.getHealth() + entity.getAbsorptionAmount()),
                         entity.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING, WurstplusThree.POP_MANAGER.getTotemPops(entity)));
@@ -135,7 +140,6 @@ public class LogSpots extends Hack {
 
     private static class LogoutPos {
         private final String name;
-        private final UUID uuid;
         private final EntityPlayer entity;
         private final boolean hasTotem;
         private final double x;
@@ -146,7 +150,6 @@ public class LogSpots extends Hack {
 
         public LogoutPos(String name, UUID uuid, EntityPlayer entity, double hp, boolean totem, int pops) {
             this.name = name;
-            this.uuid = uuid;
             this.entity = entity;
             this.x = entity.posX;
             this.y = entity.posY;
@@ -158,10 +161,6 @@ public class LogSpots extends Hack {
 
         public String getName() {
             return this.name;
-        }
-
-        public UUID getUuid() {
-            return this.uuid;
         }
 
         public EntityPlayer getEntity() {

@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.MouseUtil;
@@ -21,7 +20,7 @@ import org.lwjgl.input.Mouse;
 public class KeyPearl extends Hack {
 
     KeySetting key = new KeySetting("Key", Keyboard.KEY_NONE, this);
-    BooleanSetting middleClick = new BooleanSetting("MiddleClick", true, this);
+    //BooleanSetting middleClick = new BooleanSetting("MiddleClick", true, this);
 
     private boolean isButtonDown = false;
 
@@ -54,6 +53,7 @@ public class KeyPearl extends Hack {
     private void pearl() {
         oldSlot = mc.player.inventory.currentItem;
         slot = InventoryUtil.findHotbarBlock(ItemEnderPearl.class);
+        if(slot == -1)return;
         mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
         mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));

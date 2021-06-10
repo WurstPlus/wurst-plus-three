@@ -89,9 +89,9 @@ public class BotUtil implements Globals {
         return false;
     }
 
-    private static boolean canFitAboveBlock(BlockPos pos) {
+/*    private static boolean canFitAboveBlock(BlockPos pos) {
         return mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up().up()).getBlock() == Blocks.AIR;
-    }
+    }*/
 
     private static boolean canJumpOverBlock(BlockPos pos) {
         return mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up().up()).getBlock() == Blocks.AIR

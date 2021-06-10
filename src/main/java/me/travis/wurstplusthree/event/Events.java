@@ -3,23 +3,22 @@ package me.travis.wurstplusthree.event;
 import com.google.common.base.Strings;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.*;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.client.Gui;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
 import me.travis.wurstplusthree.util.elements.Timer;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
-import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -37,22 +36,22 @@ import java.util.UUID;
 
 public class Events implements Globals {
 
-    private Object EventManager;
-
     private final Timer logoutTimer = new Timer();
     private long time = -1;
 
     public Events() {
         MinecraftForge.EVENT_BUS.register(this);
+        WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
     }
 
     public void unload() {
         MinecraftForge.EVENT_BUS.unregister(this);
+        WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
     }
 
     /*
     @SubscribeEvent
-    public void onKeyPress(InputEvent.KeyInputEvent event) {
+    public void onKeyPress(InputEvent.KeyInputEvent org.madmeg.wurstplus.event) {
         for(Hack hack : WurstplusThree.HACKS.getHacks()){
             if (hack.getBind() <= -1 || hack.getBind() == Keyboard.KEY_NONE) continue;
             if(Keyboard.isKeyDown(hack.getBind())){
@@ -100,7 +99,7 @@ public class Events implements Globals {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @CommitEvent(priority = me.travis.wurstplusthree.event.processor.EventPriority.HIGH)
     public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
         if (nullCheck()) {
             return;
@@ -194,7 +193,7 @@ public class Events implements Globals {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getStage() != 0) {
             return;
@@ -203,9 +202,9 @@ public class Events implements Globals {
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
             try {
-                if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
+                if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
-                    MinecraftForge.EVENT_BUS.post(new TotemPopEvent(player));
+                    WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
                     WurstplusThree.POP_MANAGER.onTotemPop(player);
                 }
             } catch (Exception ignored) {}
@@ -219,18 +218,20 @@ public class Events implements Globals {
                 switch (packet.getAction()) {
                     case ADD_PLAYER: {
                         String name = data.getProfile().getName();
-                        MinecraftForge.EVENT_BUS.post(new ConnectionEvent(0, id, name));
+                        WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(0, id, name));
                         break;
                     }
                     case REMOVE_PLAYER: {
                         EntityPlayer entity = mc.world.getPlayerEntityByUUID(id);
                         if (entity != null) {
                             String logoutName = entity.getName();
-                            MinecraftForge.EVENT_BUS.post(new ConnectionEvent(1, entity, id, logoutName));
+                            WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(1, entity, id, logoutName));
                             break;
                         }
-                        MinecraftForge.EVENT_BUS.post(new ConnectionEvent(2, id, null));
+                        WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(2, id, null));
                     }
+                    default:
+                        break;
                 }
             });
         } else if (event.getPacket() instanceof SPacketTimeUpdate) {
@@ -238,5 +239,13 @@ public class Events implements Globals {
         }
     }
 
+    @SubscribeEvent
+    public void GuiEvent(GuiScreenEvent.InitGuiEvent.Post event){
+        GuiScreen gui = event.getGui();
+
+        if(gui instanceof GuiMainMenu){
+            event.getButtonList().add(new GuiAltButton(69, gui.width / 2 + 104, (gui.height /4 + 48)+ 72 + 12, 20, 20, "Alt"));
+        }
+    }
 
 }

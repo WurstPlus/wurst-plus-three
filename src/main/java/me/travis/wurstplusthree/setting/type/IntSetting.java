@@ -3,6 +3,8 @@ package me.travis.wurstplusthree.setting.type;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
 
+import java.util.function.Predicate;
+
 public class IntSetting extends Setting<Integer> {
 
     private final int min;
@@ -10,6 +12,13 @@ public class IntSetting extends Setting<Integer> {
 
     public IntSetting(String name, int value, int min, int max, Hack parent) {
         super(name, value, parent);
+
+        this.min = min;
+        this.max = max;
+    }
+
+    public IntSetting(String name, int value, int min, int max, Hack parent, Predicate<Integer> shown) {
+        super(name, value, parent, shown);
 
         this.min = min;
         this.max = max;
@@ -45,6 +54,13 @@ public class IntSetting extends Setting<Integer> {
 
     public int getPrecision() {
         return 0;
+    }
+
+    public boolean isShown(){
+        if(shown == null){
+            return true;
+        }
+        return shown.test(this.getValue());
     }
 
     @Override

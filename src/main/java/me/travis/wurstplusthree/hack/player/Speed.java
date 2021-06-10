@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.player;
 
 import me.travis.wurstplusthree.event.events.MoveEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
@@ -9,7 +10,6 @@ import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.MobEffects;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -17,9 +17,9 @@ import java.util.Arrays;
 public class Speed extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);
-    DoubleSetting yPortSpeed = new DoubleSetting("YPort Speed", 0.06, 0.01, 0.15, this);
-    DoubleSetting jumpHeight = new DoubleSetting("Jump Height", 0.41, 0.0, 1.0, this);
-    DoubleSetting timerVal = new DoubleSetting("Timer Speed", 1.15, 1.0, 1.5, this);
+    DoubleSetting yPortSpeed = new DoubleSetting("YPort Speed", 0.06, 0.01, 0.15, this, s -> mode.is("YPort"));
+    DoubleSetting jumpHeight = new DoubleSetting("Jump Height", 0.41, 0.0, 1.0, this, s -> mode.is("Strafe"));
+    DoubleSetting timerVal = new DoubleSetting("Timer Speed", 1.15, 1.0, 1.5, this, s -> mode.is("Strafe"));
 
     private boolean slowdown;
     private double playerSpeed;
@@ -64,7 +64,7 @@ public class Speed extends Hack {
         }
     }
 
-    @SubscribeEvent
+    @CommitEvent
     public void onMove(MoveEvent event) {
         if (mc.player.isInLava() || mc.player.isInWater() || mc.player.isOnLadder() || mc.player.isInWeb) {
             return;
@@ -100,6 +100,6 @@ public class Speed extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return this.mode.getValueName();
+        return this.mode.getValue();
     }
 }

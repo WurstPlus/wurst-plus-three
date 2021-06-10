@@ -3,9 +3,8 @@ package me.travis.wurstplusthree.event.events;
 import me.travis.wurstplusthree.event.EventStage;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.Setting;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
-@Cancelable
+
 public class ClientEvent extends EventStage {
     private Hack hack;
     private Setting setting;
