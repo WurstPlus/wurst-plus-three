@@ -29,21 +29,21 @@ import java.util.Arrays;
 
 @Hack.Registration(name = "Speedmine", description = "break shit fast idfk", category = Hack.Category.MISC, isListening = false)
 public final class SpeedMine extends Hack{
-    final BooleanSetting rangeCheck = new BooleanSetting("Range Check", true, this);
-    final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, this, s -> rangeCheck.getValue());
-    final BooleanSetting swing = new BooleanSetting("Swing", true, this);
-    final BooleanSetting rotate = new BooleanSetting("Rotate", false ,this);
-    final EnumSetting rotateSetting = new EnumSetting("Rotate Settings", "Break", Arrays.asList("Break", "Constant", "Hit"), this, s -> rotate.getValue());
-    final BooleanSetting cancel = new BooleanSetting("Cancel Event", true, this);
-    final BooleanSetting packetLoop = new BooleanSetting("Packet Loop", false, this);
-    final IntSetting packets = new IntSetting("Packets", 1, 1, 25, this, s -> packetLoop.getValue());
-    final BooleanSetting abortPacket = new BooleanSetting("Abort Packet", true ,this);
-    final BooleanSetting render = new BooleanSetting("Render", true , this);
-    final DoubleSetting delayOffset = new DoubleSetting("DelayOffset", 0.0, 0.0, 10.0, this, s -> render.getValue());
-    final ColourSetting breakColor = new ColourSetting("Break Color Outline", new Colour(255, 0, 0), this, s -> render.getValue());
-    final ColourSetting doneColor = new ColourSetting("Finished Color Outline", new Colour(0, 255, 0), this, s -> render.getValue());
-    final ColourSetting breakColorFill = new ColourSetting("Break Color Fill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
-    final ColourSetting doneColorFill = new ColourSetting("Finished Color Fill", new Colour(0, 255, 0, 40), this, s -> render.getValue());
+    private final BooleanSetting rangeCheck = new BooleanSetting("Range Check", true, this);
+    private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, this, s -> rangeCheck.getValue());
+    private final BooleanSetting swing = new BooleanSetting("Swing", true, this);
+    private final BooleanSetting rotate = new BooleanSetting("Rotate", false ,this);
+    private final EnumSetting rotateSetting = new EnumSetting("Rotate Settings", "Break", Arrays.asList("Break", "Constant", "Hit"), this, s -> rotate.getValue());
+    private final BooleanSetting cancel = new BooleanSetting("Cancel Event", true, this);
+    private final BooleanSetting packetLoop = new BooleanSetting("Packet Loop", false, this);
+    private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, this, s -> packetLoop.getValue());
+    private final BooleanSetting abortPacket = new BooleanSetting("Abort Packet", true ,this);
+    private final BooleanSetting render = new BooleanSetting("Render", true , this);
+    private final DoubleSetting delayOffset = new DoubleSetting("DelayOffset", 0.0, 0.0, 10.0, this, s -> render.getValue());
+    private final ColourSetting breakColor = new ColourSetting("Break Color Outline", new Colour(255, 0, 0), this, s -> render.getValue());
+    private final ColourSetting doneColor = new ColourSetting("Finished Color Outline", new Colour(0, 255, 0), this, s -> render.getValue());
+    private final ColourSetting breakColorFill = new ColourSetting("Break Color Fill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
+    private final ColourSetting doneColorFill = new ColourSetting("Finished Color Fill", new Colour(0, 255, 0, 40), this, s -> render.getValue());
 
     private boolean isActive;
     private EnumFacing lastFace;

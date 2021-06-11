@@ -36,11 +36,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, isListening = false)
-public class CrystalAura extends Hack {
+public final class CrystalAura extends Hack {
 
     public static CrystalAura INSTANCE;
 
@@ -48,79 +49,79 @@ public class CrystalAura extends Hack {
         INSTANCE = this;
     }
 
-    BooleanSetting place = new BooleanSetting("Place", true, this);
-    BooleanSetting breaK = new BooleanSetting("Break", true, this);
-    BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, this, s -> breaK.getValue());
+    private final BooleanSetting place = new BooleanSetting("Place", true, this);
+    private final BooleanSetting breaK = new BooleanSetting("Break", true, this);
+    private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, this, s -> breaK.getValue());
 
-    DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, this, s -> breaK.getValue());
-    DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
-    DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
-    DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
-    DoubleSetting targetRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, this, s -> breaK.getValue() || place.getValue());
+    private final DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, this, s -> breaK.getValue());
+    private final DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, this, s -> place.getValue());
+    private final DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, this, s -> breaK.getValue());
+    private final DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, this, s -> place.getValue());
+    private final DoubleSetting targetRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, this, s -> breaK.getValue() || place.getValue());
 
-    IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
-    IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
+    private final IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
+    private final IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
 
-    IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this, s -> place.getValue());
-    IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this, s -> breaK.getValue());
-    BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, this);
-    IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
-    BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
+    private final IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this, s -> place.getValue());
+    private final IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this, s -> breaK.getValue());
+    private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, this);
+    private final IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
+    private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
-    EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this, s -> place.getValue() || breaK.getValue());
-    EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this, s -> place.getValue());
+    private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, this, s -> place.getValue());
 
-    EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), this, s -> place.getValue() || breaK.getValue());
+    public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting threaded = new BooleanSetting("Threaded", false, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting threaded = new BooleanSetting("Threaded", false, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this, s -> place.getValue() || breaK.getValue());
-    IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this, s -> entityPredict.getValue() && (place.getValue() || breaK.getValue()));
+    private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this, s -> place.getValue() || breaK.getValue());
+    private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this, s -> entityPredict.getValue() && (place.getValue() || breaK.getValue()));
 
-    BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this, s -> palceObiFeet.getValue());
-    BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this, s -> palceObiFeet.getValue());
-    IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this, s -> palceObiFeet.getValue());
+    private final BooleanSetting palceObiFeet = new BooleanSetting("Place Feet Obi", false, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting ObiYCheck = new BooleanSetting("Place Obi Y Check", false, this, s -> palceObiFeet.getValue());
+    private final BooleanSetting rotateObiFeet = new BooleanSetting("Place Feet Rotate", false, this, s -> palceObiFeet.getValue());
+    private final IntSetting timeoutTicksObiFeet = new IntSetting("Place Feet Timeout", 3, 0, 5, this, s -> palceObiFeet.getValue());
 
-    EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this, s -> place.getValue() || breaK.getValue());
-    IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
-    IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 0, 0, 10, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
-    KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    private final BooleanSetting faceplace = new BooleanSetting("Tabbott", true, this, s -> place.getValue() || breaK.getValue());
+    private final IntSetting facePlaceHP = new IntSetting("Tabbott HP", 8, 0, 36, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    private final IntSetting facePlaceDelay = new IntSetting("Tabbott Delay", 0, 0, 10, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    private final KeySetting fpbind = new KeySetting("Tabbott Bind", -1, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
 
-    BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
-    BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting crystalLogic = new BooleanSetting("Crystal Check", false, this, s -> place.getValue() || breaK.getValue());
-    BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
+    private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting crystalLogic = new BooleanSetting("Crystal Check", false, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
 
-    BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this, s -> place.getValue() || breaK.getValue());
-    IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this, s -> fuckArmour.getValue() && (place.getValue() || breaK.getValue()));
+    private final BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this, s -> place.getValue() || breaK.getValue());
+    private final IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this, s -> fuckArmour.getValue() && (place.getValue() || breaK.getValue()));
 
-    BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this, s -> place.getValue() || breaK.getValue());
-    IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
-    IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
+    private final BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this, s -> place.getValue() || breaK.getValue());
+    private final IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
+    private final IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
 
-    EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
-    BooleanSetting flat = new BooleanSetting("Flat", false, this);
-    DoubleSetting hight = new DoubleSetting("Flat Height", 0.2, -2.0, 2.0, this, s -> flat.getValue());
-    IntSetting width = new IntSetting("Width", 1, 1, 10, this, s -> !mode.is("Circle") || !mode.is("Column"));
-    DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this, s -> mode.is("Circle") || mode.is("Column"));
-    DoubleSetting columnHight = new DoubleSetting("Column Height", 1.5, 0.0, 10.0, this, s -> mode.is("Column"));
-    ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
-    ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
-    BooleanSetting renderDamage = new BooleanSetting("Render Damage", true, this);
+    private final EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Circle", "Column"), this);
+    private final BooleanSetting flat = new BooleanSetting("Flat", false, this);
+    private final DoubleSetting hight = new DoubleSetting("Flat Height", 0.2, -2.0, 2.0, this, s -> flat.getValue());
+    private final IntSetting width = new IntSetting("Width", 1, 1, 10, this, s -> !mode.is("Circle") || !mode.is("Column"));
+    private final DoubleSetting radius = new DoubleSetting("Radius", 0.7, 0.0, 5.0, this, s -> mode.is("Circle") || mode.is("Column"));
+    private final DoubleSetting columnHight = new DoubleSetting("Column Height", 1.5, 0.0, 10.0, this, s -> mode.is("Column"));
+    private final ColourSetting renderFillColour = new ColourSetting("Fill Colour", new Colour(0, 0, 0, 255), this);
+    private final ColourSetting renderBoxColour = new ColourSetting("Box Colour", new Colour(255, 255, 255, 255), this);
+    private final BooleanSetting renderDamage = new BooleanSetting("Render Damage", true, this);
 
-    BooleanSetting debug = new BooleanSetting("Debug", false, this);
+    private final BooleanSetting debug = new BooleanSetting("Debug", false, this);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
@@ -155,7 +156,7 @@ public class CrystalAura extends Hack {
     public EntityEnderCrystal staticEnderCrystal;
 
     @CommitEvent(priority = EventPriority.HIGH)
-    public void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
+    public final void onUpdateWalkingPlayerEvent(@NotNull UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotateMode.is("Full")) {
             if (this.isRotating) {
                 WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);
@@ -165,7 +166,7 @@ public class CrystalAura extends Hack {
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
-    public void onPacketSend(PacketEvent.Send event) {
+    public final void onPacketSend(@NotNull PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
             final CPacketPlayer p = event.getPacket();
             p.yaw = yaw;
@@ -182,7 +183,7 @@ public class CrystalAura extends Hack {
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
-    public void onPacketReceive(PacketEvent.Receive event) {
+    public final void onPacketReceive(@NotNull PacketEvent.Receive event) {
         SPacketSpawnObject packet;
         if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
@@ -366,7 +367,7 @@ public class CrystalAura extends Hack {
         breakDelayCounter = 0;
     }
 
-    public EntityEnderCrystal getBestCrystal() {
+    public final EntityEnderCrystal getBestCrystal() {
         double bestDamage = 0;
         EntityEnderCrystal bestCrystal = null;
         for (Entity e : mc.world.loadedEntityList) {
@@ -397,7 +398,7 @@ public class CrystalAura extends Hack {
     }
 
 
-    public BlockPos getBestBlock() {
+    public final BlockPos getBestBlock() {
         if (getBestCrystal() != null && fastMode.is("Off")) {
             placeTimeoutFlag = true;
             return null;
@@ -480,7 +481,7 @@ public class CrystalAura extends Hack {
         return bestPos;
     }
 
-    private double isCrystalGood(EntityEnderCrystal crystal, EntityPlayer target) {
+    private double isCrystalGood(@NotNull EntityEnderCrystal crystal, @NotNull EntityPlayer target) {
         if (this.isPlayerValid(target)) {
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
@@ -525,7 +526,7 @@ public class CrystalAura extends Hack {
         return 0;
     }
 
-    private double isBlockGood(BlockPos blockPos, EntityPlayer target) {
+    private double isBlockGood(@NotNull BlockPos blockPos, @NotNull EntityPlayer target) {
         if (this.isPlayerValid(target)) {
             // if raytracing and cannot see block
             if (!CrystalUtil.canSeePos(blockPos) && raytrace.getValue()) return 0;
@@ -570,7 +571,7 @@ public class CrystalAura extends Hack {
         return 0;
     }
 
-    private boolean isPlayerValid(EntityPlayer player) {
+    private boolean isPlayerValid(@NotNull EntityPlayer player) {
         if (player.getHealth() + player.getAbsorptionAmount() <= 0 || player == mc.player) return false;
         if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) return false;
         if (player.getName().equals(mc.player.getName())) return false;
@@ -610,14 +611,14 @@ public class CrystalAura extends Hack {
         return -1;
     }
 
-    private void setYawPitch(EntityEnderCrystal crystal) {
+    private void setYawPitch(@NotNull EntityEnderCrystal crystal) {
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), crystal.getPositionEyes(mc.getRenderPartialTicks()));
         this.yaw = angle[0];
         this.pitch = angle[1];
         this.isRotating = true;
     }
 
-    private void setYawPitch(BlockPos pos) {
+    private void setYawPitch(@NotNull BlockPos pos) {
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
         this.yaw = angle[0];
         this.pitch = angle[1];
@@ -686,12 +687,12 @@ public class CrystalAura extends Hack {
     // moved to CyrstalUtil ~travis
 }
 
-class Threads extends Thread {
+final class Threads extends Thread {
     ThreadType type;
     BlockPos bestBlock;
     EntityEnderCrystal bestCrystal;
 
-    public Threads(ThreadType type) {
+    public Threads(@NotNull ThreadType type) {
         this.type = type;
     }
 

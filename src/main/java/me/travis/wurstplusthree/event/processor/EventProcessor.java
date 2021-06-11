@@ -61,7 +61,7 @@ public final class EventProcessor {
     public final boolean postEvent(@NotNull Event event) {
         List<Listener> eventClone = new ArrayList<>(events);
         eventClone.spliterator().forEachRemaining(listener -> {
-            if(listener != null && listener.event != null && listener.event == event.getClass()){
+            if(listener.event == event.getClass()){
                 listener.method.setAccessible(true);
                 try {
                     listener.method.invoke(listener.object, event);
