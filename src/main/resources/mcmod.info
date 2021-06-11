@@ -3,12 +3,12 @@
     "modid": "wurstplusthree",
     "name": "Wurst+3",
     "description": "ffs i just wanna do something else",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "mcversion": "1.12.2",
     "logoFile": "",
     "url": "",
     "updateUrl": "",
-    "authorList": ["trvsf", "Madmegsox1, Austin"],
+    "authorList": ["trvsf", "Madmegsox1"],
     "screenshots": [],
     "dependencies": []
   }

@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.event.processor;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public final class EventProcessor {
 
-    private final List<Listener> events;
+    private List<Listener> events;
 
     public EventProcessor() {
         events = new ArrayList<>();
@@ -58,16 +59,18 @@ public final class EventProcessor {
      * @return if the event was posted or not at a boolean
      */
     public final boolean postEvent(@NotNull Event event) {
-        events.spliterator().forEachRemaining(listener -> {
+        List<Listener> eventClone = new ArrayList<>(events);
+        eventClone.spliterator().forEachRemaining(listener -> {
             if(listener != null && listener.event != null && listener.event == event.getClass()){
+                listener.method.setAccessible(true);
                 try {
-                    listener.method.setAccessible(true);
                     listener.method.invoke(listener.object, event);
-                } catch (Exception e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
         });
+        events = eventClone;
         return true;
     }
 

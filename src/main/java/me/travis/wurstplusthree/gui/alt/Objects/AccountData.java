@@ -1,7 +1,5 @@
 package me.travis.wurstplusthree.gui.alt.Objects;
 
-import me.travis.wurstplusthree.gui.alt.tools.EncryptionTools;
-
 import java.io.Serializable;
 
 /**

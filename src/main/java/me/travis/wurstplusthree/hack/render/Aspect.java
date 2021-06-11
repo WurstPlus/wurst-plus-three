@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author SankuGG

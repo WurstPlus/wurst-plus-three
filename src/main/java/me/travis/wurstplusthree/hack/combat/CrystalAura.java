@@ -27,7 +27,10 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.network.play.server.*;
+import net.minecraft.network.play.server.SPacketDestroyEntities;
+import net.minecraft.network.play.server.SPacketExplosion;
+import net.minecraft.network.play.server.SPacketSoundEffect;
+import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -102,7 +105,6 @@ public class CrystalAura extends Hack {
 
     BooleanSetting fuckArmour = new BooleanSetting("Armour Fucker", true, this, s -> place.getValue() || breaK.getValue());
     IntSetting fuckArmourHP = new IntSetting("Armour%", 20, 0, 100, this, s -> fuckArmour.getValue() && (place.getValue() || breaK.getValue()));
-
 
     BooleanSetting chainMode = new BooleanSetting("Chain Mode", false, this, s -> place.getValue() || breaK.getValue());
     IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, this, s -> chainMode.getValue() && (place.getValue() || breaK.getValue()));
@@ -497,7 +499,10 @@ public class CrystalAura extends Hack {
             if (CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
-            } else if ((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
+            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue())
+                    || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue())
+                    || fpbind.isDown())
+                    && !stopFPWhenSword.getValue()) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
@@ -535,13 +540,14 @@ public class CrystalAura extends Hack {
                 }
             }
 
-            // set min damage to 2/1 if we want to kill the dude fast
             double miniumDamage;
             if (CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
-            } else if ((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) ||
-                    (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) {
+            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue())
+                    || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue())
+                    || fpbind.isDown())
+                    && !stopFPWhenSword.getValue()) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
@@ -576,7 +582,7 @@ public class CrystalAura extends Hack {
                 e.printStackTrace();
             }
         }
-        return !stopFPWhenSword.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD;
+        return true;
     }
 
     private void blockObiNextToPlayer(EntityPlayer player) {

@@ -40,7 +40,7 @@ public class Hack implements Globals {
     private final Category category = getMod().category();
     private int bind = getMod().bind();
     private boolean hold = getMod().hold();
-    private boolean shown = getMod().shown();
+    private boolean notification = getMod().shown();
     private boolean isEnabled = getMod().enabled();
     private int isListening = (getMod().isListening() ? 0 : 1);
 
@@ -100,7 +100,7 @@ public class Hack implements Globals {
             MinecraftForge.EVENT_BUS.register(this);
             WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
         }
-        if(this.shown) ClientMessage.sendToggleMessage(this, true);
+        if (this.notification) ClientMessage.sendToggleMessage(this, true);
     }
 
     public void disable() {
@@ -110,7 +110,7 @@ public class Hack implements Globals {
         }
         this.isEnabled = false;
         this.onDisable();
-        if(this.shown) ClientMessage.sendToggleMessage(this, false);
+        if (this.notification) ClientMessage.sendToggleMessage(this, false);
     }
 
     public void toggle() {
@@ -151,8 +151,8 @@ public class Hack implements Globals {
         return this.bind;
     }
 
-    public boolean getShown() {
-        return this.shown;
+    public boolean isNotification() {
+        return this.notification;
     }
 
     public String getBindName() {
@@ -163,8 +163,8 @@ public class Hack implements Globals {
         this.bind = bind;
     }
 
-    public void setShown(boolean shown) {
-        this.shown = shown;
+    public void setNotification(boolean notification) {
+        this.notification = notification;
     }
 
     public Category getCategory() {
@@ -192,10 +192,6 @@ public class Hack implements Globals {
             }
         }
         return null;
-    }
-
-    public boolean isShown() {
-        return this.shown;
     }
 
     public enum Category {

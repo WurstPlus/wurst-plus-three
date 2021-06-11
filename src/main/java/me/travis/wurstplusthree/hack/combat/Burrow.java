@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.hack.combat;
 
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;

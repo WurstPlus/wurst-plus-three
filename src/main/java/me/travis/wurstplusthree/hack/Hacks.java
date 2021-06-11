@@ -242,16 +242,6 @@ public class Hacks implements Globals {
         return hacks;
     }
 
-    public List<Hack> getEnabledAndShownHacks() {
-        List<Hack> hacks = new ArrayList<>();
-        for(Hack hack : getEnabledHacks()){
-            if(hack.getShown()){
-                hacks.add(hack);
-            }
-        }
-        return hacks;
-    }
-
     public List<Hack> getHacksAlp() {
         List<Hack> sortedHacks = new ArrayList<>(this.hacks);
         sortedHacks.sort(Comparator.comparing(Hack::getName));

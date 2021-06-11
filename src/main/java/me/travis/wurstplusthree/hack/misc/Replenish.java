@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.misc;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -15,18 +16,21 @@ import java.util.Map;
 @Hack.Registration(name = "Replenish", description = "replenishes items in ur hotbar", category = Hack.Category.MISC, isListening = false)
 public class Replenish extends Hack {
 
-    private int delay_step = 0;
+    IntSetting threshold = new IntSetting("Threshold", 32, 0, 63, this);
+    IntSetting tickDelay = new IntSetting("Tick Delay", 2, 0, 10, this);
+
+    private int delayStep = 0;
 
     @Override
     public void onUpdate() {
         if (mc.currentScreen instanceof GuiContainer) return;
 
-        if (delay_step < 2) {
-            delay_step++;
+        if (delayStep < tickDelay.getValue()) {
+            delayStep++;
             return;
         }
 
-        delay_step = 0;
+        delayStep = 0;
 
         final Pair<Integer, Integer> slots = findReplenishableHotbarSlot();
         if (slots == null) return;
@@ -41,7 +45,7 @@ public class Replenish extends Hack {
 
     private Pair<Integer, Integer> findReplenishableHotbarSlot() {
         Pair<Integer, Integer> returnPair = null;
-        for (final Map.Entry<Integer, ItemStack> hotbarSlot : get_hotbar().entrySet()) {
+        for (final Map.Entry<Integer, ItemStack> hotbarSlot : getHotbar().entrySet()) {
             final ItemStack stack = hotbarSlot.getValue();
             if (!stack.isEmpty) {
                 if (stack.getItem() == Items.AIR) {
@@ -53,7 +57,7 @@ public class Replenish extends Hack {
                 if (stack.stackSize >= stack.getMaxStackSize()) {
                     continue;
                 }
-                if (stack.stackSize > 30) {
+                if (stack.stackSize > threshold.getValue()) {
                     continue;
                 }
                 final int inventorySlot = this.findCompatibleInventorySlot(stack);
@@ -69,7 +73,7 @@ public class Replenish extends Hack {
     private int findCompatibleInventorySlot(final ItemStack hotbarStack) {
         int inventorySlot = -1;
         int smallestStackSize = 999;
-        for (final Map.Entry<Integer, ItemStack> entry : get_inventory().entrySet()) {
+        for (final Map.Entry<Integer, ItemStack> entry : getInventory().entrySet()) {
             final ItemStack inventoryStack = entry.getValue();
             if (!inventoryStack.isEmpty) {
                 if (inventoryStack.getItem() == Items.AIR) {
@@ -103,19 +107,19 @@ public class Replenish extends Hack {
         return stack1.getDisplayName().equals(stack2.getDisplayName()) && stack1.getItemDamage() == stack2.getItemDamage();
     }
 
-    private Map<Integer, ItemStack> get_inventory() {
-        return get_inv_slots(9, 35);
+    private Map<Integer, ItemStack> getInventory() {
+        return getInvSlots(9, 35);
     }
 
-    private Map<Integer, ItemStack> get_hotbar() {
-        return get_inv_slots(36, 44);
+    private Map<Integer, ItemStack> getHotbar() {
+        return getInvSlots(36, 44);
     }
 
-    private Map<Integer, ItemStack> get_inv_slots(int current, final int last) {
-        final Map<Integer, ItemStack> fullInventorySlots = new HashMap<Integer, ItemStack>();
+    private Map<Integer, ItemStack> getInvSlots(int current, final int last) {
+        final Map<Integer, ItemStack> fullInventorySlots = new HashMap<>();
         while (current <= last) {
-            fullInventorySlots.put(current, (ItemStack) mc.player.inventoryContainer.getInventory().get(current));
-            ++current;
+            fullInventorySlots.put(current, mc.player.inventoryContainer.getInventory().get(current));
+            current++;
         }
         return fullInventorySlots;
     }
