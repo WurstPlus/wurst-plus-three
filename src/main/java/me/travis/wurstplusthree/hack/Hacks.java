@@ -90,7 +90,7 @@ public final class Hacks implements Globals {
     }
 
     public final void onUpdate() {
-        this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onUpdate);
+        this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(Hack::onUpdate);
         for (Hack hack : hacks) {
             if (hack.isHold() && hack.getBind() >= 0) {
                 if (Keyboard.isKeyDown(hack.getBind())) {
@@ -108,23 +108,23 @@ public final class Hacks implements Globals {
 
 
     public final void onTick() {
-        this.hacks.stream().filter(Hack::isEnabled).forEach(Hack::onTick);
+        this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(Hack::onTick);
     }
 
     public final void onRender2D(Render2DEvent event) {
-        this.hacks.stream().filter(Hack::isEnabled).forEach(hack -> hack.onRender2D(event));
+        this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(hack -> hack.onRender2D(event));
     }
 
     public final void onRender3D(Render3DEvent event) {
-        this.hacks.stream().filter(Hack::isEnabled).forEach(hack -> hack.onRender3D(event));
+        this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(hack -> hack.onRender3D(event));
     }
 
     public final void onLogout() {
-        this.hacks.forEach(Hack::onLogout);
+        this.hacks.spliterator().forEachRemaining(Hack::onLogout);
     }
 
     public final void onLogin() {
-        this.hacks.forEach(Hack::onLogin);
+        this.hacks.spliterator().forEachRemaining(Hack::onLogin);
     }
 
     public final void onUnload() {

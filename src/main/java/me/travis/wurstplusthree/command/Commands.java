@@ -50,7 +50,7 @@ public class Commands implements Globals {
         String[] split = command.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
         String command1 = split[0];
         String args = command.substring(command1.length()).trim();
-        for (Command c : this.commands) {
+        this.commands.spliterator().forEachRemaining(c -> {
             try {
                 if (c.isName(command1)) {
                     c.execute(args.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"));
@@ -61,7 +61,7 @@ public class Commands implements Globals {
                 e.printStackTrace();
                 return;
             }
-        }
+        });
         ClientMessage.sendErrorMessage("unknown command");
     }
 
