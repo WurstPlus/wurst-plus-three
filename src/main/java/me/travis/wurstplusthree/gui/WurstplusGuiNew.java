@@ -4,7 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

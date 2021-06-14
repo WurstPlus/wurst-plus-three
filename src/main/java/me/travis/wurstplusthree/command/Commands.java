@@ -1,8 +1,10 @@
 package me.travis.wurstplusthree.command;
 
 import me.travis.wurstplusthree.command.commands.*;
+import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.ReflectionUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,25 +18,23 @@ public class Commands implements Globals {
     // TODO : SETTINGS COMMAND
     // TODO : CLEAR CHAT COMMAND
     public Commands() {
-        this.commands.add(new FriendCommand());
-        this.commands.add(new EnemyCommand());
-        this.commands.add(new PrefixCommand());
-        this.commands.add(new TestCommand());
-        this.commands.add(new ToggleCommand());
-        this.commands.add(new BindCommand());
-        this.commands.add(new PlayerSpooferCommand());
-        this.commands.add(new HelpCommand());
-        this.commands.add(new ListCommand());
-        this.commands.add(new DrawnCommand());
-        this.commands.add(new FontCommand());
-        this.commands.add(new ReloadCapesCommand());
-        this.commands.add(new ReloadCosmeticsCommand());
-        this.commands.add(new NameMcCommand());
-        this.commands.add(new BurrowBlockCommand());
-        this.commands.add(new ConfigCommand());
-        this.commands.add(new IrcChat());
-        this.commands.add(new ClipBind());
-        this.commands.add(new Debug());
+
+        try {
+            ArrayList<Class<?>> modClasses = ReflectionUtil.getClassesForPackage("me.travis.wurstplusthree.command.commands");
+            modClasses.spliterator().forEachRemaining(aClass -> {
+                if(Command.class.isAssignableFrom(aClass)) {
+                    try {
+                        Command module = (Command) aClass.getConstructor().newInstance();
+                        commands.add(module);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {

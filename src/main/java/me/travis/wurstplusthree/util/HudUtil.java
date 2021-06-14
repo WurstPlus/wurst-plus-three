@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
+import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

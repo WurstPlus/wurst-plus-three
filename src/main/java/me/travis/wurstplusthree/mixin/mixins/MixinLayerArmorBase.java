@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.render.NoRender;
+import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.asm.mixin.Mixin;

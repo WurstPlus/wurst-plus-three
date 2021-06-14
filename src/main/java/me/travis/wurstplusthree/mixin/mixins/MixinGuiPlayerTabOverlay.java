@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.render.ExtraTab;
+import me.travis.wurstplusthree.hack.hacks.render.ExtraTab;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetworkPlayerInfo;

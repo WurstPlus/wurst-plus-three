@@ -2,8 +2,8 @@ package me.travis.wurstplusthree.gui.chat;
 
 import com.google.common.collect.Lists;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.hack.chat.CustomChat;
-import me.travis.wurstplusthree.hack.player.PlayerSpoofer;
+import me.travis.wurstplusthree.hack.hacks.chat.CustomChat;
+import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
 import me.travis.wurstplusthree.util.AnimationUtil;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.Rainbow;

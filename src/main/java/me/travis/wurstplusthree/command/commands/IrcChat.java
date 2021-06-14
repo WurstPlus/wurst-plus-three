@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.command.commands;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
+import me.travis.wurstplusthree.util.ClientMessage;
 
 /**
  * @author Madmegsox1
@@ -22,6 +23,7 @@ public class IrcChat extends Command {
                     WurstplusThree.CHAT_HANDLING.setRunning(true);
                     WurstplusThree.CHAT_HANDLING.setToGlobal();
                     WurstplusThree.CHAT_HANDLING.start();
+                    ClientMessage.sendIRCMessage("");
                     break;
                 case "direct":
                 case "dm":
@@ -30,11 +32,13 @@ public class IrcChat extends Command {
                         WurstplusThree.CHAT_HANDLING.setRunning(true);
                         WurstplusThree.CHAT_HANDLING.setToDirect(message[2]);
                         WurstplusThree.CHAT_HANDLING.start();
+                        ClientMessage.sendIRCMessage("");
                     }
                     break;
                 case "server":
                     WurstplusThree.CHAT_HANDLING.setRunning(false);
                     WurstplusThree.CHAT_HANDLING.setToServer();
+                    ClientMessage.sendIRCMessage("");
                     break;
             }
         }

@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.event.events.*;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;

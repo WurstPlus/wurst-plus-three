@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.render.ItemPhysics;
+import me.travis.wurstplusthree.hack.hacks.render.ItemPhysics;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

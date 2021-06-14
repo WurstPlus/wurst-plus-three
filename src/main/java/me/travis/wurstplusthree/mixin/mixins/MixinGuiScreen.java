@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.render.ShulkerPreview;
+import me.travis.wurstplusthree.hack.hacks.render.ShulkerPreview;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;

@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.combat.Burrow;
+import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;

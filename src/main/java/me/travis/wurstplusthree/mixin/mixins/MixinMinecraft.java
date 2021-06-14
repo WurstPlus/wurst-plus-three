@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.CustomSplashScreen;
-import me.travis.wurstplusthree.hack.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;

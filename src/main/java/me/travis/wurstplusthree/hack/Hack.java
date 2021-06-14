@@ -24,7 +24,8 @@ public class Hack implements Globals {
         String name();
         String description();
         Category category();
-        boolean isListening();
+        HackPriority priority() default HackPriority.Normal;
+        boolean isListening() default false;
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
         boolean shown() default true;
@@ -38,6 +39,7 @@ public class Hack implements Globals {
     private final String name = getMod().name();
     private final String description = getMod().description();
     private final Category category = getMod().category();
+    private final HackPriority priority = getMod().priority();
     private int bind = getMod().bind();
     private boolean hold = getMod().hold();
     private boolean notification = getMod().shown();
@@ -214,4 +216,7 @@ public class Hack implements Globals {
         }
     }
 
+    public HackPriority getPriority() {
+        return priority;
+    }
 }

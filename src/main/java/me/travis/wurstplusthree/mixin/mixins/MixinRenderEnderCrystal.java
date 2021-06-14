@@ -1,7 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.event.events.RenderEntityModelEvent;
-import me.travis.wurstplusthree.hack.render.CrystalRender;
+import me.travis.wurstplusthree.hack.hacks.render.CrystalRender;
 import me.travis.wurstplusthree.util.EntityUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;

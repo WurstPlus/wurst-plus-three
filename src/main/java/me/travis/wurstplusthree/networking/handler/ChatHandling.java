@@ -3,6 +3,10 @@ package me.travis.wurstplusthree.networking.handler;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.networking.Packet;
 import me.travis.wurstplusthree.networking.packets.ping.PingGetGlobal;
+import me.travis.wurstplusthree.util.ClientMessage;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Madmegsox1
@@ -10,7 +14,7 @@ import me.travis.wurstplusthree.networking.packets.ping.PingGetGlobal;
  */
 
 public class ChatHandling extends Thread {
-    ChatMode mode;
+    public ChatMode mode;
     String name;
     boolean running;
     long lastPing;
@@ -33,13 +37,27 @@ public class ChatHandling extends Thread {
             try {
                 if (mode.equals(ChatMode.GLOBAL)) {
                     if (System.currentTimeMillis() - lastPing == 1000) {
-                        Packet getChatPacket = new PingGetGlobal();
-                        String[] data = getChatPacket.run(WurstplusThree.CLIENT_HANDLING.token);
-                        if(data[0].equals("server") && data[1].equals("pinggetglobal")){
-                            String[] messages = data[3].split(";");
-                            //Handel display messages
+                        try {
+
+                            Packet getChatPacket = new PingGetGlobal();
+                            String[] data = getChatPacket.run(WurstplusThree.CLIENT_HANDLING.token);
+                            if (data[0].equals("server") && data[1].equals("pinggetglobal")) {
+                                String[] messages = data[3].split(";");
+                                int ID = Integer.getInteger(messages[messages.length - 1].split("\\|")[0]);
+                                Arrays.stream(messages).spliterator().forEachRemaining(msg -> {
+                                    String[] msgList = msg.split("\\|");
+                                    int msgId = Integer.getInteger(msgList[0]);
+                                    if (msgId == ID) {
+                                        ClientMessage.sendMessage("[" + msgList[1] + "] " + msgList[2]);
+                                    }
+                                });
+
+                                //Handel display messages
+                            }
+                            lastPing = System.currentTimeMillis();
+                        }catch (IndexOutOfBoundsException e){
+                            e.printStackTrace();
                         }
-                        lastPing = System.currentTimeMillis();
                     }
                 }else if(mode.equals(ChatMode.DIRECT)){
                     if (System.currentTimeMillis() - lastPing == 1000) {

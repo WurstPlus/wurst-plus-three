@@ -2,8 +2,8 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
-import me.travis.wurstplusthree.hack.render.CameraClip;
-import me.travis.wurstplusthree.hack.render.NoRender;
+import me.travis.wurstplusthree.hack.hacks.render.CameraClip;
+import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 import com.google.common.base.Predicate;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PushEvent;
-import me.travis.wurstplusthree.hack.render.NoRender;
+import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;

@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.command.commands;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Command;
-import me.travis.wurstplusthree.hack.combat.Burrow;
+import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.WhitelistUtil;
 import net.minecraft.block.Block;

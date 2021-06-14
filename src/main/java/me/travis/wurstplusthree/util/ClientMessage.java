@@ -3,7 +3,7 @@ package me.travis.wurstplusthree.util;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.hack.chat.ToggleMessages;
+import me.travis.wurstplusthree.hack.hacks.chat.ToggleMessages;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentBase;
@@ -38,6 +38,10 @@ public class ClientMessage implements Globals {
 
     public static void sendMessage(String message) {
         sendClientMessage(opener + message);
+    }
+
+    public static void sendIRCMessage(String message){
+        sendMessage(ChatFormatting.WHITE + "["+ ChatFormatting.AQUA + "IRC - " + WurstplusThree.CHAT_HANDLING.mode + ChatFormatting.WHITE +"] " + ChatFormatting.RESET + message);
     }
 
     public static void sendErrorMessage(String message) {

@@ -2,7 +2,7 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.RenderItemEvent;
-import me.travis.wurstplusthree.hack.render.NoRender;
+import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.util.EnumHandSide;

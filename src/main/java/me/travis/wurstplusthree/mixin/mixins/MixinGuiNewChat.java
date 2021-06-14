@@ -1,8 +1,8 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.hack.chat.ClearChatbox;
-import me.travis.wurstplusthree.hack.chat.CustomChat;
+import me.travis.wurstplusthree.hack.hacks.chat.ClearChatbox;
+import me.travis.wurstplusthree.hack.hacks.chat.CustomChat;
 import me.travis.wurstplusthree.util.elements.Rainbow;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.FontRenderer;

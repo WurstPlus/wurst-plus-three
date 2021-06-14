@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.command.Command;
 import me.travis.wurstplusthree.event.events.TestEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
-import me.travis.wurstplusthree.hack.client.Hud;
+import me.travis.wurstplusthree.hack.hacks.client.Hud;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.logview.Threads;
 

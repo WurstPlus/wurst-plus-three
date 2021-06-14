@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
-import me.travis.wurstplusthree.hack.player.Jesus;
+import me.travis.wurstplusthree.hack.hacks.player.Jesus;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.block.Block;
