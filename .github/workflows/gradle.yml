@@ -4,9 +4,7 @@ name: Gradle Build
 
 on:
   push:
-    branches: [ 0.6.0 ]
   pull_request:
-    branches: [ 0.6.0 ]
 
 jobs:
   build:
@@ -37,7 +35,7 @@ jobs:
       - name: Prepare Artifact for Discord upload
         env:
           RUN_ID: ${{ github.run_number }}
-        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-TEST-${RUN_ID}.jar
+        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-Beta-${RUN_ID}.jar
       - name: Upload Artifact to Discord
         uses: sinshutu/upload-to-discord@master
         env:
