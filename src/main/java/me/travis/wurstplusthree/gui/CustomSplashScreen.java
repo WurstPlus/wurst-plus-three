@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.gui.alt.defult.GuiAccountSelector;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.DonatorItem;
 import me.travis.wurstplusthree.util.elements.Rainbow;
@@ -114,7 +115,7 @@ public class CustomSplashScreen extends GuiScreen {
                 e.printStackTrace();
             }
         } else if (CustomSplashScreen.isHovered(this.x, this.y + 110, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("alts"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
-            //this.mc.displayGuiScreen(new MainAltGui());
+            this.mc.displayGuiScreen(new GuiAccountSelector());
         }
         else if (CustomSplashScreen.isHovered(this.x, this.y + 132, WurstplusThree.MENU_FONT_MANAGER.getTextWidth("log"), WurstplusThree.MENU_FONT_MANAGER.getTextHeight(), mouseX, mouseY)) {
             this.mc.shutdown();

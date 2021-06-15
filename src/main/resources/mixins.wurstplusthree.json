@@ -32,6 +32,7 @@
     "MixinRenderEntityItem",
     "MixinRenderer",
     "MixinBlockWeb",
+    "MixinGuiMainMenu",
     "accessors.IC00Handshake",
     "accessors.IContainer",
     "accessors.IServerAddress",
