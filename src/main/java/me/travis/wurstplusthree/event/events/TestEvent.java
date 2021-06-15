@@ -10,6 +10,6 @@ import me.travis.wurstplusthree.event.processor.Event;
 public class TestEvent extends Event {
     public long startTime;
     public TestEvent(){
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
     }
 }

@@ -64,16 +64,16 @@ public class Debug extends Command {
 
     @CommitEvent(priority = EventPriority.HIGH)
     public void highEvent(TestEvent event){
-        ClientMessage.sendMessage("\n - HIGH PRIORITY: " + ChatFormatting.AQUA +  (System.currentTimeMillis() - event.startTime ) + ChatFormatting.RESET + " ms");
+        ClientMessage.sendMessage("\n - HIGH PRIORITY: " + ChatFormatting.AQUA +  (System.nanoTime() - event.startTime ) + ChatFormatting.RESET + " ns");
     }
 
     @CommitEvent(priority = EventPriority.NONE)
     public void normalEvent(TestEvent event){
-        ClientMessage.sendMessage("\n - NORMAL PRIORITY: " + ChatFormatting.AQUA +  (System.currentTimeMillis() - event.startTime) + ChatFormatting.RESET + " ms");
+        ClientMessage.sendMessage("\n - NORMAL PRIORITY: " + ChatFormatting.AQUA +  (System.nanoTime() - event.startTime) + ChatFormatting.RESET + " ns");
     }
 
     @CommitEvent(priority = EventPriority.LOW)
     public void lowEvent(TestEvent event){
-        ClientMessage.sendMessage("\n - LOW PRIORITY: " + ChatFormatting.AQUA +  (System.currentTimeMillis() - event.startTime) + ChatFormatting.RESET + " ms");
+        ClientMessage.sendMessage("\n - LOW PRIORITY: " + ChatFormatting.AQUA +  (System.nanoTime() - event.startTime) + ChatFormatting.RESET + " ns");
     }
 }
