@@ -59,8 +59,7 @@ public final class EventProcessor {
      * @return if the event was posted or not at a boolean
      */
     public final boolean postEvent(@NotNull Event event) {
-        List<Listener> eventClone = new ArrayList<>(events);
-        eventClone.spliterator().forEachRemaining(listener -> {
+        events.spliterator().forEachRemaining(listener -> {
             if(listener.event == event.getClass()){
                 listener.method.setAccessible(true);
                 try {
@@ -70,7 +69,6 @@ public final class EventProcessor {
                 }
             }
         });
-        events = eventClone;
         return true;
     }
 
