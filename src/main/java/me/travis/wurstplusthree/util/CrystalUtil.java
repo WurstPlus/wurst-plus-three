@@ -147,21 +147,12 @@ public class CrystalUtil implements Globals {
         return false;
     }
 
-    public static float getDamageFromDifficulty(float damage, EnumDifficulty difficulty) {
-        switch (difficulty) {
-            case PEACEFUL: {
-                return 0.0f;
-            }
-            case EASY: {
-                return damage * 0.5f;
-            }
-            case NORMAL: {
-                return damage;
-            }
-            case HARD:
-            default: {
-                return damage * 1.5f;
-            }
+    public static float getDamageFromDifficulty(float damage) {
+        switch (mc.world.getDifficulty()) {
+            case PEACEFUL: return 0;
+            case EASY:     return Math.min(damage / 2 + 1, damage);
+            case HARD:     return damage * 3 / 2;
+            default:       return damage;
         }
     }
 
@@ -215,7 +206,7 @@ public class CrystalUtil implements Globals {
         float damage = (float) (int) ((densityAdjust * densityAdjust + densityAdjust) / 2.0 * 7.0 * explosionPower + 1.0);
 
         if (targetEntity instanceof EntityLivingBase)
-            damage = getBlastReduction((EntityLivingBase) targetEntity, CrystalUtil.getDamageFromDifficulty(damage, mc.world.getDifficulty()),
+            damage = getBlastReduction((EntityLivingBase) targetEntity, CrystalUtil.getDamageFromDifficulty(damage),
                     new Explosion(mc.world, null, explosionPosition.x, explosionPosition.y, explosionPosition.z,
                             explosionPower / 2.0f, false, true));
 

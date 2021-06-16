@@ -13,10 +13,10 @@ import java.util.List;
  * - shit code from my old client
  */
 
-public class ClipBind extends Command {
+public class ClipBindCommand extends Command {
     static List<Integer> keys = new ArrayList<>();
 
-    public ClipBind() {
+    public ClipBindCommand() {
         super("clipbind", "bindclip");
     }
 
