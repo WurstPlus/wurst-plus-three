@@ -1,7 +1,7 @@
 package me.travis.wurstplusthree.hack.hacks.misc;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.command.commands.ClipBind;
+import me.travis.wurstplusthree.command.commands.ClipBindCommand;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
@@ -50,7 +50,7 @@ public class AutoClip extends Hack {
     @Override
     public void onUpdate() {
         if(test.getValue()){
-            KeyUtil.clip(ClipBind.getKeys());
+            KeyUtil.clip(ClipBindCommand.getKeys());
             test.setValue(false);
         }
         if(shouldClip){
@@ -99,7 +99,7 @@ public class AutoClip extends Hack {
             delayCount = 0;
             ClientMessage.sendMessage("Clipping " + target);
             target = "";
-            KeyUtil.clip(ClipBind.getKeys());
+            KeyUtil.clip(ClipBindCommand.getKeys());
             this.shouldClip = false;
         }
     }

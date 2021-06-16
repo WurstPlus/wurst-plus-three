@@ -16,10 +16,11 @@ public class CapeManager implements Globals {
 
     private final List<UUID> ogCapes = new ArrayList<>();
     private final List<Pair<UUID, BufferedImage>> donatorCapes = new ArrayList<>();
-    private final List<UUID> poggersCapes = new ArrayList<>();
+    private final List<UUID> cooldudeCapes = new ArrayList<>();
     private final List<UUID> contributorCapes = new ArrayList<>();
 
-    private final List<ResourceLocation> capeFrames = new ArrayList<>();
+    private final List<ResourceLocation> ogCapeFrames = new ArrayList<>();
+    private final List<ResourceLocation> coolCapeFrames = new ArrayList<>();
 
     public static int capeFrameCount = 0;
 
@@ -30,8 +31,12 @@ public class CapeManager implements Globals {
         }
     }
 
-    public ResourceLocation getGifCape() {
-        return capeFrames.get(capeFrameCount % 35);
+    public ResourceLocation getOgCape() {
+        return ogCapeFrames.get(capeFrameCount % 35);
+    }
+
+    public ResourceLocation getCoolCape() {
+        return coolCapeFrames.get(capeFrameCount % 35);
     }
 
     public CapeManager() {
@@ -39,7 +44,11 @@ public class CapeManager implements Globals {
         timer.schedule(new gifCapeCounter(), 0, 41);
 
         for (int i = 0; i < 35; i++) {
-            capeFrames.add(new ResourceLocation("textures/gifcape/cape-" + i + ".png"));
+            ogCapeFrames.add(new ResourceLocation("textures/gifcape/cape-" + i + ".png"));
+        }
+
+        for (int i = 0; i < 37; i++) {
+            coolCapeFrames.add(new ResourceLocation("textures/gifcape2/w3templateblackborder-" + i + ".png"));
         }
 
         try { // og
@@ -65,7 +74,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                poggersCapes.add(UUID.fromString(inputLine));
+                cooldudeCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception ignored) {}
         try { // donator
@@ -110,7 +119,7 @@ public class CapeManager implements Globals {
             BufferedReader in = new BufferedReader(new InputStreamReader(capesList.openStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                poggersCapes.add(UUID.fromString(inputLine));
+                cooldudeCapes.add(UUID.fromString(inputLine));
             }
         } catch (Exception ignored) {}
         try { // donator
@@ -153,8 +162,8 @@ public class CapeManager implements Globals {
         } return null;
     }
 
-    public boolean isPoggers(UUID uuid) {
-        return this.poggersCapes.contains(uuid);
+    public boolean isCool(UUID uuid) {
+        return this.cooldudeCapes.contains(uuid);
     }
 
     public boolean isContributor(UUID uuid) {
