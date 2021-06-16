@@ -33,15 +33,16 @@ public abstract class MixinAbstractClientPlayer {
 
         if (WurstplusThree.CAPE_MANAGER.isOg(uuid)) {
             // callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-old.png"));
-            callbackInfoReturnable.setReturnValue(WurstplusThree.CAPE_MANAGER.getGifCape());
+            callbackInfoReturnable.setReturnValue(WurstplusThree.CAPE_MANAGER.getOgCape());
         }
 
         if (WurstplusThree.CAPE_MANAGER.isContributor(uuid)) {
             callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-dev.png"));
         }
 
-        if (WurstplusThree.CAPE_MANAGER.isPoggers(uuid)) {
-            callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-cool.png"));
+        if (WurstplusThree.CAPE_MANAGER.isCool(uuid)) {
+            // callbackInfoReturnable.setReturnValue(new ResourceLocation("textures/cape-cool.png"));
+            callbackInfoReturnable.setReturnValue(WurstplusThree.CAPE_MANAGER.getCoolCape());
         }
 
         if (WurstplusThree.CAPE_MANAGER.isDonator(uuid)) {
