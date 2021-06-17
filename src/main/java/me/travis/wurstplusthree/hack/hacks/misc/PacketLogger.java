@@ -10,6 +10,7 @@ import me.travis.wurstplusthree.util.ClientMessage;
 import net.minecraft.network.login.server.SPacketEnableCompression;
 import net.minecraft.network.login.server.SPacketEncryptionRequest;
 import net.minecraft.network.login.server.SPacketLoginSuccess;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.*;
 import net.minecraft.network.status.server.SPacketPong;
 import net.minecraft.network.status.server.SPacketServerInfo;
@@ -85,8 +86,70 @@ public final class PacketLogger extends Hack {
     BooleanSetting SSpawnPainting = new BooleanSetting("SPacketSpawnPainting", false, this, s -> incoming.getValue());
     BooleanSetting SSpawnObject = new BooleanSetting("SPacketSpawnObject", false, this, s -> incoming.getValue());
     BooleanSetting SSpawnPosition = new BooleanSetting("SPacketSpawnPosition", false, this, s -> incoming.getValue());
+    BooleanSetting STabComplete = new BooleanSetting("SPacketTabComplete", false, this, s -> incoming.getValue());
+    BooleanSetting SUnloadChunk= new BooleanSetting("SPacketUnloadChunk", false, this, s -> incoming.getValue());
+    BooleanSetting SUseBed =  new BooleanSetting("SPacketUseBed", false, this, s -> incoming.getValue());
+    BooleanSetting SUpdateHealth=  new BooleanSetting("SPacketUpdateHealth", false, this, s -> incoming.getValue());
 
 
+    BooleanSetting outgoing = new BooleanSetting("Outgoing", true, this);
+    BooleanSetting CAnimation =  new BooleanSetting("CPacketAnimation", false, this, s -> outgoing.getValue());
+    BooleanSetting CChatMessage =  new BooleanSetting("CPacketChatMessage", false, this, s -> outgoing.getValue());
+    BooleanSetting CClickWindow =  new BooleanSetting("CPacketClickWindow", false, this, s -> outgoing.getValue());
+    BooleanSetting CConfirmTeleport =  new BooleanSetting("CPacketConfirmTeleport", false, this, s -> outgoing.getValue());
+    BooleanSetting CClientStatus =  new BooleanSetting("CPacketClientStatus", false, this, s -> outgoing.getValue());
+    BooleanSetting CCustomPayload =  new BooleanSetting("CPacketCustomPayload", false, this, s -> outgoing.getValue());
+    BooleanSetting CCreativeInventoryAction = new BooleanSetting("CPacketCreativeInventoryAction", false, this, s -> outgoing.getValue());
+
+
+
+    @CommitEvent(priority = EventPriority.LOW)
+    public final void outgoingEvent(PacketEvent.Send event){
+        if(!outgoing.getValue())return;
+
+        if(event.getPacket() instanceof CPacketAnimation && CAnimation.getValue()){
+            CPacketAnimation s = (CPacketAnimation) event.getPacket();
+            ClientMessage.sendMessage("CPacketAnimation"
+                    +"\n - Hand name: " + s.getHand().name()
+            );
+        } else if(event.getPacket() instanceof CPacketChatMessage && CChatMessage.getValue()){
+            CPacketChatMessage s = (CPacketChatMessage) event.getPacket();
+            ClientMessage.sendMessage("CPacketChatMessage"
+                    +"\n - Message: " + s.message
+            );
+        } else if(event.getPacket() instanceof CPacketClickWindow && CClickWindow.getValue()){
+            CPacketClickWindow s = (CPacketClickWindow) event.getPacket();
+            ClientMessage.sendMessage("CPacketClickWindow"
+                    +"\n - Acton Number: " + s.getActionNumber()
+                    +"\n - Window ID: " + s.getWindowId()
+                    +"\n - Item Name: " + s.getClickedItem().getDisplayName()
+                    +"\n - Click Type Name: " + s.getClickType().name()
+            );
+        } else if(event.getPacket() instanceof CPacketConfirmTeleport && CConfirmTeleport.getValue()){
+            CPacketConfirmTeleport s = (CPacketConfirmTeleport) event.getPacket();
+            ClientMessage.sendMessage("CPacketConfirmTeleport"
+                    +"\n - Tp id: " + s.getTeleportId()
+            );
+        } else if(event.getPacket() instanceof CPacketClientStatus && CClientStatus.getValue()){
+            CPacketClientStatus s = (CPacketClientStatus) event.getPacket();
+            ClientMessage.sendMessage("CPacketClientStatus"
+                    +"\n - Status Name: " + s.getStatus().name()
+            );
+        } else if(event.getPacket() instanceof CPacketCustomPayload && CCustomPayload.getValue()){
+            CPacketCustomPayload s = (CPacketCustomPayload) event.getPacket();
+            ClientMessage.sendMessage("CPacketCustomPayload"
+                    +"\n - Channel: " + s.channel
+                    +"\n - Data: " + s.data.readString(10000)
+            );
+        } else if(event.getPacket() instanceof CPacketCreativeInventoryAction && CCreativeInventoryAction.getValue()){
+            CPacketCreativeInventoryAction s = (CPacketCreativeInventoryAction) event.getPacket();
+            ClientMessage.sendMessage("CPacketCreativeInventoryAction"
+                    +"\n - Item name: " + s.getStack().getDisplayName()
+                    +"\n - Slot Id: " + s.getSlotId()
+            );
+        }
+
+    }
 
 
     @CommitEvent(priority = EventPriority.LOW)
@@ -536,7 +599,35 @@ public final class PacketLogger extends Hack {
             ClientMessage.sendMessage("SPacketSpawnPosition: "
                     + "\n - Pos: " + s.getSpawnPos()
             );
+        } else if (event.getPacket() instanceof SPacketTabComplete && STabComplete.getValue()) {
+            SPacketTabComplete s = (SPacketTabComplete) event.getPacket();
+            ClientMessage.sendMessage("SPacketTabComplete"
+            );
+        } else if (event.getPacket() instanceof SPacketUnloadChunk && SUnloadChunk.getValue()) {
+            SPacketUnloadChunk s = (SPacketUnloadChunk) event.getPacket();
+            ClientMessage.sendMessage("SPacketUnloadChunk"
+                    + "\n - Chunk Pos: " + s.getX() + " " + s.getZ()
+            );
+        } else if (event.getPacket() instanceof SPacketUseBed && SUseBed.getValue()) {
+            SPacketUseBed s = (SPacketUseBed) event.getPacket();
+            ClientMessage.sendMessage("SPacketUseBed"
+                    + "\n - Pos: " + s.getBedPosition()
+                    + "\n - Player name: " + s.getPlayer(mc.world).getName()
+            );
+        } else if (event.getPacket() instanceof SPacketUpdateHealth && SUpdateHealth.getValue()) {
+            SPacketUpdateHealth s = (SPacketUpdateHealth) event.getPacket();
+            ClientMessage.sendMessage("SPacketUpdateHealth"
+                    + "\n - Health: " + s.getHealth()
+                    + "\n - Food: " + s.getFoodLevel()
+                    + "\n - Saturation: " + s.getSaturationLevel()
+            );
+        } else if (event.getPacket() instanceof SPacketUpdateTileEntity && SUpdateHealth.getValue()) {
+            SPacketUpdateTileEntity s = (SPacketUpdateTileEntity) event.getPacket();
+            ClientMessage.sendMessage("SPacketUpdateTileEntity"
+                    + "\n - Pos: " + s.getPos()
+                    + "\n - Type: " + s.getTileEntityType()
+                    + "\n - NBT tag: " + s.getNbtCompound()
+            );
         }
-
     }
 }
