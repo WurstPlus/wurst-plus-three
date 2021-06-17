@@ -154,7 +154,7 @@ public final class Hacks implements Globals {
     public final List<Hack.Category> getCategories() {
         List<Hack.Category> cats = new ArrayList<>();
         for (Hack.Category category : Hack.Category.values()) {
-            if (category.getName().equalsIgnoreCase("hidden")) continue;
+            if (category.getName().equalsIgnoreCase("hidden") || category.getName().equalsIgnoreCase("hud")) continue;
             cats.add(category);
         }
         return cats;

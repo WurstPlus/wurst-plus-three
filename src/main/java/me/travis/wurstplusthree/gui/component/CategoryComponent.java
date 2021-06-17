@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.gui.component;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.hud.HudButton;
+import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.ColorUtil;
@@ -39,13 +41,20 @@ public class CategoryComponent implements Globals {
         this.isDragging = false;
 
         int tY = this.height;
-
-        for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
-            if (mod.getCategory().equals(category)) {
-                HackButton moduleButton = new HackButton();
-                moduleButton.init(mod, this, tY, false);
-                this.components.add(moduleButton);
+        if(category.equals(Hack.Category.HUD)){
+            for(HudElement element : WurstplusThree.HUD_MANAGER.getHudElements()){
+                HudButton hudButton = new HudButton(element, this, tY);
+                components.add(hudButton);
                 tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
+            }
+        }else {
+            for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
+                if (mod.getCategory().equals(category)) {
+                    HackButton moduleButton = new HackButton();
+                    moduleButton.init(mod, this, tY, false);
+                    this.components.add(moduleButton);
+                    tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
+                }
             }
         }
     }

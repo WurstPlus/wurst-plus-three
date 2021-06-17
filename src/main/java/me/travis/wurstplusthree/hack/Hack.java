@@ -203,7 +203,8 @@ public class Hack implements Globals {
         RENDER("Render"),
         PLAYER("Player"),
         CLIENT("Client"),
-        HIDDEN("Hidden");
+        HIDDEN("Hidden"),
+        HUD("Hud");
 
         private final String name;
 
