@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
 import me.travis.wurstplusthree.event.processor.EventProcessor;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.gui.hud.WurstplusHudGui;
 import me.travis.wurstplusthree.gui.hud.element.HudManager;
 import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.manager.*;
@@ -48,6 +49,7 @@ public class WurstplusThree {
 
     // gui
     public static WurstplusGuiNew GUI2;
+    public static WurstplusHudGui HUDGUI;
 
     // managers
     public static MenuFont MENU_FONT_MANAGER;
@@ -99,6 +101,7 @@ public class WurstplusThree {
         CHAT_HANDLING = new ChatHandling();
         CONFIG_MANAGER.loadConfig();
         GUI2 = new WurstplusGuiNew();
+        HUDGUI = new WurstplusHudGui();
     }
 
     public static void unLoad() {

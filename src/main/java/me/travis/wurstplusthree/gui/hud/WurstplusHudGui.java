@@ -4,11 +4,15 @@ import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
+import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.SoundEvents;
 import org.lwjgl.input.Mouse;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,23 +22,52 @@ import java.util.ArrayList;
  */
 
 public class WurstplusHudGui extends GuiScreen {
-    public static final int WIDTH = 120;
-    public static final int HEIGHT = 16;
-    public static final int MODULE_WIDTH = 5;
 
     public static ArrayList<CategoryComponent> categoryComponents;
+
+    public ArrayList<Integer> linesW;
+    public ArrayList<Integer> linesV;
 
     public WurstplusHudGui(){
         categoryComponents = new ArrayList<>();
         categoryComponents.add(new CategoryComponent(Hack.Category.HUD));
+        linesW = new ArrayList<>();
+        linesV = new ArrayList<>();
+
     }
+
+    @Override
+    public void initGui() {
+        linesW.clear();
+        linesV.clear();
+        ScaledResolution sr = new ScaledResolution(mc);
+        for(int i = 0; i < sr.getScaledWidth(); i += HudEditor.INSTANCE.gridSize.getValue()){
+            linesW.add(i);
+        }
+        for(int i = 0; i < sr.getScaledHeight(); i += HudEditor.INSTANCE.gridSize.getValue()){
+            linesV.add(i);
+        }
+    }
+
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
+        if(HudEditor.INSTANCE.grid.getValue()){
+            ScaledResolution sr = new ScaledResolution(mc);
+            for(int i = 0; i < sr.getScaledWidth(); i += HudEditor.INSTANCE.gridSize.getValue()){
+                RenderUtil2D.drawVLine(i, 0, sr.getScaledHeight(), Color.WHITE.hashCode());
+            }
+            for(int i = 0; i < sr.getScaledHeight(); i += HudEditor.INSTANCE.gridSize.getValue()){
+                RenderUtil2D.drawHLine(0, i, sr.getScaledWidth(), Color.WHITE.hashCode());
+            }
+        }
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame(mouseX, mouseY);
             categoryComponent.updatePosition(mouseX, mouseY);
+            for (Component comp : categoryComponent.getComponents()) {
+                comp.updateComponent(mouseX, mouseY);
+            }
         }
     }
 

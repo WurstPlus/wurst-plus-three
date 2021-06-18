@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui.hud.element;
 
 import me.travis.wurstplusthree.event.events.Render2DEvent;
+import me.travis.wurstplusthree.util.Globals;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,11 +13,11 @@ import java.lang.annotation.Target;
  * @since 17/06/2021
  */
 
-public class HudElement {
+public class HudElement implements Globals {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface element{
+    public @interface Element {
         String name();
         int posX() default 0;
         int posY() default 0;
@@ -25,8 +26,8 @@ public class HudElement {
         boolean enabled() default false;
     }
 
-    public element getElement(){
-        return this.getClass().getAnnotation(element.class);
+    public Element getElement(){
+        return this.getClass().getAnnotation(Element.class);
     }
 
     private final String name = getElement().name();
@@ -38,6 +39,15 @@ public class HudElement {
 
     public void onRender2D(Render2DEvent event) {
     }
+
+    public int getWidth(){
+        return 0;
+    }
+
+    public int getHeight(){
+        return 0;
+    }
+
 
 
     public String getName() {
