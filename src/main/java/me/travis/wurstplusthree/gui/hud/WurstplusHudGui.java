@@ -25,40 +25,40 @@ public class WurstplusHudGui extends GuiScreen {
 
     public static ArrayList<CategoryComponent> categoryComponents;
 
-    public ArrayList<Integer> linesW;
+    public ArrayList<Integer> linesH;
     public ArrayList<Integer> linesV;
 
     public WurstplusHudGui(){
         categoryComponents = new ArrayList<>();
         categoryComponents.add(new CategoryComponent(Hack.Category.HUD));
-        linesW = new ArrayList<>();
+        linesH = new ArrayList<>();
         linesV = new ArrayList<>();
-
     }
 
     @Override
     public void initGui() {
-        linesW.clear();
+        linesH.clear();
         linesV.clear();
         ScaledResolution sr = new ScaledResolution(mc);
-        for(int i = 0; i < sr.getScaledWidth(); i += HudEditor.INSTANCE.gridSize.getValue()){
-            linesW.add(i);
+        int vStart = sr.getScaledWidth() / HudEditor.INSTANCE.vLines.getValue();
+        int hStart = sr.getScaledHeight() / HudEditor.INSTANCE.hLines.getValue();
+        for (int i = 0; i < HudEditor.INSTANCE.vLines.getValue(); i++) {
+            linesV.add(vStart * (i + 1));
         }
-        for(int i = 0; i < sr.getScaledHeight(); i += HudEditor.INSTANCE.gridSize.getValue()){
-            linesV.add(i);
+        for (int i = 0; i < HudEditor.INSTANCE.hLines.getValue(); i++) {
+            linesH.add(hStart * (i + 1));
         }
     }
-
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
         if(HudEditor.INSTANCE.grid.getValue()){
             ScaledResolution sr = new ScaledResolution(mc);
-            for(int i = 0; i < sr.getScaledWidth(); i += HudEditor.INSTANCE.gridSize.getValue()){
+            for(int i : linesV){
                 RenderUtil2D.drawVLine(i, 0, sr.getScaledHeight(), Color.WHITE.hashCode());
             }
-            for(int i = 0; i < sr.getScaledHeight(); i += HudEditor.INSTANCE.gridSize.getValue()){
+            for(int i : linesH){
                 RenderUtil2D.drawHLine(0, i, sr.getScaledWidth(), Color.WHITE.hashCode());
             }
         }

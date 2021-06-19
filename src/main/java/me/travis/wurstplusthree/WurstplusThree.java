@@ -30,7 +30,7 @@ public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
     public static final String MODNAME = "Wurst+3";
-    public static final String MODVER = "0.6.1";
+    public static final String MODVER = "0.7.0";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 

@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.hud.element.HudDragComponent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
+import me.travis.wurstplusthree.gui.hud.element.elements.HudReturn;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
@@ -22,7 +23,7 @@ public class HudButton extends Component {
     public final CategoryComponent parent;
     public int offset;
     private boolean isHovered;
-    private ArrayList<HudDragComponent> dragComponents = new ArrayList<>();
+    private final ArrayList<HudDragComponent> dragComponents = new ArrayList<>();
 
     public HudButton(HudElement element, CategoryComponent parent, int offset){
         this.element = element;
@@ -60,18 +61,19 @@ public class HudButton extends Component {
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        if (x > parent.getX() + WurstplusGuiNew.MODULE_WIDTH && x < parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH && y > this.parent.getY() + this.offset && y < this.parent.getY() + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + this.offset) {
-            return true;
-        }
-        return false;
+        return x > parent.getX() + WurstplusGuiNew.MODULE_WIDTH && x < parent.getX() + parent.getWidth() - WurstplusGuiNew.MODULE_WIDTH && y > this.parent.getY() + this.offset && y < this.parent.getY() + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + this.offset;
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && button == 0) {
+            if (element.getName().equalsIgnoreCase("return")) {
+                mc.displayGuiScreen(WurstplusThree.GUI2);
+                return;
+            }
             this.element.toggle();
         }
-        for(HudDragComponent dragComponent : dragComponents){
+        for (HudDragComponent dragComponent : dragComponents){
             dragComponent.mouseClicked(mouseX, mouseY, button);
         }
     }

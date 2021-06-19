@@ -48,8 +48,6 @@ public class HudElement implements Globals {
         return 0;
     }
 
-
-
     public String getName() {
         return name;
     }

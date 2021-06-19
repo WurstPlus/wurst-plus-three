@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import java.awt.*;
 
 @HudElement.Element(name = "Array List", posX = 50, posY = 50)
-public class HackArrayList extends HudElement {
+public class HudArrayList extends HudElement {
 
     @Override
     public int getWidth(){

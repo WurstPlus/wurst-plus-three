@@ -10,7 +10,8 @@ public class HudEditor extends Hack {
     public static HudEditor INSTANCE;
 
     public BooleanSetting grid = new BooleanSetting("Grid", true, this);
-    public IntSetting gridSize = new IntSetting("Grid Size", 50, 20, 150, this, s -> grid.getValue());
+    public IntSetting vLines = new IntSetting("Vertical Lines", 10, 0, 50, this, s -> grid.getValue());
+    public IntSetting hLines = new IntSetting("Horizontal Lines", 10, 0, 50, this, s -> grid.getValue());
 
     public HudEditor(){
         INSTANCE = this;
