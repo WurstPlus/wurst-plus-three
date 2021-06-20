@@ -31,14 +31,6 @@ public class HudDragComponent extends Component {
     @Override
     public void renderComponent(int mouseX, int mouseY) {
         RenderUtil2D.drawRectMC(element.getX(), element.getY(), element.getX() + width,element.getY() +  height, (!hovered) ? new Color(255,255,255, 40).hashCode() : new Color(255,255,255, 75).hashCode());
-        if(dragging){
-            GL11.glPushMatrix();
-            //GL11.glRotated(10, 1, 0, 0);
-            GL11.glScaled(1.2, 1.2, 0);
-            GL11.glScaled(-this.element.getX(), -this.element.getY() + 11, 0);
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("X: " + this.element.getX() + ", Y: " + this.element.getY(), this.element.getX(), this.element.getY() + 11, new Color(255,255,255).hashCode());
-            GL11.glPopMatrix();
-        }
     }
 
     @Override
@@ -62,9 +54,15 @@ public class HudDragComponent extends Component {
 
         hovered = isMouseOn(mouseX, mouseY);
         if(this.dragging){
-            RenderUtil2D.drawRectMC(this.element.getX(), this.element.getY() + 15, this.element.getX() + 10, this.element.getY() + 10, new Color(0, 0, 0, 100).hashCode());
+            double size = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("X: " + this.element.getX() + ", Y: " + this.element.getY());
+
+            RenderUtil2D.drawRectMC(this.element.getX(), this.element.getY() - 5, this.element.getX() + (int)Math.round(size-10/0.7) , this.element.getY() - 10, new Color(0, 0, 0, 100).hashCode());
             this.element.setX(mouseX - this.dragX);
             this.element.setY(mouseY - this.dragY);
+            GL11.glPushMatrix();
+            GL11.glScaled(0.7, 0.7, 0.7);
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("X: " + this.element.getX() + ", Y: " + this.element.getY(), Math.round(this.element.getX() / 0.7) , Math.round(this.element.getY() / 0.7) - 12, new Color(255,255,255).hashCode());
+            GL11.glPopMatrix();
         }
     }
 
