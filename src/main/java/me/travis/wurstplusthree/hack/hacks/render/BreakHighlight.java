@@ -1,11 +1,14 @@
 package me.travis.wurstplusthree.hack.hacks.render;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.Pair;
@@ -14,7 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,11 +29,13 @@ import java.util.List;
  * fixed ur shit nerd ¬ travis
  */
 
-@Hack.Registration(name = "Break Highlight", description = "highlights where people are breaking", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Break Highlight", description = "highlights where people are breaking", category = Hack.Category.RENDER, priority = HackPriority.Lowest)
 public class BreakHighlight extends Hack {
 
     ColourSetting self = new ColourSetting("Self Colour", new Colour(255,255,255, 200), this);
-    ColourSetting other = new ColourSetting("Other Colour", new Colour(160,0,0, 200), this);
+    ColourSetting friendColour = new ColourSetting("Friend Colour", new Colour(0,0,255, 200), this);
+    ColourSetting other = new ColourSetting("Other Colour", new Colour(255, 0, 0), this);
+    EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Outline", "Both", "Fill"), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
 
     @Override
@@ -79,9 +86,44 @@ public class BreakHighlight extends Hack {
                 AxisAlignedBB bb = mc.world.getBlockState(pos).getSelectedBoundingBox(mc.world, pos);
                 bb = calcBB(bb, state);
                 if(player == mc.player){
-                    RenderUtil.drawBBBox(bb, self.getValue(), self.getValue().getAlpha());
+                    switch (renderMode.getValue()){
+                        case "Both":
+                            RenderUtil.drawBBBox(bb, self.getValue(), self.getValue().getAlpha());
+                            RenderUtil.drawBlockOutlineBB(bb, new Color(self.getValue().getRed(),self.getValue().getGreen(), self.getValue().getBlue(), 255), 1f);
+                            break;
+                        case "Outline":
+                            RenderUtil.drawBlockOutlineBB(bb, self.getValue(), 1f);
+                            break;
+                        case "Fill":
+                            RenderUtil.drawBBBox(bb, self.getValue(), self.getValue().getAlpha());
+                            break;
+                    };
+                }else if(WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
+                    switch (renderMode.getValue()){
+                        case "Both":
+                            RenderUtil.drawBBBox(bb, friendColour.getValue(), friendColour.getValue().getAlpha());
+                            RenderUtil.drawBlockOutlineBB(bb, new Color(friendColour.getValue().getRed(), friendColour.getValue().getGreen(), friendColour.getValue().getBlue(), 255), 1f);
+                            break;
+                        case "Outline":
+                            RenderUtil.drawBlockOutlineBB(bb, friendColour.getValue(), 1f);
+                            break;
+                        case "Fill":
+                            RenderUtil.drawBBBox(bb, friendColour.getValue(), friendColour.getValue().getAlpha());
+                            break;
+                    }
                 }else {
-                    RenderUtil.drawBBBox(bb, other.getValue(), other.getValue().getAlpha());
+                    switch (renderMode.getValue()){
+                        case "Both":
+                            RenderUtil.drawBBBox(bb, other.getValue(), other.getValue().getAlpha());
+                            RenderUtil.drawBlockOutlineBB(bb, new Color(other.getValue().getRed(), other.getValue().getGreen(), other.getValue().getBlue(), 255), 1f);
+                            break;
+                        case "Outline":
+                            RenderUtil.drawBlockOutlineBB(bb, other.getValue(), 1f);
+                            break;
+                        case "Fill":
+                            RenderUtil.drawBBBox(bb, other.getValue(), other.getValue().getAlpha());
+                            break;
+                    }
                 }
             }
         }

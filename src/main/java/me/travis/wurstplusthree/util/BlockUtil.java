@@ -386,19 +386,13 @@ public class BlockUtil implements Globals {
         float speedMultiplier = stack.getDestroySpeed(block.getDefaultState());
         float damage;
 
-        if (!mc.player.onGround) {
-            speedMultiplier /= 5;
-        }
-
         if (stack.canHarvestBlock(block.getDefaultState())) {
             damage = speedMultiplier / block.blockHardness / 30;
         } else {
             damage = speedMultiplier / block.blockHardness / 100;
         }
 
-        float ticks = (float) Math.ceil(1 / damage);
-
-        return ticks / WurstplusThree.SERVER_MANAGER.getTPS();
+        return (float) Math.ceil(1 / damage);
     }
 
 }

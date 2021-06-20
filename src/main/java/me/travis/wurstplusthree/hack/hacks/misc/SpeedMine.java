@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.hacks.misc;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
@@ -14,13 +15,17 @@ import me.travis.wurstplusthree.util.RotationUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -40,7 +45,8 @@ public final class SpeedMine extends Hack{
     private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, this, s -> packetLoop.getValue());
     private final BooleanSetting abortPacket = new BooleanSetting("Abort Packet", true ,this);
     private final BooleanSetting render = new BooleanSetting("Render", true , this);
-    private final DoubleSetting delayOffset = new DoubleSetting("DelayOffset", 0.0, 0.0, 10.0, this, s -> render.getValue());
+    //private final DoubleSetting delayOffset = new DoubleSetting("DelayOffset", 40.0, 0.0, 200.0, this, s -> render.getValue());
+    private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill"), this, s -> render.getValue());
     private final ColourSetting breakColor = new ColourSetting("Break Color Outline", new Colour(255, 0, 0), this, s -> render.getValue());
     private final ColourSetting doneColor = new ColourSetting("Finished Color Outline", new Colour(0, 255, 0), this, s -> render.getValue());
     private final ColourSetting breakColorFill = new ColourSetting("Break Color Fill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
@@ -51,8 +57,7 @@ public final class SpeedMine extends Hack{
     private BlockPos lastPos;
     private Block lastBlock;
     private double time = 0;
-    private long old = 0;
-    private double tickCount = 0;
+    private int tickCount = 0;
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onBlockDamage(@NotNull BlockEvent event){
@@ -79,7 +84,6 @@ public final class SpeedMine extends Hack{
                 }
                 event.setCancelled(cancel.getValue());
                 isActive = true;
-                tickCount = 0;
                 lastFace = event.facing;
                 lastPos = event.pos;
                 lastBlock = mc.world.getBlockState(lastPos).getBlock();
@@ -90,6 +94,9 @@ public final class SpeedMine extends Hack{
                     item = mc.player.getHeldItem(EnumHand.MAIN_HAND);
                 }
                 time = BlockUtil.getMineTime(lastBlock, item);
+
+                tickCount = 0;
+
                 if(rotate.getValue() && rotateSetting.is("Hit")){
                     RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
                 }
@@ -137,10 +144,8 @@ public final class SpeedMine extends Hack{
                 lastBlock = null;
             }
         }
-        if(old < System.currentTimeMillis()){
-            tickCount++;
-            old = System.currentTimeMillis();
-        }
+        tickCount++;
+
     }
 
     @Override
@@ -149,11 +154,35 @@ public final class SpeedMine extends Hack{
         if(isActive && lastPos != null){
             Colour c = breakColor.getValue();
             Colour c2 = breakColorFill.getValue();
-            if(tickCount/10 > time - delayOffset.getValue()){
+
+            int subVal = 40;
+
+            if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
+                subVal = 146;
+            }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
+                subVal = 66;
+            }
+
+            if(tickCount > time - subVal){
                 c = doneColor.getValue();
                 c2 = doneColorFill.getValue();
             }
-            RenderUtil.drawBoxESP(lastPos, c2, c, 1, true, true, true);
+            AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
+            bb = bb.shrink(Math.min(normalize(tickCount, time-subVal, 0), 1.0));
+
+            switch (renderMode.getValue()){
+                case "Both":
+                    RenderUtil.drawBBBox(bb, c2, c2.getAlpha());
+                    RenderUtil.drawBlockOutlineBB(bb, new Color(c.getRed(),c.getGreen(), c.getBlue(), 255), 1f);
+                    break;
+                case "Outline":
+                    RenderUtil.drawBlockOutlineBB(bb, c, 1f);
+                    break;
+                case "Fill":
+                    RenderUtil.drawBBBox(bb, c2, c2.getAlpha());
+                    break;
+            };
+
         }
     }
 
@@ -163,4 +192,9 @@ public final class SpeedMine extends Hack{
         final Block block = stateInterface.getBlock();
         return block.getBlockHardness(stateInterface, mc.world,  p) != -1;
     }
+
+    private double normalize(double value, double max, double min){
+        return  (1 - 0.5) * ((value - min) / (max - min)) + 0.5;
+    }
+
 }
