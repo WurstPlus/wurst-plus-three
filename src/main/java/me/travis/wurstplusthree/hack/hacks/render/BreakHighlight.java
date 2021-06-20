@@ -88,7 +88,7 @@ public class BreakHighlight extends Hack {
                 ColourSetting colourSetting;
                 if (player == mc.player) {
                     colourSetting = self;
-                } else if (WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
+                } else if (player.getName() != null && WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
                     colourSetting = friendColour;
                 } else {
                     colourSetting = other;
