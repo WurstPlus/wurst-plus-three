@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.gui.hud.element;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
@@ -51,36 +52,73 @@ public class HudDragComponent extends Component {
 
     @Override
     public void updateComponent(int mouseX, int mouseY) {
-        if(!element.isEnabled())return;
+        if (!element.isEnabled()) return;
 
         width = element.getWidth();
         height = element.getHeight();
 
-
         hovered = isMouseOn(mouseX, mouseY);
 
-        if(this.dragging){
-            for(HudElement el : WurstplusThree.HUD_MANAGER.getHudElements()){
-                if(!HudEditor.INSTANCE.alignment.getValue())break;
-                if(el == element || !el.isEnabled())continue;
+        boolean shouldUpdate = true;
+        int snapOffset = 4;
+
+        if (this.dragging){
+            for (HudElement hudElement : WurstplusThree.HUD_MANAGER.getHudElements()){
+                if (!HudEditor.INSTANCE.alignment.getValue()) break;
+                if (hudElement == this.element || !hudElement.isEnabled()) continue;
+
                 ScaledResolution sr = new ScaledResolution(mc);
-                if(this.element.getX() == el.getX()){
+
+                // check if line needs to be drawn
+                if (this.element.getX() == hudElement.getX()){
                     RenderUtil2D.drawVLine(this.element.getX(), 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
-                }if(this.element.getX() + width == el.getX() + el.getWidth()){
+                }
+                if (this.element.getX() + width == hudElement.getX() + hudElement.getWidth()){
                     RenderUtil2D.drawVLine(this.element.getX() + width, 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
                 }
 
-                if(this.element.getY() == el.getY()){
+                if (this.element.getY() == hudElement.getY()){
                     RenderUtil2D.drawHLine(0 ,this.element.getY(), sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
-                }if(this.element.getY() + height == el.getY() + el.getHeight()){
+                }
+                if (this.element.getY() + height == hudElement.getY() + hudElement.getHeight()){
                     RenderUtil2D.drawHLine(0, this.element.getY() + height, sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }
+
+                // check if can snap
+                for (int i = -snapOffset; i <= snapOffset; i++) {
+                    if (this.element.getX() == hudElement.getX() + i) {
+                        this.element.setX(hudElement.getX());
+                        shouldUpdate = false;
+                        break;
+                    }
+                    if (this.element.getX() + width == hudElement.getX() + hudElement.getWidth() + i) {
+                        this.element.setX(hudElement.getX() + hudElement.getWidth() - width);
+                        shouldUpdate = false;
+                        break;
+                    }
+                    if (this.element.getY() == hudElement.getY() + i) {
+                        this.element.setY(hudElement.getY());
+                        shouldUpdate = false;
+                        break;
+                    }
+                    if (this.element.getY() + height == hudElement.getY() + hudElement.getHeight() + i) {
+                        this.element.setY(hudElement.getY() + hudElement.getHeight() - height);
+                        shouldUpdate = false;
+                        break;
+                    }
                 }
             }
 
             double size = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("X: " + this.element.getX() + ", Y: " + this.element.getY());
             RenderUtil2D.drawRectMC(this.element.getX(), this.element.getY() - 5, this.element.getX() + (int)Math.round(size-10/0.7) , this.element.getY() - 10, new Color(0, 0, 0, 100).hashCode());
-            this.element.setX(mouseX - this.dragX);
-            this.element.setY(mouseY - this.dragY);
+//            if ((mouseX - this.dragX > this.element.getX() + snapOffset || mouseX - this.dragX < this.element.getX() + snapOffset)
+//                && mouseY - this.dragY > this.element.getY() + snapOffset || mouseY - this.dragY < this.element.getY() + snapOffset) {
+//                shouldUpdate = true;
+//            }
+            if (shouldUpdate) {
+                this.element.setX(mouseX - this.dragX);
+                this.element.setY(mouseY - this.dragY);
+            }
             GL11.glPushMatrix();
             GL11.glScaled(0.7, 0.7, 0.7);
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("X: " + this.element.getX() + ", Y: " + this.element.getY(), Math.round(this.element.getX() / 0.7) , Math.round(this.element.getY() / 0.7) - 12, new Color(255,255,255).hashCode());
