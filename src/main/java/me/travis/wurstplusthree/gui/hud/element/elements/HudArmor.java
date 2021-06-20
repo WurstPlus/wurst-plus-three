@@ -18,7 +18,6 @@ import java.util.ListIterator;
 @HudElement.Element(name = "Armor", posX = 100, posY = 100)
 public class HudArmor extends HudElement {
 
-
     @Override
     public int getHeight() {
         return 30;
@@ -70,7 +69,7 @@ public class HudArmor extends HudElement {
             if (green > 1f) green = 1f;
             if (red < 0f) red = 0f;
             if (green < 0f) green = 0f;
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(dmg + "", x + 8 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(dmg + "") / 2, y - 9, (new Color(red, green, 0)).getRGB());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(dmg + "", x + 8 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(dmg + "") / 2f, y - 9, (new Color(red, green, 0)).getRGB());
         }
 
         GlStateManager.enableDepth();
