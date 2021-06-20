@@ -33,7 +33,6 @@ import java.util.List;
 public class BreakHighlight extends Hack {
 
     ColourSetting self = new ColourSetting("Self Colour", new Colour(255, 255, 255, 200), this);
-    ColourSetting friendColour = new ColourSetting("Friend Colour", new Colour(0, 0, 255, 200), this);
     ColourSetting other = new ColourSetting("Other Colour", new Colour(255, 0, 0), this);
     EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Outline", "Both", "Fill"), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
@@ -88,8 +87,6 @@ public class BreakHighlight extends Hack {
                 ColourSetting colourSetting;
                 if (player == mc.player) {
                     colourSetting = self;
-                } else if (player.getName() != null && WurstplusThree.FRIEND_MANAGER.isFriend(player.getName())) {
-                    colourSetting = friendColour;
                 } else {
                     colourSetting = other;
                 }
