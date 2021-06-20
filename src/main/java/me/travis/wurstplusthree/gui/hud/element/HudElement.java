@@ -41,14 +41,14 @@ public class HudElement implements Globals {
     }
 
     public int getWidth(){
-        return 0;
+        return 30;
     }
 
     public int getHeight(){
-        return 0;
+        return 10;
     }
 
-    public String getName() {
+     public String getName() {
         return name;
     }
 

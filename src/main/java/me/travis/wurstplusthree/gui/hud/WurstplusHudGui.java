@@ -56,10 +56,10 @@ public class WurstplusHudGui extends GuiScreen {
         if(HudEditor.INSTANCE.grid.getValue()){
             ScaledResolution sr = new ScaledResolution(mc);
             for(int i : linesV){
-                RenderUtil2D.drawVLine(i, 0, sr.getScaledHeight(), Color.WHITE.hashCode());
+                RenderUtil2D.drawVLine(i, 0, sr.getScaledHeight(), HudEditor.INSTANCE.gridColor.getValue().hashCode());
             }
             for(int i : linesH){
-                RenderUtil2D.drawHLine(0, i, sr.getScaledWidth(), Color.WHITE.hashCode());
+                RenderUtil2D.drawHLine(0, i, sr.getScaledWidth(), HudEditor.INSTANCE.gridColor.getValue().hashCode());
             }
         }
         for(CategoryComponent categoryComponent : categoryComponents){

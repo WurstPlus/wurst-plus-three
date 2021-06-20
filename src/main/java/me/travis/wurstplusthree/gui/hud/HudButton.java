@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.hud.element.HudDragComponent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
-import me.travis.wurstplusthree.gui.hud.element.elements.HudReturn;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 

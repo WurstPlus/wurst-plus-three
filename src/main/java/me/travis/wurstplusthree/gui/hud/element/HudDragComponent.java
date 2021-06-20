@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -52,10 +53,31 @@ public class HudDragComponent extends Component {
     public void updateComponent(int mouseX, int mouseY) {
         if(!element.isEnabled())return;
 
-        hovered = isMouseOn(mouseX, mouseY);
-        if(this.dragging){
-            double size = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("X: " + this.element.getX() + ", Y: " + this.element.getY());
+        width = element.getWidth();
+        height = element.getHeight();
 
+
+        hovered = isMouseOn(mouseX, mouseY);
+
+        if(this.dragging){
+            for(HudElement el : WurstplusThree.HUD_MANAGER.getHudElements()){
+                if(!HudEditor.INSTANCE.alignment.getValue())break;
+                if(el == element || !el.isEnabled())continue;
+                ScaledResolution sr = new ScaledResolution(mc);
+                if(this.element.getX() == el.getX()){
+                    RenderUtil2D.drawVLine(this.element.getX(), 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }if(this.element.getX() + width == el.getX() + el.getWidth()){
+                    RenderUtil2D.drawVLine(this.element.getX() + width, 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }
+
+                if(this.element.getY() == el.getY()){
+                    RenderUtil2D.drawHLine(0 ,this.element.getY(), sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }if(this.element.getY() + height == el.getY() + el.getHeight()){
+                    RenderUtil2D.drawHLine(0, this.element.getY() + height, sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }
+            }
+
+            double size = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("X: " + this.element.getX() + ", Y: " + this.element.getY());
             RenderUtil2D.drawRectMC(this.element.getX(), this.element.getY() - 5, this.element.getX() + (int)Math.round(size-10/0.7) , this.element.getY() - 10, new Color(0, 0, 0, 100).hashCode());
             this.element.setX(mouseX - this.dragX);
             this.element.setY(mouseY - this.dragY);
