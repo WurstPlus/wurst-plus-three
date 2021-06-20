@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.gui.hud.element;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.hud.HudButton;
+import me.travis.wurstplusthree.gui.hud.WurstplusHudGui;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.RenderUtil2D;
@@ -19,7 +21,6 @@ public class HudDragComponent extends Component {
     public int dragX;
     public int dragY;
     private int oldMouseX, oldMouseY;
-    private boolean shouldCheck;
     private int ticks;
 
 
@@ -29,7 +30,6 @@ public class HudDragComponent extends Component {
         this.height = height;
         this.dragging = false;
         this.hovered = false;
-        this.shouldCheck = false;
         this.oldMouseX = 0;
         this.oldMouseY = 0;
         this.ticks = 120;
@@ -44,7 +44,7 @@ public class HudDragComponent extends Component {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(!element.isEnabled())return;
+        if(!element.isEnabled()) return;
         if(isMouseOn(mouseX, mouseY) && button == 0){
             this.dragging = true;
             this.dragX = mouseX - element.getX();
@@ -66,8 +66,9 @@ public class HudDragComponent extends Component {
 
         hovered = isMouseOn(mouseX, mouseY);
 
-        boolean shouldUpdate = true;
-        int snapOffset = 4;
+        boolean isSnappedH = false;
+        boolean isSnappedV = false;
+        int snapOffset = 2;
 
         if (this.dragging){
             for (HudElement hudElement : WurstplusThree.HUD_MANAGER.getHudElements()){
@@ -96,58 +97,53 @@ public class HudDragComponent extends Component {
                 }
 
 
-
                 // check if can snap
                 for (int i = -snapOffset; i <= snapOffset; i++) {
                     if (this.element.getX() == hudElement.getX() + i) {
-
                         this.element.setX(hudElement.getX());
-                        shouldUpdate = false;
-                        shouldCheck = true;
+                        isSnappedH = true;
                         break;
                     }
                     if (this.element.getX() + width == hudElement.getX() + hudElement.getWidth() + i) {
                         this.element.setX(hudElement.getX() + hudElement.getWidth() - width);
-                        shouldUpdate = false;
-                        shouldCheck = true;
+                        isSnappedH = true;
                         break;
                     }
                     if (this.element.getY() == hudElement.getY() + i) {
                         this.element.setY(hudElement.getY());
-                        shouldUpdate = false;
-                        shouldCheck = true;
+                        isSnappedV = true;
                         break;
                     }
                     if (this.element.getY() + height == hudElement.getY() + hudElement.getHeight() + i) {
                         this.element.setY(hudElement.getY() + hudElement.getHeight() - height);
-                        shouldUpdate = false;
-                        shouldCheck = true;
+                        isSnappedV = true;
                         break;
                     }
                 }
+            }
 
-                if(shouldCheck) {
-                    ticks--;
-                    if(ticks<= 0 && (oldMouseX != mouseX || oldMouseY != mouseY)){
-                        ticks = 120;
+            if (isSnappedH || isSnappedV) {
+                ticks--;
+                if(ticks <= 0 && (oldMouseX != mouseX || oldMouseY != mouseY)){
+                    if (oldMouseX != mouseX && isSnappedV) {
+                        ticks = 60;
                         oldMouseX = mouseX;
+                        isSnappedV = false;
+                    }
+                    if (oldMouseY != mouseY && isSnappedH) {
+                        ticks = 60;
                         oldMouseY = mouseY;
-                        shouldUpdate = true;
+                        isSnappedH = false;
                     }
                 }
             }
 
             double size = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("X: " + this.element.getX() + ", Y: " + this.element.getY());
             RenderUtil2D.drawRectMC(this.element.getX(), this.element.getY() - 5, this.element.getX() + (int)Math.round(size-10/0.7) , this.element.getY() - 10, new Color(0, 0, 0, 100).hashCode());
-            /*
-            if ((mouseX > this.element.getX() + snapOffset || mouseX  < this.element.getX() + snapOffset)
-                    && mouseY  > this.element.getY() + snapOffset || mouseY  < this.element.getY() + snapOffset) {
-               shouldUpdate = true;
-            }
-             */
-
-            if (shouldUpdate) {
+            if (!isSnappedH) {
                 this.element.setX(mouseX - this.dragX);
+            }
+            if (!isSnappedV) {
                 this.element.setY(mouseY - this.dragY);
             }
             GL11.glPushMatrix();

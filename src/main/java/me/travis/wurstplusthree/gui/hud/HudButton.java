@@ -84,4 +84,8 @@ public class HudButton extends Component {
         }
     }
 
+    public ArrayList<HudDragComponent> getDragComponents() {
+        return this.dragComponents;
+    }
+
 }

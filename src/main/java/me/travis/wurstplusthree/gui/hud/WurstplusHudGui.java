@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class WurstplusHudGui extends GuiScreen {
 
-    public static ArrayList<CategoryComponent> categoryComponents;
+    public ArrayList<CategoryComponent> categoryComponents;
 
     public ArrayList<Integer> linesH;
     public ArrayList<Integer> linesV;
@@ -62,7 +62,7 @@ public class WurstplusHudGui extends GuiScreen {
                 RenderUtil2D.drawHLine(0, i, sr.getScaledWidth(), HudEditor.INSTANCE.gridColor.getValue().hashCode());
             }
         }
-        for(CategoryComponent categoryComponent : categoryComponents){
+        for (CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame(mouseX, mouseY);
             categoryComponent.updatePosition(mouseX, mouseY);
             for (Component comp : categoryComponent.getComponents()) {
