@@ -38,6 +38,8 @@ public class Gui extends Hack {
     public IntSetting mouseDelay = new IntSetting("MouseDelay", 250, 100, 300, this);
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);
     public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    public BooleanSetting toolTips = new BooleanSetting("Tool Tips", true ,this);
+    public ColourSetting toolTipColor = new ColourSetting("Tool Tip Colour", new Colour(0,0,0,100), this, s -> toolTips.getValue());
 
     public Gui(){
         INSTANCE = this;

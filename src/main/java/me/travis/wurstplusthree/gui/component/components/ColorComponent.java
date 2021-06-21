@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.ColorCopyEvent;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.component.HackButton;
@@ -65,6 +66,18 @@ public class ColorComponent extends Component {
         }
     }
 
+    @Override
+    public void renderToolTip(int mouseX, int mouseY){
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && Gui.INSTANCE.toolTips.getValue()){
+            String hex  = String.format("#%02x%02x%02x", set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue());
+            String text = "R: " + set.getValue().getRed() + " G: " + set.getValue().getGreen() + " B: " + set.getValue().getBlue() + " A: " + set.getValue().getAlpha() + "  " + hex;
+            int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
+            int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+            RenderUtil2D.drawRectMC(mouseX+1, mouseY+4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, mouseX + 3, mouseY + 8, new Color(255,255,255).hashCode());
+        }
+    }
+
 
     @Override
     public void setOff(int newOff) {
@@ -92,6 +105,19 @@ public class ColorComponent extends Component {
             setOpen(!isOpen);
             this.parent.parent.refresh();
         }
+
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 0){
+            WurstplusThree.GUI2.colorClipBoard = set.getValue();
+            ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.COPY);
+            WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        }
+
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 2){
+            this.set.setValue(WurstplusThree.GUI2.colorClipBoard);
+            ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.PAST);
+            WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        }
+
         if (!this.isOpen && !this.firstTimeOpen) {
             this.firstTimeOpen = true;
         }

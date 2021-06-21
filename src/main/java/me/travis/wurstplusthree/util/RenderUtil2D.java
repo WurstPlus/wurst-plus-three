@@ -1,7 +1,11 @@
 package me.travis.wurstplusthree.util;
 
+import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.util.elements.Colour;
+import me.travis.wurstplusthree.util.elements.NotificationRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -17,6 +21,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil2D {
 
+    NotificationRender notificationRender;
+
+    public static RenderUtil2D INSTANCE;
+
+    public RenderUtil2D(){
+        notificationRender = new NotificationRender(0, 0);
+        INSTANCE = this;
+    }
+
     private static final BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 
     private static final Tessellator tessellator = Tessellator.getInstance();
@@ -29,6 +42,28 @@ public class RenderUtil2D {
 
     public void setDeltaTime(int v) {
         deltaTime = v;
+    }
+
+
+    public static void drawNotification(String text, int x, int y, Colour colour){
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
+        int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+        drawRectMC(x, y - 2, x + length + 2, y +height + 2, colour.hashCode());
+
+        final int deltaTime = INSTANCE.getDeltaTime();
+        final float SEQUENCES = 250;
+        if(INSTANCE.notificationRender.animationVal < x){
+            INSTANCE.notificationRender.animationVal += (x * ((float) (deltaTime) / SEQUENCES));
+        }
+
+        INSTANCE.notificationRender.animationVal = constrainToRange(INSTANCE.notificationRender.animationVal, 0, x);
+        final float newY = sr.getScaledWidth() - INSTANCE.notificationRender.animationVal - 2;
+        INSTANCE.notificationRender.x = (int) newY;
+    }
+
+    private static float constrainToRange(float value, float min, float max) {
+        return Math.min(Math.max(value, min), max);
     }
 
     public static void drawHLine(int x, int y, int length, int color) {

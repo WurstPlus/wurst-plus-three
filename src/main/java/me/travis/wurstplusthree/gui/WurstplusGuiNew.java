@@ -1,10 +1,13 @@
 package me.travis.wurstplusthree.gui;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.ColorCopyEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -37,6 +40,10 @@ public class WurstplusGuiNew extends GuiScreen {
     public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
     public static final int COLOR_FONT_SIZE = 2 * SUB_FONT_SIZE;
 
+    public Colour colorClipBoard;
+    public ColorCopyEvent colorEvent;
+    public boolean shouldShow;
+
     public static int GUI_MODULECOLOR() {
         return new Color(45, 45, 45, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
     }
@@ -55,6 +62,7 @@ public class WurstplusGuiNew extends GuiScreen {
 
     public WurstplusGuiNew() {
         categoryComponents = new ArrayList<>();
+        colorClipBoard = new Colour(0, 0, 0);
         int startX = 10;
         for (Hack.Category category : WurstplusThree.HACKS.getCategories()) {
             CategoryComponent categoryComponent = new CategoryComponent(category);
@@ -67,6 +75,8 @@ public class WurstplusGuiNew extends GuiScreen {
 
     @Override
     public void initGui() {
+        WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
+        shouldShow = false;
         flag = false;
         for(CategoryComponent c : categoryComponents){
             c.animationValue = 0;
@@ -96,6 +106,16 @@ public class WurstplusGuiNew extends GuiScreen {
             for (Component comp : categoryComponent.getComponents()) {
                 comp.updateComponent(mouseX, mouseY);
             }
+        }
+
+        for(CategoryComponent categoryComponent : categoryComponents){
+            for(Component component : categoryComponent.getComponents()){
+                component.renderToolTip(mouseX, mouseY);
+            }
+        }
+
+        if(shouldShow && colorEvent != null){
+
         }
     }
 
@@ -155,6 +175,7 @@ public class WurstplusGuiNew extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
+        WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
         if (mc.entityRenderer.getShaderGroup() != null) {
             mc.entityRenderer.getShaderGroup().deleteShaderGroup();
         }
@@ -216,6 +237,12 @@ public class WurstplusGuiNew extends GuiScreen {
 
     private static float constrainToRange(float value, float min, float max) {
         return Math.min(Math.max(value, min), max);
+    }
+
+    @CommitEvent
+    public void ColorCopyEvent(ColorCopyEvent event){
+        this.colorEvent = event;
+        this.shouldShow = true;
     }
 
 }

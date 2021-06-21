@@ -29,6 +29,7 @@ public class ConfigManager implements Globals {
     private final String mainFolder = "Wurstplus3/";
     private final String configsFolder = mainFolder + "configs/";
     private String activeConfigFolder = configsFolder + "default/";
+    public final String pluginFolder = mainFolder + "plugins/";
 
     private final String drawnFile = "drawn.txt";
     private final String enemiesFile = "enemies.json";

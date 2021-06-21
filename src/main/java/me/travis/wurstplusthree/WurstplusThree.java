@@ -13,6 +13,7 @@ import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.networking.handler.ChatHandling;
 import me.travis.wurstplusthree.networking.handler.ClientHandling;
+import me.travis.wurstplusthree.plugin.Loader;
 import me.travis.wurstplusthree.setting.Settings;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraftforge.fml.common.Mod;
@@ -69,6 +70,7 @@ public class WurstplusThree {
     public static ClientHandling CLIENT_HANDLING;
     public static ChatHandling CHAT_HANDLING;
     public static HudManager HUD_MANAGER;
+    public static Loader PLUGIN_LOADER;
 
     // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
@@ -102,6 +104,7 @@ public class WurstplusThree {
         CONFIG_MANAGER.loadConfig();
         GUI2 = new WurstplusGuiNew();
         HUDGUI = new WurstplusHudGui();
+        PLUGIN_LOADER = new Loader();
     }
 
     public static void unLoad() {

@@ -12,6 +12,7 @@ import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -157,6 +158,19 @@ public class HackButton extends Component {
             }
         }
         renderArrow();
+    }
+
+    @Override
+    public void renderToolTip(int mouseX, int mouseY){
+        if(isHovered && Gui.INSTANCE.toolTips.getValue()){
+            int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(mod.getDescription());
+            int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+            RenderUtil2D.drawRectMC(mouseX+1, mouseY+4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(mod.getDescription(), mouseX + 3, mouseY + 8, new Color(255,255,255).hashCode());
+        }
+        for(Component component : subcomponents){
+            component.renderToolTip(mouseX, mouseY);
+        }
     }
 
     @Override
