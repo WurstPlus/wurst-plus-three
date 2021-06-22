@@ -1,6 +1,6 @@
 package me.travis.wurstplusthree.command;
 
-import me.travis.wurstplusthree.command.commands.*;
+import me.travis.wurstplusthree.command.commands.BurrowBlockCommand;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.ReflectionUtil;

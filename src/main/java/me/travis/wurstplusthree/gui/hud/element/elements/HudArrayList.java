@@ -7,7 +7,6 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import net.minecraft.client.gui.ScaledResolution;
 
-import java.awt.*;
 import java.util.List;
 
 @HudElement.Element(name = "Array List", posX = 50, posY = 50)

@@ -13,7 +13,6 @@ import me.travis.wurstplusthree.manager.fonts.GuiFont;
 import me.travis.wurstplusthree.manager.fonts.MenuFont;
 import me.travis.wurstplusthree.networking.handler.ChatHandling;
 import me.travis.wurstplusthree.networking.handler.ClientHandling;
-import me.travis.wurstplusthree.plugin.Loader;
 import me.travis.wurstplusthree.setting.Settings;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import net.minecraftforge.fml.common.Mod;

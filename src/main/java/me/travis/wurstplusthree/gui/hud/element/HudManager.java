@@ -1,8 +1,6 @@
 package me.travis.wurstplusthree.gui.hud.element;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
-import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.ReflectionUtil;
 
 import java.util.ArrayList;

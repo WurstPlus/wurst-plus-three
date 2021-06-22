@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.networking.packets.ping.PingGetGlobal;
 import me.travis.wurstplusthree.util.ClientMessage;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Madmegsox1

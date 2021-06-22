@@ -6,8 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
-public class JesusEvent
-        extends EventStage {
+public class JesusEvent extends EventStage {
     private BlockPos pos;
     private AxisAlignedBB boundingBox;
 

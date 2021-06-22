@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

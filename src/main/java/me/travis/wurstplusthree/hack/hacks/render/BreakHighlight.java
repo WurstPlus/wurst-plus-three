@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.hacks.render;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockBreakingEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;

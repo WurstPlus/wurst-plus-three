@@ -12,7 +12,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.SoundEvents;
 import org.lwjgl.input.Mouse;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 

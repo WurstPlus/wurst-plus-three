@@ -5,13 +5,8 @@ import me.travis.wurstplusthree.WurstplusThree;
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 import java.util.jar.JarFile;
-import java.lang.reflect.Method;
 
 public class Loader {
     File pluginDir;
