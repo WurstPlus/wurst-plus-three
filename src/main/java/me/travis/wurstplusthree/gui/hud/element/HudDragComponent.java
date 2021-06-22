@@ -2,12 +2,11 @@ package me.travis.wurstplusthree.gui.hud.element;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.component.Component;
-import me.travis.wurstplusthree.gui.hud.HudButton;
-import me.travis.wurstplusthree.gui.hud.WurstplusHudGui;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
-import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -22,6 +21,7 @@ public class HudDragComponent extends Component {
     public int dragY;
     private int oldMouseX, oldMouseY;
     private int ticks;
+    private ResourceLocation arrow;
 
 
     public HudDragComponent(HudElement element, int width, int height){
@@ -35,6 +35,7 @@ public class HudDragComponent extends Component {
         this.ticks = 120;
         this.dragX = 0;
         this.dragY = 0;
+        this.arrow = new ResourceLocation("textures/arrow.png");
     }
 
     @Override
@@ -81,6 +82,10 @@ public class HudDragComponent extends Component {
                     RenderUtil2D.drawVLine(sr.getScaledWidth() / 2, 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
                 }
 
+                if(this.element.getY() + (height /2 ) == sr.getScaledHeight() / 2){
+                    RenderUtil2D.drawHLine(0, sr.getScaledHeight()/2, sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                }
+
                 // check if line needs to be drawn
                 if (this.element.getX() == hudElement.getX()){
                     RenderUtil2D.drawVLine(this.element.getX(), 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
@@ -99,6 +104,16 @@ public class HudDragComponent extends Component {
 
                 // check if can snap
                 for (int i = -snapOffset; i <= snapOffset; i++) {
+                    if (this.element.getX() + (width / 2) == sr.getScaledWidth() / 2) {
+                        isSnappedH = true;
+                        break;
+                    }
+
+                    if(this.element.getY() + (height /2) == sr.getScaledHeight() / 2){
+                        isSnappedV = true;
+                        break;
+                    }
+
                     if (this.element.getX() == hudElement.getX() + i) {
                         this.element.setX(hudElement.getX());
                         isSnappedH = true;

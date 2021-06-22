@@ -1,17 +1,16 @@
 package me.travis.wurstplusthree.plugin;
 
-import java.lang.reflect.Method;
+/**
+ * @author Madmegsox1
+ * @since 21/06/2021
+ */
 
 public class Plugin {
-    public String name;
-    public String id;
-    public Class pluginClass;
-    public Method pluginMethod;
+    public void initialize(){
 
-    public Plugin(String name, String id, Class pluginClass, Method pluginMethod){
-        this.name = name;
-        this.id = id;
-        this.pluginClass = pluginClass;
-        this.pluginMethod = pluginMethod;
+    }
+
+    public String name(){
+        return getClass().getSimpleName();
     }
 }

@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.gui.hud.element;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.util.Globals;
 
@@ -45,7 +46,7 @@ public class HudElement implements Globals {
     }
 
     public int getHeight(){
-        return 10;
+        return WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
     }
 
      public String getName() {

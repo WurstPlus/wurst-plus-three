@@ -70,7 +70,7 @@ public class WurstplusThree {
     public static ClientHandling CLIENT_HANDLING;
     public static ChatHandling CHAT_HANDLING;
     public static HudManager HUD_MANAGER;
-    public static Loader PLUGIN_LOADER;
+   //public static Loader PLUGIN_LOADER;
 
     // megs weird thingy
     public static RenderUtil2D RENDER_UTIL_2D;
@@ -104,7 +104,7 @@ public class WurstplusThree {
         CONFIG_MANAGER.loadConfig();
         GUI2 = new WurstplusGuiNew();
         HUDGUI = new WurstplusHudGui();
-        PLUGIN_LOADER = new Loader();
+        //PLUGIN_LOADER = new Loader();
     }
 
     public static void unLoad() {
