@@ -26,7 +26,9 @@ import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketExplosion;
@@ -40,6 +42,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public final class CrystalAura extends Hack {
@@ -69,7 +72,8 @@ public final class CrystalAura extends Hack {
     private final IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
     private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
-    private final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this, s -> place.getValue() || breaK.getValue());
+    public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full", "Fuck"), this, s -> place.getValue() || breaK.getValue());
+    public final IntSetting fuckDelay = new IntSetting("Fuck Delay", 0, 0, 10, this, v -> rotateMode.is("Fuck"));
 
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this, s -> place.getValue() || breaK.getValue());
     private final EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
@@ -80,6 +84,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, this, s -> place.getValue() || breaK.getValue());
 
     private final BooleanSetting threaded = new BooleanSetting("Threaded", false, this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting threadAttack = new BooleanSetting("Thread Attack", false, this, s -> place.getValue() || breaK.getValue());
 
     private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
@@ -124,6 +129,8 @@ public final class CrystalAura extends Hack {
 
     private final BooleanSetting debug = new BooleanSetting("Debug", false, this);
 
+    public final AtomicBoolean threadOngoing = new AtomicBoolean(false);
+
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
     public EntityPlayer ezTarget = null;
@@ -134,6 +141,7 @@ public final class CrystalAura extends Hack {
     private float yaw;
     private float pitch;
 
+    private boolean firstEnable = true;
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
@@ -152,6 +160,7 @@ public final class CrystalAura extends Hack {
     private int placeDelayCounter;
     private int facePlaceDelayCounter;
     private int obiFeetCounter;
+    private int highestID;
 
     public BlockPos staticPos;
     public EntityEnderCrystal staticEnderCrystal;
@@ -190,6 +199,9 @@ public final class CrystalAura extends Hack {
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
                 if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
                     if (this.predictCrystal.getValue()) {
+                        if (debug.getValue()) {
+                            ClientMessage.sendMessage("predict break");
+                        }
                         CPacketUseEntity predict = new CPacketUseEntity();
                         predict.entityId = packet.getEntityID();
                         predict.action = CPacketUseEntity.Action.ATTACK;
@@ -241,16 +253,25 @@ public final class CrystalAura extends Hack {
                 }
             }
         }
+        if (event.getStage() == 0 && event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock && threadAttack.getValue()) {
+            CPacketPlayerTryUseItemOnBlock packet1 = event.getPacket();
+            if (mc.player.getHeldItem(packet1.hand).getItem() instanceof ItemEndCrystal) {
+                updateEntityID();
+                for (int i = 1; i < 3; ++i) {
+                    this.attackID(packet1.position, this.highestID + i);
+                }
+            }
+        }
     }
 
     @Override
     public void onUpdate() {
-        if (!this.rotateMode.is("Full")) {
+        if (!this.rotateMode.is("Full") && !this.rotateMode.is("Fuck")) {
             this.doCrystalAura();
         }
     }
 
-    private void doCrystalAura() {
+    public void doCrystalAura() {
         if (nullCheck()) {
             this.disable();
             return;
@@ -311,6 +332,7 @@ public final class CrystalAura extends Hack {
             offhandCheck = true;
         }
 
+        int stackSize = getCrystalCount(offhandCheck);
         didAnything = true;
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal) {
             setYawPitch(targetBlock);
@@ -318,6 +340,18 @@ public final class CrystalAura extends Hack {
             if (debug.getValue()) {
                 ClientMessage.sendMessage("placing");
             }
+        }
+        int newSize = getCrystalCount(offhandCheck);
+        if (newSize == stackSize) {
+            didAnything = false;
+        }
+    }
+
+    private int getCrystalCount(boolean offhand) {
+        if (offhand) {
+            return mc.player.getHeldItemOffhand().stackSize;
+        } else {
+            return mc.player.getHeldItemMainhand().stackSize;
         }
     }
 
@@ -619,11 +653,26 @@ public final class CrystalAura extends Hack {
         this.isRotating = true;
     }
 
-    private void setYawPitch(@NotNull BlockPos pos) {
+    public void setYawPitch(@NotNull BlockPos pos) {
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
         this.yaw = angle[0];
         this.pitch = angle[1];
         this.isRotating = true;
+    }
+
+    private void updateEntityID() {
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity.getEntityId() <= this.highestID) continue;
+            this.highestID = entity.getEntityId();
+        }
+    }
+
+    private void attackID(BlockPos pos, int id) {
+        Entity entity = mc.world.getEntityByID(id);
+        if (entity == null || entity instanceof EntityEnderCrystal) {
+            AttackThread attackThread = new AttackThread(id, pos, 0);
+            attackThread.start();
+        }
     }
 
     @Override
@@ -675,8 +724,14 @@ public final class CrystalAura extends Hack {
         obiFeetCounter = 0;
         crystalLatency = 0;
         start = 0;
+        highestID = -100000;
         staticEnderCrystal = null;
         staticPos = null;
+//        if (firstEnable) {
+//            firstEnable = false;
+//            CaThread attackThread = new CaThread();
+//            attackThread.start();
+//        }
     }
 
     @Override
@@ -686,6 +741,34 @@ public final class CrystalAura extends Hack {
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
     // moved to CyrstalUtil ~travis
+}
+
+final class AttackThread
+        extends Thread implements Globals {
+    private final BlockPos pos;
+    private final int id;
+    private final int delay;
+
+    public AttackThread(int idIn, BlockPos posIn, int delayIn) {
+        this.id = idIn;
+        this.pos = posIn;
+        this.delay = delayIn;
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.wait(this.delay);
+            CPacketUseEntity attack = new CPacketUseEntity();
+            attack.entityId = this.id;
+            attack.action = CPacketUseEntity.Action.ATTACK;
+            CrystalAura.INSTANCE.setYawPitch(this.pos.up());
+            mc.player.connection.sendPacket(attack);
+            mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 final class Threads extends Thread {
@@ -705,6 +788,25 @@ final class Threads extends Thread {
         } else if (this.type == ThreadType.CRYSTAL) {
             bestCrystal = CrystalAura.INSTANCE.getBestCrystal();
             CrystalAura.INSTANCE.staticEnderCrystal = bestCrystal;
+        }
+    }
+}
+
+final class CaThread extends Thread {
+    @Override
+    public void run() {
+        ClientMessage.sendMessage("run");
+        if (CrystalAura.INSTANCE.rotateMode.is("Fuck")) {
+            while (CrystalAura.INSTANCE.isEnabled()) {
+                CrystalAura.INSTANCE.threadOngoing.set(true);
+                CrystalAura.INSTANCE.doCrystalAura();
+                CrystalAura.INSTANCE.threadOngoing.set(false);
+                try {
+                    Thread.sleep(CrystalAura.INSTANCE.fuckDelay.getValue());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
