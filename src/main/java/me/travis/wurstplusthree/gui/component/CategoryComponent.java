@@ -167,9 +167,6 @@ public class CategoryComponent implements Globals {
     }
 
     public boolean isWithinHeader(int x, int y) {
-        if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) {
-            return true;
-        }
-        return false;
+        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
     }
 }
