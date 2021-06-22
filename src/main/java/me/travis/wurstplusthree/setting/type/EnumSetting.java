@@ -34,10 +34,6 @@ public class EnumSetting extends Setting<String> {
         return name.equalsIgnoreCase(this.getValue());
     }
 
-    public void increment() {
-        value = modes.get((modes.indexOf(this.value) + 1) % modes.size());
-    }
-
     public String getValue() {
         return this.value;
     }

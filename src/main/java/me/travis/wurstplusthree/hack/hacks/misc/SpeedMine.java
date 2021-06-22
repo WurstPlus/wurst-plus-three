@@ -93,6 +93,7 @@ public final class SpeedMine extends Hack{
                 }else {
                     item = mc.player.getHeldItem(EnumHand.MAIN_HAND);
                 }
+                if (item == null) return;
                 time = BlockUtil.getMineTime(lastBlock, item);
 
                 tickCount = 0;

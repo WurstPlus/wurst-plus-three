@@ -165,8 +165,8 @@ public class HackButton extends Component {
         if(isHovered && Gui.INSTANCE.toolTips.getValue()){
             int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(mod.getDescription());
             int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
-            RenderUtil2D.drawRectMC(mouseX+1, mouseY+4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(mod.getDescription(), mouseX + 3, mouseY + 8, new Color(255,255,255).hashCode());
+            RenderUtil2D.drawRectMC(mouseX + 6, mouseY + 9, mouseX + length + 10, mouseY + height + 13, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(mod.getDescription(), mouseX + 8, mouseY + 11, new Color(255,255,255).hashCode());
         }
         for(Component component : subcomponents){
             component.renderToolTip(mouseX, mouseY);
