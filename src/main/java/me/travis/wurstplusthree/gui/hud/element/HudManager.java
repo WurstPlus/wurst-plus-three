@@ -36,6 +36,15 @@ public final class HudManager {
         return hudElements;
     }
 
+    public HudElement getElementByName(String name) {
+        for (HudElement element : hudElements) {
+            if (element.getName().equalsIgnoreCase(name)) {
+                return element;
+            }
+        }
+        return null;
+    }
+
     public final void onRender2D(Render2DEvent event) {
         this.hudElements.stream().filter(HudElement::isEnabled).spliterator().forEachRemaining(hack -> hack.onRender2D(event));
     }

@@ -77,12 +77,12 @@ public class HudDragComponent extends Component {
 
                 ScaledResolution sr = new ScaledResolution(mc);
 
-                if (this.element.getX() + (width / 2) == sr.getScaledWidth() / 2) {
+                if (Math.round(this.element.getX() + (width / 2f)) == sr.getScaledWidth() / 2) {
                     RenderUtil2D.drawVLine(sr.getScaledWidth() / 2, 0, sr.getScaledHeight(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
                 }
 
-                if(this.element.getY() + (height /2 ) == sr.getScaledHeight() / 2){
-                    RenderUtil2D.drawHLine(0, sr.getScaledHeight()/2, sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
+                if(Math.round(this.element.getY() + (height / 2f)) == sr.getScaledHeight() / 2){
+                    RenderUtil2D.drawHLine(0, sr.getScaledHeight() / 2, sr.getScaledWidth(), HudEditor.INSTANCE.alignmentColor.getValue().hashCode());
                 }
 
                 // check if line needs to be drawn

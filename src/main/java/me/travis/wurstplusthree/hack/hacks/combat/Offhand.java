@@ -58,7 +58,6 @@ public class Offhand extends Hack {
             if (cancelMovement.getValue()) {
                 StopPlayerMovement.toggle(false);
             }
-            return;
         }
     }
 
@@ -103,19 +102,6 @@ public class Offhand extends Hack {
         if (!CrystalCheck.getValue()) {
             return false;
         }
-        /*
-        switch (mode.getValue()) {
-            case "Totem":
-                this.swapItems(getItemSlot(Items.TOTEM_OF_UNDYING), 1);
-                return;
-            case "Crystal":
-                this.swapItems(getItemSlot(Items.END_CRYSTAL), 1);
-                return;
-            case "Gapple":
-                this.swapItems(getItemSlot(Items.GOLDEN_APPLE), 1);
-                return;
-        }
-         */
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
                 if (CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player, false) >= mc.player.getHealth()) {
@@ -152,7 +138,7 @@ public class Offhand extends Hack {
         return -1;
     }
     public static class StopPlayerMovement {
-        private static StopPlayerMovement stopPlayerMovement = new StopPlayerMovement();
+        private static final StopPlayerMovement stopPlayerMovement = new StopPlayerMovement();
 
         public static void toggle(boolean on) {
             if (on) {
