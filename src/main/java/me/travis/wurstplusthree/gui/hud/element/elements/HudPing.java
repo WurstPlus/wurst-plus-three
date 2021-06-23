@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.HudUtil;
+import net.minecraft.client.gui.ScaledResolution;
 
 @HudElement.Element(name = "Ping", posX = 10, posY = 74)
 public class HudPing extends HudElement {
@@ -12,19 +13,19 @@ public class HudPing extends HudElement {
     public String text;
 
     @Override
-    public int getHeight(){
-        return WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+    public int getHeight() {
+        return HudUtil.getHudStringHeight(text);
     }
 
     @Override
     public int getWidth(){
-        return WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
+        return HudUtil.getHudStringWidth(text);
     }
 
     @Override
     public void onRender2D(Render2DEvent event){
         text = "Ping " + HudUtil.getPingLine();
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, this.getX(), this.getY(), HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString(text, this.getX(), this.getY(), HudEditor.INSTANCE.fontColor.getValue().hashCode());
     }
 
 }

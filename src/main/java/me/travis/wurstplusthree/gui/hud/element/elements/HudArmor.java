@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.gui.hud.element.elements;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
+import me.travis.wurstplusthree.util.HudUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 
@@ -60,8 +61,8 @@ public class HudArmor extends HudElement {
             GlStateManager.disableLighting();
             GlStateManager.disableDepth();
             final String s = (is.getCount() > 1) ? (is.getCount() + "") : "";
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(s, x + 19 - 2 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(s), y + 7, 1677215);
-            int dmg = 0;
+            HudUtil.drawHudString(s, x + 19 - 2 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(s), y + 7, 1677215);
+            int dmg;
             float green = (is.getMaxDamage() - (float) is.getItemDamage()) / is.getMaxDamage();
             float red = 1.0f - green;
             dmg = 100 - (int) (red * 100.0f);
@@ -69,7 +70,7 @@ public class HudArmor extends HudElement {
             if (green > 1f) green = 1f;
             if (red < 0f) red = 0f;
             if (green < 0f) green = 0f;
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(dmg + "", x + 8 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(dmg + "") / 2f, y - 9, (new Color(red, green, 0)).getRGB());
+            HudUtil.drawHudString(dmg + "", (int) (x + 8 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(dmg + "") / 2f), y - 9, (new Color(red, green, 0)).getRGB());
         }
 
         GlStateManager.enableDepth();

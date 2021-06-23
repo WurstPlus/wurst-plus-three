@@ -29,16 +29,16 @@ public class HudHelper extends HudElement {
         String trap = (WurstplusThree.HACKS.ishackEnabled("Trap") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
         String surround = (WurstplusThree.HACKS.ishackEnabled("Surround") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
         String ka = (WurstplusThree.HACKS.ishackEnabled("Kill Aura") ? ChatFormatting.GREEN + "1" : ChatFormatting.RED + "0") + ChatFormatting.RESET;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Totems " + HudUtil.getTotems(), getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("Totems " + HudUtil.getTotems(), getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
         y += 12;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("CAura " + ca, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("CAura " + ca, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
         y += 12;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("HoleFill " + holefill, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("HoleFill " + holefill, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
         y += 12;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Trap " + trap, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("Trap " + trap, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
         y += 12;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Surround " + surround, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("Surround " + surround, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
         y += 12;
-        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("KAura " + ka, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+        HudUtil.drawHudString("KAura " + ka, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
     }
 }

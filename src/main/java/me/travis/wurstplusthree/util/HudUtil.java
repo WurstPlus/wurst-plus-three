@@ -2,6 +2,8 @@ package me.travis.wurstplusthree.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.gui.hud.element.HudElement;
+import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
@@ -88,6 +90,30 @@ public class HudUtil implements Globals {
 
     public static String getDate() {
         return TimeUtil.get_year() + "/" + (TimeUtil.get_month() + 1) + "/" + TimeUtil.get_day();
+    }
+
+    public static void drawHudString(String string, int x, int y, int colour) {
+        if (HudEditor.INSTANCE.customFont.getValue()) {
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(string, x, y, colour);
+        } else {
+            mc.fontRenderer.drawStringWithShadow(string, x, y, colour);
+        }
+    }
+
+    public static int getHudStringWidth(String string) {
+        if (HudEditor.INSTANCE.customFont.getValue()) {
+            return WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
+        } else {
+            return mc.fontRenderer.getStringWidth(string);
+        }
+    }
+
+    public static int getHudStringHeight(String string) {
+        if (HudEditor.INSTANCE.customFont.getValue()) {
+            return WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+        } else {
+            return mc.fontRenderer.FONT_HEIGHT;
+        }
     }
 
 }

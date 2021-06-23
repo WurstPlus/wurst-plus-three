@@ -38,6 +38,11 @@ public class RenderUtil implements Globals {
         return fonts[random.nextInt(fonts.length)];
     }
 
+    public static Color getContrastColor(Color color) {
+        double y = (299f * color.getRed() + 587f * color.getGreen() + 114f * color.getBlue()) / 1000f;
+        return y >= 128 ? Color.black : Color.white;
+    }
+
     public static void drawTriangleOutline(float x, float y, float size, float widthDiv, float heightDiv, float outlineWidth, int color) {
         boolean blend = GL11.glIsEnabled(3042);
         GL11.glEnable(3042);

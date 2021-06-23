@@ -5,20 +5,24 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
+import me.travis.wurstplusthree.util.HudUtil;
 import net.minecraft.client.gui.ScaledResolution;
 
 import java.util.List;
 
 @HudElement.Element(name = "Array List", posX = 50, posY = 50)
 public class HudArrayList extends HudElement {
+    int width = 0;
+    int height = 0;
+
     @Override
     public int getWidth(){
-        return 0;
+        return width;
     }
 
     @Override
     public int getHeight(){
-        return 0;
+        return height;
     }
 
     @Override
@@ -29,13 +33,13 @@ public class HudArrayList extends HudElement {
         for (Hack hack : hacks) {
             if (WurstplusThree.HACKS.isDrawHack(hack)) continue;
             String name = hack.getFullArrayString();
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, this.getRightX(name, 2, scaledResolution), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+            HudUtil.drawHudString(name, this.getRightX(name, scaledResolution), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
             y += 11;
         }
     }
 
-    private int getRightX(String string, int x, ScaledResolution scaledResolution) {
-        return scaledResolution.getScaledWidth()- x - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
+    private int getRightX(String string, ScaledResolution scaledResolution) {
+        return scaledResolution.getScaledWidth() - 2 - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
     }
 
 }

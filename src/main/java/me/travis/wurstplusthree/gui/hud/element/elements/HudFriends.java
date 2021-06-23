@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
+import me.travis.wurstplusthree.util.HudUtil;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
@@ -17,13 +18,13 @@ public class HudFriends extends HudElement {
     int yVal = 0;
 
     @Override
-    public int getWidth(){
-        return biggest;
+    public int getHeight(){
+        return yVal;
     }
 
     @Override
-    public int getHeight(){
-        return yVal;
+    public int getWidth(){
+        return biggest;
     }
 
     @Override
@@ -38,14 +39,14 @@ public class HudFriends extends HudElement {
         int y = getY();
 
         if (friends.isEmpty()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(ChatFormatting.BOLD + "U got no friends", getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+            HudUtil.drawHudString(ChatFormatting.BOLD + "U got no friends", getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
             biggest = WurstplusThree.GUI_FONT_MANAGER.getTextWidth("U got no friends");
         } else {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(ChatFormatting.BOLD + "the_fellas", getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+            HudUtil.drawHudString(ChatFormatting.BOLD + "the_fellas", getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
             y += 12;
             int temp = 0;
             for (String friend : friends) {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(friend, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+                HudUtil.drawHudString(friend, getX(), y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
                 if(temp < WurstplusThree.GUI_FONT_MANAGER.getTextWidth(friend)){
                     temp = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(friend);
                     if(temp < WurstplusThree.GUI_FONT_MANAGER.getTextWidth("the_fellas")){

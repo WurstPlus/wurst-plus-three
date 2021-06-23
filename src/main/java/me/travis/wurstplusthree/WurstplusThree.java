@@ -69,6 +69,7 @@ public class WurstplusThree {
     public static ClientHandling CLIENT_HANDLING;
     public static ChatHandling CHAT_HANDLING;
     public static HudManager HUD_MANAGER;
+    public static KDManager KD_MANAGER;
    //public static Loader PLUGIN_LOADER;
 
     // megs weird thingy
@@ -125,6 +126,7 @@ public class WurstplusThree {
         DONATOR_FONT_MANAGER = new DonatorFont();
         COSMETIC_MANAGER = new CosmeticManager();
         ALT_MANAGER = new AltManager();
+        KD_MANAGER = new KDManager();
     }
 
 }

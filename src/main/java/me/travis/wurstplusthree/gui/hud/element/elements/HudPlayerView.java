@@ -20,6 +20,6 @@ public class HudPlayerView extends HudElement{
 
     @Override
     public void onRender2D(Render2DEvent event){
-        RenderUtil2D.drawEntityOnScreen(getX() + (getWidth() / 2), getY() + getHeight(), 40, mc.player);
+        RenderUtil2D.drawEntityOnScreen(getX() + (getWidth() / 2f), getY() + getHeight(), 40, mc.player);
     }
 }
