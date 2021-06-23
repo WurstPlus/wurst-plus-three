@@ -16,7 +16,7 @@ import java.util.List;
 
 public final class EventProcessor {
 
-    private List<Listener> events;
+    private final List<Listener> events;
 
     public EventProcessor() {
         events = new ArrayList<>();

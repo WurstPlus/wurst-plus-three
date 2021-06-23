@@ -21,20 +21,20 @@ import java.util.List;
 @Hack.Registration(name = "HUD", description = "hud elements", category = Hack.Category.CLIENT, enabled = true)
 public class Hud extends Hack {
 
-    BooleanSetting welcomer = new BooleanSetting("Welcomer", false, this);
+    BooleanSetting welcomer = new BooleanSetting("Welcomer", false, this);//
 
-    BooleanSetting watermark = new BooleanSetting("Watermark", true, this);
-    BooleanSetting fps = new BooleanSetting("Fps", false, this);
-    BooleanSetting tps = new BooleanSetting("Tps", false, this);
-    BooleanSetting ping = new BooleanSetting("Ping", false, this);
-    BooleanSetting clock = new BooleanSetting("Clock", true, this);
-    BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);
+    BooleanSetting watermark = new BooleanSetting("Watermark", true, this);//
+    BooleanSetting fps = new BooleanSetting("Fps", false, this);//
+    BooleanSetting tps = new BooleanSetting("Tps", false, this);//
+    BooleanSetting ping = new BooleanSetting("Ping", false, this);//
+    BooleanSetting clock = new BooleanSetting("Clock", true, this);//
+    BooleanSetting arrayList = new BooleanSetting("ArrayList", true, this);//
     BooleanSetting helper = new BooleanSetting("Helper", true, this);
-    BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);
-    BooleanSetting coords = new BooleanSetting("Coords", true, this);
-    BooleanSetting friends = new BooleanSetting("Friends", true, this);
+    BooleanSetting lagNot = new BooleanSetting("Lag Notification", true, this);//
+    BooleanSetting coords = new BooleanSetting("Coords", true, this);//
+    BooleanSetting friends = new BooleanSetting("Friends", true, this);//
 
-    BooleanSetting armour = new BooleanSetting("Armour", false, this);
+    BooleanSetting armour = new BooleanSetting("Armour", false, this);//
 
     ColourSetting fontColour = new ColourSetting("Font", new Colour(255, 255, 255, 200), this);
     ColourSetting outlineColour = new ColourSetting("Outline", new Colour(0, 0, 0, 255), this);
