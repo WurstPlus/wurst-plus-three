@@ -21,12 +21,13 @@ public class HudEditor extends Hack {
     public ColourSetting gridColor = new ColourSetting("Grid Color", new Colour(255,255,255,255), this, s -> grid.getValue());
     public BooleanSetting alignment = new BooleanSetting("Alignment Lines", true ,this);
     public ColourSetting alignmentColor = new ColourSetting("Alignment Color", new Colour(255, 200, 0, 140), this, s -> alignment.getValue());
-    public IntSetting welcomerOffset = new IntSetting("Welcomer Offset", 500, 0, 20000, this);
-    public BooleanSetting welcomerName = new BooleanSetting("Welcomer Name", true, this);
-    public BooleanSetting welcomerFps = new BooleanSetting("Weclomer Fps", false, this);
-    public BooleanSetting welcomerTps = new BooleanSetting("Welcomer Tps", false, this);
-    public BooleanSetting welcomerPing = new BooleanSetting("Welcomer Ping", false, this);
-    public BooleanSetting welcomerTime = new BooleanSetting("Welcomer Time", false, this);
+    public IntSetting welcomerOffset = new IntSetting("Watermark Offset", 500, 0, 20000, this);
+    public BooleanSetting welcomerName = new BooleanSetting("Watermark Name", true, this);
+    public BooleanSetting welcomerFps = new BooleanSetting("Watermark Fps", false, this);
+    public BooleanSetting welcomerTps = new BooleanSetting("Watermark Tps", false, this);
+    public BooleanSetting welcomerPing = new BooleanSetting("Watermark Ping", false, this);
+    public BooleanSetting welcomerTime = new BooleanSetting("Watermark Time", false, this);
+    public BooleanSetting showOff = new BooleanSetting("Helper Show Off", true, this);
 
     public HudEditor(){
         INSTANCE = this;
