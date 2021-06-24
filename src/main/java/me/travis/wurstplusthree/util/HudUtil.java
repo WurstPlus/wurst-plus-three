@@ -2,10 +2,10 @@ package me.travis.wurstplusthree.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -113,6 +113,15 @@ public class HudUtil implements Globals {
             return WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
         } else {
             return mc.fontRenderer.FONT_HEIGHT;
+        }
+    }
+
+    public static int getRightX(String string, int x) {
+        ScaledResolution scaledResolution = new ScaledResolution(mc);
+        if (HudEditor.INSTANCE.customFont.getValue()) {
+            return scaledResolution.getScaledWidth() - x - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
+        } else {
+            return scaledResolution.getScaledWidth() - x - mc.fontRenderer.getStringWidth(string);
         }
     }
 

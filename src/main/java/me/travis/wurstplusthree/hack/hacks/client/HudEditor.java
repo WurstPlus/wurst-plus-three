@@ -1,8 +1,6 @@
 package me.travis.wurstplusthree.hack.hacks.client;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.gui.hud.element.HudElement;
-import me.travis.wurstplusthree.gui.hud.element.elements.HudWelcomer;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;

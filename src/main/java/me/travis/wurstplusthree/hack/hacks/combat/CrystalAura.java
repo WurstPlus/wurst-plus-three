@@ -736,7 +736,7 @@ public final class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return ((ezTarget != null) ? crystalLatency : "0") + "ms";
+        return crystalLatency + "ms";
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112

@@ -10,6 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -181,13 +182,25 @@ public final class Hacks implements Globals {
 
     public final List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
         if (customFont) {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
-                    WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
-                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+            if (reverse) {
+                List<Hack> list = this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+                Collections.reverse(list);
+                return list;
+            }  else {
+                return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+            }
         } else {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
-                    mc.fontRenderer.getStringWidth(hack.getFullArrayString())
-                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+            if (reverse) {
+                List<Hack> list = this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        mc.fontRenderer.getStringWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+                Collections.reverse(list);
+                return list;
+            }  else {
+                return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        mc.fontRenderer.getStringWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+            }
         }
     }
 }

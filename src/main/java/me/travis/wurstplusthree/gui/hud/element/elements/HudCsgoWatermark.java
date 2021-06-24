@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.HudUtil;
-import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.Rainbow;
@@ -28,7 +27,7 @@ public class HudCsgoWatermark extends HudElement {
     @Override
     public void onRender2D(Render2DEvent event) {
         int padding = 5;
-        Colour fill = new Colour(77, 77, 77, 200);
+        Colour fill = new Colour(77, 77, 77, 255);
         Colour outline = new Colour(127, 127, 127, 255);
         RenderUtil2D.drawBorderedRect(this.getX() - padding, this.getY() - padding,
                 this.getX() + padding + this.getWidth(), this.getY() + padding + this.getHeight() - 1, 1, fill.hashCode(), outline.hashCode(), false);

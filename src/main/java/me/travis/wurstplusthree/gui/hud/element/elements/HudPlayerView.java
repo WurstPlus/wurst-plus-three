@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.gui.hud.element.elements;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import org.lwjgl.opengl.GL11;
 
 @HudElement.Element(name = "Player View", posY = 100, posX = 100)
 public class HudPlayerView extends HudElement{

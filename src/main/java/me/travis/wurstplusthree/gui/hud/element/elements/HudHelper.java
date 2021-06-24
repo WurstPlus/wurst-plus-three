@@ -9,8 +9,6 @@ import me.travis.wurstplusthree.util.HudUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.Rainbow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
