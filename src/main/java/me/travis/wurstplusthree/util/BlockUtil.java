@@ -16,7 +16,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.*;
+import net.minecraft.network.play.client.CPacketEntityAction.Action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -320,8 +322,24 @@ public class BlockUtil implements Globals {
             }
 
         }
-
         return false;
+    }
+
+    public static void openBlock(BlockPos pos)
+    {
+        EnumFacing[] facings = EnumFacing.values();
+
+        for (EnumFacing f : facings)
+        {
+            Block neighborBlock = mc.world.getBlockState(pos.offset(f)).getBlock();
+
+            if (emptyBlocks.contains(neighborBlock))
+            {
+                mc.playerController.processRightClickBlock(mc.player, mc.world, pos, f.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
+
+                return;
+            }
+        }
     }
 
     public static boolean isBlockEmpty(BlockPos pos) {
