@@ -141,7 +141,6 @@ public final class CrystalAura extends Hack {
     private float yaw;
     private float pitch;
 
-    private boolean firstEnable = true;
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
@@ -762,7 +761,6 @@ final class AttackThread
             CPacketUseEntity attack = new CPacketUseEntity();
             attack.entityId = this.id;
             attack.action = CPacketUseEntity.Action.ATTACK;
-            CrystalAura.INSTANCE.setYawPitch(this.pos.up());
             mc.player.connection.sendPacket(attack);
             mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
         } catch (InterruptedException e) {
@@ -792,24 +790,24 @@ final class Threads extends Thread {
     }
 }
 
-final class CaThread extends Thread {
-    @Override
-    public void run() {
-        ClientMessage.sendMessage("run");
-        if (CrystalAura.INSTANCE.rotateMode.is("Fuck")) {
-            while (CrystalAura.INSTANCE.isEnabled()) {
-                CrystalAura.INSTANCE.threadOngoing.set(true);
-                CrystalAura.INSTANCE.doCrystalAura();
-                CrystalAura.INSTANCE.threadOngoing.set(false);
-                try {
-                    Thread.sleep(CrystalAura.INSTANCE.fuckDelay.getValue());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-}
+//final class CaThread extends Thread {
+//    @Override
+//    public void run() {
+//        ClientMessage.sendMessage("run");
+//        if (CrystalAura.INSTANCE.rotateMode.is("Fuck")) {
+//            while (CrystalAura.INSTANCE.isEnabled()) {
+//                CrystalAura.INSTANCE.threadOngoing.set(true);
+//                CrystalAura.INSTANCE.doCrystalAura();
+//                CrystalAura.INSTANCE.threadOngoing.set(false);
+//                try {
+//                    Thread.sleep(CrystalAura.INSTANCE.fuckDelay.getValue());
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
+//}
 
 enum ThreadType {
     BLOCK,

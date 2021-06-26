@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
@@ -23,54 +24,53 @@ import net.minecraft.item.ItemShulkerBox;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-@Hack.Registration(name = "Auto32K", description = "Does 32k because you are lazy urself", category = Hack.Category.COMBAT, isListening = false)
+@Hack.Registration(name = "Auto32K", description = "places some blocks and pulls out a sword", category = Hack.Category.COMBAT, priority = HackPriority.High)
 public class Auto32k extends Hack {
     private BlockPos pos;
-    private int hopper_slot;
-    private int redstone_slot;
-    private int shulker_slot;
-    private int ticks_past;
+    private int hopperSlot;
+    private int redstoneSlot;
+    private int shulkerSlot;
+    private int ticksPast;
     private int[] rot;
     private boolean setup;
-    private boolean place_redstone;
-    private boolean dispenser_done;
-    EnumSetting placeMode = new EnumSetting("PlaceMode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
+    private boolean placeRedstone;
+    private boolean dispenserDone;
+    EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
     IntSetting delay = new IntSetting("Delay", 4, 0, 10, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     IntSetting slot = new IntSetting("Slot", 0, 0, 9, this);
-    BooleanSetting secretClose = new BooleanSetting("PacketClose", false, this);
-    BooleanSetting closeGui = new BooleanSetting("closeGui", false, this, v -> secretClose.getValue());
+    BooleanSetting secretClose = new BooleanSetting("Packet Close", false, this);
+    BooleanSetting closeGui = new BooleanSetting("Close Gui", false, this, v -> secretClose.getValue());
 
     @Override
     public void onEnable() {
-        ticks_past = 0;
+        ticksPast = 0;
         setup = false;
-        dispenser_done = false;
-        place_redstone = false;
-        hopper_slot = -1;
+        dispenserDone = false;
+        placeRedstone = false;
+        hopperSlot = -1;
         int dispenser_slot = -1;
-        redstone_slot = -1;
-        shulker_slot = -1;
+        redstoneSlot = -1;
+        shulkerSlot = -1;
         int block_slot = -1;
         for (int i = 0; i < 9; i++) {
             Item item = mc.player.inventory.getStackInSlot(i).getItem();
-            if (item == Item.getItemFromBlock(Blocks.HOPPER)) hopper_slot = i;
+            if (item == Item.getItemFromBlock(Blocks.HOPPER)) hopperSlot = i;
             else if (item == Item.getItemFromBlock(Blocks.DISPENSER)) dispenser_slot = i;
-            else if (item == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK)) redstone_slot = i;
-            else if (item instanceof ItemShulkerBox) shulker_slot = i;
+            else if (item == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK)) redstoneSlot = i;
+            else if (item instanceof ItemShulkerBox) shulkerSlot = i;
             else if (item instanceof ItemBlock) block_slot = i;
         }
-        if ((hopper_slot == -1 || dispenser_slot == -1 || redstone_slot == -1 || shulker_slot == -1 || block_slot == -1) && !placeMode.getValue().equals("Hopper")) {
+        if ((hopperSlot == -1 || dispenser_slot == -1 || redstoneSlot == -1 || shulkerSlot == -1 || block_slot == -1) && !placeMode.getValue().equals("Hopper")) {
             ClientMessage.sendErrorMessage("missing item");
             this.disable();
             return;
-        } else if (hopper_slot == -1 || shulker_slot == -1) {
+        } else if (hopperSlot == -1 || shulkerSlot == -1) {
             ClientMessage.sendErrorMessage("missing item");
             this.disable();
             return;
@@ -116,12 +116,12 @@ public class Auto32k extends Hack {
                 for (int y = -1; y <= 2; y++) {
                     for (int x = -2; x <= 2; x++) {
                         if ((z != 0 || y != 0 || x != 0) && (z != 0 || y != 1 || x != 0) && BlockUtil.isBlockEmpty(mc.player.getPosition().add(z, y, x)) && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) z + 0.5D, (double) y + 0.5D, (double) x + 0.5D)) < 4.5D && BlockUtil.isBlockEmpty(mc.player.getPosition().add(z, y + 1, x)) && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) z + 0.5D, (double) y + 1.5D, (double) x + 0.5D)) < 4.5D)  {
-                            BlockUtil.placeBlock(mc.player.getPosition().add(z, y, x), hopper_slot, rotate.getValue(), false, swing);
-                            BlockUtil.placeBlock(mc.player.getPosition().add(z, y + 1, x), shulker_slot, rotate.getValue(), false, swing);
+                            BlockUtil.placeBlock(mc.player.getPosition().add(z, y, x), hopperSlot, rotate.getValue(), false, swing);
+                            BlockUtil.placeBlock(mc.player.getPosition().add(z, y + 1, x), shulkerSlot, rotate.getValue(), false, swing);
                             BlockUtil.openBlock(mc.player.getPosition().add(z, y, x));
                             pos = mc.player.getPosition().add(z, y, x);
-                            dispenser_done = true;
-                            place_redstone = true;
+                            dispenserDone = true;
+                            placeRedstone = true;
                             setup = true;
                             return;
                         }
@@ -133,32 +133,32 @@ public class Auto32k extends Hack {
 
     @Override
     public void onUpdate() {
-        if (ticks_past > 50 && !(mc.currentScreen instanceof GuiHopper)) {
+        if (ticksPast > 50 && !(mc.currentScreen instanceof GuiHopper)) {
             ClientMessage.sendErrorMessage("inactive too long, disabling");
             this.disable();
             return;
         }
 
-        if (setup && ticks_past > this.delay.getValue()) {
-            if (!dispenser_done) { // ching chong
+        if (setup && ticksPast > this.delay.getValue()) {
+            if (!dispenserDone) { // ching chong
                 try {
-                    mc.playerController.windowClick(mc.player.openContainer.windowId, 36 + shulker_slot, 0, ClickType.QUICK_MOVE, mc.player);
-                    dispenser_done = true;
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 36 + shulkerSlot, 0, ClickType.QUICK_MOVE, mc.player);
+                    dispenserDone = true;
                 } catch (Exception ignored) {
                     //EmptyCatchBlockXDDDDDDD
                 }
             }
 
-            if (!place_redstone) {
-                BlockUtil.placeBlock(pos.add(0, 2, 0), redstone_slot, rotate.getValue(), false, swing);
-                place_redstone = true;
+            if (!placeRedstone) {
+                BlockUtil.placeBlock(pos.add(0, 2, 0), redstoneSlot, rotate.getValue(), false, swing);
+                placeRedstone = true;
                 return;
             }
 
             if (!placeMode.getValue().equals("Hopper") && mc.world.getBlockState(this.pos.add(this.rot[0], 1, this.rot[1])).getBlock() instanceof BlockShulkerBox
                     && mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER
-                    && place_redstone && dispenser_done && !(mc.currentScreen instanceof GuiInventory)) {
-                BlockUtil.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), hopper_slot, rotate.getValue(), false, swing);
+                    && placeRedstone && dispenserDone && !(mc.currentScreen instanceof GuiInventory)) {
+                BlockUtil.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), hopperSlot, rotate.getValue(), false, swing);
                 BlockUtil.openBlock(this.pos.add(this.rot[0], 0, this.rot[1]));
             }
             //the coming code is completly skidded and I do not feel bad about it
@@ -181,25 +181,25 @@ public class Auto32k extends Hack {
                         }
                         if (this.slot.getValue() != 0) {
                             InventoryUtil.switchToHotbarSlot(this.slot.getValue() - 1, false);
-                        } else if (!this.placeMode.getValue().equals("Hopper") && this.shulker_slot > 35 && this.shulker_slot != 45) {
-                            InventoryUtil.switchToHotbarSlot(44 - this.shulker_slot, false);
+                        } else if (!this.placeMode.getValue().equals("Hopper") && this.shulkerSlot > 35 && this.shulkerSlot != 45) {
+                            InventoryUtil.switchToHotbarSlot(44 - this.shulkerSlot, false);
                         }
                         Auto32k.mc.playerController.windowClick(Auto32k.mc.player.openContainer.windowId, swordIndex, this.slot.getValue() == 0 ? Auto32k.mc.player.inventory.currentItem : this.slot.getValue() - 1, ClickType.SWAP, Auto32k.mc.player);
-                    } else if (this.closeGui.getValue().booleanValue() && this.secretClose.getValue().booleanValue()) {
+                    } else if (this.closeGui.getValue() && this.secretClose.getValue()) {
                         Auto32k.mc.player.closeScreen();
                     }
                 } else if (!EntityUtil.holding32k(mc.player)) {
                 }
             }
         }
-        ++this.ticks_past;
+        ++this.ticksPast;
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
     public void onPacketSend(PacketEvent.Send event) {
         if (mc.currentScreen instanceof GuiHopper) {
             if (event.getPacket() instanceof CPacketCloseWindow) {
-                if (this.secretClose.getValue().booleanValue()) {
+                if (this.secretClose.getValue()) {
                     event.setCancelled(true);
                 }
                 if (!EntityUtil.holding32k(mc.player) && !EntityUtil.is32k(mc.player.getHeldItemMainhand())) {

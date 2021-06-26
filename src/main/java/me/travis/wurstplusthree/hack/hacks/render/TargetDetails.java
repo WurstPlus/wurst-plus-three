@@ -47,14 +47,13 @@ public class TargetDetails extends Hack {
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        if (showFucked.getValue()) {
-            if (!this.fuckedBlocks.isEmpty()) {
-                this.fuckedBlocks.forEach(this::renderFuckedBlock);
-            }
-        }
         if (showBurrow.getValue()) {
             if (!this.burrowedBlocks.isEmpty()) {
                 this.burrowedBlocks.forEach(this::renderBurrowedBlock);
+            }
+        } else if (showFucked.getValue()) {
+            if (!this.fuckedBlocks.isEmpty()) {
+                this.fuckedBlocks.forEach(this::renderFuckedBlock);
             }
         }
     }
