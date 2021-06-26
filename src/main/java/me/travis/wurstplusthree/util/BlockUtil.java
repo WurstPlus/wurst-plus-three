@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -210,6 +211,54 @@ public class BlockUtil implements Globals {
         mc.player.swingArm(EnumHand.MAIN_HAND);
         mc.rightClickDelayTimer = 4; //?
         return true;
+    }
+
+    public static void placeBlockWithRotations(BlockPos pos, int slot, int rotateType, boolean rotateBack, EnumHand hand) {
+        int old_slot = -1;
+        if (slot != mc.player.inventory.currentItem) {
+            old_slot = mc.player.inventory.currentItem;
+            mc.player.inventory.currentItem = slot;
+        }
+
+        EnumFacing[] facings = EnumFacing.values();
+
+        for (EnumFacing f : facings) {
+            Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) f.getXOffset() * 0.5D, pos.getY() + 0.5D + (double) f.getYOffset() * 0.5D, pos.getZ() + 0.5D + (double) f.getZOffset() * 0.5D);
+
+
+            float[] rot = new float[]{mc.player.rotationYaw, mc.player.rotationPitch};
+            if (rotateType > 0) {
+                if (rotateType == 1) {
+                    BlockUtil.faceVectorPacketInstant(vec);
+                }
+                else if (rotateType == 2) {
+                    RotationUtil.rotateHead(vec.x, vec.y, vec.z, mc.player);
+                }
+            }
+
+            mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(f), f.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
+
+            if (rotateBack) {
+                if(rotateType == 1){
+                    Minecraft.getMinecraft().player.connection.sendPacket(new CPacketPlayer.Rotation(rot[0], rot[1], Minecraft.getMinecraft().player.onGround));
+                }
+                else if (rotateType == 2) {
+                    mc.player.setRotationYawHead(rot[0]);
+                }
+            }
+
+            mc.player.swingArm(hand);
+
+            if (old_slot != -1) {
+                mc.player.inventory.currentItem = old_slot;
+            }
+            return;
+        }
+    }
+
+    public static void faceVectorPacketInstant(Vec3d vec) {
+        float[] rotations = getLegitRotations(vec);
+        Minecraft.getMinecraft().player.connection.sendPacket(new CPacketPlayer.Rotation(rotations[0], rotations[1], Minecraft.getMinecraft().player.onGround));
     }
 
     public static List<EnumFacing> getPossibleSides(BlockPos pos) {

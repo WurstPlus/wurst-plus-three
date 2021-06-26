@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -26,7 +27,8 @@ public class Trap extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet"),this);
     IntSetting blocksPerTick = new IntSetting("Speed", 4, 0, 8, this);
-    BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
+    EnumSetting rotation = new EnumSetting("Rotate", "None",Arrays.asList("None", "Packet", "Hard"), this);
+    //BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
 
@@ -173,7 +175,15 @@ public class Trap extends Hack {
                 }
             }
 
-            if (should_try_place && BlockUtil.placeBlock(target_pos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
+            if (should_try_place) {
+                if(rotation.is("Packet")){
+                    BlockUtil.placeBlockWithRotations(target_pos, PlayerUtil.findObiInHotbar(), 1, true, EnumHand.MAIN_HAND);
+                }else if(rotation.is("Hard")){
+                    BlockUtil.placeBlockWithRotations(target_pos, PlayerUtil.findObiInHotbar(), 2, true, EnumHand.MAIN_HAND);
+                }else {
+                    BlockUtil.placeBlockWithRotations(target_pos, PlayerUtil.findObiInHotbar(), 0, true, EnumHand.MAIN_HAND);
+                }
+
                 ++blocks_placed;
             }
 

@@ -13,6 +13,7 @@ import me.travis.wurstplusthree.util.HoleUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -29,7 +30,8 @@ public class HoleFill extends Hack {
     EnumSetting fillMode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "Smart", "Auto"), this);
     IntSetting smartRange = new IntSetting("Auto Range", 2, 1, 5, this);
     BooleanSetting doubleHoles = new BooleanSetting("Double Fill", false, this);
-    BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
+    EnumSetting rotation = new EnumSetting("Rotate", "None",Arrays.asList("None", "Packet", "Hard"), this);
+    //BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 
@@ -67,7 +69,13 @@ public class HoleFill extends Hack {
                 return;
             }
             if (posToFill != null) {
-                BlockUtil.placeBlock(posToFill, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing);
+                if(rotation.is("Packet")){
+                    BlockUtil.placeBlockWithRotations(posToFill, PlayerUtil.findObiInHotbar(), 1, true, EnumHand.MAIN_HAND);
+                }else if(rotation.is("Hard")){
+                    BlockUtil.placeBlockWithRotations(posToFill, PlayerUtil.findObiInHotbar(), 2, true, EnumHand.MAIN_HAND);
+                }else {
+                    BlockUtil.placeBlockWithRotations(posToFill, PlayerUtil.findObiInHotbar(), 0, true, EnumHand.MAIN_HAND);
+                }
                 holes.remove(posToFill);
             }
         }
