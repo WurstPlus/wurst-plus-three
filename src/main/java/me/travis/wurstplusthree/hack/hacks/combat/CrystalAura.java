@@ -22,18 +22,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemEndCrystal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.network.play.server.SPacketDestroyEntities;
-import net.minecraft.network.play.server.SPacketExplosion;
-import net.minecraft.network.play.server.SPacketSoundEffect;
-import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.network.play.server.*;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -88,6 +82,7 @@ public final class CrystalAura extends Hack {
 
     private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting predictTeleport = new EnumSetting("Predict Teleport", "Sound", Arrays.asList("Sound", "Packet", "None"), this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this, s -> place.getValue() || breaK.getValue());
     private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this, s -> entityPredict.getValue() && (place.getValue() || breaK.getValue()));
 
@@ -228,7 +223,28 @@ public final class CrystalAura extends Hack {
                 }
             }
         }
+
+        if (event.getPacket() instanceof SPacketEntityTeleport) {
+            Entity e = mc.world.getEntityByID(((SPacketEntityTeleport) event.getPacket()).getEntityId());
+            if (e instanceof EntityPlayer && predictTeleport.is("Packet")) {
+                SPacketEntityTeleport p = event.getPacket();
+                e.setEntityBoundingBox(e.getEntityBoundingBox().offset(p.getX(), p.getY(), p.getZ()));
+            }
+        }
+
         if (event.getPacket() instanceof SPacketSoundEffect) {
+            if (((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT && predictTeleport.is("Sound")) {
+                SPacketSoundEffect p = event.getPacket();
+                mc.world.loadedEntityList.spliterator().forEachRemaining(player -> {
+                    if (player instanceof EntityPlayer) {
+                        if (player.getDistance(p.getX(), p.getY(), p.getZ()) <= targetRange.getValue()) {
+                            player.setEntityBoundingBox(player.getEntityBoundingBox().offset(p.getX(), p.getY(), p.getZ()));
+                        }
+                    }
+                });
+            }
+
+
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
                     if (crystal instanceof EntityEnderCrystal)
@@ -318,8 +334,8 @@ public final class CrystalAura extends Hack {
 
         if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
             if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && (autoSwitch.getValue().equals("Allways") || autoSwitch.is("NoGap"))) {
-                if(autoSwitch.is("NoGap")){
-                    if(mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE){
+                if (autoSwitch.is("NoGap")) {
+                    if (mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE) {
                         return;
                     }
                 }
@@ -408,7 +424,7 @@ public final class CrystalAura extends Hack {
             if (!(e instanceof EntityEnderCrystal)) continue;
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
-                if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue()))continue;
+                if (mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
                 if (entityPredict.getValue()) {
                     float f = target.width / 2.0F, f1 = target.height;
                     target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
@@ -448,7 +464,7 @@ public final class CrystalAura extends Hack {
         ArrayList<CrystalPos> validPos = new ArrayList<>();
 
         for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
-            if(mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
+            if (mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
             if (entityPredict.getValue()) {
                 float f = target.width / 2.0F, f1 = target.height;
                 target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
@@ -613,7 +629,7 @@ public final class CrystalAura extends Hack {
         if (this.palceObiFeet.getValue() && obiFeetCounter >= timeoutTicksObiFeet.getValue() && mc.player.getDistance(player) < 5) {
             try {
                 this.blockObiNextToPlayer(player);
-            }catch (ConcurrentModificationException e){
+            } catch (ConcurrentModificationException e) {
                 e.printStackTrace();
             }
         }
