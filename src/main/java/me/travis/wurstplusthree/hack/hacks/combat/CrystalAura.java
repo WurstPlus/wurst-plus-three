@@ -756,6 +756,7 @@ public final class CrystalAura extends Hack {
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
     // moved to CyrstalUtil ~travis
+    //hello ~travis
 }
 
 final class AttackThread

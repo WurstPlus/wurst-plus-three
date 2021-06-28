@@ -16,7 +16,19 @@ public class EnumSetting extends Setting<String> {
         this.modes = modes;
     }
 
-    public EnumSetting(String name, String value, List<String> modes, Hack parent, Predicate<String> shown) {
+    public EnumSetting(String name, String value, List<String> modes, ParentSetting parent) {
+        super(name, value, parent);
+
+        this.modes = modes;
+    }
+
+    public EnumSetting(String name, String value, List<String> modes, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+
+        this.modes = modes;
+    }
+
+    public EnumSetting(String name, String value, List<String> modes, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
 
         this.modes = modes;
@@ -38,12 +50,6 @@ public class EnumSetting extends Setting<String> {
         return this.value;
     }
 
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
-    }
 
     @Override
     public String getType() {

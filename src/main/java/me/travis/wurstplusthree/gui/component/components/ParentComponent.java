@@ -5,45 +5,39 @@ import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.ParentSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
 import java.awt.*;
 
-/**
- * @author Madmegsox1
- * @since 29/04/2021
- */
-
-public class BooleanComponent extends Component {
+public class ParentComponent extends Component {
     private boolean hovered;
-    private BooleanSetting option;
+    private ParentSetting option;
     private final HackButton parent;
     private int offset;
     private int x;
     private int y;
 
-    public BooleanComponent(BooleanSetting option, HackButton button, int offset) {
+    public ParentComponent(ParentSetting option, HackButton button, int offset) {
         this.option = option;
         this.parent = button;
         this.offset = offset;
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
-        setShown(true);
+        this.setShown(true);
     }
 
 
     @Override
     public void renderComponent(int mouseX, int mouseY) {
-        if(!isShown())return;
-        WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
-        RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, 1, !this.option.getValue() ? WurstplusGuiNew.GUI_COLOR() : Gui.INSTANCE.buttonColor.getValue().hashCode(), new Color(0, 0, 0, 200).hashCode(), this.hovered);
-        RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + (this.option.getValue() ? 95 : 88), parent.parent.getY() + offset + 5 + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + (this.option.getValue() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 5, new Color(50, 50, 50, 255).hashCode());
+        if(!this.isShown())return;
+        WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
         if (Gui.INSTANCE.customFont.getValue()) {
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.option.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow((this.option.getValue() ? "lol" : "xDD"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 108 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
             mc.fontRenderer.drawStringWithShadow(this.option.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow((this.option.getValue() ? "-" : "+"), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 108 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
     }
 
@@ -68,7 +62,7 @@ public class BooleanComponent extends Component {
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if(!isShown())return;
         if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.isOpen) {
-            this.option.setValue(!option.getValue());
+            this.option.toggle();
         }
     }
 
@@ -86,4 +80,3 @@ public class BooleanComponent extends Component {
         return offset;
     }
 }
-

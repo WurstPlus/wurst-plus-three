@@ -61,46 +61,53 @@ public class HackButton extends Component {
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
                 if (s instanceof BooleanSetting) {
-                    if (!((BooleanSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new BooleanComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
-                    if (!((EnumSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof IntSetting) {
-                    if (!((IntSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new SliderComponent((IntSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof DoubleSetting) {
-                    if (!((DoubleSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof ColourSetting) {
-                    if (!((ColourSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof KeySetting) {
-                    if (!((KeySetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
+                } else if (s instanceof ParentSetting) {
+                    if (!s.isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
+                    this.subcomponents.add(new ParentComponent((ParentSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 }
             }
