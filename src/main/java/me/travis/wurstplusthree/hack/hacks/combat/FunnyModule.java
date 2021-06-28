@@ -30,9 +30,11 @@ import java.util.List;
 @Hack.Registration(name = "FunnyModule", description = "Does the funny thing", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public class FunnyModule extends Hack {
     public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
+    public EnumSetting structure = new EnumSetting("Structure", "Minimum", Arrays.asList("Minimum", "Trap", "NoStep"), this);
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     ColourSetting color = new ColourSetting("Render", new Colour(0, 0, 0 ,255), this);
+
 
     private int offsetStep = 0;
     private int obsidianslot;
@@ -69,7 +71,12 @@ public class FunnyModule extends Hack {
         switch (currentStep) {
             case Trapping:
                 final List<Vec3d> place_targets = new ArrayList<Vec3d>();
+                if (structure.is("Minimum"))
                 Collections.addAll(place_targets, offsetsMinimum);
+                if (structure.is("Trap"))
+                    Collections.addAll(place_targets, offsetsTrap);
+                if (structure.is("NoStep"))
+                    Collections.addAll(place_targets, offsetsNoStep);
                 if (player == null) return;
                 if (mc.world.getBlockState(new BlockPos(player.getPositionVector().add(0, 2, 0))).getBlock() instanceof BlockAir) {
 
@@ -108,6 +115,9 @@ public class FunnyModule extends Hack {
                 if (mc.world.getBlockState(breakBlock).getBlock() instanceof BlockObsidian) {
                     InventoryUtil.switchToHotbarSlot(pickslot, false);
                     mc.player.swingArm(EnumHand.MAIN_HAND);
+                    if (rotate.getValue()) {
+                        RotationUtil.faceVector(new Vec3d(breakBlock), true);
+                    }
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
                 } else {
@@ -118,6 +128,9 @@ public class FunnyModule extends Hack {
                     if (crystal.isDead) {
                         currentStep = step.Trapping;
                     } else {
+                        if (rotate.getValue()) {
+                            RotationUtil.faceVector(crystal.getPositionVector(), true);
+                        }
                         EntityUtil.attackEntity(crystal, true, true);
                     }
                 }
@@ -203,6 +216,10 @@ public class FunnyModule extends Hack {
             if (target == mc.player || !target.isEntityAlive())
                 continue;
 
+            if (target.getPositionVector() == mc.player.getPositionVector()) {
+                continue;
+            }
+
             if (!EntityUtil.isInHole(target))
                 continue;
 
@@ -257,6 +274,35 @@ public class FunnyModule extends Hack {
     private final Vec3d[] offsetsMinimum = new Vec3d[]{
             new Vec3d(1.0, 2.0, 0.0),
             new Vec3d(1.0, 3.0, 0.0),
+            new Vec3d(0.0, 3.0, 0.0)
+    };
+
+    private final Vec3d[] offsetsTrap = new Vec3d[]{
+            new Vec3d(1.0, 1.0, 0.0),
+            new Vec3d(-1.0, 1.0, 0.0),
+            new Vec3d(0.0, 1.0, 1.0),
+            new Vec3d(0.0, 1.0, -1.0),
+            new Vec3d(1.0, 2.0, 0.0),
+            new Vec3d(-1.0, 2.0, 0.0),
+            new Vec3d(0.0, 2.0, 1.0),
+            new Vec3d(0.0, 2.0, -1.0),
+            new Vec3d(1.0, 3.0, 0.0),
+            new Vec3d(0.0, 3.0, 0.0)
+    };
+
+    private final Vec3d[] offsetsNoStep = new Vec3d[]{
+            new Vec3d(1.0, 1.0, 0.0),
+            new Vec3d(-1.0, 1.0, 0.0),
+            new Vec3d(0.0, 1.0, 1.0),
+            new Vec3d(0.0, 1.0, -1.0),
+            new Vec3d(1.0, 2.0, 0.0),
+            new Vec3d(-1.0, 2.0, 0.0),
+            new Vec3d(0.0, 2.0, 1.0),
+            new Vec3d(0.0, 2.0, -1.0),
+            new Vec3d(1.0, 3.0, 0.0),
+            new Vec3d(-1.0, 3.0, 0.0),
+            new Vec3d(0.0, 3.0, 1.0),
+            new Vec3d(0.0, 3.0, -1.0),
             new Vec3d(0.0, 3.0, 0.0)
     };
 }
