@@ -7,11 +7,11 @@ import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Hack.Registration(name = "Anti Fog", description = "removes fog", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "AntiFog", description = "removes fog", category = Hack.Category.RENDER, isListening = false)
 public class AntiFog extends Hack {
 
-    public BooleanSetting clear = new BooleanSetting("Remove Fog", true, this);
-    public BooleanSetting colour = new BooleanSetting("Colour Fog", true, this);
+    public BooleanSetting clear = new BooleanSetting("RemoveFog", true, this);
+    public BooleanSetting colour = new BooleanSetting("ColourFog", true, this);
     public ColourSetting overworldColour = new ColourSetting("Overworld", new Colour(255, 255, 255, 255), this, s -> colour.getValue());
     public ColourSetting netherColour = new ColourSetting("Nether", new Colour(255, 255, 255, 255), this, s -> colour.getValue());
     public ColourSetting endColour = new ColourSetting("End", new Colour(255, 255, 255, 255), this, s -> colour.getValue());

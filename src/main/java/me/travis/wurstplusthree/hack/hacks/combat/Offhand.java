@@ -29,11 +29,11 @@ public class Offhand extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);
     BooleanSetting cancelMovement = new BooleanSetting("CancelMovement", false, this); // 2b2t does not let you swap items when moving so you must stop movement first then swap.
-    IntSetting TotemHp = new IntSetting("Totem HP", 16, 0, 36, this);
-    IntSetting HoleHP = new IntSetting("Hole HP", 16, 0, 36, this);
-    BooleanSetting GapSwitch = new BooleanSetting("Gap Swap", false, this);
-    BooleanSetting GapOnSword = new BooleanSetting("Sword Gap", false, this, s -> GapSwitch.getValue());
-    BooleanSetting GapOnPick = new BooleanSetting("Pick Gap", false, this, s -> GapSwitch.getValue());
+    IntSetting TotemHp = new IntSetting("TotemHP", 16, 0, 36, this);
+    IntSetting HoleHP = new IntSetting("HoleHP", 16, 0, 36, this);
+    BooleanSetting GapSwitch = new BooleanSetting("GapSwap", false, this);
+    BooleanSetting GapOnSword = new BooleanSetting("SwordGap", false, this, s -> GapSwitch.getValue());
+    BooleanSetting GapOnPick = new BooleanSetting("PickGap", false, this, s -> GapSwitch.getValue());
     BooleanSetting Always = new BooleanSetting("Always", false, this, s -> GapSwitch.getValue());
     BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
     IntSetting cooldown = new IntSetting("Cooldown", 0, 0, 40, this);

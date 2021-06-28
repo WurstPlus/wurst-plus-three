@@ -27,8 +27,8 @@ public class HoleFill extends Hack {
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);
     IntSetting holesPerSecond = new IntSetting("HPS", 3, 1, 6, this);
     EnumSetting fillMode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "Smart", "Auto"), this);
-    IntSetting smartRange = new IntSetting("Auto Range", 2, 1, 5, this);
-    BooleanSetting doubleHoles = new BooleanSetting("Double Fill", false, this);
+    IntSetting smartRange = new IntSetting("AutoRange", 2, 1, 5, this);
+    BooleanSetting doubleHoles = new BooleanSetting("DoubleFill", false, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     BooleanSetting toggle = new BooleanSetting("Toggle", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);

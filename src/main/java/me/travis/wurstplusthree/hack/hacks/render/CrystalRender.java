@@ -35,8 +35,8 @@ public class CrystalRender extends Hack {
     public BooleanSetting xqz = new BooleanSetting("XQZ", false, this);
 
     public ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 150), this);
-    public ColourSetting wireColour = new ColourSetting("Wireframe Colour", new Colour(0, 0, 0, 150), this);
-    public ColourSetting hiddenColour = new ColourSetting("Hidden Colour", new Colour(255, 255, 255, 150), this);
+    public ColourSetting wireColour = new ColourSetting("WireframeColour", new Colour(0, 0, 0, 150), this);
+    public ColourSetting hiddenColour = new ColourSetting("HiddenColour", new Colour(255, 255, 255, 150), this);
 
     public DoubleSetting width = new DoubleSetting("Width", 3.0, 0.1, 5.0, this);
     public DoubleSetting scale = new DoubleSetting("Scale", 1.0, 0.1, 3.0, this);

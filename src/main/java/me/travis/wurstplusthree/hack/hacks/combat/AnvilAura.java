@@ -21,15 +21,15 @@ import java.util.Arrays;
 
 // UNFINISHED
 
-@Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
+@Hack.Registration(name = "AnvilAura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
-    BooleanSetting airplace = new BooleanSetting("Airplace", false, this);
+    BooleanSetting airplace = new BooleanSetting("AirPlace", false, this);
     IntSetting range = new IntSetting("Range", 3, 0, 6, this);
-    IntSetting bpt = new IntSetting("Blocks per tick", 4, 0, 10, this);
-    IntSetting placeDelay = new IntSetting("Place Delay", 4, 0, 20, this);
+    IntSetting bpt = new IntSetting("BlocksPerTick", 4, 0, 10, this);
+    IntSetting placeDelay = new IntSetting("PlaceDelay", 4, 0, 20, this);
     IntSetting layers = new IntSetting("Layers", 3, 1, 5, this);
 
     private int ticksPassed = 0;

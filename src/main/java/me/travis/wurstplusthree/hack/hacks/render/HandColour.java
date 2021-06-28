@@ -4,7 +4,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
-@Hack.Registration(name = "Hand Colour", description = "colours hands (only 9 months late jumpy)", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "HandColour", description = "colours hands (only 9 months late jumpy)", category = Hack.Category.RENDER, isListening = false)
 public class HandColour extends Hack {
 
     public static HandColour INSTANCE;

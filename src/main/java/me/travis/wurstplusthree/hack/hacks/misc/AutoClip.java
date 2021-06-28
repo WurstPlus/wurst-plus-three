@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - shit code from my old client
  */
 
-@Hack.Registration(name = "Auto Clip", description = "Clips ppl when you kill them", category = Hack.Category.MISC, isListening = false)
+@Hack.Registration(name = "AutoClip", description = "Clips ppl when you kill them", category = Hack.Category.MISC, isListening = false)
 public class AutoClip extends Hack {
 
     public static AutoClip INSTANCE;
@@ -34,7 +34,7 @@ public class AutoClip extends Hack {
     }
 
     DoubleSetting delay = new DoubleSetting("Delay", 2.0, 0.0, 20.0, this);
-    BooleanSetting test = new BooleanSetting("Test Bind", false, this);
+    BooleanSetting test = new BooleanSetting("TestBind", false, this);
 
     private int delayCount;
     private boolean shouldClip;

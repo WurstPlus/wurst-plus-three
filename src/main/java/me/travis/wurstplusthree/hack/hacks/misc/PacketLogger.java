@@ -17,7 +17,7 @@ import net.minecraft.network.status.server.SPacketServerInfo;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "Packet Logger", description = "Logs incoming and outgoing packets", category = Hack.Category.MISC, priority = HackPriority.Lowest)
+@Hack.Registration(name = "PacketLogger", description = "Logs incoming and outgoing packets", category = Hack.Category.MISC, priority = HackPriority.Lowest)
 public final class PacketLogger extends Hack {
     BooleanSetting incoming = new BooleanSetting("Receive", true, this);
     BooleanSetting AdvancementInfo = new BooleanSetting("SPacketAdvancementInfo", false, this, s -> incoming.getValue());

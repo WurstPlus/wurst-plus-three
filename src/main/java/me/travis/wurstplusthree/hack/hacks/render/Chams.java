@@ -19,6 +19,6 @@ public class Chams extends Hack {
     public BooleanSetting xqz = new BooleanSetting("XQZ", false, this);
 
     public ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 150), this, s -> coloured.getValue());
-    public ColourSetting hiddenColour = new ColourSetting("Hidden Colour", new Colour(255, 255, 255, 150), this, s -> coloured.getValue());
+    public ColourSetting hiddenColour = new ColourSetting("HiddenColour", new Colour(255, 255, 255, 150), this, s -> coloured.getValue());
 
 }

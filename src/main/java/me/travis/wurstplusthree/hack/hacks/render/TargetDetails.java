@@ -17,15 +17,15 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Hack.Registration(name = "Target Details", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "TargetDetails", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
 public class TargetDetails extends Hack {
 
     BooleanSetting showFucked = new BooleanSetting("Fucked", true, this);
     BooleanSetting onePointT = new BooleanSetting("1.13+", false, this);
     BooleanSetting showBurrow = new BooleanSetting("Burrowed", true, this);
 
-    ColourSetting fuckedColour = new ColourSetting("Fucked Colour", new Colour(255, 20, 20, 150), this, s -> showFucked.getValue());
-    ColourSetting burrowedColour = new ColourSetting("Burrowed Colour", new Colour(20, 255, 255, 150), this, s -> showBurrow.getValue());
+    ColourSetting fuckedColour = new ColourSetting("FuckedColour", new Colour(255, 20, 20, 150), this, s -> showFucked.getValue());
+    ColourSetting burrowedColour = new ColourSetting("BurrowedColour", new Colour(20, 255, 255, 150), this, s -> showBurrow.getValue());
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
 
     private final ArrayList<BlockPos> fuckedBlocks = new ArrayList<>();

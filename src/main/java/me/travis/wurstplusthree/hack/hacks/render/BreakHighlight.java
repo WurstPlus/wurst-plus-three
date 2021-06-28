@@ -28,11 +28,11 @@ import java.util.List;
  * fixed ur shit nerd ¬ travis
  */
 
-@Hack.Registration(name = "Break Highlight", description = "highlights where people are breaking", category = Hack.Category.RENDER, priority = HackPriority.Lowest)
+@Hack.Registration(name = "BreakHighlight", description = "highlights where people are breaking", category = Hack.Category.RENDER, priority = HackPriority.Lowest)
 public class BreakHighlight extends Hack {
 
-    ColourSetting self = new ColourSetting("Self Colour", new Colour(255, 255, 255, 200), this);
-    ColourSetting other = new ColourSetting("Other Colour", new Colour(255, 0, 0), this);
+    ColourSetting self = new ColourSetting("SelfColour", new Colour(255, 255, 255, 200), this);
+    ColourSetting other = new ColourSetting("OtherColour", new Colour(255, 0, 0), this);
     EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Outline", "Both", "Fill"), this);
     HashMap<Integer, Pair<Integer, BlockPos>> breakingBlockList = new HashMap<>();
 

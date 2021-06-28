@@ -34,26 +34,26 @@ import java.util.Arrays;
 
 @Hack.Registration(name = "Speedmine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
 public final class SpeedMine extends Hack{
-    private final BooleanSetting rangeCheck = new BooleanSetting("Range Check", true, this);
+    private final BooleanSetting rangeCheck = new BooleanSetting("RangeCheck", true, this);
     private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, this, s -> rangeCheck.getValue());
     private final BooleanSetting swing = new BooleanSetting("Swing", true, this);
     private final BooleanSetting rotate = new BooleanSetting("Rotate", false ,this);
-    private final EnumSetting rotateSetting = new EnumSetting("Rotate Settings", "Break", Arrays.asList("Break", "Constant", "Hit"), this, s -> rotate.getValue());
-    private final BooleanSetting cancel = new BooleanSetting("Cancel Event", true, this);
-    private final BooleanSetting packetLoop = new BooleanSetting("Packet Loop", false, this);
+    private final EnumSetting rotateSetting = new EnumSetting("RotateSettings", "Break", Arrays.asList("Break", "Constant", "Hit"), this, s -> rotate.getValue());
+    private final BooleanSetting cancel = new BooleanSetting("CancelEvent", true, this);
+    private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, this);
     private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, this, s -> packetLoop.getValue());
-    private final BooleanSetting abortPacket = new BooleanSetting("Abort Packet", true ,this);
+    private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,this);
     private final BooleanSetting instant = new BooleanSetting("Instant", false, this);
-    private final IntSetting instantPacketLoop = new IntSetting("Instant Packets", 2, 2, 25, this, s -> instant.getValue());
-    private final IntSetting instantDelay = new IntSetting("Instant Delay", 0, 0, 120, this,s -> instant.getValue());
+    private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, this, s -> instant.getValue());
+    private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, this,s -> instant.getValue());
     private final BooleanSetting render = new BooleanSetting("Render", true , this);
     private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill"), this, s -> render.getValue());
-    private final ColourSetting instantColor = new ColourSetting("Instant Color Outline", new Colour(100, 0, 100), this, s -> render.getValue() && instant.getValue());
-    private final ColourSetting instantColorFill = new ColourSetting("Instant Color Fill", new Colour(100, 0, 100, 40), this, s -> render.getValue() && instant.getValue());
-    private final ColourSetting breakColor = new ColourSetting("Break Color Outline", new Colour(255, 0, 0), this, s -> render.getValue());
-    private final ColourSetting doneColor = new ColourSetting("Finished Color Outline", new Colour(0, 255, 0), this, s -> render.getValue());
-    private final ColourSetting breakColorFill = new ColourSetting("Break Color Fill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
-    private final ColourSetting doneColorFill = new ColourSetting("Finished Color Fill", new Colour(0, 255, 0, 40), this, s -> render.getValue());
+    private final ColourSetting instantColor = new ColourSetting("InstantColorOutline", new Colour(100, 0, 100), this, s -> render.getValue() && instant.getValue());
+    private final ColourSetting instantColorFill = new ColourSetting("InstantColorFill", new Colour(100, 0, 100, 40), this, s -> render.getValue() && instant.getValue());
+    private final ColourSetting breakColor = new ColourSetting("BreakColorOutline", new Colour(255, 0, 0), this, s -> render.getValue());
+    private final ColourSetting doneColor = new ColourSetting("FinishedColorOutline", new Colour(0, 255, 0), this, s -> render.getValue());
+    private final ColourSetting breakColorFill = new ColourSetting("BreakColorFill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
+    private final ColourSetting doneColorFill = new ColourSetting("FinishedColorFill", new Colour(0, 255, 0, 40), this, s -> render.getValue());
 
     private boolean isActive;
     private EnumFacing lastFace;

@@ -24,21 +24,21 @@ public class HoleESP extends Hack {
     EnumSetting customHoles = new EnumSetting("Show", "Single", Arrays.asList("Single", "Double"), this);
     EnumSetting mode = new EnumSetting("Render", "Pretty", Arrays.asList("Pretty", "Solid", "Outline", "Gradient", "Fade"), this);
     DoubleSetting Height = new DoubleSetting("Height", 1.0, -1.0, 2.0, this, s -> !mode.is("Fade"));
-    DoubleSetting lineWidth = new DoubleSetting("Line Width", 1.0, -1.0, 2.0, this, s -> !mode.is("Fade"));
-    BooleanSetting hideOwn = new BooleanSetting("Hide Own", false, this);
-    ColourSetting bedrockColor = new ColourSetting("Bedrock Color", new Colour(0, 255, 0, 100), this);
-    ColourSetting bedrockColor2 = new ColourSetting("Bedrock Outline", new Colour(0, 255, 0, 100), this);
-    ColourSetting obsidianColor = new ColourSetting("Obsidian Color", new Colour(255, 0, 0, 100), this);
-    ColourSetting obsidianColor2 = new ColourSetting("Obsidian Outline", new Colour(255, 0, 0, 100), this);
-    EnumSetting RMode = new EnumSetting("Color Mode", "Rainbow", Arrays.asList("Rainbow", "Sin"), this);
-    EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this, s -> RMode.is("Sin"));
-    IntSetting RDelay = new IntSetting("Rainbow Delay", 500, 0, 2500, this);
-    IntSetting FillUp = new IntSetting("Fill Up", 80, 0, 255, this, s -> mode.is("Fade"));
-    IntSetting FillDown = new IntSetting("Fill Down", 0, 0, 255, this, s -> mode.is("Fade"));
-    IntSetting LineFillUp = new IntSetting("Line Fill Up", 80, 0, 255, this, s -> mode.is("Fade"));
-    IntSetting LineFillDown = new IntSetting("Line Fill Down", 0, 0, 255, this, s -> mode.is("Fade"));
-    BooleanSetting invertLine = new BooleanSetting("Invert Line", false, this, s -> mode.is("Fade"));
-    BooleanSetting invertFill = new BooleanSetting("Invert Fill", false, this, s -> mode.is("Fade"));
+    DoubleSetting lineWidth = new DoubleSetting("LineWidth", 1.0, -1.0, 2.0, this, s -> !mode.is("Fade"));
+    BooleanSetting hideOwn = new BooleanSetting("HideOwn", false, this);
+    ColourSetting bedrockColor = new ColourSetting("BedrockColor", new Colour(0, 255, 0, 100), this);
+    ColourSetting bedrockColor2 = new ColourSetting("BedrockOutline", new Colour(0, 255, 0, 100), this);
+    ColourSetting obsidianColor = new ColourSetting("ObsidianColor", new Colour(255, 0, 0, 100), this);
+    ColourSetting obsidianColor2 = new ColourSetting("ObsidianOutline", new Colour(255, 0, 0, 100), this);
+    EnumSetting RMode = new EnumSetting("ColorMode", "Rainbow", Arrays.asList("Rainbow", "Sin"), this);
+    EnumSetting SinMode = new EnumSetting("SineMode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this, s -> RMode.is("Sin"));
+    IntSetting RDelay = new IntSetting("RainbowDelay", 500, 0, 2500, this);
+    IntSetting FillUp = new IntSetting("FillUp", 80, 0, 255, this, s -> mode.is("Fade"));
+    IntSetting FillDown = new IntSetting("FillDown", 0, 0, 255, this, s -> mode.is("Fade"));
+    IntSetting LineFillUp = new IntSetting("LineFillUp", 80, 0, 255, this, s -> mode.is("Fade"));
+    IntSetting LineFillDown = new IntSetting("LineFillDown", 0, 0, 255, this, s -> mode.is("Fade"));
+    BooleanSetting invertLine = new BooleanSetting("InvertLine", false, this, s -> mode.is("Fade"));
+    BooleanSetting invertFill = new BooleanSetting("InvertFill", false, this, s -> mode.is("Fade"));
 
 
     private final ConcurrentHashMap<BlockPos, Pair<Colour, Boolean>> holes = new ConcurrentHashMap<>();

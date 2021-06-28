@@ -44,8 +44,8 @@ public class Auto32k extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     IntSetting slot = new IntSetting("Slot", 0, 0, 9, this);
-    BooleanSetting secretClose = new BooleanSetting("Packet Close", false, this);
-    BooleanSetting closeGui = new BooleanSetting("Close Gui", false, this, v -> secretClose.getValue());
+    BooleanSetting secretClose = new BooleanSetting("PacketClose", false, this);
+    BooleanSetting closeGui = new BooleanSetting("CloseGui", false, this, v -> secretClose.getValue());
 
     @Override
     public void onEnable() {

@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ArmourMend extends Hack {
 
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);
-    BooleanSetting mendingTakeOff = new BooleanSetting("Auto Mend", true, this);
-    IntSetting enemyRange = new IntSetting("Enemy Range", 8, 0, 25, this, s -> mendingTakeOff.getValue());
+    BooleanSetting mendingTakeOff = new BooleanSetting("AutoMend", true, this);
+    IntSetting enemyRange = new IntSetting("EnemyRange", 8, 0, 25, this, s -> mendingTakeOff.getValue());
     IntSetting helmetThreshold = new IntSetting("Helmet", 80, 0, 100, this, s -> mendingTakeOff.getValue());
     IntSetting chestThreshold = new IntSetting("Chest", 80, 0, 100, this, s -> mendingTakeOff.getValue());
     IntSetting legThreshold = new IntSetting("Leggings", 80, 0, 100, this, s -> mendingTakeOff.getValue());

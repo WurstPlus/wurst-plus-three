@@ -30,7 +30,7 @@ public class Jesus extends Hack {
     public BooleanSetting cancelVehicle = new BooleanSetting("No Vehcile", false, this);
 
     public EnumSetting eventMode = new EnumSetting("Event", "Pre", Arrays.asList("Pre", "Post", "All"), this);
-    public BooleanSetting fall = new BooleanSetting("No Fall", false, this);
+    public BooleanSetting fall = new BooleanSetting("NoFall", false, this);
 
     private boolean grounded = false;
 

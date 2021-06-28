@@ -15,7 +15,7 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Hack.Registration(name = "Tracers", description = "draws lines", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Tracers", description = "drawslines", category = Hack.Category.RENDER, isListening = false)
 public class Tracers extends Hack {
 
     DoubleSetting width = new DoubleSetting("Width", 2.0, 0.0, 10.0, this);
