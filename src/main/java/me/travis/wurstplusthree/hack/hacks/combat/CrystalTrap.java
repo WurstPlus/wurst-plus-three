@@ -127,7 +127,9 @@ public class CrystalTrap extends Hack {
                 }
                 if (crystal != null) {
                     if (crystal.isDead) {
+                        crystal = null;
                         currentStep = step.Trapping;
+                        return;
                     } else {
                         if (rotate.getValue()) {
                             RotationUtil.faceVector(crystal.getPositionVector(), true);
@@ -143,7 +145,6 @@ public class CrystalTrap extends Hack {
             for (Entity crystal : mc.world.loadedEntityList) {
                 if (crystal instanceof EntityEnderCrystal) {
                     if (crystal.getDistance(breakBlock.getX(), breakBlock.getY(), breakBlock.getZ()) <= 2) {
-                        ClientMessage.sendMessage("Found Crystal");
                         return (EntityEnderCrystal) crystal;
                     }
                 }
@@ -162,6 +163,11 @@ public class CrystalTrap extends Hack {
     private void check() {
         if (player == null) {
             ClientMessage.sendMessage("No target lol");
+            this.disable();
+            return;
+        }
+        if (player.isDead) {
+            ClientMessage.sendMessage("We fucking Killed him EZZZZZZZZZZZ");
             this.disable();
             return;
         }

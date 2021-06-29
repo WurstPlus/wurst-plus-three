@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "CrystalAura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public final class CrystalAura extends Hack {
 
     public static CrystalAura INSTANCE;
