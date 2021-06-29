@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.hack.hacks.chat;
+package me.travis.wurstplusthree.hack.hacks.misc;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
@@ -6,7 +6,6 @@ import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketChatMessage;
@@ -14,20 +13,20 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@Hack.Registration(name = "Auto Ez", description = "lets people know ur clouted", category = Hack.Category.CHAT, priority = HackPriority.Lowest)
-public class AutoEz extends Hack {
+@Hack.Registration(name = "KillSults", description = "lets people know ur clouted", category = Hack.Category.MISC, priority = HackPriority.Lowest)
+public class KillSults extends Hack {
 
-    public static AutoEz INSTANCE;
+    public static KillSults INSTANCE;
 
-    public AutoEz() {
+    public KillSults() {
         INSTANCE = this;
     }
-
-    BooleanSetting discord = new BooleanSetting("Discord", false, this);
 
     private int delayCount;
     public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
@@ -45,7 +44,7 @@ public class AutoEz extends Hack {
                 EntityPlayer player = (EntityPlayer) entity;
                 if (player.getHealth() <= 0) {
                     if (targets.containsKey(player.getName())) {
-                        this.announceDeath();
+                        this.announceDeath(player.getName());
                         this.targets.remove(player.getName());
                     }
                 }
@@ -79,15 +78,32 @@ public class AutoEz extends Hack {
     @CommitEvent
     public void onEntityDeath(DeathEvent event) {
         if (this.targets.containsKey(event.player.getName())) {
-            this.announceDeath();
+            this.announceDeath(event.player.getName());
             this.targets.remove(event.player.getName());
         }
     }
 
-    private void announceDeath() {
-        if (this.delayCount < 150) return;
+    private void announceDeath(String name) {
+        if (this.delayCount < 20) return;
         delayCount = 0;
-        mc.player.connection.sendPacket(new CPacketChatMessage("you just got nae nae'd by wurst+3" + (discord.getValue() ? " | discord.gg/wurst" : "")));
+        ArrayList<String> file_content = readFile("Wurstplus3/killsults.txt");
+        mc.player.connection.sendPacket(new CPacketChatMessage(file_content.get((int) Math.floor(Math.random()*file_content.size())).replaceAll("%name%",name)));
     }
 
+    private ArrayList<String> readFile(String filePath) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File(filePath)));
+            ArrayList<String> content = new ArrayList<String>();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                content.add(line);
+            }
+
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
