@@ -1,12 +1,16 @@
 package me.travis.wurstplusthree.hack.hacks.combat;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
+import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObsidian;
@@ -22,6 +26,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +47,9 @@ public class CrystalTrap extends Hack {
     private int pickslot;
     private int delaycounter = 0;
     private step currentStep;
+    private Timer delayTimer = new Timer();
     private BlockPos breakBlock;
+    private boolean firstPacket = true;
     Entity player;
     EntityEnderCrystal crystal;
 
@@ -55,6 +62,7 @@ public class CrystalTrap extends Hack {
         }
         crystal = null;
         breakBlock = null;
+        firstPacket = true;
         player = null;
         currentStep = step.Trapping;
         player = findClosestTarget();
@@ -132,7 +140,13 @@ public class CrystalTrap extends Hack {
                             mc.playerController.onPlayerDamageBlock(breakBlock, direction);
                             return;
                         case "Sequential":
-                            //something that does the sequential break thing
+                                if(firstPacket)
+                                {
+                                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, direction));
+                                    firstPacket = false;
+                                }
+                                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, direction));
+                                delayTimer.reset();
                     }
                 }
             case Explode:
@@ -167,6 +181,22 @@ public class CrystalTrap extends Hack {
             }
         }
         return null;
+    }
+
+    @CommitEvent(priority = EventPriority.HIGH)
+    public final void onPacketSend(@NotNull PacketEvent.Send event) {
+        if(event.getPacket() instanceof CPacketPlayerDigging && breakMode.is("Sequential"))
+        {
+            CPacketPlayerDigging packet = (CPacketPlayerDigging)event.getPacket();
+            if(packet.getAction() == CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK)
+            {
+                event.setCancelled(true);
+            }
+            if(packet.getAction() == CPacketPlayerDigging.Action.START_DESTROY_BLOCK) {
+                if(!firstPacket)
+                    event.setCancelled(true);
+            }
+        }
     }
 
     @Override

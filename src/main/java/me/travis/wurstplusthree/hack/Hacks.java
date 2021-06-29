@@ -79,7 +79,11 @@ public final class Hacks implements Globals {
     }
 
     public final boolean ishackEnabled(String name) {
-        return this.getHackByName(name).isEnabled();
+        try {
+            return this.getHackByName(name).isEnabled();
+        } catch (NullPointerException error) {
+            return false;
+        }
     }
 
     public final void onUpdate() {
