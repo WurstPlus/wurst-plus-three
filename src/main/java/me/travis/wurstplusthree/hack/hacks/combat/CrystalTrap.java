@@ -7,6 +7,7 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
+import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObsidian;
@@ -17,6 +18,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,14 +31,17 @@ import java.util.List;
 
 @Hack.Registration(name = "CrystalTrap", description = "Traps your enemy and proceeds to RAPE him WTF?!?!?!", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public class CrystalTrap extends Hack {
-    public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
-    public EnumSetting structure = new EnumSetting("Structure", "Minimum", Arrays.asList("Minimum", "Trap", "NoStep"), this);
-    public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
+    DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
+    EnumSetting structure = new EnumSetting("Structure", "Minimum", Arrays.asList("Minimum", "Trap", "NoStep"), this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
+    EnumSetting breakMode = new EnumSetting("BreakMode", "Packet", Arrays.asList("Sequential", "Normal", "Packet"), this);
+    BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     ColourSetting color = new ColourSetting("Render", new Colour(0, 0, 0 ,255), this);
+    IntSetting breakdelay = new IntSetting("BreakDelay", 0, 0, 10, this);
     private int offsetStep = 0;
     private int obsidianslot;
     private int pickslot;
+    private int delaycounter = 0;
     private step currentStep;
     private BlockPos breakBlock;
     Entity player;
@@ -113,12 +118,23 @@ public class CrystalTrap extends Hack {
                     currentStep = step.Explode;
                 } else {
                     InventoryUtil.switchToHotbarSlot(pickslot, false);
-                    mc.player.swingArm(EnumHand.MAIN_HAND);
                     if (rotate.getValue()) {
                         RotationUtil.faceVector(new Vec3d(breakBlock), true);
                     }
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
+                    EnumFacing direction = BlockUtil.getPlaceableSide(breakBlock);
+                    switch (breakMode.getValue()) {
+                        case "Packet":
+                            mc.player.swingArm(EnumHand.MAIN_HAND);
+                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, direction));
+                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, direction));
+                            return;
+                        case "Normal":
+                            mc.player.swingArm(EnumHand.MAIN_HAND);
+                            mc.playerController.onPlayerDamageBlock(breakBlock, direction);
+                            return;
+                        case "Sequential":
+                            //something that does the sequential break thing
+                    }
                 }
             case Explode:
                 if (!(mc.world.getBlockState(breakBlock).getBlock() instanceof BlockAir)) {
@@ -130,11 +146,12 @@ public class CrystalTrap extends Hack {
                         crystal = null;
                         currentStep = step.Trapping;
                         return;
-                    } else {
+                    } else if (delaycounter >= breakdelay.getValue() - 1) {
                         if (rotate.getValue()) {
                             RotationUtil.faceVector(crystal.getPositionVector(), true);
                         }
                         EntityUtil.attackEntity(crystal, true, true);
+                        delaycounter = 0;
                     }
                 } else currentStep = step.Trapping;
         }
@@ -161,6 +178,7 @@ public class CrystalTrap extends Hack {
     }
 
     private void check() {
+        delaycounter++;
         if (player == null) {
             ClientMessage.sendMessage("No target lol");
             this.disable();
@@ -186,7 +204,9 @@ public class CrystalTrap extends Hack {
             this.disable();
             return;
         }
-        crystal = getCrystal();
+        if (crystal.isDead || crystal == null) {
+            crystal = getCrystal();
+        }
         if (!(mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal)) {
             ClientMessage.sendMessage("Make sure to have crystals in your offhand!!");
             this.disable();
