@@ -16,7 +16,7 @@ import org.lwjgl.input.Mouse;
  * @since 02/05/2021
  */
 
-@Hack.Registration(name = "KeyPearl", description = "uses packets to through shit", category = Hack.Category.MISC)
+@Hack.Registration(name = "Key Pearl", description = "uses packets to through shit", category = Hack.Category.MISC)
 public class KeyPearl extends Hack {
 
     KeySetting key = new KeySetting("Key", Keyboard.KEY_NONE, this);

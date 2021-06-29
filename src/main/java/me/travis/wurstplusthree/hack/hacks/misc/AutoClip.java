@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - shit code from my old client
  */
 
-@Hack.Registration(name = "AutoClip", description = "Clips ppl when you kill them", category = Hack.Category.MISC, isListening = false)
+@Hack.Registration(name = "Auto Clip", description = "Clips ppl when you kill them", category = Hack.Category.MISC, isListening = false)
 public class AutoClip extends Hack {
 
     public static AutoClip INSTANCE;

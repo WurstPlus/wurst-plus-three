@@ -32,7 +32,7 @@ import java.util.Arrays;
  * @since 10/06/2021
  */
 
-@Hack.Registration(name = "Speedmine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
+@Hack.Registration(name = "Speed Mine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
 public final class SpeedMine extends Hack{
     private final BooleanSetting rangeCheck = new BooleanSetting("RangeCheck", true, this);
     private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, this, s -> rangeCheck.getValue());

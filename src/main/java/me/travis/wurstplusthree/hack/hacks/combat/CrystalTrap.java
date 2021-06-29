@@ -7,7 +7,6 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
-import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObsidian;
@@ -29,7 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Hack.Registration(name = "CrystalTrap", description = "Traps your enemy and proceeds to RAPE him WTF?!?!?!", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "Crystal Trap", description = "Traps your enemy and proceeds to RAPE him WTF?!?!?!", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public class CrystalTrap extends Hack {
     DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
     EnumSetting structure = new EnumSetting("Structure", "Minimum", Arrays.asList("Minimum", "Trap", "NoStep"), this);
@@ -204,9 +203,7 @@ public class CrystalTrap extends Hack {
             this.disable();
             return;
         }
-        if (crystal.isDead || crystal == null) {
-            crystal = getCrystal();
-        }
+        crystal = getCrystal();
         if (!(mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal)) {
             ClientMessage.sendMessage("Make sure to have crystals in your offhand!!");
             this.disable();

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 28/04/2021
  */
 
-@Hack.Registration(name = "PlayerSpoofer", description = "spoofs you name and skin", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "Player Spoofer", description = "spoofs you name and skin", category = Hack.Category.PLAYER)
 public class PlayerSpoofer extends Hack {
 
     public static PlayerSpoofer INSTANCE;

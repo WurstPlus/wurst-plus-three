@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 // UNFINISHED
 
-@Hack.Registration(name = "AnvilAura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
+@Hack.Registration(name = "Anvil Aura", description = "drops anvils on people/urself", category = Hack.Category.COMBAT, isListening = false)
 public class AnvilAura extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Others", Arrays.asList("Self", "Others"), this);
