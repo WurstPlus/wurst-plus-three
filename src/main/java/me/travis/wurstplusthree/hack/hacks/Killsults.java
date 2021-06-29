@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.hack.hacks.misc;
+package me.travis.wurstplusthree.hack.hacks.chat;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
