@@ -70,6 +70,7 @@ public class ConfigManager implements Globals {
             this.loadFont();
             this.loadBurrowBlock();
             this.loadHud();
+            this.loadKillsults();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,6 +126,14 @@ public class ConfigManager implements Globals {
     }
 
     // LOAD & SAVE PALS
+    
+    private void loadKillsults() throws IOException {
+        if(new File(killsultsDir).exists() == false) {
+            FileWriter writer = new FileWriter(killsultsDir);
+            writer.write("%name% you got nae nae'd by wurst+3");
+            writer.close();
+        }
+    }
 
     private void saveFriends() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
