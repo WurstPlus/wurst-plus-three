@@ -66,8 +66,7 @@ public final class CrystalAura extends Hack {
     private final IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
     private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
 
-    public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full", "Fuck"), this, s -> place.getValue() || breaK.getValue());
-    public final IntSetting fuckDelay = new IntSetting("Fuck Delay", 0, 0, 10, this, v -> rotateMode.is("Fuck"));
+    public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), this, s -> place.getValue() || breaK.getValue());
 
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, this, s -> place.getValue() || breaK.getValue());
     private final EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this, s -> place.getValue() || breaK.getValue());
@@ -82,7 +81,7 @@ public final class CrystalAura extends Hack {
 
     private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, this, s -> place.getValue() || breaK.getValue());
-    private final EnumSetting predictTeleport = new EnumSetting("Predict Teleport", "Sound", Arrays.asList("Sound", "Packet", "None"), this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting predictTeleport = new EnumSetting("P Teleport", "Sound", Arrays.asList("Sound", "Packet", "None"), this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, this, s -> place.getValue() || breaK.getValue());
     private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, this, s -> entityPredict.getValue() && (place.getValue() || breaK.getValue()));
 
@@ -124,8 +123,6 @@ public final class CrystalAura extends Hack {
 
     private final BooleanSetting debug = new BooleanSetting("Debug", false, this);
 
-    public final AtomicBoolean threadOngoing = new AtomicBoolean(false);
-
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
     public EntityPlayer ezTarget = null;
@@ -142,6 +139,7 @@ public final class CrystalAura extends Hack {
     private boolean isRotating;
     private boolean didAnything;
     private boolean facePlacing;
+    private boolean rotationPause;
 
     private long start = 0;
     private long crystalLatency;
@@ -162,12 +160,17 @@ public final class CrystalAura extends Hack {
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onUpdateWalkingPlayerEvent(@NotNull UpdateWalkingPlayerEvent event) {
         if (event.getStage() == 0 && this.rotateMode.is("Full")) {
-            if (this.isRotating) {
-                WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);
-            }
             this.doCrystalAura();
         }
     }
+
+    @Override
+    public void onUpdate() {
+        if (!this.rotateMode.is("Full")) {
+            this.doCrystalAura();
+        }
+    }
+
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketSend(@NotNull PacketEvent.Send event) {
@@ -279,19 +282,20 @@ public final class CrystalAura extends Hack {
         }
     }
 
-    @Override
-    public void onUpdate() {
-        if (!this.rotateMode.is("Full") && !this.rotateMode.is("Fuck")) {
-            this.doCrystalAura();
-        }
-    }
-
     public void doCrystalAura() {
         if (nullCheck()) {
             this.disable();
             return;
         }
         didAnything = false;
+
+        if (rotationPause) {
+            if (WurstplusThree.ROTATION_MANAGER.stepRotation()) {
+                rotationPause = false;
+            } else {
+                return;
+            }
+        }
 
         if (this.place.getValue() && placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
             start = System.currentTimeMillis();
@@ -666,6 +670,10 @@ public final class CrystalAura extends Hack {
         this.yaw = angle[0];
         this.pitch = angle[1];
         this.isRotating = true;
+        if (rotateMode.is("Full")) {
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotationsStep(yaw, pitch, 3);
+            rotationPause = true;
+        }
     }
 
     public void setYawPitch(@NotNull BlockPos pos) {
@@ -673,6 +681,10 @@ public final class CrystalAura extends Hack {
         this.yaw = angle[0];
         this.pitch = angle[1];
         this.isRotating = true;
+        if (rotateMode.is("Full")) {
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotationsStep(yaw, pitch, 3);
+            rotationPause = true;
+        }
     }
 
     private void updateEntityID() {
@@ -742,11 +754,7 @@ public final class CrystalAura extends Hack {
         highestID = -100000;
         staticEnderCrystal = null;
         staticPos = null;
-//        if (firstEnable) {
-//            firstEnable = false;
-//            CaThread attackThread = new CaThread();
-//            attackThread.start();
-//        }
+        rotationPause = false;
     }
 
     @Override

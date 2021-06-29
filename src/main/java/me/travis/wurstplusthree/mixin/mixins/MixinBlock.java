@@ -34,7 +34,7 @@ public abstract class MixinBlock {
                     && !(entityIn instanceof EntityBoat) && !Globals.mc.player.isSneaking()
                     && Globals.mc.player.fallDistance < 3.0f && !EntityUtil.isAboveLiquid(Globals.mc.player)
                     && EntityUtil.checkForLiquid(Globals.mc.player, false) || EntityUtil.checkForLiquid(Globals.mc.player, false)
-                    && Globals.mc.player.getRidingEntity() != null && Globals.mc.player.getRidingEntity().fallDistance < 3.0f && EntityUtil.isAboveBlock((Entity)Globals.mc.player, pos)) {
+                    && Globals.mc.player.getRidingEntity() != null && Globals.mc.player.getRidingEntity().fallDistance < 3.0f && EntityUtil.isAboveBlock(Globals.mc.player, pos)) {
                 AxisAlignedBB offset = Jesus.offset.offset(pos);
                 if (entityBox.intersects(offset)) {
                     collidingBoxes.add(offset);

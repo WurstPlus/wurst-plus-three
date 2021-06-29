@@ -12,6 +12,11 @@ public class RotationManager implements Globals {
     private float yaw;
     private float pitch;
 
+    private float yawStepAmmout;
+    private float pitchStepAmmount;
+    private int steps;
+    private int currentStep;
+
     public void updateRotations() {
         this.yaw = mc.player.rotationYaw;
         this.pitch = mc.player.rotationPitch;
@@ -27,6 +32,23 @@ public class RotationManager implements Globals {
         mc.player.rotationYaw = yaw;
         mc.player.rotationYawHead = yaw;
         mc.player.rotationPitch = pitch;
+    }
+
+    public void setPlayerRotationsStep(float yaw, float pitch, int steps) {
+        yawStepAmmout = (mc.player.rotationYaw - yaw) / steps;
+        pitchStepAmmount = (mc.player.rotationPitch - pitch) / steps;
+        currentStep = 0;
+        this.steps = steps;
+    }
+
+    public boolean stepRotation() {
+        if (currentStep < steps) {
+            currentStep++;
+            mc.player.rotationYaw += yawStepAmmout;
+            mc.player.rotationPitch += pitchStepAmmount;
+            return false;
+        }
+        return true;
     }
 
     public void setPlayerYaw(float yaw) {

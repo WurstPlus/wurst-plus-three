@@ -102,7 +102,7 @@ public class Events implements Globals {
     }
 
     @CommitEvent(priority = me.travis.wurstplusthree.event.processor.EventPriority.HIGH)
-    public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
+    public void onUpdateWalkingPlayerPost(UpdateWalkingPlayerEvent event) {
         if (nullCheck()) {
             return;
         }
