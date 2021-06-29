@@ -554,10 +554,7 @@ public final class CrystalAura extends Hack {
             if (CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
                 facePlacing = false;
                 miniumDamage = this.minHpBreak.getValue();
-            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue())
-                    || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue())
-                    || fpbind.isDown())
-                    && !stopFPWhenSword.getValue()) {
+            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {

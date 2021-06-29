@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.ParentSetting;
 import me.travis.wurstplusthree.util.*;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.gui.GuiHopper;
@@ -40,8 +41,9 @@ public class Auto32k extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     IntSetting slot = new IntSetting("Slot", 0, 0, 9, this);
-    BooleanSetting secretClose = new BooleanSetting("PacketClose", false, this);
-    BooleanSetting closeGui = new BooleanSetting("CloseGui", false, this, v -> secretClose.getValue());
+    ParentSetting parentSetting = new ParentSetting("Gui", this);
+    BooleanSetting secretClose = new BooleanSetting("PacketClose", false, parentSetting);
+    BooleanSetting closeGui = new BooleanSetting("CloseGui", false, parentSetting, v -> secretClose.getValue());
 
     @Override
     public void onEnable() {
@@ -89,9 +91,9 @@ public class Auto32k extends Hack {
                 this.disable();
             }
         } else if (placeMode.getValue().equals("Dispenser")) {
-            for (int x = -2; x <= 2; x++) {
-                for (int y = -1; y <= 1; y++) {
-                    for (int z = -2; z <= 2; z++) {
+            for (int x = -2; x <= 2; ++x) {
+                for (int y = -1; y <= 0; ++y) {
+                    for (int z = -2; z <= 2; ++z) {
                         this.rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
                         this.pos = mc.player.getPosition().add(x, y, z);
                         if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && BlockUtil.canPlaceBlock(this.pos) && BlockUtil.isBlockEmpty(this.pos) && BlockUtil.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && BlockUtil.isBlockEmpty(this.pos.add(0, 1, 0)) && BlockUtil.isBlockEmpty(this.pos.add(0, 2, 0)) && BlockUtil.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1]))) {

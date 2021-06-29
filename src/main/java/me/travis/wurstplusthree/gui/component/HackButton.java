@@ -210,49 +210,15 @@ public class HackButton extends Component {
         if (!this.notInitSettings.isEmpty()) {
             if (oldVals.isEmpty()) {
                 for (Setting s : this.notInitSettings) {
-                    if (s instanceof BooleanSetting) {
-                        this.oldVals.add(((BooleanSetting) s).isShown());
-                    } else if (s instanceof EnumSetting) {
-                        this.oldVals.add(((EnumSetting) s).isShown());
-                    } else if (s instanceof IntSetting) {
-                        this.oldVals.add(((IntSetting) s).isShown());
-                    } else if (s instanceof DoubleSetting) {
-                        this.oldVals.add(((DoubleSetting) s).isShown());
-                    } else if (s instanceof ColourSetting) {
-                        this.oldVals.add(((ColourSetting) s).isShown());
-                    } else if (s instanceof KeySetting) {
-                        this.oldVals.add(((KeySetting) s).isShown());
-                    }
+                    this.oldVals.add(s.isShown());
                 }
             } else {
                 int index = 0;
                 for (Setting s : this.notInitSettings) {
                     boolean old = oldVals.get(index);
                     boolean init = false;
-                    if (s instanceof BooleanSetting) {
-                        if (((BooleanSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof EnumSetting) {
-                        if (((EnumSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof IntSetting) {
-                        if (((IntSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof DoubleSetting) {
-                        if (((DoubleSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof ColourSetting) {
-                        if (((ColourSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof KeySetting) {
-                        if (((KeySetting) s).isShown() != old) {
-                            init = true;
-                        }
+                    if (s.isShown() != old) {
+                        init = true;
                     }
                     index++;
                     if (init) {
