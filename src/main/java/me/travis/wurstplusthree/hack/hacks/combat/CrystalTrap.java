@@ -27,15 +27,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Hack.Registration(name = "FunnyModule", description = "Does the funny thing", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
-public class FunnyModule extends Hack {
+@Hack.Registration(name = "CrystalTrap", description = "Traps your enemy and proceeds to RAPE him WTF?!?!?!", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+public class CrystalTrap extends Hack {
     public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
     public EnumSetting structure = new EnumSetting("Structure", "Minimum", Arrays.asList("Minimum", "Trap", "NoStep"), this);
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     ColourSetting color = new ColourSetting("Render", new Colour(0, 0, 0 ,255), this);
-
-
     private int offsetStep = 0;
     private int obsidianslot;
     private int pickslot;
@@ -67,44 +65,43 @@ public class FunnyModule extends Hack {
 
     @Override
     public void onUpdate() {
+        if (player == null) return;
         check();
         switch (currentStep) {
             case Trapping:
                 final List<Vec3d> place_targets = new ArrayList<Vec3d>();
                 if (structure.is("Minimum"))
-                Collections.addAll(place_targets, offsetsMinimum);
+                    Collections.addAll(place_targets, offsetsMinimum);
                 if (structure.is("Trap"))
                     Collections.addAll(place_targets, offsetsTrap);
                 if (structure.is("NoStep"))
                     Collections.addAll(place_targets, offsetsNoStep);
-                if (player == null) return;
-                if (mc.world.getBlockState(new BlockPos(player.getPositionVector().add(0, 2, 0))).getBlock() instanceof BlockAir) {
-
-                    if (offsetStep >= place_targets.size()) {
-                        offsetStep = 0;
-                        break;
-                    }
-
+                if (offsetStep >= place_targets.size()) {
+                    offsetStep = 0;
+                    break;
+                }
+                boolean foundblock = false;
+                while (!foundblock && offsetStep <= place_targets.size() - 1) {
                     final BlockPos offset_pos = new BlockPos(place_targets.get(offsetStep));
                     final BlockPos target_pos = new BlockPos(player.getPositionVector()).down().add(offset_pos.getX(), offset_pos.getY(), offset_pos.getZ());
-                    boolean should_try_place = true;
 
-                    if (!mc.world.getBlockState(target_pos).getMaterial().isReplaceable()) {
-                        should_try_place = false;
+                    if (mc.world.getBlockState(target_pos).getMaterial().isReplaceable()) {
+                        foundblock = true;
                     }
 
                     for (final Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(target_pos))) {
                         if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
-                            should_try_place = false;
-                            break;
+                            foundblock = false;
                         }
                     }
 
-                    if (should_try_place) {
+                    if (foundblock) {
                         BlockUtil.placeBlock(target_pos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing);
                     }
+
                     offsetStep++;
-                } else {
+                }
+                if (mc.world.getBlockState(new BlockPos(breakBlock)).getBlock() instanceof BlockObsidian) {
                     currentStep = step.Placing;
                 }
                 return;
@@ -112,7 +109,9 @@ public class FunnyModule extends Hack {
                 BlockUtil.placeCrystalOnBlock(breakBlock, EnumHand.OFF_HAND, true);
                 currentStep = step.Breaking;
             case Breaking:
-                if (mc.world.getBlockState(breakBlock).getBlock() instanceof BlockObsidian) {
+                if (mc.world.getBlockState(breakBlock).getBlock() instanceof BlockAir) {
+                    currentStep = step.Explode;
+                } else {
                     InventoryUtil.switchToHotbarSlot(pickslot, false);
                     mc.player.swingArm(EnumHand.MAIN_HAND);
                     if (rotate.getValue()) {
@@ -120,10 +119,12 @@ public class FunnyModule extends Hack {
                     }
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, BlockUtil.getPlaceableSide(breakBlock)));
-                } else {
-                    currentStep = step.Explode;
                 }
             case Explode:
+                if (!(mc.world.getBlockState(breakBlock).getBlock() instanceof BlockAir)) {
+                    currentStep = step.Breaking;
+                    return;
+                }
                 if (crystal != null) {
                     if (crystal.isDead) {
                         currentStep = step.Trapping;
@@ -133,7 +134,7 @@ public class FunnyModule extends Hack {
                         }
                         EntityUtil.attackEntity(crystal, true, true);
                     }
-                }
+                } else currentStep = step.Trapping;
         }
     }
 
@@ -141,9 +142,10 @@ public class FunnyModule extends Hack {
         if (breakBlock != null) {
             for (Entity crystal : mc.world.loadedEntityList) {
                 if (crystal instanceof EntityEnderCrystal) {
-                    if (breakBlock.getX() == crystal.posX && breakBlock.getZ() == crystal.posZ)
+                    if (crystal.getDistance(breakBlock.getX(), breakBlock.getY(), breakBlock.getZ()) <= 2) {
                         ClientMessage.sendMessage("Found Crystal");
-                    return (EntityEnderCrystal) crystal;
+                        return (EntityEnderCrystal) crystal;
+                    }
                 }
             }
         }
