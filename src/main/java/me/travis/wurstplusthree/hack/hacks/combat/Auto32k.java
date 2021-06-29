@@ -8,10 +8,7 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.util.BlockUtil;
-import me.travis.wurstplusthree.util.ClientMessage;
-import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.InventoryUtil;
+import me.travis.wurstplusthree.util.*;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -25,8 +22,7 @@ import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 @Hack.Registration(name = "Auto32K", description = "places some blocks and pulls out a sword", category = Hack.Category.COMBAT, priority = HackPriority.High)
 public class Auto32k extends Hack {
@@ -130,6 +126,7 @@ public class Auto32k extends Hack {
             }
         }
     }
+    
 
     @Override
     public void onUpdate() {
