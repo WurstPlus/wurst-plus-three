@@ -252,6 +252,12 @@ public class CrystalUtil implements Globals {
         return positions;
     }
 
+    public static List<BlockPos> possiblePlacePositions(float placeRange, BlockPos ignorePos, boolean oneDot15) {
+        NonNullList<BlockPos> positions = NonNullList.create();
+        positions.addAll(getSphere(PlayerUtil.getPlayerPos(), placeRange, (int) placeRange, false, true, 0).stream().filter(pos -> mc.world.getBlockState(pos).getBlock() != Blocks.AIR).filter(pos -> canPlaceCrystal(pos, pos != ignorePos, oneDot15)).collect(Collectors.toList()));
+        return positions;
+    }
+
     public static List<BlockPos> getSphere(BlockPos pos, float r, int h, boolean hollow, boolean sphere, int plus_y) {
         ArrayList<BlockPos> circleblocks = new ArrayList<>();
         int cx = pos.getX();
@@ -327,6 +333,7 @@ public class CrystalUtil implements Globals {
         }
         return true;
     }
+
 
     // target gubbins
 

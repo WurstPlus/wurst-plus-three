@@ -60,8 +60,7 @@ public final class CrystalAura extends Hack {
     private final IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, this, s -> place.getValue());
     private final IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, this, s -> breaK.getValue());
 
-    private final IntSetting minHpPlace = new IntSetting("HP Enemy Place", 9, 0, 36, this, s -> place.getValue());
-    private final IntSetting minHpBreak = new IntSetting("HP Enemy Break", 8, 0, 36, this, s -> breaK.getValue());
+    private final IntSetting minDamage = new IntSetting("MinDamage", 9, 0, 36, this, s -> place.getValue());
     private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, this);
     private final IntSetting maxSelfDamage = new IntSetting("Max Self Damage", 5, 0, 36, this, s -> !ignoreSelfDamage.getValue());
     private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, this);
@@ -99,7 +98,7 @@ public final class CrystalAura extends Hack {
 
     private final BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, this, s -> place.getValue() || breaK.getValue());
-    private final BooleanSetting crystalLogic = new BooleanSetting("Crystal Check", false, this, s -> place.getValue() || breaK.getValue());
+    private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict"), this, s -> place.getValue() || breaK.getValue());
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
 
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
@@ -127,6 +126,7 @@ public final class CrystalAura extends Hack {
 
     public EntityPlayer ezTarget = null;
     public BlockPos renderBlock = null;
+    private BlockPos lastPos = null;
 
     private double renderDamageVal = 0;
 
@@ -355,6 +355,7 @@ public final class CrystalAura extends Hack {
         didAnything = true;
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal) {
             setYawPitch(targetBlock);
+
             BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
             if (debug.getValue()) {
                 ClientMessage.sendMessage("placing");
@@ -475,7 +476,7 @@ public final class CrystalAura extends Hack {
                 Entity y = CrystalUtil.getPredictedPosition(target, predictedTicks.getValue());
                 target.setEntityBoundingBox(y.getEntityBoundingBox());
             }
-            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), !crystalLogic.getValue(), this.thirteen.getValue())) {
+            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), lastPos, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage == 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
@@ -551,15 +552,15 @@ public final class CrystalAura extends Hack {
 
             // set min damage to 2 if we want to kill the dude fast
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
+            if (CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue()) >= minDamage.getValue()) {
                 facePlacing = false;
-                miniumDamage = this.minHpBreak.getValue();
+                miniumDamage = this.minDamage.getValue();
             } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
                 facePlacing = false;
-                miniumDamage = this.minHpBreak.getValue();
+                miniumDamage = this.minDamage.getValue();
             }
 
             double targetDamage = CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue());
@@ -570,8 +571,14 @@ public final class CrystalAura extends Hack {
             }
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
-
-            return targetDamage;
+            switch (crystalLogic.getValue()) {
+                case "Smart":
+                    return targetDamage - selfDamage;
+                case "Normal":
+                    return targetDamage;
+                case "Strict":
+                    return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(crystal) * 0.5);
+            }
         }
 
         return 0;
@@ -593,18 +600,15 @@ public final class CrystalAura extends Hack {
             }
 
             double miniumDamage;
-            if (CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue()) >= minHpPlace.getValue()) {
+            if (CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue()) >= minDamage.getValue()) {
                 facePlacing = false;
-                miniumDamage = this.minHpBreak.getValue();
-            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue())
-                    || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue())
-                    || fpbind.isDown())
-                    && !stopFPWhenSword.getValue()) {
+                miniumDamage = this.minDamage.getValue();
+            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || (CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) && fuckArmour.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
             } else {
-                miniumDamage = this.minHpPlace.getValue();
                 facePlacing = false;
+                miniumDamage = this.minDamage.getValue();
             }
 
             double targetDamage = CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue());
@@ -616,7 +620,14 @@ public final class CrystalAura extends Hack {
             if (selfDamage > maxSelfDamage.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
 
-            return targetDamage;
+            switch (crystalLogic.getValue()) {
+                case "Smart":
+                    return targetDamage - selfDamage;
+                case "Normal":
+                    return targetDamage;
+                case "Strict":
+                    return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(blockPos) * 0.5);
+            }
         }
 
         return 0;
