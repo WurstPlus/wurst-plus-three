@@ -99,6 +99,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting stopFPWhenSword = new BooleanSetting("No FP Sword", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, this, s -> place.getValue() || breaK.getValue());
     private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict"), this, s -> place.getValue() || breaK.getValue());
+    private final BooleanSetting antiStuck = new BooleanSetting("Anti Stuck", false, this, s -> faceplace.getValue() && (place.getValue() || breaK.getValue()));
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, this, s -> place.getValue() || breaK.getValue());
 
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, this, s -> place.getValue() || breaK.getValue());
@@ -437,7 +438,7 @@ public final class CrystalAura extends Hack {
                     target.setEntityBoundingBox(y.getEntityBoundingBox());
                 }
                 double targetDamage = this.isCrystalGood(crystal, target);
-                if (targetDamage == 0) continue;
+                if (targetDamage <= 0) continue;
                 if (targetDamage > bestDamage) {
                     bestDamage = targetDamage;
                     this.ezTarget = target;
@@ -476,9 +477,9 @@ public final class CrystalAura extends Hack {
                 Entity y = CrystalUtil.getPredictedPosition(target, predictedTicks.getValue());
                 target.setEntityBoundingBox(y.getEntityBoundingBox());
             }
-            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), lastPos, this.thirteen.getValue())) {
+            for (BlockPos blockPos : antiStuck.getValue() ? CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), lastPos, this.thirteen.getValue()) : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
-                if (targetDamage == 0) continue;
+                if (targetDamage <= 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
                 } else {
