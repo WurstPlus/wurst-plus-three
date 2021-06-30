@@ -10,7 +10,6 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
-import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObsidian;
@@ -42,23 +41,30 @@ public class CrystalTrap extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     ColourSetting color = new ColourSetting("Render", new Colour(0, 0, 0 ,255), this);
     IntSetting breakdelay = new IntSetting("BreakDelay", 0, 0, 10, this);
+    BooleanSetting stopCA = new BooleanSetting("StopCa", false, this);
     private int offsetStep = 0;
     private int obsidianslot;
     private int pickslot;
-    private int delaycounter = 0;
+    private int delayCounter = 0;
+    private boolean stoppedCa;
+    private int tickCounter = 0;
     private step currentStep;
-    private Timer delayTimer = new Timer();
     private BlockPos breakBlock;
     private boolean firstPacket = true;
     Entity player;
     EntityEnderCrystal crystal;
-
 
     @Override
     public void onEnable() {
         if (nullCheck()) {
             this.disable();
             return;
+        }
+        if (stopCA.getValue()) {
+            if (CrystalAura.INSTANCE.isEnabled()) {
+                stoppedCa = true;
+                CrystalAura.INSTANCE.disable();
+            }
         }
         crystal = null;
         breakBlock = null;
@@ -68,9 +74,16 @@ public class CrystalTrap extends Hack {
         player = findClosestTarget();
     }
 
+    @Override
+    public void onDisable() {
+        if (stoppedCa) {
+            CrystalAura.INSTANCE.enable();
+            stoppedCa = false;
+        }
+    }
+
     public enum step {
         Trapping,
-        Placing,
         Breaking,
         Explode
     }
@@ -114,18 +127,24 @@ public class CrystalTrap extends Hack {
                     offsetStep++;
                 }
                 if (mc.world.getBlockState(new BlockPos(breakBlock)).getBlock() instanceof BlockObsidian) {
-                    currentStep = step.Placing;
+                    currentStep = step.Breaking;
+                    tickCounter = 0;
                 }
                 return;
-            case Placing:
-                BlockUtil.placeCrystalOnBlock(breakBlock, EnumHand.OFF_HAND, true);
-                currentStep = step.Breaking;
             case Breaking:
+                boolean rotated = false;
+                if (crystal == null && (tickCounter > 42) || breakMode.is("Sequential")) {
+                    if (rotate.getValue()) {
+                        RotationUtil.faceVector(crystal.getPositionVector(), true);
+                        rotated = true;
+                    }
+                    BlockUtil.placeCrystalOnBlock(breakBlock, EnumHand.OFF_HAND, true);
+                }
                 if (mc.world.getBlockState(breakBlock).getBlock() instanceof BlockAir) {
                     currentStep = step.Explode;
                 } else {
                     InventoryUtil.switchToHotbarSlot(pickslot, false);
-                    if (rotate.getValue()) {
+                    if (rotate.getValue() && !rotated) {
                         RotationUtil.faceVector(new Vec3d(breakBlock), true);
                     }
                     EnumFacing direction = BlockUtil.getPlaceableSide(breakBlock);
@@ -146,7 +165,6 @@ public class CrystalTrap extends Hack {
                                     firstPacket = false;
                                 }
                                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, direction));
-                                delayTimer.reset();
                     }
                 }
             case Explode:
@@ -159,12 +177,12 @@ public class CrystalTrap extends Hack {
                         crystal = null;
                         currentStep = step.Trapping;
                         return;
-                    } else if (delaycounter >= breakdelay.getValue() - 1) {
+                    } else if (delayCounter >= breakdelay.getValue() - 1) {
                         if (rotate.getValue()) {
                             RotationUtil.faceVector(crystal.getPositionVector(), true);
                         }
                         EntityUtil.attackEntity(crystal, true, true);
-                        delaycounter = 0;
+                        delayCounter = 0;
                     }
                 } else currentStep = step.Trapping;
         }
@@ -173,7 +191,7 @@ public class CrystalTrap extends Hack {
     private EntityEnderCrystal getCrystal() {
         if (breakBlock != null) {
             for (Entity crystal : mc.world.loadedEntityList) {
-                if (crystal instanceof EntityEnderCrystal) {
+                if (crystal instanceof EntityEnderCrystal && !crystal.isDead) {
                     if (crystal.getDistance(breakBlock.getX(), breakBlock.getY(), breakBlock.getZ()) <= 2) {
                         return (EntityEnderCrystal) crystal;
                     }
@@ -207,7 +225,8 @@ public class CrystalTrap extends Hack {
     }
 
     private void check() {
-        delaycounter++;
+        delayCounter++;
+        tickCounter++;
         if (player == null) {
             ClientMessage.sendMessage("No target lol");
             this.disable();
@@ -296,7 +315,9 @@ public class CrystalTrap extends Hack {
 
             closestTarget = target;
         }
-
+        if (closestTarget == null) {
+            this.disable();
+        }
         return closestTarget;
     }
 
