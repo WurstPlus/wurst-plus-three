@@ -574,7 +574,7 @@ public final class CrystalAura extends Hack {
             switch (crystalLogic.getValue()) {
                 case "Smart":
                     return targetDamage - selfDamage;
-                case "Normal":
+                case "Damage":
                     return targetDamage;
                 case "Strict":
                     return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(crystal) * 0.5);
@@ -623,7 +623,7 @@ public final class CrystalAura extends Hack {
             switch (crystalLogic.getValue()) {
                 case "Smart":
                     return targetDamage - selfDamage;
-                case "Normal":
+                case "Damage":
                     return targetDamage;
                 case "Strict":
                     return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(blockPos) * 0.5);
