@@ -577,7 +577,8 @@ public final class CrystalAura extends Hack {
                 case "Damage":
                     return targetDamage;
                 case "Strict":
-                    return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(crystal) * 0.5);
+                double distance = mc.player.getDistanceSq(crystal);
+                return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
             }
         }
 
@@ -626,7 +627,8 @@ public final class CrystalAura extends Hack {
                 case "Damage":
                     return targetDamage;
                 case "Strict":
-                    return targetDamage - (selfDamage * 0.5 + mc.player.getDistanceSq(blockPos) * 0.5);
+                    double distance = mc.player.getDistanceSq(blockPos);
+                    return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (CrystalUtil.canSeePos(blockPos) ? 0.2 : 0.5));
             }
         }
 
