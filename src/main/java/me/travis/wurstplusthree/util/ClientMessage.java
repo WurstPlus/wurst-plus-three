@@ -19,7 +19,7 @@ public class ClientMessage implements Globals {
 
     public static void sendToggleMessage(Hack hack, boolean enabled) {
         if(mc.world != null && mc.player != null) {
-            if(WurstplusThree.HACKS.ishackEnabled("togglemsgs")) {
+            if(WurstplusThree.HACKS.ishackEnabled("Toggle msgs")) {
                 if (hack.getName().equalsIgnoreCase("gui")) return;
                 ChatFormatting open = (enabled ? ChatFormatting.GREEN : ChatFormatting.RED);
                 boolean compact = ToggleMessages.INSTANCE.compact.getValue();
