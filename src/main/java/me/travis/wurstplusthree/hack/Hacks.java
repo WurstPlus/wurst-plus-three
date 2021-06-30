@@ -88,15 +88,17 @@ public final class Hacks implements Globals {
 
     public final void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(Hack::onUpdate);
-        for (Hack hack : hacks) {
-            if (hack.isHold() && hack.getBind() >= 0) {
-                if (Keyboard.isKeyDown(hack.getBind())) {
-                    if (!hack.isEnabled()) {
-                        hack.enable();
-                    }
-                } else {
-                    if (hack.isEnabled()) {
-                        hack.disable();
+        if (mc.currentScreen == null) {
+            for (Hack hack : hacks) {
+                if (hack.isHold() && hack.getBind() >= 0) {
+                    if (Keyboard.isKeyDown(hack.getBind())) {
+                        if (!hack.isEnabled()) {
+                            hack.enable();
+                        }
+                    } else {
+                        if (hack.isEnabled()) {
+                            hack.disable();
+                        }
                     }
                 }
             }
