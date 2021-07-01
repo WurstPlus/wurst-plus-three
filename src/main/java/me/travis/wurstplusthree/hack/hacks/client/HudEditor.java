@@ -26,6 +26,8 @@ public class HudEditor extends Hack {
     public BooleanSetting welcomerPing = new BooleanSetting("Watermark Ping", false, this);
     public BooleanSetting welcomerTime = new BooleanSetting("Watermark Time", false, this);
     public BooleanSetting showOff = new BooleanSetting("Helper Show Off", true, this);
+    public IntSetting kills = new IntSetting("Kills", 0, 0, 2000000000, this, v -> false);
+    public IntSetting Deaths = new IntSetting("Deaths", 0, 0, 2000000000, this, v -> false);
 
     public HudEditor(){
         INSTANCE = this;

@@ -29,6 +29,7 @@ public class SliderComponent extends Component {
     private int offset;
     private int x;
     private int y;
+    private boolean isChild;
     private boolean dragging = false;
 
     private double renderWidth;
@@ -37,7 +38,7 @@ public class SliderComponent extends Component {
         this.setD = value;
         this.parent = button;
         this.offset = offset;
-
+        isChild = value.isChild();
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
         setShown(true);
@@ -47,7 +48,7 @@ public class SliderComponent extends Component {
         this.setI = value;
         this.parent = button;
         this.offset = offset;
-
+        isChild = value.isChild();
         this.x = button.parent.getX() + button.parent.getWidth();
         this.y = button.parent.getY() + button.offset;
         setShown(true);
@@ -56,7 +57,7 @@ public class SliderComponent extends Component {
     @Override
     public void renderComponent(int mouseX, int mouseY) {
         if(!isShown())return;
-        net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_COLOR());
+        net.minecraft.client.gui.Gui.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : isChild ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
         RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + (int) renderWidth, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET,
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()),
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()), hovered);

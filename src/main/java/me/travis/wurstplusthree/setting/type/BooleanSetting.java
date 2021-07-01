@@ -12,7 +12,7 @@ public class BooleanSetting extends Setting<Boolean> {
     }
 
     public BooleanSetting(String name, Boolean value, ParentSetting parent) {
-        super(name, value, parent.getParent());
+        super(name, value, parent);
     }
 
     public BooleanSetting(String name, Boolean value, Hack parent, Predicate shown) {
@@ -20,7 +20,7 @@ public class BooleanSetting extends Setting<Boolean> {
     }
 
     public BooleanSetting(String name, Boolean value, ParentSetting parent, Predicate shown) {
-        super(name, value, parent.getParent(), shown);
+        super(name, value, parent, shown);
     }
 
     public void toggle() {

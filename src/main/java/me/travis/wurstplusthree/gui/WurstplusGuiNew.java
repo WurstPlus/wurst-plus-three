@@ -49,7 +49,11 @@ public class WurstplusGuiNew extends GuiScreen {
     }
 
     public static int GUI_COLOR() {
-        return new Color(30, 30, 30, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
+        return new Color(35, 35, 35, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
+    }
+
+    public static int GUI_CHILDBUTTON() {
+        return new Color(25, 25, 25, Gui.INSTANCE.buttonColor.getColor().getAlpha()).hashCode();
     }
 
     public static int GUI_HOVERED_COLOR() {

@@ -23,6 +23,7 @@ import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -61,7 +62,8 @@ public class Events implements Globals {
             }
         }
     }
-     */
+    */
+
 
     @SubscribeEvent
     public void onMousePress(InputEvent.MouseInputEvent event){
@@ -88,9 +90,30 @@ public class Events implements Globals {
     }
 
     @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onAttackEntity(event);
+        }
+    }
+
+    @CommitEvent
+    public void onSendAttackPacket(PacketEvent.Send event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onSendAttackPacket(event);
+        }
+    }
+
+    @CommitEvent
+    public void onEntityDeath(DeathEvent event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onEntityDeath(event);
+        }
+    }
+    @SubscribeEvent
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (!nullCheck() && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
             WurstplusThree.HACKS.onUpdate();
+            WurstplusThree.KD_MANAGER.onUpdate();
         }
     }
 

@@ -69,6 +69,10 @@ public class Setting<T> {
         this.value = value;
     }
 
+    public boolean isChild() {
+        return parentSetting != null;
+    }
+
     public boolean isShown() {
         boolean parent = parentSetting == null ? true : parentSetting.getValue();
         boolean shown =  this.shown == null ? true : this.shown.test(this.getValue());
