@@ -5,7 +5,10 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.ParentSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
+
+import java.lang.reflect.Parameter;
 
 @Hack.Registration(name = "Hud Editor", description = "swag custom Hud editor", category = Hack.Category.CLIENT, isListening = true)
 public class HudEditor extends Hack {
@@ -19,14 +22,21 @@ public class HudEditor extends Hack {
     public ColourSetting gridColor = new ColourSetting("Grid Color", new Colour(255,255,255,255), this, s -> grid.getValue());
     public BooleanSetting alignment = new BooleanSetting("Alignment Lines", true ,this);
     public ColourSetting alignmentColor = new ColourSetting("Alignment Color", new Colour(255, 200, 0, 140), this, s -> alignment.getValue());
-    public IntSetting welcomerOffset = new IntSetting("Watermark Offset", 500, 0, 20000, this);
-    public BooleanSetting welcomerName = new BooleanSetting("Watermark Name", true, this);
-    public BooleanSetting welcomerFps = new BooleanSetting("Watermark Fps", false, this);
-    public BooleanSetting welcomerTps = new BooleanSetting("Watermark Tps", false, this);
-    public BooleanSetting welcomerPing = new BooleanSetting("Watermark Ping", false, this);
-    public BooleanSetting welcomerTime = new BooleanSetting("Watermark Time", false, this);
-    public BooleanSetting showOff = new BooleanSetting("Helper Show Off", true, this);
-    public IntSetting kills = new IntSetting("Kills", 0, 0, 2000000000, this, v -> false);
+    public IntSetting welcomerOffset = new IntSetting("Rainbow Offset", 500, 0, 20000, this);
+    public BooleanSetting showOff = new BooleanSetting("Show Coords", false, this);
+    public ParentSetting welcomer = new ParentSetting("Welcomer", this);
+    public BooleanSetting welcomerName = new BooleanSetting("Watermark Name", true, welcomer);
+    public BooleanSetting welcomerFps = new BooleanSetting("Watermark Fps", false, welcomer);
+    public BooleanSetting welcomerTps = new BooleanSetting("Watermark Tps", false, welcomer);
+    public BooleanSetting welcomerPing = new BooleanSetting("Watermark Ping", false, welcomer);
+    public BooleanSetting welcomerTime = new BooleanSetting("Watermark Time", false, welcomer);
+    public ParentSetting kdcomponent = new ParentSetting("Clout Manager", this);
+    public BooleanSetting kd = new BooleanSetting("KD", false, this);
+    public BooleanSetting streak = new BooleanSetting("Streak", false, this);
+    public BooleanSetting kills = new BooleanSetting("Kills", false, this);
+    public BooleanSetting deaths = new BooleanSetting("Deaths", false, this);
+
+    public IntSetting Kills = new IntSetting("Kills", 0, 0, 2000000000, this, v -> false);
     public IntSetting Deaths = new IntSetting("Deaths", 0, 0, 2000000000, this, v -> false);
 
     public HudEditor(){

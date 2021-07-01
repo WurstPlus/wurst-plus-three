@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.gui.hud.element.elements.HudCloutManager;
 import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.security.PublicKey;
 import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,8 +24,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class KDManager implements Globals {
     public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
     private int currentKills;
+
+    public int getCurrentKills() {
+        return currentKills;
+    }
+
     public String getKD() {
-        Double kd = HudEditor.INSTANCE.kills.getValue() / (double) HudEditor.INSTANCE.Deaths.getValue();
+        Double kd = HudEditor.INSTANCE.Kills.getValue() / (double) HudEditor.INSTANCE.Deaths.getValue();
         try {
             return kd.toString().substring(0, 4);
         } catch (StringIndexOutOfBoundsException aaaaargh) {
@@ -66,7 +73,7 @@ public class KDManager implements Globals {
 
     public void onEntityDeath(DeathEvent event) {
         if (this.targets.containsKey(event.player.getName())) {
-            HudEditor.INSTANCE.kills.setValue(HudEditor.INSTANCE.kills.getValue() + 1);
+            HudEditor.INSTANCE.Kills.setValue(HudEditor.INSTANCE.Kills.getValue() + 1);
             currentKills++;
             AutoEz.INSTANCE.announceDeath();
             this.targets.remove(event.player.getName());
