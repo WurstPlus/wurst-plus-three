@@ -3,8 +3,6 @@ package me.travis.wurstplusthree.manager;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
-import me.travis.wurstplusthree.event.processor.CommitEvent;
-import me.travis.wurstplusthree.gui.hud.element.elements.HudCloutManager;
 import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.Globals;

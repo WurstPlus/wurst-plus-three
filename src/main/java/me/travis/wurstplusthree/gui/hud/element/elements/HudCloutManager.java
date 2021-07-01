@@ -33,7 +33,6 @@ public class HudCloutManager extends HudElement {
                 this.getX() + padding + this.getWidth(), this.getY() + padding + this.getHeight() - 1, 1, fill.hashCode(), outline.hashCode(), false);
         RenderUtil2D.drawHLineG(this.getX() - padding, this.getY() - padding,
                 (this.getX() + padding + this.getWidth()) - (this.getX() - padding), Rainbow.getColour().hashCode(), Rainbow.getFurtherColour(HudEditor.INSTANCE.welcomerOffset.getValue()).hashCode());
-        String text = "";
         if (HudEditor.INSTANCE.kills.getValue()) {
             text += " Kills: " + HudEditor.INSTANCE.Kills.getValue().toString();
         }
@@ -46,6 +45,7 @@ public class HudCloutManager extends HudElement {
         if (HudEditor.INSTANCE.streak.getValue()) {
             text += " | Streak: " + String.valueOf(WurstplusThree.KD_MANAGER.getCurrentKills());
         }
+
         HudUtil.drawHudString(text, getX(), getY(), HudEditor.INSTANCE.fontColor.getValue().hashCode());
     }
 }
