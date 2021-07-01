@@ -15,6 +15,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
@@ -36,6 +37,7 @@ public class Offhand extends Hack {
     BooleanSetting GapOnPick = new BooleanSetting("PickGap", false, this, s -> GapSwitch.getValue());
     BooleanSetting Always = new BooleanSetting("Always", false, this, s -> GapSwitch.getValue());
     BooleanSetting CrystalCheck = new BooleanSetting("CrystalCheck", false, this);
+    BooleanSetting check32K = new BooleanSetting("32KCheck", false, this);
     IntSetting cooldown = new IntSetting("Cooldown", 0, 0, 40, this);
 
     private int timer = 0;
@@ -66,7 +68,7 @@ public class Offhand extends Hack {
         timer = timer + 1;
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            if (hp > TotemHp.getValue() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) {
+            if ((hp > TotemHp.getValue() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) && lethalToLocalCheck() && Check32K()) {
                 if (mode.getValue().equalsIgnoreCase("crystal") && (!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled()) && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
                     swapItems(getItemSlot(Items.END_CRYSTAL));
                     return;
@@ -98,18 +100,26 @@ public class Offhand extends Hack {
         }
     }
 
-    private boolean lethalToLocalCheck() {
-        if (!CrystalCheck.getValue()) {
-            return false;
+    private boolean Check32K() {
+        if (!check32K.getValue() || mc.world == null || mc.player == null) return true;
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity != mc.player && WurstplusThree.FRIEND_MANAGER.isFriend(entity.getName()) && entity instanceof EntityPlayer && entity.getDistance(mc.player) < 7) {
+                if (EntityUtil.holding32k((EntityPlayer) entity)) return true;
+            }
         }
+        return true;
+    }
+
+    private boolean lethalToLocalCheck() {
+        if (!CrystalCheck.getValue()) return true;
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) <= 12) {
                 if (CrystalUtil.calculateDamage(new BlockPos(entity.posX, entity.posY, entity.posZ), mc.player, false) >= mc.player.getHealth()) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public void swapItems(int slot) {

@@ -38,7 +38,7 @@ public class Gui extends Hack {
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);
     public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     public ParentSetting toolTipsParent = new ParentSetting("ToolTips", this);
-    public BooleanSetting toolTips = new BooleanSetting("Enabled", true , toolTipsParent);
+    public BooleanSetting toolTips = new BooleanSetting("Show ToolTips", true , toolTipsParent);
     public ColourSetting toolTipColor = new ColourSetting("ToolTipColour", new Colour(0,0,0,100), toolTipsParent);
     //todo make a outline for the tooltips I think that would look sexy
 

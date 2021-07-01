@@ -1,18 +1,22 @@
 package me.travis.wurstplusthree.hack.hacks.combat;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.EnumSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
-import me.travis.wurstplusthree.setting.type.ParentSetting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
+import me.travis.wurstplusthree.util.elements.Colour;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.ContainerHopper;
@@ -20,20 +24,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemShulkerBox;
 import net.minecraft.network.play.client.CPacketCloseWindow;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
 
 @Hack.Registration(name = "Auto 32K", description = "places some blocks and pulls out a sword", category = Hack.Category.COMBAT, priority = HackPriority.High)
 public class Auto32k extends Hack {
+    //original module by TrvsF
+    //redone by wallhacks
     private BlockPos pos;
     private int hopperSlot;
     private int redstoneSlot;
     private int shulkerSlot;
     private int ticksPast;
+    private boolean failed;
+    CPacketCloseWindow packet;
     private int[] rot;
     private boolean setup;
+    private BlockPos hopperPos;
     private boolean placeRedstone;
     private boolean dispenserDone;
     EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
@@ -41,14 +53,19 @@ public class Auto32k extends Hack {
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     IntSetting slot = new IntSetting("Slot", 0, 0, 9, this);
+    DoubleSetting hopperRange = new DoubleSetting("HopperRange", 6.0, 0.0, 10.0, this);
     ParentSetting parentSetting = new ParentSetting("Gui", this);
     BooleanSetting secretClose = new BooleanSetting("PacketClose", false, parentSetting);
     BooleanSetting closeGui = new BooleanSetting("CloseGui", false, parentSetting, v -> secretClose.getValue());
+    ColourSetting color = new ColourSetting("RenderColor", new Colour(0, 0, 200, 200), this);
 
     @Override
     public void onEnable() {
         ticksPast = 0;
         setup = false;
+        failed = true;
+        packet = null;
+        hopperPos = null;
         dispenserDone = false;
         placeRedstone = false;
         hopperSlot = -1;
@@ -114,6 +131,7 @@ public class Auto32k extends Hack {
                 for (int y = -1; y <= 2; y++) {
                     for (int x = -2; x <= 2; x++) {
                         if ((z != 0 || y != 0 || x != 0) && (z != 0 || y != 1 || x != 0) && BlockUtil.isBlockEmpty(mc.player.getPosition().add(z, y, x)) && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) z + 0.5D, (double) y + 0.5D, (double) x + 0.5D)) < 4.5D && BlockUtil.isBlockEmpty(mc.player.getPosition().add(z, y + 1, x)) && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) z + 0.5D, (double) y + 1.5D, (double) x + 0.5D)) < 4.5D)  {
+                            hopperPos = mc.player.getPosition().add(z, y, x);
                             BlockUtil.placeBlock(mc.player.getPosition().add(z, y, x), hopperSlot, rotate.getValue(), false, swing);
                             BlockUtil.placeBlock(mc.player.getPosition().add(z, y + 1, x), shulkerSlot, rotate.getValue(), false, swing);
                             BlockUtil.openBlock(mc.player.getPosition().add(z, y, x));
@@ -128,14 +146,34 @@ public class Auto32k extends Hack {
             }
         }
     }
-    
+
+    @Override
+    public void onDisable() {
+        if (packet != null)
+        mc.player.connection.sendPacket(new CPacketCloseWindow());
+    }
+
+    @Override
+    public void onRender3D(Render3DEvent event) {
+        if (hopperPos != null) {
+            RenderUtil.drawBoxESP(hopperPos, color.getColor(), color.getColor(), 2.0f, true, true, false);
+            RenderUtil.drawCircle(hopperPos.getX(), hopperPos.getY(), hopperPos.getZ(), hopperRange.getValue().floatValue(), color.getValue());
+        }
+    }
 
     @Override
     public void onUpdate() {
-        if (ticksPast > 50 && !(mc.currentScreen instanceof GuiHopper)) {
-            ClientMessage.sendErrorMessage("inactive too long, disabling");
+        if (ticksPast > 50 && failed && !(mc.currentScreen instanceof GuiHopper)) {
+            ClientMessage.sendErrorMessage("Failed disabling now");
             this.disable();
             return;
+        }
+        if (hopperPos != null) {
+            if (mc.player.getDistanceSqToCenter(hopperPos) >= MathsUtil.square(hopperRange.getValue().floatValue())) {
+                ClientMessage.sendErrorMessage("Out of range disabling..");
+                this.disable();
+                return;
+            }
         }
 
         if (setup && ticksPast > this.delay.getValue()) {
@@ -157,8 +195,16 @@ public class Auto32k extends Hack {
             if (!placeMode.getValue().equals("Hopper") && mc.world.getBlockState(this.pos.add(this.rot[0], 1, this.rot[1])).getBlock() instanceof BlockShulkerBox
                     && mc.world.getBlockState(this.pos.add(this.rot[0], 0, this.rot[1])).getBlock() != Blocks.HOPPER
                     && placeRedstone && dispenserDone && !(mc.currentScreen instanceof GuiInventory)) {
+                hopperPos = this.pos.add(this.rot[0], 0, this.rot[1]);
                 BlockUtil.placeBlock(this.pos.add(this.rot[0], 0, this.rot[1]), hopperSlot, rotate.getValue(), false, swing);
                 BlockUtil.openBlock(this.pos.add(this.rot[0], 0, this.rot[1]));
+            }
+
+            if (hopperPos != null)
+            if (!(mc.world.getBlockState(hopperPos).getBlock() instanceof BlockHopper) && !failed && !(mc.currentScreen instanceof GuiHopper)) {
+                ClientMessage.sendErrorMessage("Hopper Got blown up xDD");
+                this.disable();
+                return;
             }
             //the coming code is completly skidded and I do not feel bad about it
             //thx phobos <3
@@ -187,7 +233,7 @@ public class Auto32k extends Hack {
                     } else if (this.closeGui.getValue() && this.secretClose.getValue()) {
                         Auto32k.mc.player.closeScreen();
                     }
-                } else if (!EntityUtil.holding32k(mc.player)) {
+                    failed = false;
                 }
             }
         }
@@ -200,6 +246,7 @@ public class Auto32k extends Hack {
             if (event.getPacket() instanceof CPacketCloseWindow) {
                 if (this.secretClose.getValue()) {
                     event.setCancelled(true);
+                    packet = event.getPacket();
                 }
                 if (!EntityUtil.holding32k(mc.player) && !EntityUtil.is32k(mc.player.getHeldItemMainhand())) {
                     mc.player.dropItem(true);
@@ -207,4 +254,12 @@ public class Auto32k extends Hack {
             }
         }
     }
+
+    private final Vec3d[] offsetsHopper = new Vec3d[]{
+            new Vec3d(1.0, 0.0, 0.0),
+            new Vec3d(-1.0, 0.0, 0.0),
+            new Vec3d(0.0, 0.0, 1.0),
+            new Vec3d(0.0, 0.0, -1.0),
+            new Vec3d(0.0, 1.0, 0.0)
+    };
 }

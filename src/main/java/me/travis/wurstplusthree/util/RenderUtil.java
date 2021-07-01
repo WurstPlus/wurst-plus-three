@@ -948,10 +948,8 @@ public class RenderUtil implements Globals {
                 (double) pos.getZ() - RenderUtil.mc.getRenderManager().viewerPosZ,
                 (double) (pos.getX() + 1) - RenderUtil.mc.getRenderManager().viewerPosX,
                 (double) (pos.getY() + 1) - RenderUtil.mc.getRenderManager().viewerPosY, (double) (pos.getZ() + 1) - RenderUtil.mc.getRenderManager().viewerPosZ);
-        camera.setPosition(Objects.requireNonNull(RenderUtil.mc.getRenderViewEntity()).posX, RenderUtil.mc.getRenderViewEntity().posY, RenderUtil.mc.getRenderViewEntity().posZ);
-        if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + RenderUtil.mc.getRenderManager().viewerPosX, bb.minY + RenderUtil.mc.getRenderManager().viewerPosY, bb.minZ + RenderUtil.mc.getRenderManager().viewerPosZ, bb.maxX + RenderUtil.mc.getRenderManager().viewerPosX, bb.maxY + RenderUtil.mc.getRenderManager().viewerPosY, bb.maxZ + RenderUtil.mc.getRenderManager().viewerPosZ))) {
             drawCircleVertices(bb, radius, colour);
-        }
+
     }
 
     public static void drawColumn(float x, float y, float z, float radius, Colour colour, int amount, double height) {

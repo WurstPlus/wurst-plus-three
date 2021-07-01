@@ -121,11 +121,12 @@ public class CrystalTrap extends Hack {
                     }
 
                     if (foundblock) {
-                        BlockUtil.placeBlock(target_pos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing);
+                        BlockUtil.placeBlock(target_pos, obsidianslot, rotate.getValue(), rotate.getValue(), swing);
                     }
 
                     offsetStep++;
                 }
+                if (breakBlock != null)
                 if (mc.world.getBlockState(new BlockPos(breakBlock)).getBlock() instanceof BlockObsidian) {
                     currentStep = step.Breaking;
                     tickCounter = 0;
