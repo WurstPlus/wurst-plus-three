@@ -33,8 +33,9 @@ public class HudCloutManager extends HudElement {
                 this.getX() + padding + this.getWidth(), this.getY() + padding + this.getHeight() - 1, 1, fill.hashCode(), outline.hashCode(), false);
         RenderUtil2D.drawHLineG(this.getX() - padding, this.getY() - padding,
                 (this.getX() + padding + this.getWidth()) - (this.getX() - padding), Rainbow.getColour().hashCode(), Rainbow.getFurtherColour(HudEditor.INSTANCE.welcomerOffset.getValue()).hashCode());
+        text = ChatFormatting.AQUA + "Clout" + ChatFormatting.RESET + "Manager";
         if (HudEditor.INSTANCE.kills.getValue()) {
-            text += " Kills: " + HudEditor.INSTANCE.Kills.getValue().toString();
+            text += " | Kills: " + HudEditor.INSTANCE.Kills.getValue().toString();
         }
         if (HudEditor.INSTANCE.deaths.getValue()) {
             text += " | Deaths: " + HudEditor.INSTANCE.Deaths.getValue().toString();
