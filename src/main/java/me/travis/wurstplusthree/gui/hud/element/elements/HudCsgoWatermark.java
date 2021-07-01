@@ -38,13 +38,13 @@ public class HudCsgoWatermark extends HudElement {
             text += " | " + mc.player.getName();
         }
         if (HudEditor.INSTANCE.welcomerFps.getValue()) {
-            text += " |" + HudUtil.getFpsLine() + ChatFormatting.RESET;
+            text += " | " + HudUtil.getFpsLine() + ChatFormatting.RESET;
         }
         if (HudEditor.INSTANCE.welcomerTps.getValue()) {
-            text += " |" + HudUtil.getTpsLine() + ChatFormatting.RESET;
+            text += " | " + HudUtil.getTpsLine() + ChatFormatting.RESET;
         }
         if (HudEditor.INSTANCE.welcomerPing.getValue()) {
-            text += " |" + HudUtil.getPingLine() + ChatFormatting.RESET;
+            text += " | " + HudUtil.getPingLine() + ChatFormatting.RESET;
         }
         if (HudEditor.INSTANCE.welcomerTime.getValue()) {
             text += " | " + HudUtil.getAnaTimeLine() + ChatFormatting.RESET;

@@ -36,8 +36,8 @@ public class HudEditor extends Hack {
     public BooleanSetting kills = new BooleanSetting("Kills", false, this);
     public BooleanSetting deaths = new BooleanSetting("Deaths", false, this);
 
-    public IntSetting Kills = new IntSetting("Kills", 0, 0, 2000000000, this, v -> false);
-    public IntSetting Deaths = new IntSetting("Deaths", 0, 0, 2000000000, this, v -> false);
+    public IntSetting Kills = new IntSetting("KillCounter", 0, 0, 2000000000, this, v -> false);
+    public IntSetting Deaths = new IntSetting("DeathsCounter", 0, 0, 2000000000, this, v -> false);
 
     public HudEditor(){
         INSTANCE = this;
