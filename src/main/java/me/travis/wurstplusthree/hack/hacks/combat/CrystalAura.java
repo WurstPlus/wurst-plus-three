@@ -68,6 +68,7 @@ public final class CrystalAura extends Hack {
     private final IntSetting maxSelfBreak = new IntSetting("MaxSelfBreak", 5, 0, 36, damages, s -> !ignoreSelfDamage.getValue());
     private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, damages);
 
+
     //general
     private final ParentSetting general = new ParentSetting("General", this);
     public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), general);
@@ -113,9 +114,9 @@ public final class CrystalAura extends Hack {
 
     //chaineese mode
     private final ParentSetting chainParent = new ParentSetting("ChainMode", this);
-    private final BooleanSetting chainMode = new BooleanSetting("Enabled", false, chainParent);
-    private final IntSetting chainCounter = new IntSetting("Chain Counter", 3, 0, 10, chainParent);
-    private final IntSetting chainStep = new IntSetting("Chain Step", 2, 0, 5, chainParent);
+    private final BooleanSetting chainMode = new BooleanSetting("UseChainMode", false, chainParent);
+    private final IntSetting chainCounter = new IntSetting("ChainCounter", 3, 0, 10, chainParent);
+    private final IntSetting chainStep = new IntSetting("ChainStep", 2, 0, 5, chainParent);
 
     //render
     private final ParentSetting render = new ParentSetting("Render", this);
@@ -537,7 +538,7 @@ public final class CrystalAura extends Hack {
                 chainCount--;
             }
         } else {
-            renderDamageVal = bestDamage;
+            renderDamageVal = CrystalUtil.calculateDamage(bestPos, ezTarget, false);
             renderBlock = bestPos;
         }
 
