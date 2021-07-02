@@ -15,6 +15,7 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
+import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,6 +82,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
+    private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Crystal Score", "Player"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
 
@@ -153,6 +155,8 @@ public final class CrystalAura extends Hack {
 
     private long start = 0;
     private long crystalLatency;
+
+    private double crystalScore;
 
     private int currentChainCounter;
     private int chainCount;
@@ -487,6 +491,7 @@ public final class CrystalAura extends Hack {
             }
             for (BlockPos blockPos :  CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
+                crystalScore = targetDamage;
                 if (targetDamage <= 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
@@ -786,6 +791,7 @@ public final class CrystalAura extends Hack {
         currentChainCounter = 0;
         obiFeetCounter = 0;
         crystalLatency = 0;
+        crystalScore = 0;
         start = 0;
         highestID = -100000;
         staticEnderCrystal = null;
@@ -795,7 +801,14 @@ public final class CrystalAura extends Hack {
 
     @Override
     public String getDisplayInfo() {
-        return crystalLatency + "ms";
+        if(arrayListMode.is("Latency")) {
+            return crystalLatency + "ms";
+        }
+        else if(arrayListMode.is("Crystal Score")){
+            return crystalScore + "Dmg";
+        }else {
+            return ezTarget.getName();
+        }
     }
 
     // terrain ignoring raytrace stuff made by wallhacks_ and node3112
