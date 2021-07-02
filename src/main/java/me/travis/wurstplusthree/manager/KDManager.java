@@ -3,9 +3,11 @@ package me.travis.wurstplusthree.manager;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class KDManager implements Globals {
     public final ConcurrentHashMap<String, Integer> targets = new ConcurrentHashMap<>();
+
+    private double totalDeaths;
+    private double totalKills;
     private int currentKills;
 
     public int getCurrentKills() {
@@ -28,12 +33,18 @@ public class KDManager implements Globals {
     }
 
     public String getKD() {
-        Double kd = HudEditor.INSTANCE.Kills.getValue() / (double) HudEditor.INSTANCE.Deaths.getValue();
-        try {
-            return kd.toString().substring(0, 4);
-        } catch (StringIndexOutOfBoundsException aaaaargh) {
-            return kd.toString();
+        if (totalDeaths == 0) {
+            return "" + totalKills;
         }
+        return "" + MathsUtil.round(totalKills / totalDeaths, 2);
+    }
+
+    public String getTotalKills() {
+        return "" + totalKills;
+    }
+
+    public String getTotalDeaths() {
+        return "" + totalDeaths;
     }
 
     public KDManager() {
@@ -41,7 +52,7 @@ public class KDManager implements Globals {
     }
 
     public void addDeath() {
-        HudEditor.INSTANCE.Deaths.setValue(HudEditor.INSTANCE.Deaths.getValue() + 1);
+        totalDeaths++;
         currentKills = 0;
     }
 
@@ -56,12 +67,14 @@ public class KDManager implements Globals {
         });
     }
 
+    @SubscribeEvent
     public void onAttackEntity(AttackEntityEvent event) {
         if (event.getTarget() instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(event.getEntityPlayer().getName())) {
             this.targets.put(event.getTarget().getName(), 20);
         }
     }
 
+    @CommitEvent
     public void onSendAttackPacket(PacketEvent.Send event) {
         CPacketUseEntity packet;
         if (event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityPlayer && !WurstplusThree.FRIEND_MANAGER.isFriend(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).getName())) {
@@ -69,9 +82,10 @@ public class KDManager implements Globals {
         }
     }
 
+    @CommitEvent
     public void onEntityDeath(DeathEvent event) {
         if (this.targets.containsKey(event.player.getName())) {
-            HudEditor.INSTANCE.Kills.setValue(HudEditor.INSTANCE.Kills.getValue() + 1);
+            totalKills++;
             currentKills++;
             AutoEz.INSTANCE.announceDeath();
             this.targets.remove(event.player.getName());

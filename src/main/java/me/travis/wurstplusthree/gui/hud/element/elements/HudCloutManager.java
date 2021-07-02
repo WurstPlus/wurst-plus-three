@@ -16,7 +16,7 @@ public class HudCloutManager extends HudElement {
 
     @Override
     public int getHeight() {
-        return HudUtil.getHudStringHeight(text);
+        return HudUtil.getHudStringHeight();
     }
 
     @Override
@@ -35,16 +35,16 @@ public class HudCloutManager extends HudElement {
                 (this.getX() + padding + this.getWidth()) - (this.getX() - padding), Rainbow.getColour().hashCode(), Rainbow.getFurtherColour(HudEditor.INSTANCE.welcomerOffset.getValue()).hashCode());
         text = ChatFormatting.AQUA + "Clout" + ChatFormatting.RESET + "Manager";
         if (HudEditor.INSTANCE.kills.getValue()) {
-            text += " | Kills: " + HudEditor.INSTANCE.Kills.getValue().toString();
+            text += " | Kills: " + WurstplusThree.KD_MANAGER.getTotalKills();
         }
         if (HudEditor.INSTANCE.deaths.getValue()) {
-            text += " | Deaths: " + HudEditor.INSTANCE.Deaths.getValue().toString();
+            text += " | Deaths: " + WurstplusThree.KD_MANAGER.getTotalDeaths();
         }
         if (HudEditor.INSTANCE.kd.getValue()) {
-            text += " | KD: " + String.valueOf(WurstplusThree.KD_MANAGER.getKD());
+            text += " | KD: " + WurstplusThree.KD_MANAGER.getKD();
         }
         if (HudEditor.INSTANCE.streak.getValue()) {
-            text += " | Streak: " + String.valueOf(WurstplusThree.KD_MANAGER.getCurrentKills());
+            text += " | Streak: " + WurstplusThree.KD_MANAGER.getCurrentKills();
         }
 
         HudUtil.drawHudString(text, getX(), getY(), HudEditor.INSTANCE.fontColor.getValue().hashCode());

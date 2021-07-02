@@ -108,7 +108,7 @@ public class HudUtil implements Globals {
         }
     }
 
-    public static int getHudStringHeight(String string) {
+    public static int getHudStringHeight() {
         if (HudEditor.INSTANCE.customFont.getValue()) {
             return WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
         } else {
@@ -119,9 +119,9 @@ public class HudUtil implements Globals {
     public static int getRightX(String string, int x) {
         ScaledResolution scaledResolution = new ScaledResolution(mc);
         if (HudEditor.INSTANCE.customFont.getValue()) {
-            return scaledResolution.getScaledWidth() - x - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
+            return x - WurstplusThree.GUI_FONT_MANAGER.getTextWidth(string);
         } else {
-            return scaledResolution.getScaledWidth() - x - mc.fontRenderer.getStringWidth(string);
+            return x - mc.fontRenderer.getStringWidth(string);
         }
     }
 

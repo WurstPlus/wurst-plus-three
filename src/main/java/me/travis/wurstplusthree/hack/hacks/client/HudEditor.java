@@ -31,13 +31,10 @@ public class HudEditor extends Hack {
     public BooleanSetting welcomerPing = new BooleanSetting("Watermark Ping", false, welcomer);
     public BooleanSetting welcomerTime = new BooleanSetting("Watermark Time", false, welcomer);
     public ParentSetting kdcomponent = new ParentSetting("Clout Manager", this);
-    public BooleanSetting kd = new BooleanSetting("KD", false, this);
+    public BooleanSetting kd = new BooleanSetting("KD", true, this);
     public BooleanSetting streak = new BooleanSetting("Streak", false, this);
     public BooleanSetting kills = new BooleanSetting("Kills", false, this);
     public BooleanSetting deaths = new BooleanSetting("Deaths", false, this);
-
-    public IntSetting Kills = new IntSetting("KillCounter", 0, 0, 2000000000, this, v -> false);
-    public IntSetting Deaths = new IntSetting("DeathsCounter", 0, 0, 2000000000, this, v -> false);
 
     public HudEditor(){
         INSTANCE = this;

@@ -26,16 +26,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value={EntityRenderer.class})
 public abstract class MixinEntityRenderer {
-
+    private boolean injection = true;
     @Shadow
     public ItemStack itemActivationItem;
     @Shadow
     @Final
     public Minecraft mc;
+    @Shadow
+    public abstract void getMouseOver(float var1);
 
-    @Redirect(method={"setupCameraTransform"}, at=@At(value="FIELD", target="Lnet/minecraft/client/entity/EntityPlayerSP;prevTimeInPortal:F"))
-    public float prevTimeInPortalHook(EntityPlayerSP entityPlayerSP) {
-        return entityPlayerSP.prevTimeInPortal;
+    @Inject(method={"getMouseOver(F)V"}, at={@At(value="HEAD")}, cancellable=true)
+    public void getMouseOverHook(float partialTicks, CallbackInfo info) {
+        if (this.injection) {
+            info.cancel();
+            this.injection = false;
+            try {
+                this.getMouseOver(partialTicks);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.injection = true;
+        }
     }
 
     @Redirect(method={"setupFog"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/renderer/ActiveRenderInfo;getBlockStateAtEntityViewpoint(Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;F)Lnet/minecraft/block/state/IBlockState;"))

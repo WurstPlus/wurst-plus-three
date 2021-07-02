@@ -56,7 +56,7 @@ public class HudHelper extends HudElement {
         displayStrings.removeIf(string -> string.equalsIgnoreCase("" + ChatFormatting.RESET));
 
         int i = 0;
-        int vOffset = HudUtil.getHudStringHeight("a") + 4;
+        int vOffset = HudUtil.getHudStringHeight() + 4;
         int biggestWidth = 0;
         for (String string : displayStrings) {
             HudUtil.drawHudString(string, getX(), getY() + (i * vOffset) + 2, HudEditor.INSTANCE.fontColor.getValue().hashCode());

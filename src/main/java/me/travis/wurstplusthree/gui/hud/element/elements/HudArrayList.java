@@ -54,7 +54,7 @@ public class HudArrayList extends HudElement {
         for (Hack hack : hacks) {
             if (WurstplusThree.HACKS.isDrawHack(hack)) continue;
             String name = hack.getFullArrayString();
-            HudUtil.drawHudString(name, isLeft ? getX() : HudUtil.getRightX(name, getX()), this.getY() + y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
+            HudUtil.drawHudString(name, isLeft ? getX() : HudUtil.getRightX(name, getX() + width), this.getY() + y, HudEditor.INSTANCE.fontColor.getValue().hashCode());
             int w = HudUtil.getHudStringWidth(name);
             if (w > bestWidth) {
                 bestWidth = w;

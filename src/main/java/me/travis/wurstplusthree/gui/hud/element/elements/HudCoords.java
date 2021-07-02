@@ -17,7 +17,7 @@ public class HudCoords extends HudElement {
 
     @Override
     public int getHeight() {
-        return HudUtil.getHudStringHeight(text);
+        return HudUtil.getHudStringHeight();
     }
 
     @Override

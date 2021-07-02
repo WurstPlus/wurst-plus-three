@@ -8,14 +8,13 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
-import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.hack.hacks.misc.AutoClip;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import me.travis.wurstplusthree.util.elements.CrystalPos;
-import me.travis.wurstplusthree.util.elements.Pair;
+import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +36,6 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public final class CrystalAura extends Hack {
@@ -82,7 +80,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
-    private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Crystal Score", "Player"), general);
+    private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Crystal Score", "Player", "CPS"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
 
@@ -134,13 +132,11 @@ public final class CrystalAura extends Hack {
     private final EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), render);
     private final BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, render);
 
-
-
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
 
     public EntityPlayer ezTarget = null;
     public BlockPos renderBlock = null;
-    private double renderDamageVal = 0;
+    private final Timer crystalsPlacedTimer = new Timer();
 
     private float yaw;
     private float pitch;
@@ -156,7 +152,7 @@ public final class CrystalAura extends Hack {
     private long start = 0;
     private long crystalLatency;
 
-    private double crystalScore;
+    private double renderDamageVal = 0;
 
     private int currentChainCounter;
     private int chainCount;
@@ -167,6 +163,7 @@ public final class CrystalAura extends Hack {
     private int facePlaceDelayCounter;
     private int obiFeetCounter;
     private int highestID;
+    private int crystalsPlaced;
 
     public BlockPos staticPos;
     public EntityEnderCrystal staticEnderCrystal;
@@ -373,6 +370,7 @@ public final class CrystalAura extends Hack {
             if (debug.getValue()) {
                 ClientMessage.sendMessage("placing");
             }
+            crystalsPlaced++;
         }
         int newSize = getCrystalCount(offhandCheck);
         if (newSize == stackSize) {
@@ -491,7 +489,6 @@ public final class CrystalAura extends Hack {
             }
             for (BlockPos blockPos :  CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
-                crystalScore = targetDamage;
                 if (targetDamage <= 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
                     validPos.add(new CrystalPos(blockPos, targetDamage));
@@ -799,23 +796,32 @@ public final class CrystalAura extends Hack {
         currentChainCounter = 0;
         obiFeetCounter = 0;
         crystalLatency = 0;
-        crystalScore = 0;
         start = 0;
         highestID = -100000;
         staticEnderCrystal = null;
         staticPos = null;
         rotationPause = false;
+        crystalsPlaced = 0;
+        crystalsPlacedTimer.reset();
+    }
+
+    public float getCPS() {
+        return crystalsPlaced / (crystalsPlacedTimer.getPassedTimeMs() / 1000f);
     }
 
     @Override
     public String getDisplayInfo() {
-        if(arrayListMode.is("Latency")) {
-            return crystalLatency + "ms";
-        }
-        else if(arrayListMode.is("Crystal Score")){
-            return crystalScore + "Dmg";
-        }else {
-            return this.ezTarget != null ? this.ezTarget.getName() : "";
+        switch (arrayListMode.getValue()) {
+            case "Latency":
+                return crystalLatency + "ms";
+            case "Crystal Score":
+                return renderDamageVal + "Dmg";
+            case "CPS":
+                return "" + MathsUtil.round(getCPS(), 2);
+            case "Player":
+                return this.ezTarget != null ? this.ezTarget.getName() : null;
+            default:
+                return "";
         }
     }
 
@@ -826,13 +832,11 @@ public final class CrystalAura extends Hack {
 
 final class AttackThread
         extends Thread implements Globals {
-    private final BlockPos pos;
     private final int id;
     private final int delay;
 
     public AttackThread(int idIn, BlockPos posIn, int delayIn) {
         this.id = idIn;
-        this.pos = posIn;
         this.delay = delayIn;
     }
 
@@ -871,25 +875,6 @@ final class Threads extends Thread {
         }
     }
 }
-
-//final class CaThread extends Thread {
-//    @Override
-//    public void run() {
-//        ClientMessage.sendMessage("run");
-//        if (CrystalAura.INSTANCE.rotateMode.is("Fuck")) {
-//            while (CrystalAura.INSTANCE.isEnabled()) {
-//                CrystalAura.INSTANCE.threadOngoing.set(true);
-//                CrystalAura.INSTANCE.doCrystalAura();
-//                CrystalAura.INSTANCE.threadOngoing.set(false);
-//                try {
-//                    Thread.sleep(CrystalAura.INSTANCE.fuckDelay.getValue());
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-//}
 
 enum ThreadType {
     BLOCK,
