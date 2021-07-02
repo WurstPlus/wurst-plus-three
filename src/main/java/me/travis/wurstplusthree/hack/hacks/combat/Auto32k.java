@@ -11,6 +11,7 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockHopper;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -42,6 +43,7 @@ public class Auto32k extends Hack {
     private int shulkerSlot;
     private int ticksPast;
     private boolean failed;
+    private int offsetStep;
     CPacketCloseWindow packet;
     private int[] rot;
     private boolean setup;
@@ -51,6 +53,7 @@ public class Auto32k extends Hack {
     EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
     IntSetting delay = new IntSetting("Delay", 4, 0, 10, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
+    BooleanSetting encase = new BooleanSetting("Encase", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
     IntSetting slot = new IntSetting("Slot", 0, 0, 9, this);
     DoubleSetting hopperRange = new DoubleSetting("HopperRange", 6.0, 0.0, 10.0, this);
@@ -68,6 +71,7 @@ public class Auto32k extends Hack {
         hopperPos = null;
         dispenserDone = false;
         placeRedstone = false;
+        offsetStep = 0;
         hopperSlot = -1;
         int dispenser_slot = -1;
         redstoneSlot = -1;
@@ -111,8 +115,8 @@ public class Auto32k extends Hack {
             for (int x = -2; x <= 2; ++x) {
                 for (int y = -1; y <= 0; ++y) {
                     for (int z = -2; z <= 2; ++z) {
-                        this.rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
-                        this.pos = mc.player.getPosition().add(x, y, z);
+                        rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
+                        pos = mc.player.getPosition().add(x, y, z);
                         if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && BlockUtil.canPlaceBlock(this.pos) && BlockUtil.isBlockEmpty(this.pos) && BlockUtil.isBlockEmpty(this.pos.add(this.rot[0], 0, this.rot[1])) && BlockUtil.isBlockEmpty(this.pos.add(0, 1, 0)) && BlockUtil.isBlockEmpty(this.pos.add(0, 2, 0)) && BlockUtil.isBlockEmpty(this.pos.add(this.rot[0], 1, this.rot[1]))) {
                             BlockUtil.placeBlock(this.pos, block_slot, rotate.getValue(), false, swing);
                             BlockUtil.rotatePacket((double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getX() + 0.5D, this.pos.getY() + 1, (double) this.pos.add(-this.rot[0], 1, -this.rot[1]).getZ() + 0.5D);
@@ -173,6 +177,31 @@ public class Auto32k extends Hack {
                 ClientMessage.sendErrorMessage("Out of range disabling..");
                 this.disable();
                 return;
+            }
+        }
+
+        if ((!failed || mc.currentScreen instanceof GuiHopper) && encase.getValue()) {
+            final List<Vec3d> place_targets = new ArrayList<Vec3d>();
+            Collections.addAll(place_targets, offsetsHopper);
+            if (offsetStep >= place_targets.size()) {
+                offsetStep = 0;
+            }
+            boolean foundblock = false;
+            while (!foundblock && offsetStep <= place_targets.size() - 1) {
+                final BlockPos offset_pos = new BlockPos(place_targets.get(offsetStep));
+                final BlockPos target_pos = new BlockPos(hopperPos.add(offset_pos.getX(), offset_pos.getY(), offset_pos.getZ()));
+                if (mc.world.getBlockState(target_pos).getMaterial().isReplaceable()) {
+                    foundblock = true;
+                }
+                for (final Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(target_pos))) {
+                    if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
+                        foundblock = false;
+                    }
+                }
+                if (foundblock) {
+                    BlockUtil.placeBlock(target_pos, InventoryUtil.findHotbarBlock(BlockObsidian.class), rotate.getValue(), rotate.getValue(), swing);
+                }
+                offsetStep++;
             }
         }
 
@@ -260,6 +289,7 @@ public class Auto32k extends Hack {
             new Vec3d(-1.0, 0.0, 0.0),
             new Vec3d(0.0, 0.0, 1.0),
             new Vec3d(0.0, 0.0, -1.0),
-            new Vec3d(0.0, 1.0, 0.0)
+            new Vec3d(0.0, 1.0, 0.0),
+            new Vec3d(0.0, -1.0, 0.0)
     };
 }
