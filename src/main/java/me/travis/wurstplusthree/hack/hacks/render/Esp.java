@@ -31,6 +31,7 @@ public class Esp extends Hack {
 
     @Override
     public void onRender3D(Render3DEvent event) {
+        if(nullCheck())return;
         AxisAlignedBB bb;
         Vec3d interp;
         int i;

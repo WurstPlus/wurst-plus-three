@@ -77,7 +77,7 @@ public final class CrystalAura extends Hack {
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), general);
     private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
-    private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict"), general);
+    private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict", "Dynamic"), general);
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
@@ -592,6 +592,15 @@ public final class CrystalAura extends Hack {
                 case "Strict":
                 double distance = mc.player.getDistanceSq(crystal);
                 return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
+
+                case "Dynamic":
+                    double x = sigmoid(Math.abs(ezTarget.motionX -  0.152));
+                    double z = sigmoid(Math.abs(ezTarget.motionZ - 0.152));
+                    if(x >= 0.4913640415 || z >= 0.4913640415){
+                        return targetDamage - selfDamage;
+                    }else {
+                        return targetDamage;
+                    }
             }
         }
 
@@ -755,6 +764,10 @@ public final class CrystalAura extends Hack {
         if (renderDamage.getValue()) {
             RenderUtil.drawText(renderBlock, ((Math.floor(this.renderDamageVal) == this.renderDamageVal) ? Integer.valueOf((int) this.renderDamageVal) : String.format("%.1f", this.renderDamageVal)) + "", Gui.INSTANCE.customFont.getValue());
         }
+    }
+
+    public static double sigmoid(final double x){
+        return (1/(1+Math.pow(Math.E, (-1*x))));
     }
 
     @Override

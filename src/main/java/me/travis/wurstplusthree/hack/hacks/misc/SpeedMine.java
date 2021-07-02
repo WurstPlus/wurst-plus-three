@@ -76,6 +76,7 @@ public final class SpeedMine extends Hack{
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onBlockDamage(@NotNull BlockEvent event){
+        if(nullCheck())return;
         if (event.getStage() == 3 && mc.playerController.curBlockDamageMP > 0.1f) {
             mc.playerController.isHittingBlock = true;
         }

@@ -35,6 +35,7 @@ public class NoRender extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (blind.getValue() && mc.player.isPotionActive(MobEffects.BLINDNESS))
             mc.player.removePotionEffect(MobEffects.BLINDNESS);
         if (nausea.getValue() && mc.player.isPotionActive(MobEffects.NAUSEA))

@@ -2,11 +2,13 @@ package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.PerspectiveEvent;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.hack.hacks.render.CameraClip;
 import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
@@ -92,6 +94,17 @@ public abstract class MixinEntityRenderer {
         PerspectiveEvent event = new PerspectiveEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
         WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
+    }
+
+    @Redirect(method = "drawNameplate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawString(Ljava/lang/String;III)I"))
+    private static int drawString(FontRenderer fontRenderer, String text, int x, int y, int color){
+        WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, x, y, Gui.INSTANCE.fontColor.getValue().hashCode());
+        return 0;
+    }
+
+    @Redirect(method = "drawNameplate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;getStringWidth(Ljava/lang/String;)I"))
+    private static int getStringWidth(FontRenderer fontRenderer, String text){
+        return WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
     }
 
 }

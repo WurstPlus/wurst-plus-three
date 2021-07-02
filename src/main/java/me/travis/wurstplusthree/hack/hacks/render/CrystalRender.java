@@ -45,6 +45,7 @@ public class CrystalRender extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         for (Entity crystal : mc.world.loadedEntityList) {
             if (crystal instanceof EntityEnderCrystal) {
                 if (!this.scaleMap.containsKey(crystal)) {
@@ -79,6 +80,7 @@ public class CrystalRender extends Hack {
     }
 
     public void onRenderModel(RenderEntityModelEvent event) {
+        if(nullCheck())return;
         if (event.getStage() != 0 || !(event.entity instanceof EntityEnderCrystal) || !this.wireframe.getValue()) {
             return;
         }

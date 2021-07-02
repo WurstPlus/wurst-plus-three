@@ -47,6 +47,7 @@ public class TargetDetails extends Hack {
 
     @Override
     public void onRender3D(Render3DEvent event) {
+        if(nullCheck())return;
         if (showBurrow.getValue()) {
             if (!this.burrowedBlocks.isEmpty()) {
                 this.burrowedBlocks.forEach(this::renderBurrowedBlock);

@@ -28,6 +28,7 @@ public class VoidESP extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         voidHoles.clear();
 
         if (mc.player.dimension == 1) {
