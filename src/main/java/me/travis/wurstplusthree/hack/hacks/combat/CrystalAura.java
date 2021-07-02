@@ -321,7 +321,7 @@ public final class CrystalAura extends Hack {
 
         if (!didAnything) {
             hasPacketBroke = false;
-            ezTarget = null;
+            //ezTarget = null;
             isRotating = false;
             chainCount = chainStep.getValue();
             currentChainCounter = 0;
@@ -599,8 +599,8 @@ public final class CrystalAura extends Hack {
                 return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
 
                 case "Dynamic":
-                    double x = sigmoid(Math.abs(ezTarget.motionX -  0.152));
-                    double z = sigmoid(Math.abs(ezTarget.motionZ - 0.152));
+                    double x = sigmoid(Math.abs(target.motionX -  0.152));
+                    double z = sigmoid(Math.abs(target.motionZ - 0.152));
                     if(x >= 0.4913640415 || z >= 0.4913640415){
                         return targetDamage - selfDamage;
                     }else {
@@ -656,6 +656,14 @@ public final class CrystalAura extends Hack {
                 case "Strict":
                     double distance = mc.player.getDistanceSq(blockPos);
                     return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (CrystalUtil.canSeePos(blockPos) ? 0.2 : 0.5));
+                case "Dynamic":
+                    double x = sigmoid(Math.abs(target.motionX -  0.152));
+                    double z = sigmoid(Math.abs(target.motionZ - 0.152));
+                    if(x >= 0.4913640415 || z >= 0.4913640415){
+                        return targetDamage - selfDamage;
+                    }else {
+                        return targetDamage;
+                    }
             }
         }
 
@@ -807,7 +815,7 @@ public final class CrystalAura extends Hack {
         else if(arrayListMode.is("Crystal Score")){
             return crystalScore + "Dmg";
         }else {
-            return ezTarget.getName();
+            return this.ezTarget != null ? this.ezTarget.getName() : "";
         }
     }
 
