@@ -538,7 +538,11 @@ public final class CrystalAura extends Hack {
                 chainCount--;
             }
         } else {
-            renderDamageVal = CrystalUtil.calculateDamage(bestPos, ezTarget, false);
+            try {
+                renderDamageVal = CrystalUtil.calculateDamage(bestPos, ezTarget, false);
+            } catch (NullPointerException nullPointerException) {
+                renderDamageVal = bestDamage;
+            }
             renderBlock = bestPos;
         }
 
