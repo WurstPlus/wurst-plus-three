@@ -44,6 +44,7 @@ public class Offhand extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (mc.currentScreen instanceof GuiContainer) {
             return;
         }
@@ -65,6 +66,7 @@ public class Offhand extends Hack {
 
     @Override
     public void onTick() {
+        if(nullCheck())return;
         timer = timer + 1;
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();

@@ -40,6 +40,7 @@ public class AntiWeb extends Hack {
 
     @Override
     public void onUpdate(){
+        if(nullCheck())return;
         if(mc.player.isInWeb && !WurstplusThree.HACKS.ishackEnabled("Step")){
             if(Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode)){
                 mc.player.isInWeb = true;

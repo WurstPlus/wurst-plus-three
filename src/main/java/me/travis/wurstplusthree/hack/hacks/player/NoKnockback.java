@@ -33,6 +33,7 @@ public class NoKnockback extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (this.ice.getValue()) {
             Blocks.ICE.setDefaultSlipperiness(0.6f);
             Blocks.FROSTED_ICE.setDefaultSlipperiness(0.6f);

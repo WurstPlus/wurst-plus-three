@@ -22,6 +22,7 @@ public class AntiVoid extends Hack {
     private ConcurrentSet<BlockPos> voidHoles;
 
     public void onUpdate(){
+        if(nullCheck())return;
         if (mc.player.getPosition().getY() > 1) {
             return;
         }

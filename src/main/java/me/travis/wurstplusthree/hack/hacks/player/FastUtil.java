@@ -14,6 +14,7 @@ public class FastUtil extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         Item main = mc.player.getHeldItemMainhand().getItem();
         Item off  = mc.player.getHeldItemOffhand().getItem();
 

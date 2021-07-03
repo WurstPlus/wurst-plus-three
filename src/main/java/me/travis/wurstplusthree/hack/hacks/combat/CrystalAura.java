@@ -598,9 +598,12 @@ public final class CrystalAura extends Hack {
                 case "Dynamic":
                     double x = sigmoid(Math.abs(target.motionX -  0.152));
                     double z = sigmoid(Math.abs(target.motionZ - 0.152));
-                    if(x >= 0.4913640415 || z >= 0.4913640415){
+                    ClientMessage.sendMessage(x + ", " + z);
+                    if(x >= 0.7 || z >= 0.7){
+                        ClientMessage.sendMessage("A");
                         return targetDamage - selfDamage;
                     }else {
+                        ClientMessage.sendMessage("B");
                         return targetDamage;
                     }
             }
@@ -656,9 +659,12 @@ public final class CrystalAura extends Hack {
                 case "Dynamic":
                     double x = sigmoid(Math.abs(target.motionX -  0.152));
                     double z = sigmoid(Math.abs(target.motionZ - 0.152));
+                    ClientMessage.sendMessage(x + ", " + z);
                     if(x >= 0.4913640415 || z >= 0.4913640415){
+                        ClientMessage.sendMessage("A");
                         return targetDamage - selfDamage;
                     }else {
+                        ClientMessage.sendMessage("B");
                         return targetDamage;
                     }
             }
