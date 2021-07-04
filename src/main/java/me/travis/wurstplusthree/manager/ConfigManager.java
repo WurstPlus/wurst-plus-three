@@ -35,7 +35,6 @@ public class ConfigManager implements Globals {
     private final String drawnFile = "drawn.txt";
     private final String enemiesFile = "enemies.json";
     private final String friendsFile = "friends.json";
-    private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
     private final String IRCtoken = "IRCtoken.dat";
@@ -117,6 +116,7 @@ public class ConfigManager implements Globals {
         String currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
         Paths.get(currentConfigDir);
 
+        String bindsFile = "binds.txt";
         String bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
 

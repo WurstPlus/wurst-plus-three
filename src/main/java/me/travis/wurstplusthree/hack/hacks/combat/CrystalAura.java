@@ -182,7 +182,6 @@ public final class CrystalAura extends Hack {
         }
     }
 
-
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketSend(@NotNull PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
@@ -594,9 +593,8 @@ public final class CrystalAura extends Hack {
                 case "Strict":
                 double distance = mc.player.getDistanceSq(crystal);
                 return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
-
                 case "Dynamic":
-                    double x = sigmoid(Math.abs(target.motionX -  0.152));
+                    double x = sigmoid(Math.abs(target.motionX - 0.152));
                     double z = sigmoid(Math.abs(target.motionZ - 0.152));
                     if(x >= 0.4913640415 || z >= 0.4913640415){
                         return targetDamage - selfDamage;
