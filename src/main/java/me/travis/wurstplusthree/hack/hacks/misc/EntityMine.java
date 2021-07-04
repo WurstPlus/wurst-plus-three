@@ -13,6 +13,7 @@ public class EntityMine extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         mc.world.loadedEntityList.stream()
                 .filter(entity -> entity instanceof EntityLivingBase)
                 .filter(entity -> mc.player == entity)
