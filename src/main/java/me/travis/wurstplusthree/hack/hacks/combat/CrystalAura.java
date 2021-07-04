@@ -257,17 +257,20 @@ public final class CrystalAura extends Hack {
                 });
             }
 
-
-            if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
-                for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
-                    if (crystal instanceof EntityEnderCrystal)
-                        if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
-                            crystalLatency = System.currentTimeMillis() - start;
-                            if (fastMode.getValue().equals("Sound")) {
-                                crystal.setDead();
+            try {
+                if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                    for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
+                        if (crystal instanceof EntityEnderCrystal)
+                            if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
+                                crystalLatency = System.currentTimeMillis() - start;
+                                if (fastMode.getValue().equals("Sound")) {
+                                    crystal.setDead();
+                                }
                             }
-                        }
+                    }
                 }
+            } catch (NullPointerException e) {
+                //empty catch block cus nullpointer gay
             }
         }
         if (event.getPacket() instanceof SPacketExplosion) {
