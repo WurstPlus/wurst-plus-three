@@ -182,7 +182,6 @@ public final class CrystalAura extends Hack {
         }
     }
 
-
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketSend(@NotNull PacketEvent.Send event) {
         if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
@@ -258,17 +257,20 @@ public final class CrystalAura extends Hack {
                 });
             }
 
-
-            if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
-                for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
-                    if (crystal instanceof EntityEnderCrystal)
-                        if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
-                            crystalLatency = System.currentTimeMillis() - start;
-                            if (fastMode.getValue().equals("Sound")) {
-                                crystal.setDead();
+            try {
+                if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                    for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
+                        if (crystal instanceof EntityEnderCrystal)
+                            if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
+                                crystalLatency = System.currentTimeMillis() - start;
+                                if (fastMode.getValue().equals("Sound")) {
+                                    crystal.setDead();
+                                }
                             }
-                        }
+                    }
                 }
+            } catch (NullPointerException e) {
+                //empty catch block cus nullpointer gay
             }
         }
         if (event.getPacket() instanceof SPacketExplosion) {
@@ -594,9 +596,8 @@ public final class CrystalAura extends Hack {
                 case "Strict":
                 double distance = mc.player.getDistanceSq(crystal);
                 return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
-
                 case "Dynamic":
-                    double x = sigmoid(Math.abs(target.motionX -  0.152));
+                    double x = sigmoid(Math.abs(target.motionX - 0.152));
                     double z = sigmoid(Math.abs(target.motionZ - 0.152));
                     ClientMessage.sendMessage(x + ", " + z);
                     if(x >= 0.7 || z >= 0.7){
