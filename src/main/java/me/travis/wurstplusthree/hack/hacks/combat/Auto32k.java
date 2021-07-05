@@ -35,6 +35,8 @@ public class Auto32k extends Hack {
     //original module by TrvsF
     //redone by wallhacks
     private BlockPos pos;
+    private BlockPos hopperPos;
+    private BlockPos redstonePos;
     private int hopperSlot;
     private int redstoneSlot;
     private int shulkerSlot;
@@ -44,7 +46,6 @@ public class Auto32k extends Hack {
     CPacketCloseWindow packet;
     private int[] rot;
     private boolean setup;
-    private BlockPos hopperPos;
     private boolean placeRedstone;
     private boolean dispenserDone;
     EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
@@ -66,6 +67,7 @@ public class Auto32k extends Hack {
         failed = true;
         packet = null;
         hopperPos = null;
+
         dispenserDone = false;
         placeRedstone = false;
         offsetStep = 0;
@@ -115,7 +117,19 @@ public class Auto32k extends Hack {
                     for (int z = -2; z <= 2; ++z) {
                         rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
                         pos = mc.player.getPosition().add(x, y, z);
-                        if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && BlockUtil.isBlockEmpty(pos.add(rot[0], 0, rot[1])) && !EntityUtil.isBothHole(pos.add(rot[0], 0, rot[1])) && BlockUtil.isBlockEmpty(pos.add(0, 1, 0)) && (BlockUtil.isBlockEmpty(pos.add(0, 2, 0)) || (BlockUtil.isBlockEmpty(pos.add(1, 1, 0)) && pos.add(1, 1, 0) != pos.add(rot[0], 1, rot[1])) || (BlockUtil.isBlockEmpty(pos.add(-1, 1, 0)) && pos.add(-1, 1, 0) != pos.add(rot[0], 1, rot[1])) || (BlockUtil.isBlockEmpty(pos.add(0, 1, 1)) && pos.add(0, 1, 1) != pos.add(rot[0], 1, rot[1])) || (BlockUtil.isBlockEmpty(pos.add(0, 1, -1)) && pos.add(0, 1, -1) != pos.add(rot[0], 1, rot[1]))) && BlockUtil.isBlockEmpty(pos.add(rot[0], 1, rot[1]))) {
+                        redstonePos = null;
+                        if (BlockUtil.isBlockEmpty(pos.add(1, 1, 0)) && pos.getX() > mc.player.getPosition().getX()) {
+                            redstonePos = pos.add(1, 1, 0);
+                        } else if (BlockUtil.isBlockEmpty(pos.add(-1, 1, 0)) && pos.getX() < mc.player.getPosition().getX()) {
+                            redstonePos = pos.add(-1, 1, 0);
+                        } else if (BlockUtil.isBlockEmpty(pos.add(0, 1, 1)) && pos.getZ() > mc.player.getPosition().getZ()) {
+                            redstonePos = pos.add(0, 1, 1);
+                        } else if (BlockUtil.isBlockEmpty(pos.add(0, 1, -1)) && pos.getZ() < mc.player.getPosition().getZ()) {
+                            redstonePos = pos.add(0, 1, -1);
+                        } else if (BlockUtil.isBlockEmpty(pos.add(0, 2, 0))) {
+                            redstonePos = pos.add(0, 2, 0);
+                        }
+                        if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && BlockUtil.isBlockEmpty(pos.add(rot[0], 0, rot[1])) && !EntityUtil.isBothHole(pos.add(rot[0], 0, rot[1])) && BlockUtil.isBlockEmpty(pos.add(0, 1, 0)) && redstonePos != null && BlockUtil.isBlockEmpty(pos.add(rot[0], 1, rot[1]))) {
                             if (BlockUtil.isBlockEmpty(pos) && !BlockUtil.canPlaceBlock(pos.up())) {
                                 BlockUtil.placeBlock(pos, blockSlot, rotate.getValue(), false, swing);
                             }
@@ -216,23 +230,6 @@ public class Auto32k extends Hack {
             }
 
             if (!placeRedstone) {
-                BlockPos shulkerPos = pos.add(rot[0], 1, rot[1]);
-                BlockPos redstonePos;
-                if (BlockUtil.canPlaceBlock(pos.add(0, 2, 0))) {
-                    redstonePos = pos.add(0, 2, 0);
-                } else if (BlockUtil.canPlaceBlock(pos.add(1, 1, 0)) && pos.add(1, 1, 0) != shulkerPos) {
-                    redstonePos = pos.add(1, 1, 0);
-                } else if (BlockUtil.canPlaceBlock(pos.add(-1, 1, 0)) && pos.add(-1, 1, 0) != shulkerPos) {
-                    redstonePos = pos.add(-1, 1, 0);
-                } else if (BlockUtil.canPlaceBlock(pos.add(0, 1, 1)) && pos.add(0, 1, 1) != shulkerPos) {
-                    redstonePos = pos.add(0, 1, 1);
-                } else if (BlockUtil.canPlaceBlock(pos.add(0, 1, -1)) && pos.add(0, 1, -1) != shulkerPos) {
-                    redstonePos = pos.add(0, 1, -1);
-                } else {
-                    ClientMessage.sendMessage("This shouldnt happen report this to wallhacks");
-                    this.disable();
-                    return;
-                }
                 BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
                 placeRedstone = true;
                 return;
