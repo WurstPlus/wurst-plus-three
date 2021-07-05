@@ -7,22 +7,23 @@ import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.BlockUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
-import me.travis.wurstplusthree.util.RenderUtil;
-import me.travis.wurstplusthree.util.RotationUtil;
+import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -34,26 +35,31 @@ import java.util.Arrays;
 
 @Hack.Registration(name = "Speed Mine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
 public final class SpeedMine extends Hack{
-    private final BooleanSetting rangeCheck = new BooleanSetting("RangeCheck", true, this);
-    private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, this, s -> rangeCheck.getValue());
-    private final BooleanSetting swing = new BooleanSetting("Swing", true, this);
-    private final BooleanSetting rotate = new BooleanSetting("Rotate", false ,this);
-    private final EnumSetting rotateSetting = new EnumSetting("RotateSettings", "Break", Arrays.asList("Break", "Constant", "Hit"), this, s -> rotate.getValue());
-    private final BooleanSetting cancel = new BooleanSetting("CancelEvent", true, this);
-    private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, this);
-    private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, this, s -> packetLoop.getValue());
-    private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,this);
-    private final BooleanSetting instant = new BooleanSetting("Instant", false, this);
-    private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, this, s -> instant.getValue());
-    private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, this,s -> instant.getValue());
-    private final BooleanSetting render = new BooleanSetting("Render", true , this);
-    private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill"), this, s -> render.getValue());
-    private final ColourSetting instantColor = new ColourSetting("InstantColorOutline", new Colour(100, 0, 100), this, s -> render.getValue() && instant.getValue());
-    private final ColourSetting instantColorFill = new ColourSetting("InstantColorFill", new Colour(100, 0, 100, 40), this, s -> render.getValue() && instant.getValue());
-    private final ColourSetting breakColor = new ColourSetting("BreakColorOutline", new Colour(255, 0, 0), this, s -> render.getValue());
-    private final ColourSetting doneColor = new ColourSetting("FinishedColorOutline", new Colour(0, 255, 0), this, s -> render.getValue());
-    private final ColourSetting breakColorFill = new ColourSetting("BreakColorFill", new Colour(255, 0, 0, 40), this, s -> render.getValue());
-    private final ColourSetting doneColorFill = new ColourSetting("FinishedColorFill", new Colour(0, 255, 0, 40), this, s -> render.getValue());
+    private final ParentSetting packetMine = new ParentSetting("Packet Mine", this);
+    private final BooleanSetting rangeCheck = new BooleanSetting("RangeCheck", true, packetMine);
+    private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, packetMine, s -> rangeCheck.getValue());
+    private final BooleanSetting swing = new BooleanSetting("Swing", true, packetMine);
+    private final BooleanSetting rotate = new BooleanSetting("Rotate", false ,packetMine);
+    private final EnumSetting rotateSetting = new EnumSetting("RotateSettings", "Break", Arrays.asList("Break", "Constant", "Hit"), packetMine, s -> rotate.getValue());
+    private final BooleanSetting cancel = new BooleanSetting("CancelEvent", true, packetMine);
+    private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, packetMine);
+    private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, packetMine, s -> packetLoop.getValue());
+    private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,packetMine);
+    private final KeySetting silentSwitch = new KeySetting("Switch", Keyboard.KEY_NONE, packetMine);
+    private final BooleanSetting silentSwitchBack = new BooleanSetting("Switch Back", true, packetMine, s -> silentSwitch.getKey() != Keyboard.KEY_NONE);
+    private final ParentSetting parentInstant = new ParentSetting("Instant", this);
+    private final BooleanSetting instant = new BooleanSetting("Instant", false, parentInstant);
+    private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
+    private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant,s -> instant.getValue());
+    private final ParentSetting parentRender = new ParentSetting("Render", this);
+    private final BooleanSetting render = new BooleanSetting("Render", true , parentRender);
+    private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill"), parentRender, s -> render.getValue());
+    private final ColourSetting instantColor = new ColourSetting("InstantColorOutline", new Colour(100, 0, 100), parentRender, s -> render.getValue() && instant.getValue());
+    private final ColourSetting instantColorFill = new ColourSetting("InstantColorFill", new Colour(100, 0, 100, 40), parentRender, s -> render.getValue() && instant.getValue());
+    private final ColourSetting breakColor = new ColourSetting("BreakColorOutline", new Colour(255, 0, 0), parentRender, s -> render.getValue());
+    private final ColourSetting doneColor = new ColourSetting("FinishedColorOutline", new Colour(0, 255, 0), parentRender, s -> render.getValue());
+    private final ColourSetting breakColorFill = new ColourSetting("BreakColorFill", new Colour(255, 0, 0, 40), parentRender, s -> render.getValue());
+    private final ColourSetting doneColorFill = new ColourSetting("FinishedColorFill", new Colour(0, 255, 0, 40), parentRender, s -> render.getValue());
 
     private boolean isActive;
     private EnumFacing lastFace;
@@ -66,12 +72,16 @@ public final class SpeedMine extends Hack{
     private boolean shouldInstant;
     private boolean firstPacket;
     private int delay;
+    private int oldSlot = -1;
+    private boolean shouldSwitch = false;
 
     @Override
     public void onEnable(){
         shouldInstant = false;
         firstPacket = true;
         delay = 0;
+        oldSlot = -1;
+        shouldSwitch = false;
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
@@ -200,6 +210,22 @@ public final class SpeedMine extends Hack{
                 lastFace = null;
                 lastBlock = null;
             }
+        }
+
+        if(silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitchBack.getValue() && shouldSwitch){
+            if(oldSlot == -1)return;
+            mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));
+            mc.playerController.syncCurrentPlayItem();
+            shouldSwitch = false;
+        }
+
+        if(silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitch.isDown()){
+            final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
+            if(slot == -1)return;
+            oldSlot = mc.player.inventory.currentItem;
+            mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+            mc.playerController.syncCurrentPlayItem();
+            shouldSwitch = true;
         }
 
         tickCount++;
