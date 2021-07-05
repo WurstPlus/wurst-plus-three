@@ -229,18 +229,16 @@ public class Auto32k extends Hack {
                 }
             }
 
-            if (!placeRedstone) {
-                BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
-                placeRedstone = true;
-                return;
-            }
-
-            if (!placeMode.getValue().equals("Hopper") && mc.world.getBlockState(pos.add(rot[0], 1, rot[1])).getBlock() instanceof BlockShulkerBox
-                    && mc.world.getBlockState(pos.add(rot[0], 0, rot[1])).getBlock() != Blocks.HOPPER
-                    && placeRedstone && dispenserDone && !(mc.currentScreen instanceof GuiInventory)) {
+            if (!placeMode.getValue().equals("Hopper")  && mc.world.getBlockState(pos.add(rot[0], 0, rot[1])).getBlock() != Blocks.HOPPER && dispenserDone && !(mc.currentScreen instanceof GuiInventory)) {
                 hopperPos = pos.add(rot[0], 0, rot[1]);
                 BlockUtil.placeBlock(pos.add(rot[0], 0, rot[1]), hopperSlot, rotate.getValue(), false, swing);
                 BlockUtil.openBlock(pos.add(rot[0], 0, rot[1]));
+            }
+
+            if (!placeRedstone && mc.currentScreen instanceof GuiHopper) {
+                BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
+                placeRedstone = true;
+                return;
             }
 
             if (hopperPos != null)
