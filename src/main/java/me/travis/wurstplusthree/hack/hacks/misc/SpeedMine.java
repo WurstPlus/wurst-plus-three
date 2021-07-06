@@ -251,7 +251,7 @@ public final class SpeedMine extends Hack{
                 c2 = doneColorFill.getValue();
             }
             AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
-            bb = bb.shrink(Math.min(normalize(tickCount, time-subVal, 0), 1.0));
+            bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time-subVal, 0), 1.0), 0.0));
 
             switch (renderMode.getValue()){
                 case "Both":
