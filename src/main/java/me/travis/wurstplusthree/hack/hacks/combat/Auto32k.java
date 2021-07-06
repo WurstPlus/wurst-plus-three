@@ -48,7 +48,7 @@ public class Auto32k extends Hack {
     private boolean setup;
     private boolean placeRedstone;
     private boolean dispenserDone;
-    EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Looking", "Hopper"), this);
+    EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Hopper"), this);
     IntSetting delay = new IntSetting("Delay", 4, 0, 10, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     BooleanSetting encase = new BooleanSetting("Encase", false, this);
@@ -94,26 +94,9 @@ public class Auto32k extends Hack {
             disable();
             return;
         }
-        if (placeMode.getValue().equals("Looking")) {
-            RayTraceResult r = mc.player.rayTrace(5.0D, mc.getRenderPartialTicks());
-            pos = Objects.requireNonNull(r).getBlockPos().up();
-            double pos_x = (double) pos.getX() - mc.player.posX;
-            double pos_z = (double) pos.getZ() - mc.player.posZ;
-            rot = Math.abs(pos_x) > Math.abs(pos_z) ? (pos_x > 0.0D ? new int[] {-1, 0} : new int[] {1, 0}) : (pos_z > 0.0D ? new int[] {0, -1} : new int[] {0, 1});
-
-            if (BlockUtil.canPlaceBlock(pos) && BlockUtil.isBlockEmpty(pos) && BlockUtil.isBlockEmpty(pos.add(rot[0], 0, rot[1])) && BlockUtil.isBlockEmpty(pos.add(0, 1, 0)) && BlockUtil.isBlockEmpty(pos.add(0, 2, 0)) && BlockUtil.isBlockEmpty(pos.add(rot[0], 1, rot[1]))) {
-                BlockUtil.placeBlock(pos, blockSlot, rotate.getValue(), false, swing);
-                BlockUtil.rotatePacket((double) pos.add(-rot[0], 1, -rot[1]).getX() + 0.5D, pos.getY() + 1, (double) pos.add(-rot[0], 1, -rot[1]).getZ() + 0.5D);
-                BlockUtil.placeBlock(pos.up(), dispenserSlot, rotate.getValue(), false, swing);
-                BlockUtil.openBlock(pos.up());
-                setup = true;
-            } else {
-                ClientMessage.sendErrorMessage("unable to place");
-                disable();
-            }
-        } else if (placeMode.getValue().equals("Dispenser")) {
+        if (placeMode.getValue().equals("Dispenser")) {
             for (int x = -2; x <= 2; ++x) {
-                for (int y = -1; y <= 0; ++y) {
+                for (int y = -1; y <= 3; ++y) {
                     for (int z = -2; z <= 2; ++z) {
                         rot = Math.abs(x) > Math.abs(z) ? (x > 0 ? new int[] {-1, 0} : new int[] {1, 0}) : (z > 0 ? new int[] {0, -1} : new int[] {0, 1});
                         pos = mc.player.getPosition().add(x, y, z);
@@ -129,15 +112,39 @@ public class Auto32k extends Hack {
                         } else if (BlockUtil.isBlockEmpty(pos.add(0, 2, 0))) {
                             redstonePos = pos.add(0, 2, 0);
                         }
-                        if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D && BlockUtil.isBlockEmpty(pos.add(rot[0], 0, rot[1])) && !EntityUtil.isBothHole(pos.add(rot[0], 0, rot[1])) && BlockUtil.isBlockEmpty(pos.add(0, 1, 0)) && redstonePos != null && BlockUtil.isBlockEmpty(pos.add(rot[0], 1, rot[1]))) {
-                            if (BlockUtil.isBlockEmpty(pos) && !BlockUtil.canPlaceBlock(pos.up())) {
-                                BlockUtil.placeBlock(pos, blockSlot, rotate.getValue(), false, swing);
+                        if (mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add(x - rot[0] / 2f, (double) y + 0.5D, z + rot[1] / 2f)) <= 4.5D && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(mc.player.getPositionVector().add((double) x + 0.5D, (double) y + 2.5D, (double) z + 0.5D)) <= 4.5D) {
+                            if (y > 0) {
+                                if (BlockUtil.isBlockEmpty(pos) && BlockUtil.canPlaceBlock(pos.down()) && BlockUtil.canPlaceBlock(pos.up())) {
+                                    redstonePos = null;
+                                    if (BlockUtil.isBlockEmpty(pos.add(1, 1, 0))) {
+                                        redstonePos = pos.add(1, 1, 0);
+                                    } else if (BlockUtil.isBlockEmpty(pos.add(-1, 1, 0))) {
+                                        redstonePos = pos.add(-1, 1, 0);
+                                    } else if (BlockUtil.isBlockEmpty(pos.add(0, 1, 1))) {
+                                        redstonePos = pos.add(0, 1, 1);
+                                    } else if (BlockUtil.isBlockEmpty(pos.add(0, 1, -1))) {
+                                        redstonePos = pos.add(0, 1, -1);
+                                    }
+                                    if (redstonePos != null) {
+                                        BlockUtil.rotatePacket((double) pos.add(-rot[0], 1, -rot[1]).getX() + 0.5D, pos.getY() + 1, (double) pos.add(-rot[0], 1, -rot[1]).getZ() + 0.5D);
+                                        BlockUtil.placeBlock(pos.up(), dispenserSlot, rotate.getValue(), false, swing);
+                                        BlockUtil.openBlock(pos.up());
+                                        hopperPos = pos.down();
+                                        setup = true;
+                                        return;
+                                    }
+                                }
+                            } else if (BlockUtil.isBlockEmpty(pos.add(rot[0], 0, rot[1])) && !EntityUtil.isBothHole(pos.add(rot[0], 0, rot[1])) && BlockUtil.isBlockEmpty(pos.add(0, 1, 0)) && redstonePos != null && BlockUtil.isBlockEmpty(pos.add(rot[0], 1, rot[1])) && (BlockUtil.canPlaceBlock(pos) || !BlockUtil.isBlockEmpty(pos))) {
+                                hopperPos = pos.add(rot[0], 0, rot[1]);
+                                if (BlockUtil.isBlockEmpty(pos) && (!BlockUtil.canPlaceBlock(pos.up())) || !BlockUtil.canPlaceBlock(hopperPos)) {
+                                    BlockUtil.placeBlock(pos, blockSlot, rotate.getValue(), false, swing);
+                                }
+                                BlockUtil.rotatePacket((double) pos.add(-rot[0], 1, -rot[1]).getX() + 0.5D, pos.getY() + 1, (double) pos.add(-rot[0], 1, -rot[1]).getZ() + 0.5D);
+                                BlockUtil.placeBlock(pos.up(), dispenserSlot, rotate.getValue(), false, swing);
+                                BlockUtil.openBlock(pos.up());
+                                setup = true;
+                                return;
                             }
-                            BlockUtil.rotatePacket((double) pos.add(-rot[0], 1, -rot[1]).getX() + 0.5D, pos.getY() + 1, (double) pos.add(-rot[0], 1, -rot[1]).getZ() + 0.5D);
-                            BlockUtil.placeBlock(pos.up(), dispenserSlot, rotate.getValue(), false, swing);
-                            BlockUtil.openBlock(pos.up());
-                            setup = true;
-                            return;
                         }
                     }
                 }
@@ -173,7 +180,7 @@ public class Auto32k extends Hack {
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        if (hopperPos != null) {
+        if (hopperPos != null && !failed) {
             RenderUtil.drawBoxESP(hopperPos, color.getColor(), color.getColor(), 2.0f, true, true, false);
             RenderUtil.drawCircle(hopperPos.getX(), hopperPos.getY(), hopperPos.getZ(), hopperRange.getValue().floatValue(), color.getValue());
         }
@@ -229,13 +236,9 @@ public class Auto32k extends Hack {
                 }
             }
 
-            if (!placeMode.getValue().equals("Hopper")  && mc.world.getBlockState(pos.add(rot[0], 0, rot[1])).getBlock() != Blocks.HOPPER && dispenserDone && !(mc.currentScreen instanceof GuiInventory)) {
-                hopperPos = pos.add(rot[0], 0, rot[1]);
-                BlockUtil.placeBlock(pos.add(rot[0], 0, rot[1]), hopperSlot, rotate.getValue(), false, swing);
-                BlockUtil.openBlock(pos.add(rot[0], 0, rot[1]));
-            }
-
-            if (!placeRedstone && mc.currentScreen instanceof GuiHopper) {
+            if (!placeMode.getValue().equals("Hopper")  && mc.world.getBlockState(pos.add(rot[0], 0, rot[1])).getBlock() != Blocks.HOPPER && dispenserDone && !placeRedstone && hopperPos != null && !(mc.currentScreen instanceof GuiInventory)) {
+                BlockUtil.placeBlock(hopperPos, hopperSlot, rotate.getValue(), false, swing);
+                BlockUtil.openBlock(hopperPos);
                 BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
                 placeRedstone = true;
                 return;
@@ -288,9 +291,6 @@ public class Auto32k extends Hack {
                 if (secretClose.getValue()) {
                     event.setCancelled(true);
                     packet = event.getPacket();
-                }
-                if (!EntityUtil.holding32k(mc.player) && !EntityUtil.is32k(mc.player.getHeldItemMainhand())) {
-                    mc.player.dropItem(true);
                 }
             }
         }
