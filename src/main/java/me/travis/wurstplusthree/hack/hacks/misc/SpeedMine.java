@@ -140,7 +140,6 @@ public final class SpeedMine extends Hack{
     public void onUpdate(){
         if(nullCheck())return;
 
-
         if(instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())){ // instant mine
             delay = 0;
             if(firstPacket) {

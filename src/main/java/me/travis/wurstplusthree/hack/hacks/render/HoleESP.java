@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hack.hacks.render;
 import com.google.common.collect.Sets;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -17,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Hack.Registration(name = "Hole ESP", description = "shows holes", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Hole ESP", description = "shows holes", category = Hack.Category.RENDER, priority = HackPriority.Low)
 public class HoleESP extends Hack {
 
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);
@@ -30,8 +31,10 @@ public class HoleESP extends Hack {
     ColourSetting bedrockColor2 = new ColourSetting("BedrockOutline", new Colour(0, 255, 0, 100), this);
     ColourSetting obsidianColor = new ColourSetting("ObsidianColor", new Colour(255, 0, 0, 100), this);
     ColourSetting obsidianColor2 = new ColourSetting("ObsidianOutline", new Colour(255, 0, 0, 100), this);
-    EnumSetting RMode = new EnumSetting("ColorMode", "Rainbow", Arrays.asList("Rainbow", "Sin"), this);
+    EnumSetting RMode = new EnumSetting("ColorMode", "Rainbow", Arrays.asList("Rainbow", "Sin", "Two Tone"), this);
     EnumSetting SinMode = new EnumSetting("SineMode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this, s -> RMode.is("Sin"));
+    ColourSetting obsidianTwoToneColor = new ColourSetting("ObsidianTwoTone", new Colour(0, 0, 100 ,255), this, s-> RMode.is("Two Tone"));
+    ColourSetting bedrockTwoToneColor = new ColourSetting("BedrockTwoTone", new Colour(0, 0, 100, 255), this, s-> RMode.is("Two Tone"));
     IntSetting RDelay = new IntSetting("RainbowDelay", 500, 0, 2500, this);
     IntSetting FillUp = new IntSetting("FillUp", 80, 0, 255, this, s -> mode.is("Fade"));
     IntSetting FillDown = new IntSetting("FillDown", 0, 0, 255, this, s -> mode.is("Fade"));
@@ -169,13 +172,14 @@ public class HoleESP extends Hack {
                         rVal = ColorUtil.releasedDynamicRainbow(RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                     }
                 }else {
-                    if(SinMode.is("Hue")){
+                    if(SinMode.is("Hue")) {
                         if (top) {
-                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,1000,(line) ? LineFillUp.getValue() : FillUp.getValue());
-                        }else {
-                            rVal = ColorUtil.getSinState(obsidianColor.getColor(),obsidianColor2.getColor() ,RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), obsidianColor2.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue());
+                        } else {
+                            rVal = ColorUtil.getSinState(obsidianColor.getColor(), obsidianColor2.getColor(), RDelay.getValue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                         }
-                    }else {
+                    }
+                    else {
                         if (top) {
                             rVal = ColorUtil.getSinState(obsidianColor.getColor(), 1000, (line) ? LineFillUp.getValue() : FillUp.getValue(), type);
                         } else {
@@ -183,11 +187,17 @@ public class HoleESP extends Hack {
                         }
                     }
                 }
-            } else {
+            } else if(!RMode.is("Two Tone")){
                 if (top) {
                     rVal = new Colour(obsidianColor.getColor().getRed(), obsidianColor.getColor().getGreen(), obsidianColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
                 } else {
                     rVal = new Colour(obsidianColor.getColor().getRed(), obsidianColor.getColor().getGreen(), obsidianColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                }
+            }else {
+                if(top){
+                    rVal = new Color(obsidianTwoToneColor.getColor().getRed(), obsidianTwoToneColor.getColor().getGreen(), obsidianTwoToneColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
+                }else {
+                    rVal = new Color(obsidianColor.getColor().getRed(), obsidianColor.getColor().getGreen(), obsidianColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                 }
             }
         } else {
@@ -213,11 +223,18 @@ public class HoleESP extends Hack {
                         }
                     }
                 }
-            } else {
+            } else if(!mode.is("Two Tone")){
                 if (top) {
                     rVal = new Colour(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
                 } else {
                     rVal = new Colour(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
+                }
+            }
+            else {
+                if(top){
+                    rVal = new Color(bedrockTwoToneColor.getColor().getRed(), bedrockTwoToneColor.getColor().getGreen(), bedrockTwoToneColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
+                }else {
+                    rVal = new Color(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
                 }
             }
         }
