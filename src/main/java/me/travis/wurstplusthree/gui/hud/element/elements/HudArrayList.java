@@ -34,10 +34,13 @@ public class HudArrayList extends HudElement {
         int padding = 5;
         Colour fill = new Colour(77, 77, 77, 255);
         Colour outline = new Colour(127, 127, 127, 255);
-        RenderUtil2D.drawBorderedRect(this.getX() - padding, this.getY() - padding,
-                this.getX() + padding + this.getWidth(), this.getY() + this.getHeight() - 1, 1, fill.hashCode(), outline.hashCode(), false);
-        RenderUtil2D.drawHLineG(this.getX() - padding, this.getY() - padding,
-                (this.getX() + padding + this.getWidth()) - (this.getX() - padding), Rainbow.getColour().hashCode(), Rainbow.getFurtherColour(HudEditor.INSTANCE.welcomerOffset.getValue()).hashCode());
+        if (HudEditor.INSTANCE.arrayOutline.getValue()) {
+            RenderUtil2D.drawBorderedRect(this.getX() - padding, this.getY() - padding,
+                    this.getX() + padding + this.getWidth(), this.getY() + this.getHeight() - 1, 1, fill.hashCode(), outline.hashCode(), false);
+            RenderUtil2D.drawHLineG(this.getX() - padding, this.getY() - padding,
+                    (this.getX() + padding + this.getWidth()) - (this.getX() - padding), Rainbow.getColour().hashCode(), Rainbow.getFurtherColour(HudEditor.INSTANCE.welcomerOffset.getValue()).hashCode());
+
+        }
 
         ScaledResolution scaledResolution = new ScaledResolution(mc);
         boolean isTop = false;

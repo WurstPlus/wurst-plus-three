@@ -24,6 +24,7 @@ public class HudEditor extends Hack {
     public ColourSetting alignmentColor = new ColourSetting("Alignment Color", new Colour(255, 200, 0, 140), this, s -> alignment.getValue());
     public IntSetting welcomerOffset = new IntSetting("Rainbow Offset", 500, 0, 20000, this);
     public BooleanSetting showOff = new BooleanSetting("Show Coords", false, this);
+    public BooleanSetting arrayOutline = new BooleanSetting("Array Outline", false, this);
     public ParentSetting welcomer = new ParentSetting("Welcomer", this);
     public BooleanSetting welcomerName = new BooleanSetting("Watermark Name", true, welcomer);
     public BooleanSetting welcomerFps = new BooleanSetting("Watermark Fps", false, welcomer);
