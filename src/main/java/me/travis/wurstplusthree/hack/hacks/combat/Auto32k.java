@@ -42,12 +42,11 @@ public class Auto32k extends Hack {
     private int shulkerSlot;
     private int ticksPast;
     private boolean failed;
+    private boolean didHopper;
     private int offsetStep;
     CPacketCloseWindow packet;
     private int[] rot;
     private boolean setup;
-    private boolean placeRedstone;
-    private boolean dispenserDone;
     EnumSetting placeMode = new EnumSetting("Mode", "Dispenser", Arrays.asList("Dispenser", "Hopper"), this);
     IntSetting delay = new IntSetting("Delay", 4, 0, 10, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
@@ -67,9 +66,7 @@ public class Auto32k extends Hack {
         failed = true;
         packet = null;
         hopperPos = null;
-
-        dispenserDone = false;
-        placeRedstone = false;
+        didHopper = false;
         offsetStep = 0;
         hopperSlot = -1;
         int dispenserSlot = -1;
@@ -161,8 +158,6 @@ public class Auto32k extends Hack {
                             BlockUtil.placeBlock(mc.player.getPosition().add(z, y + 1, x), shulkerSlot, rotate.getValue(), false, swing);
                             BlockUtil.openBlock(mc.player.getPosition().add(z, y, x));
                             pos = mc.player.getPosition().add(z, y, x);
-                            dispenserDone = true;
-                            placeRedstone = true;
                             setup = true;
                             return;
                         }
@@ -188,70 +183,40 @@ public class Auto32k extends Hack {
 
     @Override
     public void onUpdate() {
-        if (ticksPast > 50 && failed && !(mc.currentScreen instanceof GuiHopper)) {
-            ClientMessage.sendErrorMessage("Failed disabling now");
-            disable();
-            return;
-        }
-        if (hopperPos != null) {
-            if (mc.player.getDistanceSqToCenter(hopperPos) >= MathsUtil.square(hopperRange.getValue().floatValue())) {
-                ClientMessage.sendErrorMessage("Out of range disabling..");
+        if (setup && ticksPast > delay.getValue()) {
+            if (ticksPast > 50 && failed && !(mc.currentScreen instanceof GuiHopper)) {
+                ClientMessage.sendErrorMessage("Failed disabling now");
                 disable();
                 return;
             }
-        }
 
-        if ((!failed || mc.currentScreen instanceof GuiHopper) && encase.getValue()) {
-            final List<Vec3d> place_targets = new ArrayList<Vec3d>();
-            Collections.addAll(place_targets, offsetsHopper);
-            if (offsetStep >= place_targets.size()) {
-                offsetStep = 0;
-            }
-            boolean foundblock = false;
-            while (!foundblock && offsetStep <= place_targets.size() - 1) {
-                final BlockPos offset_pos = new BlockPos(place_targets.get(offsetStep));
-                final BlockPos target_pos = new BlockPos(hopperPos.add(offset_pos.getX(), offset_pos.getY(), offset_pos.getZ()));
-                if (mc.world.getBlockState(target_pos).getMaterial().isReplaceable()) {
-                    foundblock = true;
+            if (hopperPos != null) {
+                if (mc.player.getDistanceSqToCenter(hopperPos) >= MathsUtil.square(hopperRange.getValue().floatValue())) {
+                    ClientMessage.sendErrorMessage("Out of range disabling..");
+                    disable();
+                    return;
                 }
-                for (final Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(target_pos))) {
-                    if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
-                        foundblock = false;
-                    }
-                }
-                if (foundblock) {
-                    BlockUtil.placeBlock(target_pos, InventoryUtil.findHotbarBlock(BlockObsidian.class), rotate.getValue(), rotate.getValue(), swing);
-                }
-                offsetStep++;
-            }
-        }
 
-        if (setup && ticksPast > delay.getValue()) {
-            if (!dispenserDone) { // ching chong
-                try {
-                    mc.playerController.windowClick(mc.player.openContainer.windowId, 36 + shulkerSlot, 0, ClickType.QUICK_MOVE, mc.player);
-                    dispenserDone = true;
-                } catch (Exception ignored) {
-                    //EmptyCatchBlockXDDDDDDD
-                }
-            }
-
-            if (!placeMode.getValue().equals("Hopper")  && mc.world.getBlockState(pos.add(rot[0], 0, rot[1])).getBlock() != Blocks.HOPPER && dispenserDone && !placeRedstone && hopperPos != null && !(mc.currentScreen instanceof GuiInventory)) {
-                BlockUtil.placeBlock(hopperPos, hopperSlot, rotate.getValue(), false, swing);
-                BlockUtil.openBlock(hopperPos);
-                BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
-                placeRedstone = true;
-                return;
-            }
-
-            if (hopperPos != null)
                 if (!(mc.world.getBlockState(hopperPos).getBlock() instanceof BlockHopper) && !failed && !(mc.currentScreen instanceof GuiHopper)) {
                     ClientMessage.sendErrorMessage("Hopper Got blown up xDD");
                     disable();
                     return;
                 }
-            //the coming code is completly skidded and I do not feel bad about it
-            //thx phobos <3
+            }
+
+            if (!placeMode.getValue().equals("Hopper") && !didHopper) {
+                try {
+                    mc.playerController.windowClick(mc.player.openContainer.windowId, 36 + shulkerSlot, 0, ClickType.QUICK_MOVE, mc.player);
+                } catch (Exception ignored) {
+                    //EmptyCatchBlockXDDDDDDD
+                }
+                BlockUtil.placeBlock(hopperPos, hopperSlot, rotate.getValue(), false, swing);
+                BlockUtil.openBlock(hopperPos);
+                BlockUtil.placeBlock(redstonePos, redstoneSlot, rotate.getValue(), false, swing);
+                didHopper = true;
+                return;
+            }
+
             if (mc.currentScreen instanceof GuiHopper) {
                 if (!isEnabled()) {
                     return;
@@ -279,6 +244,31 @@ public class Auto32k extends Hack {
                     }
                     failed = false;
                 }
+            }
+        }
+
+        if (didHopper && ticksPast > delay.getValue() * 2 && encase.getValue()) {
+            final List<Vec3d> place_targets = new ArrayList<Vec3d>();
+            Collections.addAll(place_targets, offsetsHopper);
+            if (offsetStep >= place_targets.size()) {
+                offsetStep = 0;
+            }
+            boolean foundblock = false;
+            while (!foundblock && offsetStep < place_targets.size()) {
+                final BlockPos offset_pos = new BlockPos(place_targets.get(offsetStep));
+                final BlockPos target_pos = new BlockPos(hopperPos.add(offset_pos.getX(), offset_pos.getY(), offset_pos.getZ()));
+                if (mc.world.getBlockState(target_pos).getMaterial().isReplaceable()) {
+                    foundblock = true;
+                }
+                for (final Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(target_pos))) {
+                    if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
+                        foundblock = false;
+                    }
+                }
+                if (foundblock) {
+                    BlockUtil.placeBlock(target_pos, InventoryUtil.findHotbarBlock(BlockObsidian.class), rotate.getValue(), rotate.getValue(), swing);
+                }
+                ++offsetStep;
             }
         }
         ++ticksPast;
