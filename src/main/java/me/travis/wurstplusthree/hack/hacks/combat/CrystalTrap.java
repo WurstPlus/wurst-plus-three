@@ -136,7 +136,7 @@ public class CrystalTrap extends Hack {
                 boolean rotated = false;
                 if (crystal == null && (tickCounter > 42) || breakMode.is("Sequential")) {
                     if (rotate.getValue()) {
-                        RotationUtil.faceVector(crystal.getPositionVector(), true);
+                        RotationUtil.faceVector(new Vec3d(breakBlock), true);
                         rotated = true;
                     }
                     BlockUtil.placeCrystalOnBlock(breakBlock, EnumHand.OFF_HAND, true);
