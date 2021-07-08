@@ -13,6 +13,7 @@ public class ParentSetting extends Setting<Boolean> {
 
     public void toggle() {
         value = !value;
+        this.getParent().onSettingChange();
     }
 
     public boolean isShown(){

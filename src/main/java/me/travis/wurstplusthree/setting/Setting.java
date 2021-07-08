@@ -67,6 +67,7 @@ public class Setting<T> {
 
     public void setValue(T value) {
         this.value = value;
+        this.getParent().onSettingChange();
     }
 
     public boolean isChild() {

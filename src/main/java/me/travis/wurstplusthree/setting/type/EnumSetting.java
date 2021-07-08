@@ -40,6 +40,7 @@ public class EnumSetting extends Setting<String> {
 
     public void setValue(String value) {
         this.value = (this.modes.contains(value) ? value : this.value);
+        this.getParent().onSettingChange();
     }
 
     public boolean is(String name) {

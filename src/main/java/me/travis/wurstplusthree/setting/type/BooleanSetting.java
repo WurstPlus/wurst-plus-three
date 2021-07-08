@@ -25,6 +25,7 @@ public class BooleanSetting extends Setting<Boolean> {
 
     public void toggle() {
         value = !value;
+        this.getParent().onSettingChange();
     }
 
     public Boolean getValue() {

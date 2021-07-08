@@ -52,6 +52,7 @@ public class DoubleSetting extends Setting<Double> {
 
     public void setNumber(double value) {
         this.value = value;
+        this.getParent().onSettingChange();
     }
 
     public double getMaximumValue() {
