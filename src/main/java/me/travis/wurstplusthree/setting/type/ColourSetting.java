@@ -43,12 +43,14 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setValue(Color value) {
         this.value = new Colour(value);
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+          this.getParent().onSettingChange();
     }
 
     public void setValue(int red, int green, int blue, int alpha) {
         this.value = new Colour(red, green, blue, alpha);
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public Color getColor() {
@@ -61,7 +63,8 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+          this.getParent().onSettingChange();
     }
 
     @Override

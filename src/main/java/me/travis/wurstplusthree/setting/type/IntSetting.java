@@ -56,7 +56,8 @@ public class IntSetting extends Setting<Integer> {
 
     public void setNumber(double value) {
         this.value = Math.toIntExact(Math.round(value));
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public double getMaximumValue() {

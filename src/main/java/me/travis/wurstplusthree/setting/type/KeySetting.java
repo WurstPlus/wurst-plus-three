@@ -35,7 +35,8 @@ public class KeySetting extends Setting<Integer> {
 
     public void setKey(int key) {
         this.value = key;
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public boolean isDown() {

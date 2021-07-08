@@ -25,7 +25,8 @@ public class BooleanSetting extends Setting<Boolean> {
 
     public void toggle() {
         value = !value;
-        this.getParent().onSettingChange();
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public Boolean getValue() {
