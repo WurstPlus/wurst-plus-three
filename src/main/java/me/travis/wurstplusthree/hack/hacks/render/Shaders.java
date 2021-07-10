@@ -11,6 +11,7 @@ import java.util.Locale;
 
 @Hack.Registration(name = "Shaders", description = "huge module", category = Hack.Category.RENDER, isListening = true, enabled = true)
 public class Shaders extends Hack {
+    //testeststests
     public EnumSetting type = new EnumSetting("Mode", "Flip", Arrays.asList("AntiAlias", "Art", "Bits", "Blobs", "Blobs2", "Blur", "Bumpy", "Color_Convolve", "Creeper", "Deconverge", "Desaturate", "flip", "fxaa", "Green", "Invert", "Notch", "ntsc", "Outline", "Pencil", "Phosphor", "Scan_Pincushion", "Sobel", "Spider", "Wobble"), this);
     public BooleanSetting onlyInGui = new BooleanSetting("OnlyInGui", false, this);
     private boolean loaded = false;
