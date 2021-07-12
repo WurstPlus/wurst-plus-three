@@ -4,7 +4,9 @@ import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.BlockLiquid;
@@ -31,8 +33,9 @@ public class Esp extends Hack {
     BooleanSetting orbs = new BooleanSetting("Orbs", true, this);
     BooleanSetting bottles = new BooleanSetting("Bottles", true, this);
     BooleanSetting pearl = new BooleanSetting("Pearl", true, this);
-    ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50, 150), this);
     BooleanSetting sources = new BooleanSetting("Sources", false, this);
+    IntSetting sourceRange = new IntSetting("Range", 7, 1, 25, this, s -> sources.getValue());
+    ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50, 150), this);
     ColourSetting colour2 = new ColourSetting("SourceColour", new Colour(100, 50, 200, 150), this);
 
 
@@ -150,9 +153,11 @@ public class Esp extends Hack {
                 break;
             }
         }
-        for (BlockPos pos : EntityUtil.getSphere(mc.player.getPosition(), 6, 6, false, false, 0)) {
-            if (mc.world.getBlockState(pos).getBlock().getMetaFromState(mc.world.getBlockState(pos)) == 0 && mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid) {
-                RenderUtil.drawBoxESP(pos, colour2.getColor(), colour2.getColor(), 2.0f, true, true, false);
+        if(sources.getValue()) {
+            for (BlockPos pos : EntityUtil.getSphere(PlayerUtil.getPlayerPos(), sourceRange.getValue(), sourceRange.getValue(), false, true, 0)) {
+                if (mc.world.getBlockState(pos).getBlock().getMetaFromState(mc.world.getBlockState(pos)) == 0 && mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid) {
+                    RenderUtil.drawBoxESP(pos, colour2.getColor(), colour2.getColor(), 1.0f, true, true, false);
+                }
             }
         }
     }
