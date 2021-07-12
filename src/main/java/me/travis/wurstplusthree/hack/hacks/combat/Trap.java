@@ -24,7 +24,7 @@ import java.util.List;
 @Hack.Registration(name = "Trap", description = "traps people", category = Hack.Category.COMBAT, priority = HackPriority.High)
 public class Trap extends Hack {
 
-    EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet"),this);
+    EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet", "Sand"),this);
     IntSetting blocksPerTick = new IntSetting("Speed", 4, 0, 8, this);
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
@@ -114,6 +114,10 @@ public class Trap extends Hack {
         if (PlayerUtil.findObiInHotbar() == -1) {
             this.disable();
         }
+
+        if (PlayerUtil.findSandInHotbar() == -1 && mode.is("Sand")) {
+            this.disable();
+        }
     }
 
     @Override
@@ -140,7 +144,7 @@ public class Trap extends Hack {
 
         final List<Vec3d> place_targets = new ArrayList<Vec3d>();
 
-        if (mode.is("Normal")) {
+        if (mode.is("Normal") || mode.is("Sand")) {
             Collections.addAll(place_targets, offsetsDefault);
         } else if (mode.is("Extra")) {
             Collections.addAll(place_targets, offsetsExtra);
@@ -153,12 +157,16 @@ public class Trap extends Hack {
         int blocks_placed = 0;
 
         while (blocks_placed < blocksPerTick.getValue()) {
-
+            boolean shouldSandPlace = false;
             if (offsetStep >= place_targets.size()) {
                 offsetStep = 0;
                 break;
             }
-
+            if (mode.is("Sand")) {
+                if (offsetStep == 16) {
+                    shouldSandPlace = true;
+                }
+            }
             final BlockPos offset_pos = new BlockPos(place_targets.get(offsetStep));
             final BlockPos target_pos = new BlockPos(closest_target.getPositionVector()).down().add(offset_pos.getX(), offset_pos.getY(), offset_pos.getZ());
             boolean should_try_place = true;
@@ -173,7 +181,7 @@ public class Trap extends Hack {
                 }
             }
 
-            if (should_try_place && BlockUtil.placeBlock(target_pos, PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
+            if (should_try_place && BlockUtil.placeBlock(target_pos, shouldSandPlace ? PlayerUtil.findSandInHotbar() : PlayerUtil.findObiInHotbar(), rotate.getValue(), rotate.getValue(), swing)) {
                 ++blocks_placed;
             }
 

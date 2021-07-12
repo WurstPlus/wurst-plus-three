@@ -318,6 +318,7 @@ public class CrystalTrap extends Hack {
         }
         if (closestTarget == null) {
             this.disable();
+            ClientMessage.sendMessage("No target disabling...");
         }
         return closestTarget;
     }
