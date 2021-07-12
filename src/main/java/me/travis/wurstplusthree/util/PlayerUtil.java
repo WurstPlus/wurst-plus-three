@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.util.UUIDTypeAdapter;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockConcretePowder;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -94,6 +95,18 @@ public class PlayerUtil implements Globals {
                 if (block instanceof BlockEnderChest)
                     return i;
                 else if (block instanceof BlockObsidian)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int findSandInHotbar() {
+        for (int i = 0; i < 9; ++i) {
+            final ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBlock) {
+                final Block block = ((ItemBlock) stack.getItem()).getBlock();
+                if (block instanceof BlockConcretePowder)
                     return i;
             }
         }
