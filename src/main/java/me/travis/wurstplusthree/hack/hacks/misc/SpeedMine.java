@@ -48,7 +48,7 @@ public final class SpeedMine extends Hack{
     private final KeySetting silentSwitch = new KeySetting("Switch", Keyboard.KEY_NONE, packetMine);
     private final BooleanSetting silentSwitchBack = new BooleanSetting("Switch Back", true, packetMine, s -> silentSwitch.getKey() != Keyboard.KEY_NONE);
     private final ParentSetting parentInstant = new ParentSetting("Instant", this);
-    private final BooleanSetting instant = new BooleanSetting("Instant", false, parentInstant);
+    private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
     private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
     private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant,s -> instant.getValue());
     private final ParentSetting parentRender = new ParentSetting("Render", this);
@@ -214,7 +214,6 @@ public final class SpeedMine extends Hack{
         if(silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitchBack.getValue() && shouldSwitch){
             if(oldSlot == -1)return;
             mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));
-            mc.playerController.syncCurrentPlayItem();
             shouldSwitch = false;
         }
 
@@ -223,7 +222,6 @@ public final class SpeedMine extends Hack{
             if(slot == -1)return;
             oldSlot = mc.player.inventory.currentItem;
             mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-            mc.playerController.syncCurrentPlayItem();
             shouldSwitch = true;
         }
 

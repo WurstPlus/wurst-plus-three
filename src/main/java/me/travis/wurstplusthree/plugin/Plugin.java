@@ -2,15 +2,14 @@ package me.travis.wurstplusthree.plugin;
 
 /**
  * @author Madmegsox1
- * @since 21/06/2021
+ * @since 06/07/2021
  */
 
-public class Plugin {
-    public void initialize(){
-
+public interface Plugin {
+    default void init(){
     }
 
-    public String name(){
+    default String name(){
         return getClass().getSimpleName();
     }
 }
