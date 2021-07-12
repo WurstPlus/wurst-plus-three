@@ -68,9 +68,9 @@ public class Loader {
             classes.spliterator().forEachRemaining(name -> {
                 try {
                     Class cls = classLoader.loadClass(name.replaceAll("/", ".").replace(".class", ""));
-                    Class ife = cls.getSuperclass();
-                    WurstplusThree.LOGGER.info(ife.getName());
-                    if (ife.equals(Plugin.class)) {
+                    Class[] ife = cls.getInterfaces();
+                    WurstplusThree.LOGGER.info(ife[0].getName());
+                    if (ife[0].equals(Plugin.class)) {
                         WurstplusThree.LOGGER.info("asd");
                         Plugin plugin = (Plugin) cls.newInstance(); // creates plugin instance
                         plugins.add(plugin);
@@ -83,7 +83,7 @@ public class Loader {
 
         if (!plugins.isEmpty()) {
             WurstplusThree.LOGGER.info(plugins.get(0).name());
-            plugins.spliterator().forEachRemaining(Plugin::initialize);
+            plugins.spliterator().forEachRemaining(Plugin::init);
         }
         if(!names.isEmpty()) {
             for (String name : names) {
@@ -92,5 +92,6 @@ public class Loader {
         }
         WurstplusThree.LOGGER.info("Loaded Plugins");
     }
+
 }
 

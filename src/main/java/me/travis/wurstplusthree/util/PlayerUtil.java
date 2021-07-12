@@ -251,4 +251,37 @@ public class PlayerUtil implements Globals {
         return null;
     }
 
+    public enum FacingDirection {
+        NORTH,
+        SOUTH,
+        EAST,
+        WEST,
+    }
+
+    public static FacingDirection getFacing() {
+        int yaw = (int) Math.floor(mc.player.getRotationYawHead());
+        if (yaw <= 0) {
+            yaw += 360;
+        }
+        yaw = (yaw % 360 + 360) % 360;
+        yaw += 45;
+        int facing = yaw / 45;
+
+        switch (facing) {
+            case 0:
+            case 1:
+                return FacingDirection.SOUTH;
+            case 2:
+            case 3:
+                return FacingDirection.WEST;
+            case 4:
+            case 5:
+                return FacingDirection.NORTH;
+            case 6:
+            case 7:
+                return FacingDirection.EAST;
+        }
+        return FacingDirection.SOUTH;
+    }
+
 }
