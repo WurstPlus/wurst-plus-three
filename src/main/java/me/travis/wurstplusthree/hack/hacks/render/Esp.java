@@ -7,6 +7,9 @@ import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockSourceImpl;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
@@ -15,6 +18,7 @@ import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -28,6 +32,9 @@ public class Esp extends Hack {
     BooleanSetting bottles = new BooleanSetting("Bottles", true, this);
     BooleanSetting pearl = new BooleanSetting("Pearl", true, this);
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50, 150), this);
+    BooleanSetting sources = new BooleanSetting("Sources", false, this);
+    ColourSetting colour2 = new ColourSetting("SourceColour", new Colour(100, 50, 200, 150), this);
+
 
     @Override
     public void onRender3D(Render3DEvent event) {
@@ -141,6 +148,11 @@ public class Esp extends Hack {
                 RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
+            }
+        }
+        for (BlockPos pos : EntityUtil.getSphere(mc.player.getPosition(), 6, 6, false, false, 0)) {
+            if (mc.world.getBlockState(pos).getBlock().getMetaFromState(mc.world.getBlockState(pos)) == 0 && mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid) {
+                RenderUtil.drawBoxESP(pos, colour2.getColor(), colour2.getColor(), 2.0f, true, true, false);
             }
         }
     }
