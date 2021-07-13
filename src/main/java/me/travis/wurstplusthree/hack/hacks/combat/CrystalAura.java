@@ -23,10 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
-import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.*;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -73,7 +70,7 @@ public final class CrystalAura extends Hack {
     public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), general);
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
-    public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None"), general);
+    public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
     private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
     private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict", "Dynamic"), general);
@@ -365,10 +362,34 @@ public final class CrystalAura extends Hack {
         }
 
         int stackSize = getCrystalCount(offhandCheck);
+
         didAnything = true;
-        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal) {
+
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal || autoSwitch.is("Silent")) {
             setYawPitch(targetBlock);
+
+            int slot = InventoryUtil.findHotbarBlock(ItemEndCrystal.class);
+            int old = mc.player.inventory.currentItem;
+            EnumHand hand = null;
+            if(autoSwitch.is("Silent")){
+                if(slot != -1) {
+                    hand = mc.player.getActiveHand();
+                    mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+                }
+            }
+
+
             BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
+
+            if(autoSwitch.is("Silent")){
+                if(slot != -1) {
+                    mc.player.connection.sendPacket(new CPacketHeldItemChange(old));
+                    if(hand != null){
+                        mc.player.setActiveHand(hand);
+                    }
+                }
+            }
+
             if (debug.getValue()) {
                 ClientMessage.sendMessage("placing");
             }

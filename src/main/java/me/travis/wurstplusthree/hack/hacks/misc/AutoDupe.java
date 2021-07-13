@@ -94,8 +94,6 @@ public final class AutoDupe extends Hack {
                 if(!(mc.currentScreen instanceof GuiChest)) {
                     BlockUtil.openBlock(chestPos);
                 }
-            }else {
-                mc.player.closeScreen();
             }
         }
 
