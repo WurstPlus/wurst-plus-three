@@ -71,6 +71,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
+    private final BooleanSetting silentSwitchHand  = new BooleanSetting("Silent Hand Activation", true,general, s -> autoSwitch.is("Silent"));
     private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
     private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict", "Dynamic"), general);
@@ -373,7 +374,9 @@ public final class CrystalAura extends Hack {
             EnumHand hand = null;
             if(autoSwitch.is("Silent")){
                 if(slot != -1) {
-                    hand = mc.player.getActiveHand();
+                    if(mc.player.isHandActive() && silentSwitchHand.getValue()) {
+                        hand = mc.player.getActiveHand();
+                    }
                     mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
                 }
             }
@@ -384,7 +387,7 @@ public final class CrystalAura extends Hack {
             if(autoSwitch.is("Silent")){
                 if(slot != -1) {
                     mc.player.connection.sendPacket(new CPacketHeldItemChange(old));
-                    if(hand != null){
+                    if(silentSwitchHand.getValue() && hand != null){
                         mc.player.setActiveHand(hand);
                     }
                 }
