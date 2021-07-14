@@ -1,7 +1,7 @@
-package me.travis.wurstplusthree.networking.packets.ping;
+package me.travis.wurstplusthree.networking.chat.packets.ping;
 
-import me.travis.wurstplusthree.networking.Packet;
-import me.travis.wurstplusthree.networking.Sockets;
+import me.travis.wurstplusthree.networking.chat.Packet;
+import me.travis.wurstplusthree.networking.chat.Sockets;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -1,9 +1,9 @@
-package me.travis.wurstplusthree.networking.handler;
+package me.travis.wurstplusthree.networking.chat.handler;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.networking.Packet;
-import me.travis.wurstplusthree.networking.packets.client.NewClientPacket;
-import me.travis.wurstplusthree.networking.packets.ping.PingUpPacket;
+import me.travis.wurstplusthree.networking.chat.Packet;
+import me.travis.wurstplusthree.networking.chat.packets.client.NewClientPacket;
+import me.travis.wurstplusthree.networking.chat.packets.ping.PingUpPacket;
 import net.minecraft.client.Minecraft;
 
 import java.io.IOException;

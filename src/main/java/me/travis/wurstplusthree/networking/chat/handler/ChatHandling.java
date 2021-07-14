@@ -1,8 +1,8 @@
-package me.travis.wurstplusthree.networking.handler;
+package me.travis.wurstplusthree.networking.chat.handler;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.networking.Packet;
-import me.travis.wurstplusthree.networking.packets.ping.PingGetGlobal;
+import me.travis.wurstplusthree.networking.chat.Packet;
+import me.travis.wurstplusthree.networking.chat.packets.ping.PingGetGlobal;
 import me.travis.wurstplusthree.util.ClientMessage;
 
 import java.util.Arrays;

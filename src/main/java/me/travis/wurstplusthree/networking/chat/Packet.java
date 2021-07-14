@@ -1,4 +1,4 @@
-package me.travis.wurstplusthree.networking;
+package me.travis.wurstplusthree.networking.chat;
 
 import net.minecraft.client.Minecraft;
 

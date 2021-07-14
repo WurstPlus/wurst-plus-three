@@ -15,14 +15,14 @@ public class Event {
     /**
      * @return if the event is cancelled
      */
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return isCancelled;
     }
 
     /**
      * @param cancelled boolean to set if the event is cancelled
      */
-    public void setCancelled(boolean cancelled) {
+    public final void setCancelled(final boolean cancelled) {
         isCancelled = cancelled;
     }
 }
