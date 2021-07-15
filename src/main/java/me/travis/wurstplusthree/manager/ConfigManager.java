@@ -20,7 +20,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
@@ -39,6 +41,7 @@ public class ConfigManager implements Globals {
     private final String burrowFile = "burrowBlocks.txt";
     private final String IRCtoken = "IRCtoken.dat";
     private final String hudFile = "hud.txt";
+    private final String coordsFile = "playersCoords.txt";
 
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
@@ -47,6 +50,7 @@ public class ConfigManager implements Globals {
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
     private final String hudDir = mainFolder + hudFile;
+    private final String coordsDir = mainFolder + coordsFile;
 
     // FOLDER PATHS
     private final Path mainFolderPath = Paths.get(mainFolder);
@@ -58,6 +62,7 @@ public class ConfigManager implements Globals {
     private final Path burrowPath = Paths.get(burrowDir);
     private final Path IRCpath = Paths.get(IRCdir);
     private final Path hudPath = Paths.get(hudDir);
+    private final Path coordsPath = Paths.get(coordsDir);
 
     public void loadConfig() {
         try {
@@ -364,6 +369,16 @@ public class ConfigManager implements Globals {
             }
         }
         WurstplusThree.GUI_FONT_MANAGER.setFont();
+    }
+
+    public void saveCoords(String coords) throws IOException {
+        FileWriter fw = new FileWriter(coordsDir, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy -- HH:mm:ss");
+        Date date = new Date();
+        bw.write("[" + formatter.format(date) + "] " + coords);
+        bw.newLine();
+        bw.close();
     }
 
     public void saveBurrowBlock() throws IOException {
