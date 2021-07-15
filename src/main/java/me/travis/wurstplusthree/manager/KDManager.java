@@ -1,11 +1,14 @@
 package me.travis.wurstplusthree.manager;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
+import me.travis.wurstplusthree.hack.hacks.chat.TotemPopCounter;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
@@ -27,6 +30,7 @@ public class KDManager implements Globals {
     private double totalDeaths;
     private double totalKills;
     private int currentKills;
+    private String kdString = ChatFormatting.RED +  "[" + ChatFormatting.GOLD + "KD" + ChatFormatting.RED + "] " + ChatFormatting.RESET;
 
     public int getCurrentKills() {
         return currentKills;
@@ -53,6 +57,9 @@ public class KDManager implements Globals {
 
     public void addDeath() {
         totalDeaths++;
+        if(TotemPopCounter.INSTANCE.kdMessages.getValue()){
+            ClientMessage.sendMessage(kdString + "Your KD is " + getKD() + "!");
+        }
         currentKills = 0;
     }
 
@@ -87,6 +94,9 @@ public class KDManager implements Globals {
         if (this.targets.containsKey(event.player.getName())) {
             totalKills++;
             currentKills++;
+            if(TotemPopCounter.INSTANCE.kdMessages.getValue()){
+                ClientMessage.sendMessage(kdString + "Your KD is " + getKD() + "!");
+            }
             AutoEz.INSTANCE.announceDeath();
             this.targets.remove(event.player.getName());
         }
