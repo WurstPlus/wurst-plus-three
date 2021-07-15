@@ -223,7 +223,7 @@ public class HoleESP extends Hack {
                         }
                     }
                 }
-            } else if(!mode.is("Two Tone")){
+            } else if(!RMode.is("Two Tone")){
                 if (top) {
                     rVal = new Colour(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
                 } else {
@@ -234,7 +234,7 @@ public class HoleESP extends Hack {
                 if(top){
                     rVal = new Color(bedrockTwoToneColor.getColor().getRed(), bedrockTwoToneColor.getColor().getGreen(), bedrockTwoToneColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
                 }else {
-                    rVal = new Color(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillUp.getValue() : FillUp.getValue());
+                    rVal = new Color(bedrockColor.getColor().getRed(), bedrockColor.getColor().getGreen(), bedrockColor.getColor().getBlue(), (line) ? LineFillDown.getValue() : FillDown.getValue());
                 }
             }
         }
