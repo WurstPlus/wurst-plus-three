@@ -33,6 +33,7 @@
     "MixinRenderLivingBase",
     "MixinRenderPlayer",
     "MixinWorld",
+    "accessors.IChunkProviderClient",
     "accessors.IC00Handshake",
     "accessors.IContainer",
     "accessors.IServerAddress",
