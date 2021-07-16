@@ -22,19 +22,20 @@ import java.io.IOException;
  * @since 15/07/2021
  */
 
-@Hack.Registration(name = "Coord exploit", description = "Finds coords thx to azrn", category = Hack.Category.PLAYER)
-public class CoordExploit extends Hack {
+@Hack.Registration(name = "Chunk Scanner", description = "Finds coords thx to azrn", category = Hack.Category.PLAYER)
+public class ChunkScanner extends Hack {
 
     IntSetting delay = new IntSetting("Delay", 200, 0, 1000, this);
+    IntSetting loop = new IntSetting("Loop Per Tick", 1, 1, 100, this);
     IntSetting startX = new IntSetting("Start X", 0, 0, 1000000, this);
     IntSetting startZ = new IntSetting("Start Z", 0, 0, 1000000, this);
-    BooleanSetting logFailedCoords = new BooleanSetting("Log NonPlayer Chunks", true, this);
     BooleanSetting saveCoords = new BooleanSetting("Save Coords", true ,this);
 
     private BlockPos playerPos = null;
     private int renderDistanceDiameter = 0;
     private long time = 0;
     private int count = 0;
+    private int x, z;
 
 
 
@@ -53,17 +54,18 @@ public class CoordExploit extends Hack {
         }
 
         if (System.currentTimeMillis() - time > delay.getValue()) {
-            final int x = getSpiralCoords(count)[0] * renderDistanceDiameter * 16 + startX.getValue();
-            final int z = getSpiralCoords(count)[1] * renderDistanceDiameter * 16 + startZ.getValue();
-            final BlockPos position = new BlockPos(x, 0, z);
-            if(logFailedCoords.getValue()){
-                ClientMessage.sendMessage("Searching X: " + x + " Z: " + z + "!");
+            for(int i =0; i < loop.getValue(); i++) {
+                final int x = getSpiralCoords(count)[0] * renderDistanceDiameter * 16 + startX.getValue();
+                final int z = getSpiralCoords(count)[1] * renderDistanceDiameter * 16 + startZ.getValue();
+                final BlockPos position = new BlockPos(x, 0, z);
+                this.x = x;
+                this.z = z;
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, playerPos, EnumFacing.EAST));
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, position, EnumFacing.EAST));
+                this.playerPos = new BlockPos(mc.player.posX, mc.player.posY - 1, mc.player.posZ);
+                time = System.currentTimeMillis();
+                count++;
             }
-            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, playerPos, EnumFacing.EAST));
-            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, position, EnumFacing.EAST));
-            this.playerPos = new BlockPos(mc.player.posX, mc.player.posY - 1, mc.player.posZ);
-            time = System.currentTimeMillis();
-            count++;
         }
     }
 
@@ -128,5 +130,10 @@ public class CoordExploit extends Hack {
         playerPos = null;
         count = 0;
         time = 0;
+    }
+
+    @Override
+    public String getDisplayInfo(){
+        return x + " , " + z;
     }
 }
