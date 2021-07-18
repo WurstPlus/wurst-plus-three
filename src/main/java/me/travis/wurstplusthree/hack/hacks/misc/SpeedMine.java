@@ -277,12 +277,12 @@ public final class SpeedMine extends Hack{
             }
 
             if (animation.is("Fill")) {
-                RenderUtil.drawBoxESP(lastPos, c2, c, 1f, !renderMode.is("Box"), !renderMode.is("Outline"), (float) Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0));
+                RenderUtil.drawBoxESP(lastPos, c2, c, 1f, !renderMode.is("Box"), !renderMode.is("Outline"), (float) Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0) - 1);
                 return;
             }
             AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
             if (animation.is("Grow")) {
-                bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0) - 1);
+                bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0));
             }
             switch (renderMode.getValue()) {
                 case "Both":
