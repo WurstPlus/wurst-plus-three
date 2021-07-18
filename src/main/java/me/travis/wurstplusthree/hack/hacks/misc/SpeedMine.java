@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -48,9 +49,11 @@ public final class SpeedMine extends Hack{
     private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,packetMine);
 
     private final ParentSetting switch0 = new ParentSetting("Switch", this);
-    private final EnumSetting silentMode = new EnumSetting("SilentMode", "None", Arrays.asList("None", "Key", "Auto"), switch0);
-    private final KeySetting silentSwitch = new KeySetting("SwitchKey", Keyboard.KEY_NONE, switch0, s -> silentMode.is("Key"));
-    private final BooleanSetting silentSwitchBack = new BooleanSetting("Switch Back", true, switch0, s -> !silentMode.is("None"));
+    private final EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), switch0);
+    private final BooleanSetting keyMode = new BooleanSetting("KeyOnly", false, switch0);
+    private final KeySetting key = new KeySetting("SwitchKey", Keyboard.KEY_NONE, switch0, v -> keyMode.getValue());
+    private final BooleanSetting switchBack = new BooleanSetting("SwitchBack", false, switch0, v -> !switchMode.is("None"));
+    private final BooleanSetting noDesync = new BooleanSetting("NoDesync", false, switch0, v -> switchMode.is("Silent"));
 
     private final ParentSetting parentInstant = new ParentSetting("Instant", this);
     private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
@@ -83,6 +86,7 @@ public final class SpeedMine extends Hack{
     private BlockPos lastBreakPos;
     private EnumFacing lastBreakFace;
     private Block lastBlock;
+    private boolean switched = false;
     private double time = 0;
     private int tickCount = 0;
     private boolean shouldInstant;
@@ -93,7 +97,8 @@ public final class SpeedMine extends Hack{
     private EnumHand activeHand = null;
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
+        switched = false;
         shouldInstant = false;
         firstPacket = true;
         delay = 0;
@@ -134,6 +139,7 @@ public final class SpeedMine extends Hack{
                 lastBreakPos = event.pos;
                 lastBreakFace = event.facing;
                 firstPacket = true;
+                switched = false;
                 lastBlock = mc.world.getBlockState(lastPos).getBlock();
                 ItemStack item;
                 if(PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null){
@@ -228,43 +234,36 @@ public final class SpeedMine extends Hack{
             }
         }
 
-        if(!silentMode.is("None") && silentSwitchBack.getValue() && shouldSwitch){
-            if(oldSlot == -1)return;
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));
-            if(activeHand != null){
-                mc.player.setActiveHand(activeHand);
-            }
-            shouldSwitch = false;
+        int subVal = 40;
+
+        if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
+            subVal = 146;
+        }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
+            subVal = 66;
         }
 
-        if(silentMode.is("Key") && silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitch.isDown()){
+        if (!switchMode.is("None") && !switched && isActive && lastPos != null && tickCount > time - subVal && (!keyMode.getValue() || key.isDown())) {
             final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
-            if(slot == -1)return;
-            activeHand = null;
-            if(mc.player.isHandActive()){
-                activeHand = mc.player.getActiveHand();
-            }
+            if (slot == -1) return;
             oldSlot = mc.player.inventory.currentItem;
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-            shouldSwitch = true;
+            if (switchMode.is("Silent")) {
+                if (!noDesync.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemFood && mc.gameSettings.keyBindUseItem.isKeyDown())) {
+                    mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+                    switched = true;
+                }
+            } else {
+                mc.player.inventory.currentItem = slot;
+                switched = true;
+            }
         }
 
-
-
-        else if(silentMode.is("Auto")){
-            int subVal = 40;
-            if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
-                subVal = 146;
-            }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
-                subVal = 66;
+        if (switchBack.getValue() && switched && (!isActive || (keyMode.getValue()) && !key.isDown())) {
+            if (switchMode.is("Silent")) {
+                mc.player.connection.sendPacket(new CPacketHeldItemChange(mc.player.inventory.currentItem));
+            } else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
+                mc.player.inventory.currentItem = oldSlot;
             }
-            if(tickCount > time - subVal) {
-                final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
-                if (slot == -1) return;
-                oldSlot = mc.player.inventory.currentItem;
-                mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-                shouldSwitch = true;
-            }
+            switched = false;
         }
 
         tickCount++;
