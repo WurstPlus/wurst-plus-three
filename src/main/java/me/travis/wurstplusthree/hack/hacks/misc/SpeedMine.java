@@ -277,7 +277,7 @@ public final class SpeedMine extends Hack{
             }
 
             if (animation.is("Fill")) {
-                RenderUtil.drawBoxESP(lastPos, c2, c, 1f, !renderMode.is("Box"), !renderMode.is("Outline"), (float) Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0) - 1);
+                RenderUtil.drawBoxESP(lastPos, c2, c, 1f, !renderMode.is("Box"), !renderMode.is("Outline"), (float) Math.min(normalize2(tickCount, time - subVal, 0) - 1, 0));
                 return;
             }
             AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
@@ -327,4 +327,7 @@ public final class SpeedMine extends Hack{
         return  (1 - 0.5) * ((value - min) / (max - min)) + 0.5;
     }
 
+    private double normalize2(double value, double max, double min){
+        return  1 * ((value - min) / (max - min));
+    }
 }
