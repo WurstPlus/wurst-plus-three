@@ -584,6 +584,203 @@ public class RenderUtil implements Globals {
         GlStateManager.popMatrix();
     }
 
+    public static void drawGradientPlaneBB(AxisAlignedBB bb, EnumFacing face, Color startColor, Color endColor, double height){
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder builder = tessellator.getBuffer();
+        float red = (float) startColor.getRed() / 255.0f;
+        float green = (float) startColor.getGreen() / 255.0f;
+        float blue = (float) startColor.getBlue() / 255.0f;
+        float alpha = (float) startColor.getAlpha() / 255.0f;
+        float red1 = (float) endColor.getRed() / 255.0f;
+        float green1 = (float) endColor.getGreen() / 255.0f;
+        float blue1 = (float) endColor.getBlue() / 255.0f;
+        float alpha1 = (float) endColor.getAlpha() / 255.0f;
+        double x1 = 0.0;
+        double y1 = 0.0;
+        double z1 = 0.0;
+        double x2 = 0.0;
+        double y2 = 0.0;
+        double z2 = 0.0;
+        switch (face){
+            case DOWN:
+                x1 = bb.minX;
+                x2 = bb.maxX;
+                y1 = bb.minY;
+                y2 = bb.minY;
+                z1 = bb.minZ;
+                z2 = bb.maxZ;
+                break;
+            case UP:
+                x1 = bb.minX;
+                x2 = bb.maxX;
+                y1 = bb.maxY;
+                y2 = bb.maxY;
+                z1 = bb.minZ;
+                z2 = bb.maxZ;
+                break;
+            case EAST:
+                x1 = bb.maxX;
+                x2 = bb.maxX;
+                y1 = bb.minY;
+                y2 = bb.maxY;
+                z1 = bb.minZ;
+                z2 = bb.maxZ;
+                break;
+            case WEST:
+                x1 = bb.minX;
+                x2 = bb.minX;
+                y1 = bb.minY;
+                y2 = bb.maxY;
+                z1 = bb.minZ;
+                z2 = bb.maxZ;
+                break;
+            case SOUTH:
+                x1 = bb.minX;
+                x2 = bb.maxX;
+                y1 = bb.minY;
+                y2 = bb.maxY;
+                z1 = bb.maxZ;
+                z2 = bb.maxZ;
+                break;
+            case NORTH:
+                x1 = bb.minX;
+                x2 = bb.maxX;
+                y1 = bb.minY;
+                y2 = bb.maxY;
+                z1 = bb.minZ;
+                z2 = bb.minZ;
+                break;
+        }
+        if (face == EnumFacing.DOWN) {
+
+        } else if (face == EnumFacing.UP) {
+
+        } else if (face == EnumFacing.EAST) {
+
+        } else if (face == EnumFacing.WEST) {
+
+        } else if (face == EnumFacing.SOUTH) {
+
+        } else if (face == EnumFacing.NORTH) {
+
+        }
+        GlStateManager.pushMatrix();
+        GlStateManager.disableDepth();
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.depthMask(false);
+        builder.begin(5, DefaultVertexFormats.POSITION_COLOR);
+        if (face == EnumFacing.EAST || face == EnumFacing.WEST || face == EnumFacing.NORTH || face == EnumFacing.SOUTH) {
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+        } else if (face == EnumFacing.UP) {
+            builder.pos(x1, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y1, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x1, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z1).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+            builder.pos(x2, y2, z2).color(red1, green1, blue1, alpha1).endVertex();
+        } else if (face == EnumFacing.DOWN) {
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y1, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x1, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z1).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+            builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
+        }
+        tessellator.draw();
+        GlStateManager.depthMask(true);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableDepth();
+        GlStateManager.popMatrix();
+    }
+
+    public static void drawOpenGradientBoxBB(AxisAlignedBB bb, Color startColor, Color endColor, double height){
+        Vec3d interp = EntityUtil.interpolateEntity(RenderUtil.mc.player, mc.getRenderPartialTicks());
+        for (EnumFacing face : EnumFacing.values()) {
+            drawGradientPlaneBB(bb.grow(0.002f).offset(-interp.x, -interp.y, -interp.z), face, startColor, endColor, height);
+        }
+    }
+
     public static void drawOpenGradientBox(BlockPos pos, Color startColor, Color endColor, double height) {
         for (EnumFacing face : EnumFacing.values()) {
             if (face == EnumFacing.UP) continue;
