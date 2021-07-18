@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.hacks.misc;
 
+import me.travis.wurstplusthree.event.events.BlockDestroyEvent;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
@@ -10,9 +11,11 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -21,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -45,14 +49,17 @@ public final class SpeedMine extends Hack{
     private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, packetMine);
     private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, packetMine, s -> packetLoop.getValue());
     private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,packetMine);
-    private final KeySetting silentSwitch = new KeySetting("Switch", Keyboard.KEY_NONE, packetMine);
-    private final BooleanSetting silentSwitchBack = new BooleanSetting("Switch Back", true, packetMine, s -> silentSwitch.getKey() != Keyboard.KEY_NONE);
+    private final ParentSetting switch0 = new ParentSetting("Switch", this);
+    private final EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), switch0);
+    private final BooleanSetting switchBack = new BooleanSetting("SwitchBack", false, switch0, v -> !switchMode.is("None"));
+    private final BooleanSetting noDesync = new BooleanSetting("NoDesync", false, switch0, v -> switchMode.is("Silent"));
     private final ParentSetting parentInstant = new ParentSetting("Instant", this);
     private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
     private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
     private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant,s -> instant.getValue());
     private final ParentSetting parentRender = new ParentSetting("Render", this);
     private final BooleanSetting render = new BooleanSetting("Render", true , parentRender);
+    private final EnumSetting animation = new EnumSetting("Animation", "Grow", Arrays.asList("Grow", "Static", "Fill"), parentRender);
     private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill"), parentRender, s -> render.getValue());
     private final ColourSetting instantColor = new ColourSetting("InstantColorOutline", new Colour(100, 0, 100), parentRender, s -> render.getValue() && instant.getValue());
     private final ColourSetting instantColorFill = new ColourSetting("InstantColorFill", new Colour(100, 0, 100, 40), parentRender, s -> render.getValue() && instant.getValue());
@@ -73,7 +80,8 @@ public final class SpeedMine extends Hack{
     private boolean firstPacket;
     private int delay;
     private int oldSlot = -1;
-    private boolean shouldSwitch = false;
+    private boolean switched = false;
+    private boolean done = false;
 
     @Override
     public void onEnable(){
@@ -81,8 +89,10 @@ public final class SpeedMine extends Hack{
         firstPacket = true;
         delay = 0;
         oldSlot = -1;
-        shouldSwitch = false;
+        switched = false;
+        done = false;
     }
+
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onBlockDamage(@NotNull BlockEvent event){
@@ -117,6 +127,7 @@ public final class SpeedMine extends Hack{
                 lastBreakPos = event.pos;
                 lastBreakFace = event.facing;
                 firstPacket = true;
+                switched = false;
                 lastBlock = mc.world.getBlockState(lastPos).getBlock();
                 ItemStack item;
                 if(PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null){
@@ -137,12 +148,12 @@ public final class SpeedMine extends Hack{
     }
 
     @Override
-    public void onUpdate(){
-        if(nullCheck())return;
+    public void onUpdate() {
+        if (nullCheck()) return;
 
-        if(instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())){ // instant mine
+        if (instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())) { // instant mine
             delay = 0;
-            if(firstPacket) {
+            if (firstPacket) {
                 firstPacket = false;
                 for (int i = 0; i < instantPacketLoop.getValue(); i++) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
@@ -151,25 +162,25 @@ public final class SpeedMine extends Hack{
                 if (abortPacket.getValue()) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
                 }
-            }else {
-                if(mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE && mc.world.getBlockState(lastBreakPos).getBlock() != Blocks.AIR) {
+            } else {
+                if (mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE && mc.world.getBlockState(lastBreakPos).getBlock() != Blocks.AIR) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
                 }
             }
         }
         delay++;
 
-        if(shouldInstant && rangeCheck.getValue() && lastBreakPos != null){
+        if (shouldInstant && rangeCheck.getValue() && lastBreakPos != null) {
             double dis = mc.player.getDistanceSq(lastBreakPos);
             shouldInstant = !(dis > range.getValue());
         }
 
-        if(lastPos != null && lastBlock != null && isActive){
+        if (lastPos != null && lastBlock != null && isActive) {
 
-            if(rotate.getValue() && rotateSetting.is("Constant")){
+            if (rotate.getValue() && rotateSetting.is("Constant")) {
                 RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
             }
-            if(abortPacket.getValue()) {
+            if (abortPacket.getValue()) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
@@ -181,8 +192,8 @@ public final class SpeedMine extends Hack{
                 isActive = true;
             }
             mc.playerController.blockHitDelay = 0;
-            if(mc.world.getBlockState(lastPos).getBlock() != lastBlock){
-                if(rotate.getValue() && rotateSetting.is("Break")){
+            if (mc.world.getBlockState(lastPos).getBlock() != lastBlock) {
+                if (rotate.getValue() && rotateSetting.is("Break")) {
                     RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
                 }
                 shouldInstant = true;
@@ -195,9 +206,9 @@ public final class SpeedMine extends Hack{
             }
         }
 
-        if(isActive && rangeCheck.getValue()){ // range check
+        if (isActive && rangeCheck.getValue()) { // range check
             double dis = mc.player.getDistanceSq(lastPos);
-            if(dis > range.getValue()){
+            if (dis > range.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
                 //mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, new BlockPos(0,0,0), lastFace));
@@ -210,51 +221,73 @@ public final class SpeedMine extends Hack{
                 lastBlock = null;
             }
         }
+        int subVal = 40;
 
-        if(silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitchBack.getValue() && shouldSwitch){
-            if(oldSlot == -1)return;
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));
-            shouldSwitch = false;
+        if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
+            subVal = 146;
+        } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
+            subVal = 66;
         }
 
-        if(silentSwitch.getKey() != Keyboard.KEY_NONE && silentSwitch.isDown()){
+        if (!switchMode.is("None") && !switched && isActive && lastPos != null && tickCount > time - subVal) {
             final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
-            if(slot == -1)return;
+            if (slot == -1) return;
             oldSlot = mc.player.inventory.currentItem;
-            mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-            shouldSwitch = true;
+            if (switchMode.is("Silent")) {
+                if (!noDesync.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemFood && mc.gameSettings.keyBindUseItem.isKeyDown())) {
+                    mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+                    switched = true;
+                }
+            } else {
+                mc.player.inventory.currentItem = slot;
+                switched = true;
+            }
+        }
+
+        if (switchBack.getValue() && switched && !isActive) {
+            if (switchMode.is("Silent")) {
+                mc.player.connection.sendPacket(new CPacketHeldItemChange(mc.player.inventory.currentItem));
+            } else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
+                mc.player.inventory.currentItem = oldSlot;
+            }
+            switched = false;
         }
 
         tickCount++;
-
     }
 
     @Override
     public void onRender3D(Render3DEvent event){
         if(!render.getValue())return;
-        if(isActive && lastPos != null){
+        if(isActive && lastPos != null) {
             Colour c = breakColor.getValue();
             Colour c2 = breakColorFill.getValue();
 
             int subVal = 40;
 
-            if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
+            if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
                 subVal = 146;
-            }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
+            } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
                 subVal = 66;
             }
 
-            if(tickCount > time - subVal){
+            if (tickCount > time - subVal) {
                 c = doneColor.getValue();
                 c2 = doneColorFill.getValue();
             }
-            AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
-            bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time-subVal, 0), 1.0), 0.0));
 
-            switch (renderMode.getValue()){
+            if (animation.is("Fill")) {
+                RenderUtil.drawBoxESP(lastPos, c2, c, 1f, !renderMode.is("Box"), !renderMode.is("Outline"), (float) Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0));
+                return;
+            }
+            AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
+            if (animation.is("Grow")) {
+                bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0) - 1);
+            }
+            switch (renderMode.getValue()) {
                 case "Both":
                     RenderUtil.drawBBBox(bb, c2, c2.getAlpha());
-                    RenderUtil.drawBlockOutlineBB(bb, new Color(c.getRed(),c.getGreen(), c.getBlue(), 255), 1f);
+                    RenderUtil.drawBlockOutlineBB(bb, new Color(c.getRed(), c.getGreen(), c.getBlue(), 255), 1f);
                     break;
                 case "Outline":
                     RenderUtil.drawBlockOutlineBB(bb, c, 1f);
@@ -262,7 +295,8 @@ public final class SpeedMine extends Hack{
                 case "Fill":
                     RenderUtil.drawBBBox(bb, c2, c2.getAlpha());
                     break;
-            };
+            }
+            ;
         }
         if(instant.getValue() && shouldInstant && lastBreakPos != null){
             Colour c = instantColor.getValue();

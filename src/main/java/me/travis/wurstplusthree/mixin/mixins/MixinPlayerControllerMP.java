@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.BlockDestroyEvent;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.EnumFacing;
@@ -29,6 +30,12 @@ public class MixinPlayerControllerMP {
         if (event.isCancelled()) {
             info.cancel();
         }
+    }
+
+    @Inject(method = "onPlayerDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playEvent(ILnet/minecraft/util/math/BlockPos;I)V"), cancellable = true)
+    private void onPlayerDestroyBlock(BlockPos pos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        BlockDestroyEvent event = new BlockDestroyEvent(pos);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
     }
 
 //    @Redirect(method = {"processRightClickBlock"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemBlock;canPlaceBlockOnSide(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/item/ItemStack;)Z"))
