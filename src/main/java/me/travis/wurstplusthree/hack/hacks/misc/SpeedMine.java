@@ -32,6 +32,13 @@ import java.util.Arrays;
 /**
  * @author Madmegsox1
  * @since 10/06/2021
+ *
+ * How it works:
+ *
+ * When the player hits a block it triggers a event
+ * Then it sends the start mine packet this is so
+ * we can cancel the packet mine if we need to with a abort packet
+ * Then it will instant mine once the block is mined!
  */
 
 @Hack.Registration(name = "Speed Mine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
@@ -47,6 +54,9 @@ public final class SpeedMine extends Hack {
     private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, packetMine);
     private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, packetMine, s -> packetLoop.getValue());
     private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true, packetMine);
+    private final BooleanSetting correctHit = new BooleanSetting("Correction Hit", true, packetMine);
+    private final IntSetting tickSub = new IntSetting("Tick Sub", 10, 1, 20, packetMine, s -> (rangeCheck.getValue() || correctHit.getValue()));
+    private final BooleanSetting shouldLoop = new BooleanSetting("Should Loop", false, packetMine, s -> (rangeCheck.getValue() || correctHit.getValue()));
 
     private final ParentSetting switch0 = new ParentSetting("Switch", this);
     private final EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), switch0);
@@ -93,8 +103,7 @@ public final class SpeedMine extends Hack {
     private boolean firstPacket;
     private int delay;
     private int oldSlot = -1;
-    private boolean shouldSwitch = false;
-    private EnumHand activeHand = null;
+    private boolean loopStopPackets;
 
     @Override
     public void onEnable() {
@@ -103,7 +112,7 @@ public final class SpeedMine extends Hack {
         firstPacket = true;
         delay = 0;
         oldSlot = -1;
-        shouldSwitch = false;
+        loopStopPackets = true;
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
@@ -121,16 +130,25 @@ public final class SpeedMine extends Hack {
             if (swing.getValue()) {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
-
+            if(event.pos != lastPos && correctHit.getValue() && lastPos != null){
+                isActive = false;
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
+                mc.playerController.isHittingBlock = false;
+                mc.playerController.curBlockDamageMP = 0;
+            }
             if (!isActive) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                        mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
+                        if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
+                        }
                     }
                 } else {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
+                    if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                        mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
+                    }
                 }
                 event.setCancelled(cancel.getValue());
                 isActive = true;
@@ -159,9 +177,12 @@ public final class SpeedMine extends Hack {
         }
     }
 
+
+
     @Override
     public void onUpdate() {
         if (nullCheck()) return;
+
 
         if (instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())) { // instant mine
             delay = 0;
@@ -181,13 +202,37 @@ public final class SpeedMine extends Hack {
             }
         }
         delay++;
-
         if (shouldInstant && rangeCheck.getValue() && lastBreakPos != null) {
             double dis = mc.player.getDistanceSq(lastBreakPos);
             shouldInstant = !(dis > range.getValue());
         }
 
+
+
+        int subVal = 40;
+        if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
+            subVal = 146;
+        } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
+            subVal = 66;
+        }
+
+
         if (lastPos != null && lastBlock != null && isActive) {
+            /*
+             * We do this so we can cancel the mine event with a abort packet
+             * I calculate when to send it by finding how many ticks it takes to mine the block
+             * I then subtract by a amount and basically that's the stage where you cant cancel the mine
+             */
+            if((rangeCheck.getValue() || correctHit.getValue()) && (tickCount > time - subVal - tickSub.getValue()) && loopStopPackets){
+                if (packetLoop.getValue()) {
+                    for (int i = 0; i < packets.getValue(); i++) {
+                        mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
+                    }
+                } else {
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
+                }
+                loopStopPackets = shouldLoop.getValue();
+            }
 
             if (rotate.getValue() && rotateSetting.is("Constant")) {
                 RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
@@ -218,29 +263,9 @@ public final class SpeedMine extends Hack {
             }
         }
 
-        if (isActive && rangeCheck.getValue()) { // range check
-            double dis = mc.player.getDistanceSq(lastPos);
-            if (dis > range.getValue()) {
-                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
-                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
-                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, new BlockPos(0,0,0), lastFace));
-                mc.playerController.isHittingBlock = false;
-                isActive = false;
-                shouldInstant = false;
-                firstPacket = true;
-                lastPos = null;
-                lastFace = null;
-                lastBlock = null;
-            }
-        }
-
-        int subVal = 40;
-
-        if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
-            subVal = 146;
-        } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
-            subVal = 66;
-        }
+        /*
+        * Switch system
+         */
 
         if (!switchMode.is("None") && !switched && isActive && lastPos != null && tickCount > time - subVal && (!keyMode.getValue() || key.isDown())) {
             final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
@@ -253,6 +278,7 @@ public final class SpeedMine extends Hack {
                 }
             } else {
                 mc.player.inventory.currentItem = slot;
+                mc.playerController.syncCurrentPlayItem();
                 switched = true;
             }
         }
@@ -262,8 +288,24 @@ public final class SpeedMine extends Hack {
                 mc.player.connection.sendPacket(new CPacketHeldItemChange(mc.player.inventory.currentItem));
             } else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
                 mc.player.inventory.currentItem = oldSlot;
+                mc.playerController.syncCurrentPlayItem();
             }
             switched = false;
+        }
+
+
+        if (isActive && rangeCheck.getValue()) { // range check
+            double dis = mc.player.getDistanceSq(lastPos);
+            if (dis > range.getValue()) {
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
+                mc.playerController.isHittingBlock = false;
+                isActive = false;
+                shouldInstant = false;
+                firstPacket = true;
+                lastPos = null;
+                lastFace = null;
+                lastBlock = null;
+            }
         }
 
         tickCount++;
