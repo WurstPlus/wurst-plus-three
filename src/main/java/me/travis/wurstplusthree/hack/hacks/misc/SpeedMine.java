@@ -35,18 +35,18 @@ import java.util.Arrays;
  */
 
 @Hack.Registration(name = "Speed Mine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
-public final class SpeedMine extends Hack{
+public final class SpeedMine extends Hack {
 
     private final ParentSetting packetMine = new ParentSetting("Packet Mine", this);
     private final BooleanSetting rangeCheck = new BooleanSetting("RangeCheck", true, packetMine);
     private final DoubleSetting range = new DoubleSetting("Range", 12.0, 1.0, 60.0, packetMine, s -> rangeCheck.getValue());
     private final BooleanSetting swing = new BooleanSetting("Swing", true, packetMine);
-    private final BooleanSetting rotate = new BooleanSetting("Rotate", false ,packetMine);
+    private final BooleanSetting rotate = new BooleanSetting("Rotate", false, packetMine);
     private final EnumSetting rotateSetting = new EnumSetting("RotateSettings", "Break", Arrays.asList("Break", "Constant", "Hit"), packetMine, s -> rotate.getValue());
     private final BooleanSetting cancel = new BooleanSetting("CancelEvent", true, packetMine);
     private final BooleanSetting packetLoop = new BooleanSetting("PacketLoop", false, packetMine);
     private final IntSetting packets = new IntSetting("Packets", 1, 1, 25, packetMine, s -> packetLoop.getValue());
-    private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true ,packetMine);
+    private final BooleanSetting abortPacket = new BooleanSetting("AbortPacket", true, packetMine);
 
     private final ParentSetting switch0 = new ParentSetting("Switch", this);
     private final EnumSetting switchMode = new EnumSetting("SwitchMode", "None", Arrays.asList("None", "Silent", "Normal"), switch0);
@@ -58,10 +58,10 @@ public final class SpeedMine extends Hack{
     private final ParentSetting parentInstant = new ParentSetting("Instant", this);
     private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
     private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
-    private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant,s -> instant.getValue());
+    private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant, s -> instant.getValue());
 
     private final ParentSetting parentRender = new ParentSetting("Render", this);
-    private final BooleanSetting render = new BooleanSetting("Render", true , parentRender);
+    private final BooleanSetting render = new BooleanSetting("Render", true, parentRender);
     private final EnumSetting renderMode = new EnumSetting("Mode", "Both", Arrays.asList("Both", "Outline", "Fill", "Gradient"), parentRender, s -> render.getValue());
     private final EnumSetting fillMode = new EnumSetting("Animation", "Expand", Arrays.asList("Expand", "Fill", "Static"), parentRender, s -> render.getValue());
 
@@ -107,22 +107,22 @@ public final class SpeedMine extends Hack{
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
-    public final void onBlockDamage(@NotNull BlockEvent event){
-        if(nullCheck())return;
+    public final void onBlockDamage(@NotNull BlockEvent event) {
+        if (nullCheck()) return;
         if (event.getStage() == 3 && mc.playerController.curBlockDamageMP > 0.1f) {
             mc.playerController.isHittingBlock = true;
         }
 
-        if(event.getStage() == 4) {
+        if (event.getStage() == 4) {
             if (!canBreakBlockFromPos(event.pos)) return;
-            if(event.pos != lastBreakPos) {
+            if (event.pos != lastBreakPos) {
                 shouldInstant = false;
             }
             if (swing.getValue()) {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
 
-            if (!isActive) {
+            if (event.pos != lastPos || !isActive) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
@@ -142,9 +142,9 @@ public final class SpeedMine extends Hack{
                 switched = false;
                 lastBlock = mc.world.getBlockState(lastPos).getBlock();
                 ItemStack item;
-                if(PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null){
+                if (PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null) {
                     item = PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock));
-                }else {
+                } else {
                     item = mc.player.getHeldItem(EnumHand.MAIN_HAND);
                 }
                 if (item == null) return;
@@ -152,7 +152,7 @@ public final class SpeedMine extends Hack{
 
                 tickCount = 0;
 
-                if(rotate.getValue() && rotateSetting.is("Hit")){
+                if (rotate.getValue() && rotateSetting.is("Hit")) {
                     RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
                 }
             }
@@ -160,12 +160,12 @@ public final class SpeedMine extends Hack{
     }
 
     @Override
-    public void onUpdate(){
-        if(nullCheck())return;
+    public void onUpdate() {
+        if (nullCheck()) return;
 
-        if(instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())){ // instant mine
+        if (instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())) { // instant mine
             delay = 0;
-            if(firstPacket) {
+            if (firstPacket) {
                 firstPacket = false;
                 for (int i = 0; i < instantPacketLoop.getValue(); i++) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
@@ -174,25 +174,25 @@ public final class SpeedMine extends Hack{
                 if (abortPacket.getValue()) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
                 }
-            }else {
-                if(mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE && mc.world.getBlockState(lastBreakPos).getBlock() != Blocks.AIR) {
+            } else {
+                if (mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_PICKAXE && mc.world.getBlockState(lastBreakPos).getBlock() != Blocks.AIR) {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastBreakPos, lastBreakFace));
                 }
             }
         }
         delay++;
 
-        if(shouldInstant && rangeCheck.getValue() && lastBreakPos != null){
+        if (shouldInstant && rangeCheck.getValue() && lastBreakPos != null) {
             double dis = mc.player.getDistanceSq(lastBreakPos);
             shouldInstant = !(dis > range.getValue());
         }
 
-        if(lastPos != null && lastBlock != null && isActive){
+        if (lastPos != null && lastBlock != null && isActive) {
 
-            if(rotate.getValue() && rotateSetting.is("Constant")){
+            if (rotate.getValue() && rotateSetting.is("Constant")) {
                 RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
             }
-            if(abortPacket.getValue()) {
+            if (abortPacket.getValue()) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
@@ -204,8 +204,8 @@ public final class SpeedMine extends Hack{
                 isActive = true;
             }
             mc.playerController.blockHitDelay = 0;
-            if(mc.world.getBlockState(lastPos).getBlock() != lastBlock){
-                if(rotate.getValue() && rotateSetting.is("Break")){
+            if (mc.world.getBlockState(lastPos).getBlock() != lastBlock) {
+                if (rotate.getValue() && rotateSetting.is("Break")) {
                     RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
                 }
                 shouldInstant = true;
@@ -218,9 +218,9 @@ public final class SpeedMine extends Hack{
             }
         }
 
-        if(isActive && rangeCheck.getValue()){ // range check
+        if (isActive && rangeCheck.getValue()) { // range check
             double dis = mc.player.getDistanceSq(lastPos);
-            if(dis > range.getValue()){
+            if (dis > range.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
                 //mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, new BlockPos(0,0,0), lastFace));
@@ -236,9 +236,9 @@ public final class SpeedMine extends Hack{
 
         int subVal = 40;
 
-        if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
+        if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
             subVal = 146;
-        }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
+        } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
             subVal = 66;
         }
 
@@ -271,9 +271,9 @@ public final class SpeedMine extends Hack{
     }
 
     @Override
-    public void onRender3D(Render3DEvent event){
-        if(!render.getValue())return;
-        if(isActive && lastPos != null){
+    public void onRender3D(Render3DEvent event) {
+        if (!render.getValue()) return;
+        if (isActive && lastPos != null) {
             Colour c = breakColor.getValue();
             Colour c2 = breakColorFill.getValue();
 
@@ -282,13 +282,13 @@ public final class SpeedMine extends Hack{
 
             int subVal = 40;
 
-            if(lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null){
+            if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
                 subVal = 146;
-            }else if(lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null){
+            } else if (lastBlock == Blocks.ENDER_CHEST && PlayerUtil.getBestItem(lastBlock) != null) {
                 subVal = 66;
             }
 
-            if(tickCount > time - subVal){
+            if (tickCount > time - subVal) {
                 c = doneColor.getValue();
                 c2 = doneColorFill.getValue();
 
@@ -298,7 +298,7 @@ public final class SpeedMine extends Hack{
 
             AxisAlignedBB bb = mc.world.getBlockState(lastPos).getSelectedBoundingBox(mc.world, lastPos);
 
-            switch(fillMode.getValue()){
+            switch (fillMode.getValue()) {
                 case "Expand":
                     bb = bb.shrink(Math.max(Math.min(normalize(tickCount, time - subVal, 0), 1.0), 0.0));
                     break;
@@ -309,10 +309,10 @@ public final class SpeedMine extends Hack{
                     break;
             }
 
-            switch (renderMode.getValue()){
+            switch (renderMode.getValue()) {
                 case "Both":
                     RenderUtil.drawBBBox(bb, c2, c2.getAlpha());
-                    RenderUtil.drawBlockOutlineBB(bb, new Color(c.getRed(),c.getGreen(), c.getBlue(), 255), 1f);
+                    RenderUtil.drawBlockOutlineBB(bb, new Color(c.getRed(), c.getGreen(), c.getBlue(), 255), 1f);
                     break;
                 case "Outline":
                     RenderUtil.drawBlockOutlineBB(bb, c, 1f);
@@ -325,18 +325,19 @@ public final class SpeedMine extends Hack{
                     RenderUtil.drawGradientBlockOutline(bb.grow(0.002f).offset(-interp.x, -interp.y, -interp.z), c0, c, 2f);
                     RenderUtil.drawOpenGradientBoxBB(bb, c2, c20, 0);
                     break;
-            };
+            }
+            ;
         }
-        if(instant.getValue() && shouldInstant && lastBreakPos != null){
+        if (instant.getValue() && shouldInstant && lastBreakPos != null) {
             Colour c = instantColor.getValue();
             Colour c2 = instantColorFill.getValue();
 
             Colour c0 = instantColor0.getValue();
             Colour c20 = instantColorFill0.getValue();
 
-            switch (renderMode.getValue()){
+            switch (renderMode.getValue()) {
                 case "Both":
-                    RenderUtil.drawBlockOutline(lastBreakPos, new Color(c.getRed(),c.getGreen(), c.getBlue(), 255), 1f, true);
+                    RenderUtil.drawBlockOutline(lastBreakPos, new Color(c.getRed(), c.getGreen(), c.getBlue(), 255), 1f, true);
                     RenderUtil.drawBox(lastBreakPos, c2, true);
                     break;
                 case "Outline":
@@ -354,14 +355,14 @@ public final class SpeedMine extends Hack{
     }
 
 
-    private boolean canBreakBlockFromPos(@NotNull final BlockPos p){
+    private boolean canBreakBlockFromPos(@NotNull final BlockPos p) {
         final IBlockState stateInterface = mc.world.getBlockState(p);
         final Block block = stateInterface.getBlock();
-        return block.getBlockHardness(stateInterface, mc.world,  p) != -1;
+        return block.getBlockHardness(stateInterface, mc.world, p) != -1;
     }
 
-    private double normalize(final double value, final double max, final double min){
-        return  (1 - 0.5) * ((value - min) / (max - min)) + 0.5;
+    private double normalize(final double value, final double max, final double min) {
+        return (1 - 0.5) * ((value - min) / (max - min)) + 0.5;
     }
 
 }

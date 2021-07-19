@@ -7,6 +7,8 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.combat.CrystalAura;
+import me.travis.wurstplusthree.manager.RotationManager;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
@@ -29,6 +31,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -217,6 +220,11 @@ public class Events implements Globals {
             }
             event.setMessage("");
         }
+    }
+
+    @CommitEvent(priority = me.travis.wurstplusthree.event.processor.EventPriority.HIGH)
+    public final void onPacketSend(@NotNull PacketEvent.Send event) {
+        WurstplusThree.ROTATION_MANAGER.onPacketSend(event);
     }
 
     @CommitEvent

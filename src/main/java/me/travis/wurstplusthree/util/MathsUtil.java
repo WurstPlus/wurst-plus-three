@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.util;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -27,6 +28,19 @@ public class MathsUtil implements Globals {
         double difZ = to.z - from.z;
         double dist = MathHelper.sqrt(difX * difX + difZ * difZ);
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
+    }
+
+    public static float wrapDegrees(float deg) {
+        deg = deg % 360.0f;
+
+        if (deg >= 180.0f) deg -= 360.0f;
+        if (deg < -180.0f) deg += 360.0f;
+
+        return deg;
+    }
+
+    public static double incrementRound(double number, double increment) {
+        return Math.floor(number) + Math.round((number - Math.floor(number)) * (1 / increment)) / (1 / increment);
     }
 
     public static Vec3d roundVec(Vec3d vec3d, int places) {

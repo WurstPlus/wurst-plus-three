@@ -1,9 +1,11 @@
 package me.travis.wurstplusthree.manager;
 
+import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RotationUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -11,11 +13,17 @@ public class RotationManager implements Globals {
 
     private float yaw;
     private float pitch;
+    private float spoofedYaw;
+    private float spoofedPitch;
 
-    private float yawStepAmmout;
-    private float pitchStepAmmount;
-    private int steps;
-    private int currentStep;
+
+    public float getSpoofedYaw() {
+        return MathsUtil.wrapDegrees(spoofedYaw);
+    }
+
+    public float getSpoofedPitch() {
+        return spoofedPitch;
+    }
 
     public void updateRotations() {
         this.yaw = mc.player.rotationYaw;
@@ -32,23 +40,6 @@ public class RotationManager implements Globals {
         mc.player.rotationYaw = yaw;
         mc.player.rotationYawHead = yaw;
         mc.player.rotationPitch = pitch;
-    }
-
-    public void setPlayerRotationsStep(float yaw, float pitch, int steps) {
-        yawStepAmmout = (mc.player.rotationYaw - yaw) / steps;
-        pitchStepAmmount = (mc.player.rotationPitch - pitch) / steps;
-        currentStep = 0;
-        this.steps = steps;
-    }
-
-    public boolean stepRotation() {
-        if (currentStep < steps) {
-            currentStep++;
-            mc.player.rotationYaw += yawStepAmmout;
-            mc.player.rotationPitch += pitchStepAmmount;
-            return false;
-        }
-        return true;
     }
 
     public void setPlayerYaw(float yaw) {
@@ -74,6 +65,13 @@ public class RotationManager implements Globals {
     public void lookAtEntity(Entity entity) {
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), entity.getPositionEyes(mc.getRenderPartialTicks()));
         this.setPlayerRotations(angle[0], angle[1]);
+    }
+
+    public void onPacketSend(PacketEvent event) {
+        if (event.getPacket() instanceof CPacketPlayer.Rotation || event.getPacket() instanceof CPacketPlayer.PositionRotation) {
+            spoofedPitch = ((CPacketPlayer) event.getPacket()).getPitch(0);
+            spoofedYaw = ((CPacketPlayer) event.getPacket()).getYaw(0);
+        }
     }
 
     public void setPlayerPitch(float pitch) {
