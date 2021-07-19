@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree.hack.hacks.misc;
 
+import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.BlockEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
@@ -9,9 +10,12 @@ import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
+import me.travis.wurstplusthree.util.elements.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -27,7 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * @author Madmegsox1
@@ -69,6 +75,11 @@ public final class SpeedMine extends Hack {
     private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
     private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
     private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant, s -> instant.getValue());
+
+    private final ParentSetting parentCombat = new ParentSetting("Combat", this);
+    private final BooleanSetting packetCity = new BooleanSetting("Packet City", false, parentCombat);
+    private final BooleanSetting packetBurrow = new BooleanSetting("Packet Burrow", false, parentCombat);
+    private final IntSetting cityRange = new IntSetting("Range", 5, 1, 15, parentCombat, s -> (packetCity.getValue() || packetBurrow.getValue()));
 
     private final ParentSetting parentRender = new ParentSetting("Render", this);
     private final BooleanSetting render = new BooleanSetting("Render", true, parentRender);
@@ -130,49 +141,15 @@ public final class SpeedMine extends Hack {
             if (swing.getValue()) {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
-            if (event.pos != lastPos && correctHit.getValue() && lastPos != null) {
+            if(event.pos != lastPos && correctHit.getValue() && lastPos != null){
                 isActive = false;
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
                 mc.playerController.isHittingBlock = false;
                 mc.playerController.curBlockDamageMP = 0;
             }
             if (!isActive) {
-                if (packetLoop.getValue()) {
-                    for (int i = 0; i < packets.getValue(); i++) {
-                        mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                        if (!(rangeCheck.getValue() || correctHit.getValue())) {
-                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
-                        }
-                    }
-                } else {
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                    if (!(rangeCheck.getValue() || correctHit.getValue())) {
-                        mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
-                    }
-                }
                 event.setCancelled(cancel.getValue());
-                isActive = true;
-                lastFace = event.facing;
-                lastPos = event.pos;
-                lastBreakPos = event.pos;
-                lastBreakFace = event.facing;
-                firstPacket = true;
-                switchedSlot = -1;
-                lastBlock = mc.world.getBlockState(lastPos).getBlock();
-                ItemStack item;
-                if (PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null) {
-                    item = PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock));
-                } else {
-                    item = mc.player.getHeldItem(EnumHand.MAIN_HAND);
-                }
-                if (item == null) return;
-                time = BlockUtil.getMineTime(lastBlock, item);
-
-                tickCount = 0;
-
-                if (rotate.getValue() && rotateSetting.is("Hit")) {
-                    RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
-                }
+                this.setPacketPos(event.pos, event.facing);
             }
         }
     }
@@ -181,6 +158,42 @@ public final class SpeedMine extends Hack {
     @Override
     public void onUpdate() {
         if (nullCheck()) return;
+
+
+        if(!isActive && (packetBurrow.getValue() || packetCity.getValue())){
+            if(packetCity.getValue()){
+                ArrayList<Pair<EntityPlayer, ArrayList<BlockPos>>> cityPos = PlayerUtil.GetPlayersReadyToBeCitied();
+                BlockPos toCity = null;
+                for(Pair<EntityPlayer, ArrayList<BlockPos>> p : cityPos){
+                    if(p.getKey() == mc.player)continue;
+                    if(mc.player.getDistance(p.getKey()) > cityRange.getValue())continue;
+                    for(BlockPos pos : p.getValue()){
+                        if(toCity == null){
+                            toCity = pos;
+                            continue;
+                        }
+                        if(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) < mc.player.getDistance(toCity.getX(), toCity.getY(), toCity.getZ())){
+                            toCity = pos;
+                        }
+
+                    }
+                }
+                if(toCity != null){
+                    this.setPacketPos(toCity, EnumFacing.UP);
+                }
+            }
+            if(packetBurrow.getValue() && !isActive){
+                for (EntityPlayer entity : mc.world.playerEntities.stream().filter(entityPlayer -> !WurstplusThree.FRIEND_MANAGER.isFriend(entityPlayer.getName())).collect(Collectors.toList()))
+                {
+                    if(entity == mc.player)continue;
+                    if(mc.player.getDistance(entity) > cityRange.getValue())continue;
+                    if(isBurrowed(entity)){
+                        BlockPos burrowPos = new BlockPos(Math.floor(entity.posX), Math.floor(entity.posY), Math.floor(entity.posZ));
+                        this.setPacketPos(burrowPos, EnumFacing.UP);
+                    }
+                }
+            }
+        }
 
 
         if (instant.getValue() && shouldInstant && !isActive && (delay >= instantDelay.getValue())) { // instant mine
@@ -420,6 +433,54 @@ public final class SpeedMine extends Hack {
 
     private double normalize(final double value, final double max, final double min) {
         return (1 - 0.5) * ((value - min) / (max - min)) + 0.5;
+    }
+
+    public void setPacketPos(BlockPos pos, EnumFacing facing){
+        if (!canBreakBlockFromPos(pos)) return;
+        if (pos != lastBreakPos) {
+            shouldInstant = false;
+        }
+        if (packetLoop.getValue()) {
+            for (int i = 0; i < packets.getValue(); i++) {
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, facing));
+                if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, facing));
+                }
+            }
+        } else {
+            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, pos, facing));
+            if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, facing));
+            }
+        }
+        isActive = true;
+        lastFace = facing;
+        lastPos = pos;
+        lastBreakPos = pos;
+        lastBreakFace = facing;
+        firstPacket = true;
+        switchedSlot = -1;
+        loopStopPackets = true;
+        lastBlock = mc.world.getBlockState(lastPos).getBlock();
+        ItemStack item;
+        if (PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null) {
+            item = PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock));
+        } else {
+            item = mc.player.getHeldItem(EnumHand.MAIN_HAND);
+        }
+        if (item == null) return;
+        time = BlockUtil.getMineTime(lastBlock, item);
+
+        tickCount = 0;
+
+        if (rotate.getValue() && rotateSetting.is("Hit")) {
+            RotationUtil.rotateHead(lastPos.getX(), lastPos.getY(), lastPos.getZ(), mc.player);
+        }
+    }
+
+    private boolean isBurrowed(EntityPlayer player) {
+        BlockPos pos = new BlockPos(Math.floor(player.posX), Math.floor(player.posY+0.2), Math.floor(player.posZ));
+        return mc.world.getBlockState(pos).getBlock() == Blocks.ENDER_CHEST || mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(pos).getBlock() == Blocks.CHEST;
     }
 
 }
