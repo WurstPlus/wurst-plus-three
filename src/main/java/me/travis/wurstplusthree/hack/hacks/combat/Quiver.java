@@ -1,8 +1,11 @@
 package me.travis.wurstplusthree.hack.hacks.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.UpdateWalkingPlayerEvent;
+import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.InventoryUtil;
 import net.minecraft.init.MobEffects;
@@ -11,10 +14,10 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
 
 @Hack.Registration(name = "Quiver", description = "shoots arrows like brr", category = Hack.Category.COMBAT, isListening = false)
 public class Quiver extends Hack {
@@ -43,6 +46,11 @@ public class Quiver extends Hack {
         returnSlot = -1;
     }
 
+    @CommitEvent(priority = EventPriority.HIGH)
+    public final void onUpdateWalkingPlayerEvent(@NotNull UpdateWalkingPlayerEvent event) {
+        WurstplusThree.ROTATION_MANAGER.setPlayerPitch(-90);
+    }
+
     @Override
     public void onTick() {
         if (nullCheck()) return;
@@ -54,7 +62,6 @@ public class Quiver extends Hack {
         }
         if (stage != 0)
             InventoryUtil.switchToHotbarSlot(ItemBow.class, false);
-        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, -90, mc.player.onGround));
         if (stage == 0) {
             if (!mapArrows()) {
                 this.disable();
@@ -80,7 +87,7 @@ public class Quiver extends Hack {
             timer = 0;
             this.stage++;
         } else if (stage == 5) {
-            if (timer < 20) {
+            if (timer < 12) {
                 timer++;
                 return;
             }
@@ -94,14 +101,15 @@ public class Quiver extends Hack {
         for (int a = 9; a < 45; a++) {
             if (mc.player.inventoryContainer.getInventory().get(a).getItem() instanceof ItemTippedArrow) {
                 final ItemStack arrow = mc.player.inventoryContainer.getInventory().get(a);
+                final ItemStack currentArrow = mc.player.inventoryContainer.getInventory().get(9);
                 if (PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRENGTH) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRONG_STRENGTH) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.LONG_STRENGTH)) {
-                    if (!mc.player.isPotionActive(MobEffects.STRENGTH)) {
+                    if (!mc.player.isPotionActive(MobEffects.STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRONG_STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.LONG_STRENGTH)) {
                         switchTo(a);
                         return true;
                     }
                 }
                 if (PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.SWIFTNESS) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.LONG_SWIFTNESS) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRONG_SWIFTNESS)) {
-                    if (!mc.player.isPotionActive(MobEffects.SPEED)) {
+                    if (!mc.player.isPotionActive(MobEffects.SPEED) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.SWIFTNESS) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRONG_SWIFTNESS) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.LONG_SWIFTNESS)) {
                         switchTo(a);
                         return true;
                     }

@@ -11,11 +11,11 @@ import me.travis.wurstplusthree.util.*;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
@@ -32,9 +32,9 @@ import java.util.Arrays;
 /**
  * @author Madmegsox1
  * @since 10/06/2021
- *
+ * <p>
  * How it works:
- *
+ * <p>
  * When the player hits a block it triggers a event
  * Then it sends the start mine packet this is so
  * we can cancel the packet mine if we need to with a abort packet
@@ -96,9 +96,9 @@ public final class SpeedMine extends Hack {
     private BlockPos lastBreakPos;
     private EnumFacing lastBreakFace;
     private Block lastBlock;
-    private boolean switched = false;
     private double time = 0;
     private int tickCount = 0;
+    private int switchedSlot;
     private boolean shouldInstant;
     private boolean firstPacket;
     private int delay;
@@ -107,7 +107,7 @@ public final class SpeedMine extends Hack {
 
     @Override
     public void onEnable() {
-        switched = false;
+        switchedSlot = -1;
         shouldInstant = false;
         firstPacket = true;
         delay = 0;
@@ -130,7 +130,7 @@ public final class SpeedMine extends Hack {
             if (swing.getValue()) {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
-            if(event.pos != lastPos && correctHit.getValue() && lastPos != null){
+            if (event.pos != lastPos && correctHit.getValue() && lastPos != null) {
                 isActive = false;
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
                 mc.playerController.isHittingBlock = false;
@@ -140,13 +140,13 @@ public final class SpeedMine extends Hack {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                        if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                        if (!(rangeCheck.getValue() || correctHit.getValue())) {
                             mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
                         }
                     }
                 } else {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
-                    if(!(rangeCheck.getValue() || correctHit.getValue())) {
+                    if (!(rangeCheck.getValue() || correctHit.getValue())) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.pos, event.facing));
                     }
                 }
@@ -157,7 +157,7 @@ public final class SpeedMine extends Hack {
                 lastBreakPos = event.pos;
                 lastBreakFace = event.facing;
                 firstPacket = true;
-                switched = false;
+                switchedSlot = -1;
                 lastBlock = mc.world.getBlockState(lastPos).getBlock();
                 ItemStack item;
                 if (PlayerUtil.getItemStackFromItem(PlayerUtil.getBestItem(lastBlock)) != null) {
@@ -176,7 +176,6 @@ public final class SpeedMine extends Hack {
             }
         }
     }
-
 
 
     @Override
@@ -208,7 +207,6 @@ public final class SpeedMine extends Hack {
         }
 
 
-
         int subVal = 40;
         if (lastBlock == Blocks.OBSIDIAN && PlayerUtil.getBestItem(lastBlock) != null) {
             subVal = 146;
@@ -223,7 +221,7 @@ public final class SpeedMine extends Hack {
              * I calculate when to send it by finding how many ticks it takes to mine the block
              * I then subtract by a amount and basically that's the stage where you cant cancel the mine
              */
-            if((rangeCheck.getValue() || correctHit.getValue()) && (tickCount > time - subVal - tickSub.getValue()) && loopStopPackets){
+            if ((rangeCheck.getValue() || correctHit.getValue()) && (tickCount > time - subVal - tickSub.getValue()) && loopStopPackets) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
@@ -264,39 +262,40 @@ public final class SpeedMine extends Hack {
         }
 
         /*
-        * Switch system
+         * Switch system
          */
 
-        if (!switchMode.is("None") && !switched && isActive && lastPos != null && tickCount > time - subVal && (!keyMode.getValue() || key.isDown())) {
-            final int slot = InventoryUtil.findHotbarBlock(ItemPickaxe.class);
+
+        if (!switchMode.is("None") && switchedSlot == -1 && isActive && lastPos != null && tickCount > time - subVal && (!keyMode.getValue() || key.isDown())) {
+            int slot = findBestTool(lastBlock.getBlockState().getBaseState());
             if (slot == -1) return;
             oldSlot = mc.player.inventory.currentItem;
             if (switchMode.is("Silent")) {
                 if (!noDesync.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemFood && mc.gameSettings.keyBindUseItem.isKeyDown())) {
                     mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-                    switched = true;
+                    switchedSlot = slot;
                 }
             } else {
                 mc.player.inventory.currentItem = slot;
                 mc.playerController.syncCurrentPlayItem();
-                switched = true;
+                switchedSlot = slot;
             }
         }
 
-        if (switchBack.getValue() && switched && (!isActive || (keyMode.getValue()) && !key.isDown())) {
+        if (switchBack.getValue() && switchedSlot != -1 && (!isActive || (keyMode.getValue()) && !key.isDown())) {
             if (switchMode.is("Silent")) {
                 mc.player.connection.sendPacket(new CPacketHeldItemChange(mc.player.inventory.currentItem));
-            } else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
+            } else if (mc.player.inventory.currentItem == switchedSlot) {
                 mc.player.inventory.currentItem = oldSlot;
                 mc.playerController.syncCurrentPlayItem();
             }
-            switched = false;
+            switchedSlot = -1;
         }
 
 
         if (isActive && rangeCheck.getValue()) { // range check
             double dis = mc.player.getDistanceSq(lastPos);
-            if (dis > range.getValue()) {
+            if (Math.sqrt(dis) > range.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
                 mc.playerController.isHittingBlock = false;
                 isActive = false;
@@ -310,6 +309,22 @@ public final class SpeedMine extends Hack {
 
         tickCount++;
 
+    }
+
+    //thx phobos
+    private int findBestTool(IBlockState blockState) {
+        int bestSlot = -1;
+        double max = 0.0;
+        for (int i = 0; i < 9; ++i) {
+            int eff;
+            float speed;
+            ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (stack.isEmpty || !((speed = stack.getDestroySpeed(blockState)) > 1.0f) || !((double) (speed = (float) ((double) speed + ((eff = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack)) > 0 ? Math.pow(eff, 2.0) + 1.0 : 0.0))) > max))
+                continue;
+            max = speed;
+            bestSlot = i;
+        }
+        return bestSlot;
     }
 
     @Override
