@@ -122,7 +122,7 @@ public final class SpeedMine extends Hack {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
 
-            if (event.pos != lastPos || !isActive) {
+            if (!isActive) {
                 if (packetLoop.getValue()) {
                     for (int i = 0; i < packets.getValue(); i++) {
                         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.pos, event.facing));
@@ -223,7 +223,7 @@ public final class SpeedMine extends Hack {
             if (dis > range.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, lastPos, lastFace));
                 mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, lastPos, lastFace));
-                //mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, new BlockPos(0,0,0), lastFace));
+                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, new BlockPos(0,0,0), lastFace));
                 mc.playerController.isHittingBlock = false;
                 isActive = false;
                 shouldInstant = false;
