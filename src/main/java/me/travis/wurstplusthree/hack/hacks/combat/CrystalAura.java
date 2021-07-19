@@ -67,7 +67,8 @@ public final class CrystalAura extends Hack {
 
     //general
     private final ParentSetting general = new ParentSetting("General", this);
-    public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Packet", "Full"), general);
+    public final EnumSetting rotateMode = new EnumSetting("Rotate", "Off", Arrays.asList("Off", "Break", "Place", "Both"), general);
+    public final IntSetting maxYaw = new IntSetting("MaxYaw", 180, 0, 180, general);
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
@@ -92,8 +93,8 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, predict);
     private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, predict);
     private final EnumSetting predictTeleport = new EnumSetting("P Teleport", "Sound", Arrays.asList("Sound", "Packet", "None"), predict);
-    private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, predict);
-    private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, predict, s -> entityPredict.getValue());
+    private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, predict, v -> rotateMode.is("Off"));
+    private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, predict, s -> entityPredict.getValue() && rotateMode.is("Off"));
 
     //feet obi stuff
     private final ParentSetting FeetObi = new ParentSetting("ObifeetMode", this);
@@ -135,14 +136,9 @@ public final class CrystalAura extends Hack {
     public EntityPlayer ezTarget = null;
     public BlockPos renderBlock = null;
     private final Timer crystalsPlacedTimer = new Timer();
-
-    private float yaw;
-    private float pitch;
-
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
-    private boolean isRotating;
     private boolean didAnything;
     private boolean facePlacing;
     private boolean rotationPause;
@@ -168,25 +164,20 @@ public final class CrystalAura extends Hack {
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onUpdateWalkingPlayerEvent(@NotNull UpdateWalkingPlayerEvent event) {
-        if (event.getStage() == 0 && this.rotateMode.is("Full")) {
+        if (event.getStage() == 0 && !this.rotateMode.is("Off")) {
             this.doCrystalAura();
         }
     }
 
     @Override
     public void onUpdate() {
-        if (!this.rotateMode.is("Full")) {
+        if (this.rotateMode.is("Off")) {
             this.doCrystalAura();
         }
     }
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketSend(@NotNull PacketEvent.Send event) {
-        if (event.getPacket() instanceof CPacketPlayer && isRotating && rotateMode.is("Packet")) {
-            final CPacketPlayer p = event.getPacket();
-            p.yaw = yaw;
-            p.pitch = pitch;
-        }
         CPacketUseEntity packet;
         if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK
                 && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
@@ -300,14 +291,6 @@ public final class CrystalAura extends Hack {
         }
         didAnything = false;
 
-        if (rotationPause) {
-            if (WurstplusThree.ROTATION_MANAGER.stepRotation()) {
-                rotationPause = false;
-            } else {
-                return;
-            }
-        }
-
         if (placeDelayCounter > placeTimeout && (facePlaceDelayCounter >= facePlaceDelay.getValue() || !facePlacing)) {
             start = System.currentTimeMillis();
             this.placeCrystal();
@@ -318,8 +301,6 @@ public final class CrystalAura extends Hack {
 
         if (!didAnything) {
             hasPacketBroke = false;
-            //ezTarget = null;
-            isRotating = false;
             chainCount = chainStep.getValue();
             currentChainCounter = 0;
         }
@@ -342,8 +323,6 @@ public final class CrystalAura extends Hack {
         }
         if (targetBlock == null) return;
 
-        placeDelayCounter = 0;
-        facePlaceDelayCounter = 0;
         alreadyAttacking = false;
         boolean offhandCheck = false;
 
@@ -364,43 +343,47 @@ public final class CrystalAura extends Hack {
 
         int stackSize = getCrystalCount(offhandCheck);
 
-        didAnything = true;
-
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal || autoSwitch.is("Silent")) {
-            setYawPitch(targetBlock);
+            if (setYawPitch(targetBlock)) {
 
-            int slot = InventoryUtil.findHotbarBlock(ItemEndCrystal.class);
-            int old = mc.player.inventory.currentItem;
-            EnumHand hand = null;
-            if(autoSwitch.is("Silent")){
-                if(slot != -1) {
-                    if(mc.player.isHandActive() && silentSwitchHand.getValue()) {
-                        hand = mc.player.getActiveHand();
-                    }
-                    mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
-                }
-            }
+                int slot = InventoryUtil.findHotbarBlock(ItemEndCrystal.class);
+                int old = mc.player.inventory.currentItem;
+                EnumHand hand = null;
 
-
-            BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
-
-            if(autoSwitch.is("Silent")){
-                if(slot != -1) {
-                    mc.player.connection.sendPacket(new CPacketHeldItemChange(old));
-                    if(silentSwitchHand.getValue() && hand != null){
-                        mc.player.setActiveHand(hand);
+                if (autoSwitch.is("Silent")) {
+                    if (slot != -1) {
+                        if (mc.player.isHandActive() && silentSwitchHand.getValue()) {
+                            hand = mc.player.getActiveHand();
+                        }
+                        mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
                     }
                 }
-            }
 
-            if (debug.getValue()) {
-                ClientMessage.sendMessage("placing");
+                placeDelayCounter = 0;
+                facePlaceDelayCounter = 0;
+                didAnything = true;
+                BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
+
+                if (autoSwitch.is("Silent")) {
+                    if (slot != -1) {
+                        mc.player.connection.sendPacket(new CPacketHeldItemChange(old));
+                        if (silentSwitchHand.getValue() && hand != null) {
+                            mc.player.setActiveHand(hand);
+                        }
+                    }
+                }
+                if (debug.getValue()) {
+                    ClientMessage.sendMessage("placing");
+                }
+
+                crystalsPlaced++;
             }
-            crystalsPlaced++;
-        }
-        int newSize = getCrystalCount(offhandCheck);
-        if (newSize == stackSize) {
-            didAnything = false;
+            int newSize = getCrystalCount(offhandCheck);
+            if (newSize == stackSize) {
+                didAnything = false;
+            }
+        } else if (debug.getValue()){
+            ClientMessage.sendMessage("doing yawstep on place");
         }
     }
 
@@ -448,15 +431,18 @@ public final class CrystalAura extends Hack {
             }
         }
         didAnything = true;
-        setYawPitch(crystal);
-        EntityUtil.attackEntity(crystal, this.attackPacket.getValue());
-        if (!this.swing.is("None")) {
-            BlockUtil.swingArm(swing);
+        if (setYawPitch(crystal)) {
+            EntityUtil.attackEntity(crystal, this.attackPacket.getValue());
+            if (!this.swing.is("None")) {
+                BlockUtil.swingArm(swing);
+            }
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("breaking");
+            }
+            breakDelayCounter = 0;
+        } else if (debug.getValue()) {
+            ClientMessage.sendMessage("doing yawstep on break");
         }
-        if (debug.getValue()) {
-            ClientMessage.sendMessage("breaking");
-        }
-        breakDelayCounter = 0;
     }
 
     public final EntityEnderCrystal getBestCrystal() {
@@ -467,7 +453,7 @@ public final class CrystalAura extends Hack {
             EntityEnderCrystal crystal = (EntityEnderCrystal) e;
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
                 if (mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
-                if (entityPredict.getValue()) {
+                if (entityPredict.getValue() && rotateMode.is("Off")) {
                     float f = target.width / 2.0F, f1 = target.height;
                     target.setEntityBoundingBox(new AxisAlignedBB(target.posX - (double) f, target.posY, target.posZ - (double) f, target.posX + (double) f, target.posY + (double) f1, target.posZ + (double) f));
                     Entity y = CrystalUtil.getPredictedPosition(target, predictedTicks.getValue());
@@ -738,26 +724,58 @@ public final class CrystalAura extends Hack {
         return -1;
     }
 
-    private void setYawPitch(@NotNull EntityEnderCrystal crystal) {
+    private boolean setYawPitch(@NotNull EntityEnderCrystal crystal) {
+        if (rotateMode.is("Off") || rotateMode.is("Place")) return true;
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), crystal.getPositionEyes(mc.getRenderPartialTicks()));
-        this.yaw = angle[0];
-        this.pitch = angle[1];
-        this.isRotating = true;
-        if (rotateMode.is("Full")) {
-            WurstplusThree.ROTATION_MANAGER.setPlayerRotationsStep(yaw, pitch, 3);
-            rotationPause = true;
+        float yaw = angle[0];
+        float pitch = angle[1];
+        float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
+        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue()) {
+            if (spoofedYaw - yaw < 180) {
+                if (spoofedYaw > yaw) {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
+                } else {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
+                }
+            } else {
+                if (spoofedYaw < yaw) {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
+                } else {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
+                }
+            }
+            return false;
+        } else {
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);
         }
+        return true;
     }
 
-    public void setYawPitch(@NotNull BlockPos pos) {
+    public boolean setYawPitch(@NotNull BlockPos pos) {
+        if (rotateMode.is("Off") || rotateMode.is("Break")) return true;
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
-        this.yaw = angle[0];
-        this.pitch = angle[1];
-        this.isRotating = true;
-        if (rotateMode.is("Full")) {
-            WurstplusThree.ROTATION_MANAGER.setPlayerRotationsStep(yaw, pitch, 3);
-            rotationPause = true;
+        float yaw = angle[0];
+        float pitch = angle[1];
+        float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
+        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue()) {
+            if (spoofedYaw - yaw < 180) {
+                if (spoofedYaw > yaw) {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
+                } else {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
+                }
+            } else {
+                if (spoofedYaw < yaw) {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
+                } else {
+                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
+                }
+            }
+            return false;
+        } else {
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);
         }
+        return true;
     }
 
     private void updateEntityID() {
@@ -816,7 +834,6 @@ public final class CrystalAura extends Hack {
         placeTimeout = this.placeDelay.getValue();
         breakTimeout = this.breakDelay.getValue();
         placeTimeoutFlag = false;
-        isRotating = false;
         ezTarget = null;
         facePlacing = false;
         chainCount = chainStep.getValue();
