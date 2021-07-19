@@ -44,6 +44,14 @@ repositories {
         name = 'spongepowered-repo'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
     jcenter()
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 }
@@ -51,6 +59,8 @@ repositories {
 dependencies {
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
+    compile 'com.github.cabaletta:baritone:1.2.14'
+    compile 'cabaletta:baritone-api:1.2'
     compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
 
         exclude module: 'launchwrapper'
