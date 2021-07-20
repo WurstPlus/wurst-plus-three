@@ -56,6 +56,10 @@ public class DoubleSetting extends Setting<Double> {
           this.getParent().onSettingChange();
     }
 
+    public Float getAsFloat(){
+        return (float) (double) this.value;
+    }
+
     public double getMaximumValue() {
         return this.max;
     }
