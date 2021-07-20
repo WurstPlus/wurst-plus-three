@@ -54,6 +54,7 @@ public class WurstplusThree {
 
     // managers
     public static MenuFont MENU_FONT_MANAGER;
+    public static HelpManager HELP_MANAGER;
     public static GuiFont GUI_FONT_MANAGER;
     public static DonatorFont DONATOR_FONT_MANAGER;
     public static FriendManager FRIEND_MANAGER;
@@ -121,6 +122,7 @@ public class WurstplusThree {
         POP_MANAGER = new PopManager();
         SERVER_MANAGER = new ServerManager();
         POS_MANAGER = new PositionManager();
+        HELP_MANAGER = new HelpManager();
         ROTATION_MANAGER = new RotationManager();
         CONFIG_MANAGER = new ConfigManager();
         SONG_MANAGER = new SongManager();

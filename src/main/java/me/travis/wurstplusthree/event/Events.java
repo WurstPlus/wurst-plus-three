@@ -117,6 +117,7 @@ public class Events implements Globals {
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (!nullCheck() && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
             WurstplusThree.HACKS.onUpdate();
+            WurstplusThree.HELP_MANAGER.onUpdate();
             WurstplusThree.KD_MANAGER.onUpdate();
         }
     }

@@ -45,6 +45,7 @@ public class CustomChat extends Hack {
     public DoubleSetting vLength = new DoubleSetting("VLength",10.0, 5.0, 100.0, this);
     public DoubleSetting vIncrements = new DoubleSetting("VIncrements", 1.0, 1.0, 5.0, this);
     public EnumSetting type = new EnumSetting("Type", "Horizontal",Arrays.asList("Horizontal", "Vertical"), this);
+    public BooleanSetting help = new BooleanSetting("HelpMessages", true, this);
 
     public static GuiChat guiChatSmooth;
     public static GuiNewChat guiChat;

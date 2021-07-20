@@ -697,19 +697,7 @@ public final class CrystalAura extends Hack {
         float pitch = angle[1];
         float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
         if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw - 360 - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw + 360 - yaw) > maxYaw.getValue()) {
-            if (spoofedYaw - yaw < 180) {
-                if (spoofedYaw > yaw) {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
-                } else {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
-                }
-            } else {
-                if (spoofedYaw < yaw) {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
-                } else {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
-                }
-            }
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotations(Math.abs(spoofedYaw - yaw) < 180 ? spoofedYaw > yaw ? (spoofedYaw - maxYaw.getValue()) : (spoofedYaw + maxYaw.getValue()) : spoofedYaw > yaw ? (spoofedYaw + maxYaw.getValue()) : (spoofedYaw - maxYaw.getValue()), pitch);
             return false;
         } else {
             WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);
@@ -724,19 +712,7 @@ public final class CrystalAura extends Hack {
         float pitch = angle[1];
         float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
         if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw - 360 - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw + 360 - yaw) > maxYaw.getValue()) {
-            if (spoofedYaw - yaw < 180) {
-                if (spoofedYaw > yaw) {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
-                } else {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
-                }
-            } else {
-                if (spoofedYaw < yaw) {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
-                } else {
-                    WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw + maxYaw.getValue(), pitch);
-                }
-            }
+            WurstplusThree.ROTATION_MANAGER.setPlayerRotations(Math.abs(spoofedYaw - yaw) < 180 ? spoofedYaw > yaw ? (spoofedYaw - maxYaw.getValue()) : (spoofedYaw + maxYaw.getValue()) : spoofedYaw > yaw ? (spoofedYaw + maxYaw.getValue()) : (spoofedYaw - maxYaw.getValue()), pitch);
             return false;
         } else {
             WurstplusThree.ROTATION_MANAGER.setPlayerRotations(yaw, pitch);

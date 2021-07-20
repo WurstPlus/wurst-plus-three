@@ -15,7 +15,11 @@ import java.util.regex.Pattern;
 
 public class ClientMessage implements Globals {
 
-    private static final String opener = ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.WHITE + " : " + ChatFormatting.RESET;
+    private static final String opener() {
+        if (mc.player.getName().equalsIgnoreCase("wallhacks_"))
+            return ChatFormatting.DARK_BLUE + "[" + ChatFormatting.BLUE + "wurst+" + ChatFormatting.DARK_BLUE + "] " + ChatFormatting.RESET;
+        return ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.WHITE + " : " + ChatFormatting.RESET;
+    }
 
     public static void sendToggleMessage(Hack hack, boolean enabled) {
         if(mc.world != null && mc.player != null) {
@@ -37,7 +41,7 @@ public class ClientMessage implements Globals {
     }
 
     public static void sendMessage(String message) {
-        sendClientMessage(opener + message);
+        sendClientMessage(opener() + message);
     }
 
     public static void sendIRCMessage(String message){
@@ -45,7 +49,7 @@ public class ClientMessage implements Globals {
     }
 
     public static void sendErrorMessage(String message) {
-        sendClientMessage(opener + ChatFormatting.RED + message);
+        sendClientMessage(opener() + ChatFormatting.RED + message);
     }
 
     private static void sendClientMessage(String message) {
@@ -56,7 +60,7 @@ public class ClientMessage implements Globals {
 
     public static void sendOverwriteClientMessage(String message) {
         if (mc.player != null) {
-            final ITextComponent itc = new TextComponentString(opener + message).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Travis Fitzroy"))));
+            final ITextComponent itc = new TextComponentString(opener() + message).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Travis Fitzroy"))));
             mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(itc, 5936);
         }
     }
@@ -97,7 +101,7 @@ public class ClientMessage implements Globals {
     public static void sendMessage(String message, boolean perm){
         if(mc.player == null) return;
         try{
-            TextComponentString component = new TextComponentString(opener + message);
+            TextComponentString component = new TextComponentString(opener() + message);
             int i = perm ? 0 : 12076;
             mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(component, i);
         } catch (NullPointerException e){

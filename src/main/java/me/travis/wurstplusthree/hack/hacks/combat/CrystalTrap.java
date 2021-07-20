@@ -45,6 +45,7 @@ public class CrystalTrap extends Hack {
     private int offsetStep = 0;
     private int obsidianslot;
     private int pickslot;
+    private boolean sendPacket;
     private int delayCounter = 0;
     private boolean stoppedCa;
     private int tickCounter = 0;
@@ -66,6 +67,7 @@ public class CrystalTrap extends Hack {
                 CrystalAura.INSTANCE.disable();
             }
         }
+        sendPacket = false;
         crystal = null;
         breakBlock = null;
         firstPacket = true;
@@ -129,6 +131,7 @@ public class CrystalTrap extends Hack {
                 if (breakBlock != null)
                 if (mc.world.getBlockState(new BlockPos(breakBlock)).getBlock() instanceof BlockObsidian) {
                     currentStep = step.Breaking;
+                    sendPacket = false;
                     tickCounter = 0;
                 }
                 return;
@@ -151,10 +154,12 @@ public class CrystalTrap extends Hack {
                     EnumFacing direction = BlockUtil.getPlaceableSide(breakBlock);
                     switch (breakMode.getValue()) {
                         case "Packet":
-                            mc.player.swingArm(EnumHand.MAIN_HAND);
-                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, direction));
-                            mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, direction));
-                            return;
+                            if (!sendPacket) {
+                                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakBlock, direction));
+                                mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, breakBlock, direction));
+                                sendPacket = true;
+                                return;
+                            }
                         case "Normal":
                             mc.player.swingArm(EnumHand.MAIN_HAND);
                             mc.playerController.onPlayerDamageBlock(breakBlock, direction);
