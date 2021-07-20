@@ -202,6 +202,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         WurstplusThree.HACKS.onLogin();
+        WurstplusThree.CONFIG_MANAGER.onLogin(event);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

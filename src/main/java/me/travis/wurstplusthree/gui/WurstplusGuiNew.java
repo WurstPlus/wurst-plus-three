@@ -173,6 +173,7 @@ public class WurstplusGuiNew extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
+        WurstplusThree.CONFIG_MANAGER.saveConfig();
         WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
     }
 
