@@ -7,13 +7,19 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.WhitelistUtil;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Keyboard;
+import scala.reflect.io.Directory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +39,7 @@ public class ConfigManager implements Globals {
     private final String configsFolder = mainFolder + "configs/";
     private String activeConfigFolder = configsFolder + "default/";
     public final String pluginFolder = mainFolder + "plugins/";
+    public String configName = "default";
 
     private final String drawnFile = "drawn.txt";
     private final String enemiesFile = "enemies.json";
@@ -88,6 +95,14 @@ public class ConfigManager implements Globals {
         }
     }
 
+    public void onLogin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        String serverIP = "@" + mc.getCurrentServerData().serverIP;
+        Path path = Paths.get(configsFolder + serverIP + "/");
+        if (Files.exists(path)) {
+            setActiveConfigFolder(serverIP + "/");
+        }
+    }
+
     public void saveConfig() {
         try {
             this.verifyDir(mainFolderPath);
@@ -107,6 +122,10 @@ public class ConfigManager implements Globals {
         }
     }
 
+
+    public String getActiveConfigFolder() {
+        return this.activeConfigFolder;
+    }
     // CHANGES ACTIVE CONFIG FOLDER
 
     public boolean setActiveConfigFolder(String folder) {
@@ -114,17 +133,17 @@ public class ConfigManager implements Globals {
             return false;
         }
         this.saveConfig();
-
+        this.configName = folder.replace("/", "");
         this.activeConfigFolder = configsFolder + folder;
         this.activeConfigFolderPath = Paths.get(activeConfigFolder);
-
         String currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
         Paths.get(currentConfigDir);
-
         String bindsFile = "binds.txt";
         String bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
-
+        if (!Files.exists(Paths.get(configsFolder + folder))) {
+            this.clearSettings();
+        }
         this.reloadConfig();
         return true;
     }
@@ -257,6 +276,18 @@ public class ConfigManager implements Globals {
             }
 
             br.close();
+        }
+    }
+
+    private void clearSettings() {
+        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
+            if (hack instanceof Gui || hack instanceof HudEditor) continue;
+            hack.setHold(false);
+            hack.setEnabled(false);
+            hack.setBind(Keyboard.KEY_NONE);
+            for (Setting setting : hack.getSettings()) {
+                setting.setValue(setting.defaultValue);
+            }
         }
     }
 

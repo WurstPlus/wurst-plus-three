@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
@@ -201,6 +202,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         WurstplusThree.HACKS.onLogin();
+        WurstplusThree.CONFIG_MANAGER.onLogin(event);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -233,6 +235,9 @@ public class Events implements Globals {
             return;
         }
         WurstplusThree.SERVER_MANAGER.onPacketReceived();
+        if (event.getPacket() instanceof SPacketPlayerPosLook) {
+            WurstplusThree.ROTATION_MANAGER.onPacketSend((SPacketPlayerPosLook) event.getPacket());
+        }
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
             try {

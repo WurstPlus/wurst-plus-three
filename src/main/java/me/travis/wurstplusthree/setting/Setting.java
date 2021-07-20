@@ -13,11 +13,13 @@ public class Setting<T> {
     private final ParentSetting parentSetting;
     public T value;
     public Predicate<T> shown;
+    public T defaultValue;
 
 
     public Setting(String name, T value, Hack parent) {
         this.name = name;
         this.value = value;
+        this.defaultValue = value;
         this.parent = parent;
         this.parentSetting = null;
         WurstplusThree.SETTINGS.addSetting(this);
@@ -26,6 +28,7 @@ public class Setting<T> {
     public Setting(String name, T value, ParentSetting parent) {
         this.name = name;
         this.value = value;
+        this.defaultValue = value;
         this.parent = parent.getParent();
         this.parentSetting = parent;
         WurstplusThree.SETTINGS.addSetting(this);
@@ -34,6 +37,7 @@ public class Setting<T> {
     public Setting(String name, T value, Hack parent, Predicate<T> shown) {
         this.name = name;
         this.value = value;
+        this.defaultValue = value;
         this.parent = parent;
         this.parentSetting = null;
         this.shown = shown;
@@ -43,6 +47,7 @@ public class Setting<T> {
     public Setting(String name, T value, ParentSetting parent, Predicate<T> shown) {
         this.name = name;
         this.value = value;
+        this.defaultValue = value;
         this.parent = parent.getParent();
         this.parentSetting = parent;
         this.shown = shown;
