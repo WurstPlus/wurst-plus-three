@@ -179,7 +179,7 @@ public final class SpeedMine extends Hack {
                     }
                 }
                 if(toCity != null){
-                    this.setPacketPos(toCity, EnumFacing.UP);
+                    this.setPacketPos(toCity, BlockUtil.getFirstFacing(toCity));
                 }
             }
             if(packetBurrow.getValue() && !isActive){
@@ -189,7 +189,8 @@ public final class SpeedMine extends Hack {
                     if(mc.player.getDistance(entity) > cityRange.getValue())continue;
                     if(isBurrowed(entity)){
                         BlockPos burrowPos = new BlockPos(Math.floor(entity.posX), Math.floor(entity.posY), Math.floor(entity.posZ));
-                        this.setPacketPos(burrowPos, EnumFacing.UP);
+
+                        this.setPacketPos(burrowPos, BlockUtil.getFirstFacing(burrowPos));
                     }
                 }
             }
