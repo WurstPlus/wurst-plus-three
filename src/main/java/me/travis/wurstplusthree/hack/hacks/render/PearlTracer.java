@@ -12,6 +12,7 @@ import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -31,7 +32,6 @@ public class PearlTracer extends Hack{
     BooleanSetting render = new BooleanSetting("Render", true, this);
     IntSetting aliveTime = new IntSetting("Alive Time", 5, 0, 20, this);
     DoubleSetting thick = new DoubleSetting("Thick", 3.0, 0.0, 10.0, this);
-
     IntSetting rDelay = new IntSetting("RDelay", 120, 0, 360, this);
     ColourSetting color = new ColourSetting("Color", new Colour(255,255,255), this);
 
@@ -59,9 +59,9 @@ public class PearlTracer extends Hack{
             if(!(e instanceof EntityEnderPearl))continue;
             if(!this.poses.containsKey(e.getUniqueID())){
                 if(chat.getValue()){
-                    for (net.minecraft.entity.player.EntityPlayer entityPlayer : this.mc.world.playerEntities) {
+                    for (EntityPlayer entityPlayer : this.mc.world.playerEntities) {
                         if (entityPlayer.getDistance(e) < 4.0F && !entityPlayer.getName().equals(this.mc.player.getName())) {
-                            ClientMessage.sendMessage(e.getName() + " just through a pearl!");
+                            ClientMessage.sendMessage(entityPlayer.getName() + " just through a pearl!");
                             break;
                         }
                     }
@@ -86,7 +86,6 @@ public class PearlTracer extends Hack{
         GL11.glDisable(3553);
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
-        //GL11.glLineWidth(2.0F);
         GL11.glLineWidth(thick.getAsFloat());
 
         for(UUID uuid : poses.keySet()){
@@ -96,7 +95,7 @@ public class PearlTracer extends Hack{
             for (int i = 1; i < poses.get(uuid).size(); ++i) {
                 delay += rDelay.getValue();
                 Color c = color.getRainbow() ? ColorUtil.releasedDynamicRainbow(delay, color.getValue().getAlpha()) : color.getValue();
-                GL11.glColor3d(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f);
+                GL11.glColor4d(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 
                 List<Vec3d> pos = poses.get(uuid);
                 GL11.glVertex3d(pos.get(i).x - mc.getRenderManager().viewerPosX,pos.get(i).y - mc.getRenderManager().viewerPosY, pos.get(i).z - mc.getRenderManager().viewerPosZ);
