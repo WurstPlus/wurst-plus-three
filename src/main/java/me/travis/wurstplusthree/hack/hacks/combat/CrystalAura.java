@@ -42,6 +42,7 @@ public final class CrystalAura extends Hack {
     public CrystalAura() {
         INSTANCE = this;
     }
+
     //ranges
     private final ParentSetting ranges = new ParentSetting("Ranges", this);
     private final DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, ranges);
@@ -72,10 +73,10 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
-    private final BooleanSetting silentSwitchHand  = new BooleanSetting("Silent Hand Activation", true,general, s -> autoSwitch.is("Silent"));
+    private final BooleanSetting silentSwitchHand = new BooleanSetting("Silent Hand Activation", true, general, s -> autoSwitch.is("Silent"));
     private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
-    private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Smart", "Strict", "Dynamic"), general);
+    private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Nearby", "Safe"), general);
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
@@ -382,7 +383,7 @@ public final class CrystalAura extends Hack {
             if (newSize == stackSize) {
                 didAnything = false;
             }
-        } else if (debug.getValue()){
+        } else if (debug.getValue()) {
             ClientMessage.sendMessage("doing yawstep on place");
         }
     }
@@ -499,7 +500,7 @@ public final class CrystalAura extends Hack {
                 Entity y = CrystalUtil.getPredictedPosition(target, predictedTicks.getValue());
                 target.setEntityBoundingBox(y.getEntityBoundingBox());
             }
-            for (BlockPos blockPos :  CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
+            for (BlockPos blockPos : CrystalUtil.possiblePlacePositions(this.placeRange.getValue().floatValue(), true, this.thirteen.getValue())) {
                 double targetDamage = isBlockGood(blockPos, target);
                 if (targetDamage <= 0) continue;
                 if (chainMode.getValue() && currentChainCounter >= chainCounter.getValue()) {
@@ -578,16 +579,11 @@ public final class CrystalAura extends Hack {
             if (attemptedCrystals.contains(crystal)) return 0;
 
             // set min damage to 2 if we want to kill the dude fast
-            double miniumDamage;
-            if (CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue()) >= minBreak.getValue()) {
-                facePlacing = false;
-                miniumDamage = this.minBreak.getValue();
-            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
+            facePlacing = false;
+            double miniumDamage = this.minBreak.getValue();
+            if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
-            } else {
-                facePlacing = false;
-                miniumDamage = this.minBreak.getValue();
             }
 
             double targetDamage = CrystalUtil.calculateDamage(crystal, target, ignoreTerrain.getValue());
@@ -599,27 +595,15 @@ public final class CrystalAura extends Hack {
             if (selfDamage > maxSelfBreak.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
             switch (crystalLogic.getValue()) {
-                case "Smart":
+                case "Safe":
                     return targetDamage - selfDamage;
                 case "Damage":
                     return targetDamage;
-                case "Strict":
-                double distance = mc.player.getDistanceSq(crystal);
-                return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (EntityUtil.canEntityFeetBeSeen(crystal) ? 0.2 : 0.5));
-                case "Dynamic":
-                    double x = sigmoid(Math.abs(target.motionX - 0.152));
-                    double z = sigmoid(Math.abs(target.motionZ - 0.152));
-                    ClientMessage.sendMessage(x + ", " + z);
-                    if(x >= 0.7 || z >= 0.7){
-                        ClientMessage.sendMessage("A");
-                        return targetDamage - selfDamage;
-                    }else {
-                        ClientMessage.sendMessage("B");
-                        return targetDamage;
-                    }
+                case "Nearby":
+                    double distance = mc.player.getDistanceSq(crystal);
+                    return targetDamage - distance;
             }
         }
-
         return 0;
     }
 
@@ -638,16 +622,11 @@ public final class CrystalAura extends Hack {
                 }
             }
 
-            double miniumDamage;
-            if (CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue()) >= minPlace.getValue()) {
-                facePlacing = false;
-                miniumDamage = this.minPlace.getValue();
-            } else if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
+            facePlacing = false;
+            double miniumDamage = this.minPlace.getValue();
+            if (((EntityUtil.getHealth(target) <= facePlaceHP.getValue() && faceplace.getValue()) || CrystalUtil.getArmourFucker(target, fuckArmourHP.getValue()) || fpbind.isDown()) && (!stopFPWhenSword.getValue() || !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))) {
                 miniumDamage = EntityUtil.isInHole(target) ? 1 : 2;
                 facePlacing = true;
-            } else {
-                facePlacing = false;
-                miniumDamage = this.minPlace.getValue();
             }
 
             double targetDamage = CrystalUtil.calculateDamage(blockPos, target, ignoreTerrain.getValue());
@@ -658,29 +637,16 @@ public final class CrystalAura extends Hack {
             }
             if (selfDamage > maxSelfPlace.getValue()) return 0;
             if (EntityUtil.getHealth(mc.player) - selfDamage <= 0 && this.antiSuicide.getValue()) return 0;
-
             switch (crystalLogic.getValue()) {
-                case "Smart":
+                case "Safe":
                     return targetDamage - selfDamage;
                 case "Damage":
                     return targetDamage;
-                case "Strict":
+                case "Nearby":
                     double distance = mc.player.getDistanceSq(blockPos);
-                    return targetDamage - (selfDamage * 0.5 + (distance > 3 ? distance : 0) * (CrystalUtil.canSeePos(blockPos) ? 0.2 : 0.5));
-                case "Dynamic":
-                    double x = sigmoid(Math.abs(target.motionX -  0.152));
-                    double z = sigmoid(Math.abs(target.motionZ - 0.152));
-                    ClientMessage.sendMessage(x + ", " + z);
-                    if(x >= 0.4913640415 || z >= 0.4913640415){
-                        ClientMessage.sendMessage("A");
-                        return targetDamage - selfDamage;
-                    }else {
-                        ClientMessage.sendMessage("B");
-                        return targetDamage;
-                    }
+                    return targetDamage - distance;
             }
         }
-
         return 0;
     }
 
@@ -730,7 +696,7 @@ public final class CrystalAura extends Hack {
         float yaw = angle[0];
         float pitch = angle[1];
         float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
-        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue()) {
+        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw - 360 - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw + 360 - yaw) > maxYaw.getValue()) {
             if (spoofedYaw - yaw < 180) {
                 if (spoofedYaw > yaw) {
                     WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
@@ -757,7 +723,7 @@ public final class CrystalAura extends Hack {
         float yaw = angle[0];
         float pitch = angle[1];
         float spoofedYaw = WurstplusThree.ROTATION_MANAGER.getSpoofedYaw();
-        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue()) {
+        if (Math.abs(spoofedYaw - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw - 360 - yaw) > maxYaw.getValue() && Math.abs(spoofedYaw + 360 - yaw) > maxYaw.getValue()) {
             if (spoofedYaw - yaw < 180) {
                 if (spoofedYaw > yaw) {
                     WurstplusThree.ROTATION_MANAGER.setPlayerRotations(spoofedYaw - maxYaw.getValue(), pitch);
@@ -825,8 +791,8 @@ public final class CrystalAura extends Hack {
         }
     }
 
-    public static double sigmoid(final double x){
-        return (1/(1+Math.pow(Math.E, (-1*x))));
+    public static double sigmoid(final double x) {
+        return (1 / (1 + Math.pow(Math.E, (-1 * x))));
     }
 
     @Override

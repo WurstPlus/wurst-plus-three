@@ -1,11 +1,13 @@
 package me.travis.wurstplusthree.manager;
 
 import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.hack.hacks.misc.NoRotate;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -16,6 +18,14 @@ public class RotationManager implements Globals {
     private float spoofedYaw;
     private float spoofedPitch;
 
+    public void onPacketSend(SPacketPlayerPosLook p) {
+        spoofedPitch = p.getPitch();
+        spoofedYaw = p.getYaw();
+        if (NoRotate.INSTANCE.isEnabled()) {
+            p.pitch = pitch;
+            p.yaw = yaw;
+        }
+    }
 
     public float getSpoofedYaw() {
         return MathsUtil.wrapDegrees(spoofedYaw);
