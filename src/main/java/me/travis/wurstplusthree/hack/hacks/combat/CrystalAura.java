@@ -87,7 +87,7 @@ public final class CrystalAura extends Hack {
     private final ParentSetting misc = new ParentSetting("Misc", this);
     private final BooleanSetting threaded = new BooleanSetting("Threaded", false, misc);
     private final BooleanSetting antiStuck = new BooleanSetting("Anti Stuck", false, misc);
-    private final IntSetting maxAntiStuckDamage = new IntSetting("Stuck Self Damage", 8, 0, 36, this, v -> antiStuck.getValue());
+    private final IntSetting maxAntiStuckDamage = new IntSetting("Stuck Self Damage", 8, 0, 36, misc, v -> antiStuck.getValue());
 
     //predict
     private final ParentSetting predict = new ParentSetting("Predict", this);
