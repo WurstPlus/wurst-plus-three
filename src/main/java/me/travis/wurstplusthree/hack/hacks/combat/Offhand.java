@@ -71,7 +71,7 @@ public class Offhand extends Hack {
         if (mc.currentScreen == null || mc.currentScreen instanceof GuiInventory) {
             float hp = mc.player.getHealth() + mc.player.getAbsorptionAmount();
             if ((hp > TotemHp.getValue() || (EntityUtil.isInHole(mc.player) && hp > HoleHP.getValue())) && lethalToLocalCheck() && Check32K()) {
-                if (mode.getValue().equalsIgnoreCase("crystal") && (!CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") || CrystalAura.INSTANCE.renderBlock != null || !CrystalAura.INSTANCE.isEnabled()) && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
+                if (mode.getValue().equalsIgnoreCase("crystal") && !(((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue())) {
                     swapItems(getItemSlot(Items.END_CRYSTAL));
                     return;
                 } else if (((GapOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) || Always.getValue() || (GapOnPick.getValue() && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe)) && mc.gameSettings.keyBindUseItem.isKeyDown() && GapSwitch.getValue()) {
@@ -79,9 +79,6 @@ public class Offhand extends Hack {
                     if (mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe) {
                         mc.playerController.isHittingBlock = true;
                     }
-                    return;
-                } else if (CrystalAura.INSTANCE.autoSwitch.getValue().equals("Offhand") && CrystalAura.INSTANCE.renderBlock == null && CrystalAura.INSTANCE.isEnabled() && mode.getValue().equals("Crystal")){
-                    swapItems(getItemSlot(Items.TOTEM_OF_UNDYING));
                     return;
                 }
                 if (mode.getValue().equalsIgnoreCase("totem")) {

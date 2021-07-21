@@ -36,6 +36,7 @@ public class HelpManager implements Globals {
             "By adding the baritone jar to your mods folder extra baritone modules will show up",
             "If you experience frequent crashes you can send .minecraft/logs/latest.txt to one of the devs",
             "Configs for wurst + 3 can be found in the official discord discord.gg.wurst",
-            "Donators receive a animated cape"
+            "Donators receive a animated cape",
+            "Right clicking a bind setting will make it a hold bind"
     };
 }
