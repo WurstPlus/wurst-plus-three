@@ -86,7 +86,6 @@ public final class CrystalAura extends Hack {
     private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Player", "CPS"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
-
     //thread
     private final ParentSetting Thread = new ParentSetting("Thread", this);
     private final BooleanSetting threaded = new BooleanSetting("Threaded", false, Thread);
@@ -722,9 +721,8 @@ public final class CrystalAura extends Hack {
         for (Iterator<RenderPos> it = renderMap.iterator(); it.hasNext(); ) {
             RenderPos renderPos = it.next();
             RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderPos.pos.getX(), renderPos.pos.getY() + 1, renderPos.pos.getZ()) : renderPos.pos, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), (int) Math.max(renderFillColour.getValue().getAlpha() - renderPos.alpha, 0)), new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), (int) Math.max(renderBoxColour.getValue().getAlpha() - renderPos.alpha, 0)), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
-            if (renderDamage.getValue()) {
-                RenderUtil.drawText(renderPos.pos, String.valueOf(Math.floor(renderPos.damage)), Gui.INSTANCE.customFont.getValue());
-            }
+            if (renderDamage.getValue())
+                RenderUtil.drawText(renderPos.pos, String.valueOf(MathsUtil.roundAvoid(renderPos.damage, 1)), Gui.INSTANCE.customFont.getValue());
             if (renderPos.alpha > Math.max(renderFillColour.getValue().getAlpha(), renderBoxColour.getValue().getAlpha()))
                 toRemove.add(renderPos);
             renderPos.alpha = renderPos.alpha + (fade.is("Fast") ? 1.5 : fade.is("Slow") ? 0.5 : 1);

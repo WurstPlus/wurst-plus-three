@@ -39,6 +39,11 @@ public class MathsUtil implements Globals {
         return deg;
     }
 
+    public static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
+
     public static double incrementRound(double number, double increment) {
         return Math.floor(number) + Math.round((number - Math.floor(number)) * (1 / increment)) / (1 / increment);
     }
