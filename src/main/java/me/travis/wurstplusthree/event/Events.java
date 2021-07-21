@@ -203,6 +203,7 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         WurstplusThree.HACKS.onLogin();
+        if(mc.world == null || !mc.world.isRemote)return;
         WurstplusThree.CONFIG_MANAGER.onLogin(event);
     }
 

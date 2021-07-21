@@ -149,8 +149,9 @@ public final class CrystalAura extends Hack {
     private int facePlaceDelayCounter;
     private int obiFeetCounter;
     private int crystalsPlaced;
+    private int highestID;
 
-    public BlockPos staticPos;
+    public ArrayList<BlockPos> staticPos;
     public EntityEnderCrystal staticEnderCrystal;
 
     @CommitEvent(priority = EventPriority.HIGH)
@@ -264,6 +265,15 @@ public final class CrystalAura extends Hack {
                 }
             }
         }
+        if (event.getStage() == 0 && event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock && threadAttack.getValue()) {
+            CPacketPlayerTryUseItemOnBlock packet1 = event.getPacket();
+            if (mc.player.getHeldItem(packet1.hand).getItem() instanceof ItemEndCrystal) {
+                updateEntityID();
+                for (int i = 1; i < 3; ++i) {
+                    this.attackID(packet1.position, this.highestID + i);
+                }
+            }
+        }
     }
 
     public void doCrystalAura() {
@@ -302,7 +312,10 @@ public final class CrystalAura extends Hack {
     }
 
     private void placeCrystal() {
-        ArrayList<BlockPos> placePositions = this.getBestBlocks();
+        ArrayList<BlockPos> placePositions;
+        placePositions = this.getBestBlocks();
+
+
         currentTargets.clear();
         currentTargets.addAll(placePositions);
         if (placePositions.size() > 0) {
@@ -376,7 +389,13 @@ public final class CrystalAura extends Hack {
 
     private void breakCrystal() {
         EntityEnderCrystal crystal;
-        crystal = this.getBestCrystal();
+        if (threaded.getValue()) {
+            Threads threads = new Threads(ThreadType.CRYSTAL);
+            threads.start();
+            crystal = staticEnderCrystal;
+        } else {
+            crystal = this.getBestCrystal();
+        }
         if (crystal == null) return;
         if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
             boolean shouldWeakness = true;
@@ -684,6 +703,21 @@ public final class CrystalAura extends Hack {
         return true;
     }
 
+    private void attackID(BlockPos pos, int id) {
+        Entity entity = mc.world.getEntityByID(id);
+        if (entity == null || entity instanceof EntityEnderCrystal) {
+            AttackThread attackThread = new AttackThread(id, pos, 0);
+            attackThread.start();
+        }
+    }
+
+    private void updateEntityID() {
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity.getEntityId() <= this.highestID) continue;
+            this.highestID = entity.getEntityId();
+        }
+    }
+
     public boolean setYawPitch(@NotNull BlockPos pos) {
         if (rotateMode.is("Off") || rotateMode.is("Break")) return true;
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
@@ -752,6 +786,7 @@ public final class CrystalAura extends Hack {
         crystalLatency = 0;
         start = 0;
         staticEnderCrystal = null;
+        highestID = -100000;
         staticPos = null;
         crystalsPlaced = 0;
         crystalsPlacedTimer.reset();
@@ -792,6 +827,54 @@ public final class CrystalAura extends Hack {
             return b.damage.compareTo(a.damage);
         }
     }
+
+
+
+}
+
+final class AttackThread
+        extends Thread implements Globals {
+    private final int id;
+    private final int delay;
+
+    public AttackThread(int idIn, BlockPos posIn, int delayIn) {
+        this.id = idIn;
+        this.delay = delayIn;
+    }
+
+    @Override
+    public void run() {
+        try {
+            //this.wait(this.delay);
+            CPacketUseEntity attack = new CPacketUseEntity();
+            attack.entityId = this.id;
+            attack.action = CPacketUseEntity.Action.ATTACK;
+            mc.player.connection.sendPacket(attack);
+            mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+final class Threads extends Thread {
+    ThreadType type;
+    EntityEnderCrystal bestCrystal;
+
+    public Threads(@NotNull ThreadType type) {
+        this.type = type;
+    }
+
+    @Override
+    public void run() {
+        bestCrystal = CrystalAura.INSTANCE.getBestCrystal();
+        CrystalAura.INSTANCE.staticEnderCrystal = bestCrystal;
+    }
+}
+
+enum ThreadType {
+    BLOCK,
+    CRYSTAL
 }
 
 
