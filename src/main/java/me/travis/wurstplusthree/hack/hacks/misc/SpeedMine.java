@@ -79,7 +79,7 @@ public final class SpeedMine extends Hack {
     private final ParentSetting parentCombat = new ParentSetting("Combat", this);
     private final BooleanSetting packetCity = new BooleanSetting("Packet City", false, parentCombat);
     private final BooleanSetting packetBurrow = new BooleanSetting("Packet Burrow", false, parentCombat);
-    private final IntSetting cityRange = new IntSetting("Range", 5, 1, 15, parentCombat, s -> (packetCity.getValue() || packetBurrow.getValue()));
+    private final IntSetting cityRange = new IntSetting("Combat Range", 5, 1, 15, parentCombat, s -> (packetCity.getValue() || packetBurrow.getValue()));
 
     private final ParentSetting parentRender = new ParentSetting("Render", this);
     private final BooleanSetting render = new BooleanSetting("Render", true, parentRender);
@@ -179,7 +179,7 @@ public final class SpeedMine extends Hack {
                     }
                 }
                 if(toCity != null){
-                    this.setPacketPos(toCity, BlockUtil.getFirstFacing(toCity));
+                    this.setPacketPos(toCity, BlockUtil.getPlaceableSide(toCity));
                 }
             }
             if(packetBurrow.getValue() && !isActive){
@@ -190,7 +190,7 @@ public final class SpeedMine extends Hack {
                     if(isBurrowed(entity)){
                         BlockPos burrowPos = new BlockPos(Math.floor(entity.posX), Math.floor(entity.posY), Math.floor(entity.posZ));
 
-                        this.setPacketPos(burrowPos, BlockUtil.getFirstFacing(burrowPos));
+                        this.setPacketPos(burrowPos, BlockUtil.getPlaceableSide(burrowPos));
                     }
                 }
             }
