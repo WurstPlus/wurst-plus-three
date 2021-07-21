@@ -117,7 +117,8 @@ public final class CrystalAura extends Hack {
     private final ParentSetting render = new ParentSetting("Render", this);
     private final EnumSetting when = new EnumSetting("When", "Place", Arrays.asList("Place", "Break", "Both", "Never"), render);
     private final EnumSetting mode = new EnumSetting("Mode", "Pretty", Arrays.asList("Pretty", "Solid", "Outline"), render);
-    private final EnumSetting fade = new EnumSetting("Fade", "Fast", Arrays.asList("Fast", "Medium", "Slow", "Off"), render);
+    private final BooleanSetting fade = new BooleanSetting("Fade", false, render);
+    private final IntSetting fadeTime = new IntSetting("FadeTime", 200, 0, 1000, render, v -> fade.getValue());
     private final BooleanSetting flat = new BooleanSetting("Flat", false, render);
     private final DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, render, s -> flat.getValue());
     private final IntSetting width = new IntSetting("Width", 1, 1, 10, render);
@@ -389,7 +390,7 @@ public final class CrystalAura extends Hack {
     private void breakCrystal() {
         EntityEnderCrystal crystal;
         if (threaded.getValue()) {
-            Threads threads = new Threads(ThreadType.CRYSTAL);
+            Threads threads = new Threads();
             threads.start();
             crystal = staticEnderCrystal;
         } else {
@@ -754,17 +755,23 @@ public final class CrystalAura extends Hack {
         List<RenderPos> toRemove = new ArrayList<>();
         for (Iterator<RenderPos> it = renderMap.iterator(); it.hasNext(); ) {
             RenderPos renderPos = it.next();
-            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderPos.pos.getX(), renderPos.pos.getY() + 1, renderPos.pos.getZ()) : renderPos.pos, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), (int) Math.max(renderFillColour.getValue().getAlpha() - renderPos.alpha, 0)), new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), (int) Math.max(renderBoxColour.getValue().getAlpha() - renderPos.alpha, 0)), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
+            int fillAlpha = renderFillColour.getValue().getAlpha();
+            int boxAlpha = renderBoxColour.getValue().getAlpha();
+            if (currentTargets.contains(renderPos.pos)) {
+                renderPos.fadeTimer = 0;
+            } else if (!fade.getValue()) {
+                toRemove.add(renderPos);
+            } else {
+                renderPos.fadeTimer++;
+                fillAlpha = (int) ( fillAlpha - (fillAlpha * (renderPos.fadeTimer / fadeTime.getValue())));
+                boxAlpha = (int) (boxAlpha - (boxAlpha * (renderPos.fadeTimer / fadeTime.getValue())));
+            }
+            if (renderPos.fadeTimer > fadeTime.getValue())
+                toRemove.add(renderPos);
+            if (toRemove.contains(renderPos)) continue;
+            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderPos.pos.getX(), renderPos.pos.getY() + 1, renderPos.pos.getZ()) : renderPos.pos, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), Math.max(fillAlpha, 0)), new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), (int) Math.max(boxAlpha, 0)), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
             if (renderDamage.getValue())
                 RenderUtil.drawText(renderPos.pos, String.valueOf(MathsUtil.roundAvoid(renderPos.damage, 1)), Gui.INSTANCE.customFont.getValue());
-            if (renderPos.alpha > Math.max(renderFillColour.getValue().getAlpha(), renderBoxColour.getValue().getAlpha()))
-                toRemove.add(renderPos);
-            renderPos.alpha = renderPos.alpha + (fade.is("Fast") ? 1.5 : fade.is("Slow") ? 0.5 : 1);
-            if (currentTargets.contains(renderPos.pos)) {
-                renderPos.alpha = 0;
-            } else if (fade.is("Off")) {
-                toRemove.add(renderPos);
-            }
         }
         renderMap.removeAll(toRemove);
     }
@@ -815,7 +822,7 @@ public final class CrystalAura extends Hack {
         }
 
         Double damage;
-        double alpha;
+        double fadeTimer;
         BlockPos pos;
     }
 
@@ -856,11 +863,9 @@ final class AttackThread
 }
 
 final class Threads extends Thread {
-    ThreadType type;
     EntityEnderCrystal bestCrystal;
 
-    public Threads(@NotNull ThreadType type) {
-        this.type = type;
+    public Threads() {
     }
 
     @Override
@@ -870,9 +875,5 @@ final class Threads extends Thread {
     }
 }
 
-enum ThreadType {
-    BLOCK,
-    CRYSTAL
-}
 
 
