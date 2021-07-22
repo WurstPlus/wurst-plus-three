@@ -106,6 +106,7 @@ public final class CrystalAura extends Hack {
 
     //faceplace/tabbott stuff
     private final ParentSetting faceplace = new ParentSetting("Tabbott", this);
+    private final BooleanSetting noMP = new BooleanSetting("NoMultiPlace", false, faceplace);
     private final IntSetting facePlaceHP = new IntSetting("TabbottHP", 0, 0, 36, faceplace);
     private final IntSetting facePlaceDelay = new IntSetting("TabbottDelay", 0, 0, 10, faceplace);
     private final KeySetting fpbind = new KeySetting("TabbottBind", -1, faceplace);
@@ -518,29 +519,38 @@ public final class CrystalAura extends Hack {
             }
         }
 
+        //sorting all place positions
         posArrayList.sort(new DamageComparator());
+
         //making sure all positions are placeble and wont block each other
-        List<BlockPos> blockedPosList = new ArrayList<>();
-        List<RenderPos> toRemove = new ArrayList<>();
-        for (RenderPos test : posArrayList) {
-            boolean blocked = false;
-            for (BlockPos blockPos : blockedPosList) {
-                if (blockPos.getX() == test.pos.getX() && blockPos.getY() == test.pos.getY() && blockPos.getZ() == test.pos.getZ()) {
-                    blocked = true;
+        if (maxCrystals.getValue() > 1) {
+            List<BlockPos> blockedPosList = new ArrayList<>();
+            List<RenderPos> toRemove = new ArrayList<>();
+            for (RenderPos test : posArrayList) {
+                boolean blocked = false;
+                for (BlockPos blockPos : blockedPosList) {
+                    if (blockPos.getX() == test.pos.getX() && blockPos.getY() == test.pos.getY() && blockPos.getZ() == test.pos.getZ()) {
+                        blocked = true;
+                    }
                 }
+                if (!blocked) {
+                    blockedPosList.addAll(getBlockedPositions(test.pos));
+                } else toRemove.add(test);
             }
-            if (!blocked) {
-                blockedPosList.addAll(getBlockedPositions(test.pos));
-            } else toRemove.add(test);
+            posArrayList.removeAll(toRemove);
         }
-        posArrayList.removeAll(toRemove);
+
         if (this.ezTarget != null) {
             WurstplusThree.KD_MANAGER.targets.put(this.ezTarget.getName(), 20);
             AutoClip.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
         //taking the best out of the list
+        int maxCrystals = this.maxCrystals.getValue();
+        if (facePlacing && noMP.getValue()) {
+            maxCrystals = 1;
+        }
         ArrayList<BlockPos> finalArrayList = new ArrayList<>();
-        IntStream.range(0, Math.min(maxCrystals.getValue(), posArrayList.size())).forEachOrdered(n -> {
+        IntStream.range(0, Math.min(maxCrystals, posArrayList.size())).forEachOrdered(n -> {
             RenderPos pos = posArrayList.get(n);
             if (when.is("Both") || when.is("Place")) {
                 clearMap(pos.pos);
