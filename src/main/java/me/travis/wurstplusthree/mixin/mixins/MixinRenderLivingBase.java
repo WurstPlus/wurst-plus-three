@@ -51,7 +51,7 @@ public abstract class MixinRenderLivingBase {
             if (chams.depth.getValue())
                 glDepthMask(false);
 
-            if (chams.mode.is("Wire") || chams.mode.is("WireModel")) {
+            if (chams.mode.is("Wire")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             } else if (chams.mode.is("Normal")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

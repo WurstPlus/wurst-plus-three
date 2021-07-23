@@ -30,6 +30,7 @@ public class CrystalRender extends Hack {
 
     public BooleanSetting chams = new BooleanSetting("Chams", false, this);
     public BooleanSetting glint = new BooleanSetting("Glint", false, this);
+    public BooleanSetting effect = new BooleanSetting("Effect", false, this);
     public BooleanSetting wireframe = new BooleanSetting("Wireframe", false, this);
     public BooleanSetting throughwalls = new BooleanSetting("Walls", false, this);
     public BooleanSetting xqz = new BooleanSetting("XQZ", false, this);
