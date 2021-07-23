@@ -1,31 +1,11 @@
 package me.travis.wurstplusthree.hack.hacks.render;
 
-import me.travis.wurstplusthree.event.events.RenderLivingEntityEvent;
-import me.travis.wurstplusthree.event.processor.CommitEvent;
-import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
-import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.ColorUtil;
-import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.*;
 
 //made by linus touch tips
-import java.awt.*;
 import java.util.Arrays;
-
-import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
-import static org.lwjgl.opengl.GL11.glPushAttrib;
 
 @Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER, isListening = false)
 public class Chams extends Hack {
