@@ -3,16 +3,18 @@ package me.travis.wurstplusthree.hack.hacks.render;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
-import me.travis.wurstplusthree.setting.type.BooleanSetting;
-import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import me.travis.wurstplusthree.setting.type.IntSetting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.entity.projectile.EntitySpectralArrow;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -25,15 +27,21 @@ import java.util.List;
  * @since 19/07/2021
  */
 
-@Hack.Registration(name = "Pearl Tracer", category = Hack.Category.RENDER, description = "Draws shit", priority = HackPriority.Lowest)
-public class PearlTracer extends Hack{
+@Hack.Registration(name = "Item Tracer", category = Hack.Category.RENDER, description = "Draws shit", priority = HackPriority.Lowest)
+public class ItemTracer extends Hack{
 
-    BooleanSetting chat = new BooleanSetting("Chat", true, this);
-    BooleanSetting render = new BooleanSetting("Render", true, this);
-    IntSetting aliveTime = new IntSetting("Alive Time", 5, 0, 20, this);
-    DoubleSetting thick = new DoubleSetting("Thick", 3.0, 0.0, 10.0, this);
-    IntSetting rDelay = new IntSetting("RDelay", 120, 0, 360, this);
-    ColourSetting color = new ColourSetting("Color", new Colour(255,255,255), this);
+    ParentSetting pearl = new ParentSetting("Pearl", this);
+    BooleanSetting chat = new BooleanSetting("Chat", true, pearl);
+    BooleanSetting render = new BooleanSetting("Render", true, pearl);
+    DoubleSetting aliveTime = new DoubleSetting("Alive Time", 5.0, 0.0, 20.0, pearl);
+    DoubleSetting thick = new DoubleSetting("Thick", 3.0, 0.0, 10.0, pearl);
+    IntSetting rDelay = new IntSetting("RDelay", 120, 0, 360, pearl);
+    ColourSetting color = new ColourSetting("Color", new Colour(255,255,255), pearl);
+
+    ParentSetting misc = new ParentSetting("Misc", this);
+    BooleanSetting arrows = new BooleanSetting("Arrows", false, misc);
+    BooleanSetting exp = new BooleanSetting("Exp", false, misc);
+    BooleanSetting pots = new BooleanSetting("Pots", false, misc);
 
 
     private final HashMap<UUID, List<Vec3d>> poses = new HashMap<>();
@@ -55,21 +63,38 @@ public class PearlTracer extends Hack{
             toRemove = null;
         }
 
+        if(arrows.getValue() || exp.getValue() || pots.getValue()){
+            for (Entity e : mc.world.getLoadedEntityList()){
+                if(arrows.getValue()){
+                    if(e instanceof EntityArrow || e instanceof EntityExpBottle || e instanceof EntityPotion){
+                        if(!this.poses.containsKey(e.getUniqueID())){
+                            this.poses.put(e.getUniqueID(), new ArrayList<>(Collections.singletonList(e.getPositionVector())));
+                            this.time.put(e.getUniqueID(), 0.05);
+                        } else {
+                            this.time.replace(e.getUniqueID(),  0.05);
+                            List<Vec3d> v = this.poses.get(e.getUniqueID());
+                            v.add(e.getPositionVector());
+                        }
+                    }
+                }
+            }
+        }
+
         for(Entity e : mc.world.getLoadedEntityList()){
             if(!(e instanceof EntityEnderPearl))continue;
             if(!this.poses.containsKey(e.getUniqueID())){
                 if(chat.getValue()){
                     for (EntityPlayer entityPlayer : this.mc.world.playerEntities) {
                         if (entityPlayer.getDistance(e) < 4.0F && !entityPlayer.getName().equals(this.mc.player.getName())) {
-                            ClientMessage.sendMessage(entityPlayer.getName() + " just through a pearl!");
+                            ClientMessage.sendMessage(entityPlayer.getName() + " just threw a pearl!");
                             break;
                         }
                     }
                 }
                 this.poses.put(e.getUniqueID(), new ArrayList<>(Collections.singletonList(e.getPositionVector())));
-                this.time.put(e.getUniqueID(), (double) aliveTime.getValue());
+                this.time.put(e.getUniqueID(), aliveTime.getValue());
             }else {
-                this.time.replace(e.getUniqueID(), (double) aliveTime.getValue());
+                this.time.replace(e.getUniqueID(), aliveTime.getValue());
                 List<Vec3d> v = this.poses.get(e.getUniqueID());
                 v.add(e.getPositionVector());
             }
