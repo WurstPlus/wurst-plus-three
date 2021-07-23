@@ -29,7 +29,6 @@ public class NoSlow extends Hack {
         if(nullCheck())return;
         if (inventoryMove.getValue() && mc.currentScreen != null)
         {
-            WurstplusThree.LOGGER.info("Working ");
             if (noInput.getValue()) {
                 if (mc.currentScreen instanceof GuiChat) {
                     return;
