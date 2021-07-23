@@ -29,11 +29,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 @Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
@@ -60,13 +58,12 @@ public final class CrystalAura extends Hack {
 
     //Damages
     private final ParentSetting damages = new ParentSetting("Damages", this);
+    private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self", false, damages);
     private final IntSetting minPlace = new IntSetting("MinPlace", 9, 0, 36, damages);
-    private final IntSetting minBreak = new IntSetting("MinBreak", 9, 0, 36, damages);
-    private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self Damage", false, damages);
     private final IntSetting maxSelfPlace = new IntSetting("MaxSelfPlace", 5, 0, 36, damages, s -> !ignoreSelfDamage.getValue());
+    private final IntSetting minBreak = new IntSetting("MinBreak", 9, 0, 36, damages);
     private final IntSetting maxSelfBreak = new IntSetting("MaxSelfBreak", 5, 0, 36, damages, s -> !ignoreSelfDamage.getValue());
     private final BooleanSetting antiSuicide = new BooleanSetting("Anti Suicide", true, damages);
-
 
     //general
     private final ParentSetting general = new ParentSetting("General", this);
@@ -75,7 +72,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
-    private final BooleanSetting silentSwitchHand = new BooleanSetting("Silent Hand Activation", true, general, s -> autoSwitch.is("Silent"));
+    private final BooleanSetting silentSwitchHand = new BooleanSetting("Hand Activation", true, general, s -> autoSwitch.is("Silent"));
     private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
     private final IntSetting maxCrystals = new IntSetting("MaxCrystal", 1, 1, 4, general);
     private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
@@ -86,11 +83,11 @@ public final class CrystalAura extends Hack {
     private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Player", "CPS"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
-
-    //thread
-    private final ParentSetting Thread = new ParentSetting("Thread", this);
-    private final BooleanSetting threaded = new BooleanSetting("Threaded", false, Thread);
-    private final BooleanSetting threadAttack = new BooleanSetting("Thread Attack", false, Thread);
+    //misc
+    private final ParentSetting misc = new ParentSetting("Misc", this);
+    private final BooleanSetting threaded = new BooleanSetting("Threaded", false, misc);
+    private final BooleanSetting antiStuck = new BooleanSetting("Anti Stuck", false, misc);
+    private final IntSetting maxAntiStuckDamage = new IntSetting("Stuck Self Damage", 8, 0, 36, misc, v -> antiStuck.getValue());
 
     //predict
     private final ParentSetting predict = new ParentSetting("Predict", this);
@@ -109,6 +106,7 @@ public final class CrystalAura extends Hack {
 
     //faceplace/tabbott stuff
     private final ParentSetting faceplace = new ParentSetting("Tabbott", this);
+    private final BooleanSetting noMP = new BooleanSetting("NoMultiPlace", false, faceplace);
     private final IntSetting facePlaceHP = new IntSetting("TabbottHP", 0, 0, 36, faceplace);
     private final IntSetting facePlaceDelay = new IntSetting("TabbottDelay", 0, 0, 10, faceplace);
     private final KeySetting fpbind = new KeySetting("TabbottBind", -1, faceplace);
@@ -118,9 +116,10 @@ public final class CrystalAura extends Hack {
     private final ParentSetting render = new ParentSetting("Render", this);
     private final EnumSetting when = new EnumSetting("When", "Place", Arrays.asList("Place", "Break", "Both", "Never"), render);
     private final EnumSetting mode = new EnumSetting("Mode", "Pretty", Arrays.asList("Pretty", "Solid", "Outline"), render);
-    private final EnumSetting fade = new EnumSetting("Fade", "Fast", Arrays.asList("Fast", "Medium", "Slow", "Off"), render);
+    private final BooleanSetting fade = new BooleanSetting("Fade", false, render);
+    private final IntSetting fadeTime = new IntSetting("FadeTime", 200, 0, 1000, render, v -> fade.getValue());
     private final BooleanSetting flat = new BooleanSetting("Flat", false, render);
-    private final DoubleSetting hight = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, render, s -> flat.getValue());
+    private final DoubleSetting height = new DoubleSetting("FlatHeight", 0.2, -2.0, 2.0, render, s -> flat.getValue());
     private final IntSetting width = new IntSetting("Width", 1, 1, 10, render);
     private final ColourSetting renderFillColour = new ColourSetting("FillColour", new Colour(0, 0, 0, 255), render);
     private final ColourSetting renderBoxColour = new ColourSetting("BoxColour", new Colour(255, 255, 255, 255), render);
@@ -129,17 +128,19 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting placeSwing = new BooleanSetting("Place Swing", true, render);
 
     private final List<EntityEnderCrystal> attemptedCrystals = new ArrayList<>();
-    private ArrayList<RenderPos> renderMap = new ArrayList<>();
-    private ArrayList<BlockPos> currentTargets = new ArrayList<>();
-    public EntityPlayer ezTarget = null;
+    private final ArrayList<RenderPos> renderMap = new ArrayList<>();
+    private final ArrayList<BlockPos> currentTargets = new ArrayList<>();
     private final Timer crystalsPlacedTimer = new Timer();
+
+    private EntityEnderCrystal stuckCrystal;
+
     private boolean alreadyAttacking;
     private boolean placeTimeoutFlag;
     private boolean hasPacketBroke;
     private boolean didAnything;
     private boolean facePlacing;
 
-    private long start = 0;
+    private long start;
     private long crystalLatency;
 
     private int placeTimeout;
@@ -149,8 +150,8 @@ public final class CrystalAura extends Hack {
     private int facePlaceDelayCounter;
     private int obiFeetCounter;
     private int crystalsPlaced;
-    private int highestID;
 
+    public EntityPlayer ezTarget;
     public ArrayList<BlockPos> staticPos;
     public EntityEnderCrystal staticEnderCrystal;
 
@@ -171,7 +172,9 @@ public final class CrystalAura extends Hack {
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketSend(@NotNull PacketEvent.Send event) {
         CPacketUseEntity packet;
-        if (event.getStage() == 0 && event.getPacket() instanceof CPacketUseEntity && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK
+        if (event.getStage() == 0
+                && event.getPacket() instanceof CPacketUseEntity
+                && (packet = event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK
                 && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
             if (this.fastMode.is("Ghost")) {
                 Objects.requireNonNull(packet.getEntityFromWorld(mc.world)).setDead();
@@ -182,67 +185,68 @@ public final class CrystalAura extends Hack {
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketReceive(@NotNull PacketEvent.Receive event) {
-        SPacketSpawnObject packet;
-        if (event.getPacket() instanceof SPacketSpawnObject && (packet = event.getPacket()).getType() == 51) {
+
+        // crystal predict check
+        SPacketSpawnObject spawnObjectPacket;
+        if (event.getPacket() instanceof SPacketSpawnObject
+                && (spawnObjectPacket = event.getPacket()).getType() == 51
+                && this.predictCrystal.getValue()) {
+            // for each player on the server
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
-                if (this.isCrystalGood(new EntityEnderCrystal(mc.world, packet.getX(), packet.getY(), packet.getZ()), target) != 0) {
-                    if (this.predictCrystal.getValue()) {
-                        if (debug.getValue()) {
-                            ClientMessage.sendMessage("predict break");
-                        }
-                        CPacketUseEntity predict = new CPacketUseEntity();
-                        predict.entityId = packet.getEntityID();
-                        predict.action = CPacketUseEntity.Action.ATTACK;
-                        mc.player.connection.sendPacket(predict);
-                        if (!this.swing.is("None")) {
-                            BlockUtil.swingArm(swing);
-                        }
-                        if (packetSafe.getValue()) {
-                            hasPacketBroke = true;
-                            didAnything = true;
-                        }
+                // if the crystal is valid for the given player
+                if (this.isCrystalGood(new EntityEnderCrystal(mc.world, spawnObjectPacket.getX(), spawnObjectPacket.getY(), spawnObjectPacket.getZ()), target) != 0) {
+                    if (debug.getValue()) {
+                        ClientMessage.sendMessage("predict break");
                     }
+                    // set up the break packet
+                    CPacketUseEntity predict = new CPacketUseEntity();
+                    predict.entityId = spawnObjectPacket.getEntityID();
+                    predict.action = CPacketUseEntity.Action.ATTACK;
+                    mc.player.connection.sendPacket(predict);
+                    // swing arm
+                    if (!swing.is("None")) {
+                        BlockUtil.swingArm(swing);
+                    }
+                    // sets up the packet safe
+                    if (packetSafe.getValue()) {
+                        hasPacketBroke = true;
+                        didAnything = true;
+                    }
+                    // only do it once
                     break;
                 }
             }
         }
-        if (event.getPacket() instanceof SPacketDestroyEntities) {
-            SPacketDestroyEntities packet_ = event.getPacket();
-            for (int id : packet_.getEntityIDs()) {
-                try {
-                    Entity entity = mc.world.getEntityByID(id);
-                    if (!(entity instanceof EntityEnderCrystal)) continue;
-                    this.attemptedCrystals.remove(entity);
-                } catch (Exception ignored) {
-                }
-            }
-        }
 
+        // sets the 'player pos' of a teleporting player to where they're going to tp to
         if (event.getPacket() instanceof SPacketEntityTeleport) {
-            Entity e = mc.world.getEntityByID(((SPacketEntityTeleport) event.getPacket()).getEntityId());
+            SPacketEntityTeleport tpPacket = event.getPacket();
+            Entity e = mc.world.getEntityByID(tpPacket.getEntityId());
+            if (e == mc.player) return;
             if (e instanceof EntityPlayer && predictTeleport.is("Packet")) {
-                SPacketEntityTeleport p = event.getPacket();
-                e.setEntityBoundingBox(e.getEntityBoundingBox().offset(p.getX(), p.getY(), p.getZ()));
+                e.setEntityBoundingBox(e.getEntityBoundingBox().offset(tpPacket.getX(), tpPacket.getY(), tpPacket.getZ()));
             }
         }
 
+        // same as above but works on the sound effect rather than the tp packet
         if (event.getPacket() instanceof SPacketSoundEffect) {
-            if (((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT && predictTeleport.is("Sound")) {
-                SPacketSoundEffect p = event.getPacket();
+            SPacketSoundEffect soundPacket = event.getPacket();
+            if (soundPacket.getSound() == SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT && predictTeleport.is("Sound")) {
                 mc.world.loadedEntityList.spliterator().forEachRemaining(player -> {
-                    if (player instanceof EntityPlayer) {
-                        if (player.getDistance(p.getX(), p.getY(), p.getZ()) <= targetRange.getValue()) {
-                            player.setEntityBoundingBox(player.getEntityBoundingBox().offset(p.getX(), p.getY(), p.getZ()));
+                    if (player instanceof EntityPlayer && player != mc.player) {
+                        if (player.getDistance(soundPacket.getX(), soundPacket.getY(), soundPacket.getZ()) <= targetRange.getValue()) {
+                            player.setEntityBoundingBox(player.getEntityBoundingBox().offset(soundPacket.getX(), soundPacket.getY(), soundPacket.getZ()));
                         }
                     }
                 });
             }
-
+            // unsure how this would ever lead to a crash but i dont wanna touch it atm
             try {
-                if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                if (soundPacket.getCategory() == SoundCategory.BLOCKS
+                        && soundPacket.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                     for (Entity crystal : new ArrayList<>(mc.world.loadedEntityList)) {
                         if (crystal instanceof EntityEnderCrystal)
-                            if (crystal.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()) {
+                            if (crystal.getDistance(soundPacket.getX(), soundPacket.getY(), soundPacket.getZ()) <= breakRange.getValue()) {
                                 crystalLatency = System.currentTimeMillis() - start;
                                 if (fastMode.getValue().equals("Sound")) {
                                     crystal.setDead();
@@ -250,27 +254,18 @@ public final class CrystalAura extends Hack {
                             }
                     }
                 }
-            } catch (NullPointerException e) {
-                //empty catch block cus nullpointer gay
-            }
+            } catch (NullPointerException ignored) {}
         }
+
+        // attempt at a place predict, currently doesn't place
         if (event.getPacket() instanceof SPacketExplosion) {
-            SPacketExplosion packet2 = event.getPacket();
-            BlockPos pos = new BlockPos(Math.floor(packet2.getX()), Math.floor(packet2.getY()), Math.floor(packet2.getZ())).down();
+            SPacketExplosion explosionPacket = event.getPacket();
+            BlockPos pos = new BlockPos(Math.floor(explosionPacket.getX()), Math.floor(explosionPacket.getY()), Math.floor(explosionPacket.getZ())).down();
             if (this.predictBlock.getValue()) {
                 for (EntityPlayer player : new ArrayList<>(mc.world.playerEntities)) {
                     if (this.isBlockGood(pos, player) > 0) {
                         BlockUtil.placeCrystalOnBlock(pos, EnumHand.MAIN_HAND, true);
                     }
-                }
-            }
-        }
-        if (event.getStage() == 0 && event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock && threadAttack.getValue()) {
-            CPacketPlayerTryUseItemOnBlock packet1 = event.getPacket();
-            if (mc.player.getHeldItem(packet1.hand).getItem() instanceof ItemEndCrystal) {
-                updateEntityID();
-                for (int i = 1; i < 3; ++i) {
-                    this.attackID(packet1.position, this.highestID + i);
                 }
             }
         }
@@ -288,7 +283,15 @@ public final class CrystalAura extends Hack {
             this.placeCrystal();
         }
         if (breakDelayCounter > breakTimeout && (!hasPacketBroke || !packetSafe.getValue())) {
-            this.breakCrystal();
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("Attempting break");
+            }
+            if (antiStuck.getValue() && stuckCrystal != null) {
+                this.breakCrystal(stuckCrystal);
+                stuckCrystal = null;
+            } else {
+                this.breakCrystal(null);
+            }
         }
 
         if (!didAnything) {
@@ -314,16 +317,17 @@ public final class CrystalAura extends Hack {
     private void placeCrystal() {
         ArrayList<BlockPos> placePositions;
         placePositions = this.getBestBlocks();
-
-
         currentTargets.clear();
         currentTargets.addAll(placePositions);
+        if (placePositions == null) {
+            return;
+        }
         if (placePositions.size() > 0) {
             boolean offhandCheck = false;
             int slot = InventoryUtil.findHotbarBlock(ItemEndCrystal.class);
             int old = mc.player.inventory.currentItem;
             EnumHand hand = null;
-            int stackSize = getCrystalCount(offhandCheck);
+            int stackSize = getCrystalCount(false);
             alreadyAttacking = false;
             if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
                 if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && (autoSwitch.getValue().equals("Allways") || autoSwitch.is("NoGap"))) {
@@ -353,6 +357,13 @@ public final class CrystalAura extends Hack {
             for (BlockPos targetBlock : placePositions) {
                 if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal || mc.player.getHeldItemOffhand().getItem() instanceof ItemEndCrystal || autoSwitch.is("Silent")) {
                     if (setYawPitch(targetBlock)) {
+                        EntityEnderCrystal cCheck = CrystalUtil.isCrystalStuck(targetBlock.up());
+                        if (cCheck != null && antiStuck.getValue()) {
+                            stuckCrystal = cCheck;
+                            if (debug.getValue()) {
+                                ClientMessage.sendMessage("SHITS STUCK");
+                            }
+                        }
                         BlockUtil.placeCrystalOnBlock(targetBlock, offhandCheck ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, placeSwing.getValue());
                         if (debug.getValue()) {
                             ClientMessage.sendMessage("placing");
@@ -387,14 +398,22 @@ public final class CrystalAura extends Hack {
         }
     }
 
-    private void breakCrystal() {
+    private void breakCrystal(EntityEnderCrystal overwriteCrystal) {
         EntityEnderCrystal crystal;
         if (threaded.getValue()) {
-            Threads threads = new Threads(ThreadType.CRYSTAL);
+            Threads threads = new Threads();
             threads.start();
             crystal = staticEnderCrystal;
         } else {
             crystal = this.getBestCrystal();
+        }
+        if (overwriteCrystal != null) {
+            if (debug.getValue()) {
+                ClientMessage.sendMessage("Overwriting Crystal");
+            }
+            if (CrystalUtil.calculateDamage(overwriteCrystal, mc.player, ignoreTerrain.getValue()) < maxAntiStuckDamage.getValue()) {
+                crystal = overwriteCrystal;
+            }
         }
         if (crystal == null) return;
         if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
@@ -500,29 +519,38 @@ public final class CrystalAura extends Hack {
             }
         }
 
-        Collections.sort(posArrayList, new DamageComparator());
+        //sorting all place positions
+        posArrayList.sort(new DamageComparator());
+
         //making sure all positions are placeble and wont block each other
-        List<BlockPos> blockedPosList = new ArrayList<>();
-        List<RenderPos> toRemove = new ArrayList<>();
-        for (RenderPos test : posArrayList) {
-            boolean blocked = false;
-            for (BlockPos blockPos : blockedPosList) {
-                if (blockPos.getX() == test.pos.getX() && blockPos.getY() == test.pos.getY() && blockPos.getZ() == test.pos.getZ()) {
-                    blocked = true;
+        if (maxCrystals.getValue() > 1) {
+            List<BlockPos> blockedPosList = new ArrayList<>();
+            List<RenderPos> toRemove = new ArrayList<>();
+            for (RenderPos test : posArrayList) {
+                boolean blocked = false;
+                for (BlockPos blockPos : blockedPosList) {
+                    if (blockPos.getX() == test.pos.getX() && blockPos.getY() == test.pos.getY() && blockPos.getZ() == test.pos.getZ()) {
+                        blocked = true;
+                    }
                 }
+                if (!blocked) {
+                    blockedPosList.addAll(getBlockedPositions(test.pos));
+                } else toRemove.add(test);
             }
-            if (!blocked) {
-                blockedPosList.addAll(getBlockedPositions(test.pos));
-            } else toRemove.add(test);
+            posArrayList.removeAll(toRemove);
         }
-        posArrayList.removeAll(toRemove);
+
         if (this.ezTarget != null) {
             WurstplusThree.KD_MANAGER.targets.put(this.ezTarget.getName(), 20);
             AutoClip.INSTANCE.targets.put(this.ezTarget.getName(), 20);
         }
         //taking the best out of the list
+        int maxCrystals = this.maxCrystals.getValue();
+        if (facePlacing && noMP.getValue()) {
+            maxCrystals = 1;
+        }
         ArrayList<BlockPos> finalArrayList = new ArrayList<>();
-        IntStream.range(0, Math.min(maxCrystals.getValue(), posArrayList.size())).forEachOrdered(n -> {
+        IntStream.range(0, Math.min(maxCrystals, posArrayList.size())).forEachOrdered(n -> {
             RenderPos pos = posArrayList.get(n);
             if (when.is("Both") || when.is("Place")) {
                 clearMap(pos.pos);
@@ -703,21 +731,6 @@ public final class CrystalAura extends Hack {
         return true;
     }
 
-    private void attackID(BlockPos pos, int id) {
-        Entity entity = mc.world.getEntityByID(id);
-        if (entity == null || entity instanceof EntityEnderCrystal) {
-            AttackThread attackThread = new AttackThread(id, pos, 0);
-            attackThread.start();
-        }
-    }
-
-    private void updateEntityID() {
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.getEntityId() <= this.highestID) continue;
-            this.highestID = entity.getEntityId();
-        }
-    }
-
     public boolean setYawPitch(@NotNull BlockPos pos) {
         if (rotateMode.is("Off") || rotateMode.is("Break")) return true;
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), new Vec3d((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f));
@@ -753,20 +766,24 @@ public final class CrystalAura extends Hack {
                 break;
         }
         List<RenderPos> toRemove = new ArrayList<>();
-        for (Iterator<RenderPos> it = renderMap.iterator(); it.hasNext(); ) {
-            RenderPos renderPos = it.next();
-            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderPos.pos.getX(), renderPos.pos.getY() + 1, renderPos.pos.getZ()) : renderPos.pos, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), (int) Math.max(renderFillColour.getValue().getAlpha() - renderPos.alpha, 0)), new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), (int) Math.max(renderBoxColour.getValue().getAlpha() - renderPos.alpha, 0)), width.getValue(), outline, solid, true, (flat.getValue()) ? hight.getValue() : 0f, false, false, false, false, 0);
-            if (renderDamage.getValue()) {
-                RenderUtil.drawText(renderPos.pos, String.valueOf(Math.floor(renderPos.damage)), Gui.INSTANCE.customFont.getValue());
-            }
-            if (renderPos.alpha > Math.max(renderFillColour.getValue().getAlpha(), renderBoxColour.getValue().getAlpha()))
-                toRemove.add(renderPos);
-            renderPos.alpha = renderPos.alpha + (fade.is("Fast") ? 1.5 : fade.is("Slow") ? 0.5 : 1);
+        for (RenderPos renderPos : renderMap) {
+            int fillAlpha = renderFillColour.getValue().getAlpha();
+            int boxAlpha = renderBoxColour.getValue().getAlpha();
             if (currentTargets.contains(renderPos.pos)) {
-                renderPos.alpha = 0;
-            } else if (fade.is("Off")) {
+                renderPos.fadeTimer = 0;
+            } else if (!fade.getValue()) {
                 toRemove.add(renderPos);
+            } else {
+                renderPos.fadeTimer++;
+                fillAlpha = (int) (fillAlpha - (fillAlpha * (renderPos.fadeTimer / fadeTime.getValue())));
+                boxAlpha = (int) (boxAlpha - (boxAlpha * (renderPos.fadeTimer / fadeTime.getValue())));
             }
+            if (renderPos.fadeTimer > fadeTime.getValue())
+                toRemove.add(renderPos);
+            if (toRemove.contains(renderPos)) continue;
+            RenderUtil.drawBoxESP((flat.getValue()) ? new BlockPos(renderPos.pos.getX(), renderPos.pos.getY() + 1, renderPos.pos.getZ()) : renderPos.pos, new Colour(renderFillColour.getValue().getRed(), renderFillColour.getValue().getGreen(), renderFillColour.getValue().getBlue(), Math.max(fillAlpha, 0)), new Colour(renderBoxColour.getValue().getRed(), renderBoxColour.getValue().getGreen(), renderBoxColour.getValue().getBlue(), Math.max(boxAlpha, 0)), width.getValue(), outline, solid, true, (flat.getValue()) ? height.getValue() : 0f, false, false, false, false, 0);
+            if (renderDamage.getValue())
+                RenderUtil.drawText(renderPos.pos, String.valueOf(MathsUtil.roundAvoid(renderPos.damage, 1)), Gui.INSTANCE.customFont.getValue());
         }
         renderMap.removeAll(toRemove);
     }
@@ -780,13 +797,11 @@ public final class CrystalAura extends Hack {
         facePlacing = false;
         attemptedCrystals.clear();
         hasPacketBroke = false;
-        placeTimeoutFlag = false;
         alreadyAttacking = false;
         obiFeetCounter = 0;
         crystalLatency = 0;
         start = 0;
         staticEnderCrystal = null;
-        highestID = -100000;
         staticPos = null;
         crystalsPlaced = 0;
         crystalsPlacedTimer.reset();
@@ -810,59 +825,30 @@ public final class CrystalAura extends Hack {
         }
     }
 
-    class RenderPos {
+    static class RenderPos {
         public RenderPos(BlockPos pos, Double damage) {
             this.pos = pos;
             this.damage = damage;
         }
 
         Double damage;
-        double alpha;
+        double fadeTimer;
         BlockPos pos;
     }
 
-    class DamageComparator implements Comparator<RenderPos> {
+    static class DamageComparator implements Comparator<RenderPos> {
         @Override
         public int compare(RenderPos a, RenderPos b) {
             return b.damage.compareTo(a.damage);
         }
     }
 
-
-
-}
-
-final class AttackThread
-        extends Thread implements Globals {
-    private final int id;
-    private final int delay;
-
-    public AttackThread(int idIn, BlockPos posIn, int delayIn) {
-        this.id = idIn;
-        this.delay = delayIn;
-    }
-
-    @Override
-    public void run() {
-        try {
-            //this.wait(this.delay);
-            CPacketUseEntity attack = new CPacketUseEntity();
-            attack.entityId = this.id;
-            attack.action = CPacketUseEntity.Action.ATTACK;
-            mc.player.connection.sendPacket(attack);
-            mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 final class Threads extends Thread {
-    ThreadType type;
     EntityEnderCrystal bestCrystal;
 
-    public Threads(@NotNull ThreadType type) {
-        this.type = type;
+    public Threads() {
     }
 
     @Override
@@ -872,9 +858,5 @@ final class Threads extends Thread {
     }
 }
 
-enum ThreadType {
-    BLOCK,
-    CRYSTAL
-}
 
 

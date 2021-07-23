@@ -11,6 +11,7 @@ import me.travis.wurstplusthree.util.InventoryUtil;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.ClickType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
@@ -25,6 +26,7 @@ public class Quiver extends Hack {
     private int stage = 1;
     private int returnSlot = -1;
     private int oldHotbar;
+    private Item expectedItem;
 
     @Override
     public void onEnable() {
@@ -63,11 +65,14 @@ public class Quiver extends Hack {
         if (stage != 0)
             InventoryUtil.switchToHotbarSlot(ItemBow.class, false);
         if (stage == 0) {
-            if (!mapArrows()) {
-                this.disable();
-                return;
+            if (mc.player.inventory.getStackInSlot(9).getItem() == expectedItem) {
+                this.stage++;
+            } else {
+                if (!mapArrows()) {
+                    this.disable();
+                    return;
+                }
             }
-            this.stage++;
         } else if (stage == 1) {
             this.stage++;
             timer++;
@@ -93,6 +98,7 @@ public class Quiver extends Hack {
             }
             this.stage = 0;
             timer = 0;
+            expectedItem = null;
         }
         timer++;
     }
@@ -105,12 +111,14 @@ public class Quiver extends Hack {
                 if (PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRENGTH) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRONG_STRENGTH) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.LONG_STRENGTH)) {
                     if (!mc.player.isPotionActive(MobEffects.STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRONG_STRENGTH) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.LONG_STRENGTH)) {
                         switchTo(a);
+                        expectedItem = mc.player.inventory.getStackInSlot(a).getItem();
                         return true;
                     }
                 }
                 if (PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.SWIFTNESS) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.LONG_SWIFTNESS) || PotionUtils.getPotionFromItem(arrow).equals(PotionTypes.STRONG_SWIFTNESS)) {
                     if (!mc.player.isPotionActive(MobEffects.SPEED) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.SWIFTNESS) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.STRONG_SWIFTNESS) && !PotionUtils.getPotionFromItem(currentArrow).equals(PotionTypes.LONG_SWIFTNESS)) {
                         switchTo(a);
+                        expectedItem = mc.player.inventory.getStackInSlot(a).getItem();
                         return true;
                     }
                 }

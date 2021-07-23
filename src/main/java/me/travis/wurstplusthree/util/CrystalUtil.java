@@ -285,6 +285,28 @@ public class CrystalUtil implements Globals {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), false, true, false) == null;
     }
 
+    public static boolean isClose(int input1, int input2, double deviation) {
+        return ((input2 + deviation) < (input1 - deviation)) && ((input1 - deviation) < input2);
+    }
+
+    public static boolean isClose(BlockPos pos1, BlockPos pos2, double d) {
+        return isClose(pos1.getX(), pos2.getX(), d) && isClose(pos1.getY(), pos2.getY(), d) && isClose(pos1.getZ(), pos2.getZ(), d);
+    }
+
+    public static EntityEnderCrystal isCrystalStuck(BlockPos crystalPos) {
+        for (Entity e : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(crystalPos))) {
+            // TODO : figure out how to make this work with minecraft shitty code
+            if (isClose(crystalPos, e.getPosition(), 0.5)) {
+                ClientMessage.sendMessage("shit too close");
+                continue;
+            }
+            if (e instanceof EntityEnderCrystal) {
+                return (EntityEnderCrystal) e;
+            }
+        }
+        return null;
+    }
+
     public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck, boolean onepointThirteen) {
         BlockPos boost = blockPos.add(0, 1, 0);
         BlockPos boost2 = blockPos.add(0, 2, 0);
