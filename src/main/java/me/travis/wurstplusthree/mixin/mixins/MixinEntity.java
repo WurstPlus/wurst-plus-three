@@ -14,7 +14,9 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
 
@@ -38,10 +40,6 @@ public abstract class MixinEntity {
     public float rotationPitch;
     @Shadow
     public boolean onGround;
-    @Shadow
-    public boolean noClip;
-    @Shadow
-    public float prevDistanceWalkedModified;
     @Shadow
     public World world;
     @Shadow
@@ -88,60 +86,6 @@ public abstract class MixinEntity {
     public abstract AxisAlignedBB getEntityBoundingBox();
 
     @Shadow
-    public abstract void resetPositionToBB();
-
-    @Shadow
-    protected abstract void updateFallState(double var1, boolean var3, IBlockState var4, BlockPos var5);
-
-    @Shadow
-    protected abstract boolean canTriggerWalking();
-
-    @Shadow
-    public abstract boolean isInWater();
-
-    @Shadow
-    public abstract boolean isBeingRidden();
-
-    @Shadow
-    public abstract Entity getControllingPassenger();
-
-    @Shadow
-    public abstract void playSound(SoundEvent var1, float var2, float var3);
-
-    @Shadow
-    protected abstract void doBlockCollisions();
-
-    @Shadow
-    public abstract boolean isWet();
-
-    @Shadow
-    protected abstract void playStepSound(BlockPos var1, Block var2);
-
-    @Shadow
-    protected abstract SoundEvent getSwimSound();
-
-    @Shadow
-    protected abstract float playFlySound(float var1);
-
-    @Shadow
-    protected abstract boolean makeFlySound();
-
-    @Shadow
-    public abstract void addEntityCrashInfo(CrashReportCategory var1);
-
-    @Shadow
-    protected abstract void dealFireDamage(int var1);
-
-    @Shadow
-    public abstract void setFire(int var1);
-
-    @Shadow
-    protected abstract int getFireImmuneTicks();
-
-    @Shadow
-    public abstract boolean isBurning();
-
-    @Shadow
     public abstract int getMaxInPortalTime();
 
     @Redirect(method={"onEntityUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;getMaxInPortalTime()I"))
@@ -152,7 +96,7 @@ public abstract class MixinEntity {
     @Redirect(method={"applyEntityCollision"}, at=@At(value="INVOKE", target="Lnet/minecraft/entity/Entity;addVelocity(DDD)V"))
     public void addVelocityHook(Entity entity, double x, double y, double z) {
         PushEvent event = new PushEvent(entity, x, y, z, true);
-        WurstplusThree.EVENT_PROCESSOR.addEventListener(event);
+        WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         if (!event.isCancelled()) {
             entity.motionX += event.x;
             entity.motionY += event.y;
