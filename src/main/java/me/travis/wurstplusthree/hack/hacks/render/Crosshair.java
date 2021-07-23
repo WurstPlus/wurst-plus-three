@@ -46,7 +46,7 @@ public class Crosshair extends Hack {
     @Override
     public void onTick(){
         if(mc.player.motionX > 0 || mc.player.motionY > 0 || mc.player.motionZ > 0){
-            shouldMove = true;
+            shouldMove = moveError.getValue();
         }else {
             shouldMove = false;
         }
