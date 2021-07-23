@@ -1,6 +1,8 @@
 package me.travis.wurstplusthree.util;
 
 
+import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 
 /**
@@ -16,6 +18,10 @@ public class ColorUtil {
         int g = (color.getGreen() * (100 + precent) / 100);
         int b = (color.getBlue() * (100 + precent) / 100);
         return new Color(r,g,b);
+    }
+
+    public static void setColor(Color color) {
+        GL11.glColor4d((double)((float)color.getRed() / 255.0f), (double)((float)color.getGreen() / 255.0f), (double)((float)color.getBlue() / 255.0f), (double)((float)color.getAlpha() / 255.0f));
     }
 
     public static int shadeColour(int color, int precent) {
