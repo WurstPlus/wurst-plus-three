@@ -51,7 +51,7 @@ public abstract class MixinRenderLivingBase {
             if (chams.depth.getValue())
                 glDepthMask(false);
 
-            if (chams.mode.is("Wire")) {
+            if (chams.mode.is("Wire") || chams.mode.is("WireModel")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             } else if (chams.mode.is("Normal")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -106,7 +106,7 @@ public abstract class MixinRenderLivingBase {
                     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                     mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                 }
-                GL11.glEnable((int) 2929);
+                GL11.glEnable((int)2929);
             }
 
             if (chams.lighting.getValue())
