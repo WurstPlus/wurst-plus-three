@@ -49,9 +49,6 @@ public class Chams extends Hack {
     public BooleanSetting local = new BooleanSetting("Self", false, playerParent);
     public ColourSetting highlightColorPlayer = new ColourSetting("PlayerColor", new Colour(250, 0, 250, 50), playerParent);
     public ColourSetting xqzColorPlayer = new ColourSetting("PlayerXqz", new Colour(0, 70, 250, 50), playerParent, v -> xqz.getValue());
-    public BooleanSetting popChams = new BooleanSetting("PopChams", false, playerParent);
-    public ColourSetting popChamsColors = new ColourSetting("PlayerColor", new Colour(255, 255, 255, 200), playerParent);
-
 
     //mobs
     public ParentSetting mobsParent = new ParentSetting("PassiveMobs", this);
@@ -64,33 +61,5 @@ public class Chams extends Hack {
     public BooleanSetting monsters = new BooleanSetting("RenderMonsters", false, monstersParent);
     public ColourSetting highlightColorMonster = new ColourSetting("MonsterColor", new Colour(140, 200, 250, 50), monstersParent);
     public ColourSetting xqzColorMonster = new ColourSetting("MonsterXqz", new Colour(190, 0, 90, 50), monstersParent, v -> xqz.getValue());
-
-    public ConcurrentHashMap<Integer, Integer> pops = new ConcurrentHashMap<>();
-
-    @CommitEvent(priority = EventPriority.LOW)
-    public void onPopLol(TotemPopEvent event) {
-        if (popChams.getValue() && event.getEntity() != mc.player) {
-            Entity ee = event.getEntity();
-            ClientMessage.sendMessage("PopEventLol");
-            ArrayList<Integer> idList = new ArrayList<>();
-            for (Entity e : mc.world.loadedEntityList) {
-                idList.add(e.entityId);
-            }
-            EntityOtherPlayerMP popCham = new EntityOtherPlayerMP(mc.world, event.getEntity().getGameProfile());
-            popCham.copyLocationAndAnglesFrom(ee);
-            popCham.rotationYawHead = ee.getRotationYawHead();
-            popCham.rotationYaw = ee.rotationYaw;
-            popCham.rotationPitch = ee.rotationPitch;
-            popCham.setGameType(GameType.CREATIVE);
-            popCham.setHealth(20);
-            for (int i = 0; i > -10000; i--) {
-                if (!idList.contains(i)) {
-                    mc.world.addEntityToWorld(i, popCham);
-                    pops.put(i, popChamsColors.getValue().getAlpha());
-                    break;
-                }
-            }
-        }
-    }
 }
 
