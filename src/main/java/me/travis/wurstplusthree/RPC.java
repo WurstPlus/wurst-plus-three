@@ -18,7 +18,7 @@ public class RPC {
         discordRPC.Discord_Initialize(discordID, eventHandlers, true, null);
 
         discordRichPresence.startTimestamp = System.currentTimeMillis() / 1000L;
-        discordRichPresence.details = WurstplusThree.MODVER;
+        discordRichPresence.details = WurstplusThree.INSTANCE.MODVER;
         discordRichPresence.largeImageKey = "logo";
         discordRichPresence.largeImageText = "with the_fellas";
         discordRichPresence.smallImageKey = "small";

@@ -31,11 +31,11 @@ jobs:
           # Artifact name
           name: WurstPlus3
           # A file, directory or wildcard pattern that describes what to upload
-          path: ./build/libs/*-release.jar
+          path: ./build/libs/*-release.jar  
       - name: Prepare Artifact for Discord upload
         env:
           RUN_ID: ${{ github.run_number }}
-        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-Beta-${RUN_ID}.jar
+        run: cp ./build/libs/*-release.jar ./build/libs/wurst-plus-three-Beta-${GITHUB_SHA::6}.jar
       - name: Upload Artifact to Discord
         uses: sinshutu/upload-to-discord@master
         env:
