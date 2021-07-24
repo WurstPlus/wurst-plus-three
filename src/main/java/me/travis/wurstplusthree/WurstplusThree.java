@@ -1,5 +1,6 @@
 package me.travis.wurstplusthree;
 
+import me.travis.BuildConfig;
 import me.travis.wurstplusthree.command.Commands;
 import me.travis.wurstplusthree.event.Events;
 import me.travis.wurstplusthree.event.processor.EventProcessor;
@@ -23,6 +24,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
 /**
  * @author travis - began work on 8th april 2021
  */
@@ -31,7 +38,7 @@ public class WurstplusThree {
 
     public static final String MODID = "wurstplusthree";
     public static final String MODNAME = "Wurst+3";
-    public static final String MODVER = "0.7.0";
+    public static final String MODVER = "0.7.0+" + BuildConfig.GitHash;
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 

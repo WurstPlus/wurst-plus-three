@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.hack.hacks.player;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;

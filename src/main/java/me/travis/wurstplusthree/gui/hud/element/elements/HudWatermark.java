@@ -28,7 +28,7 @@ public class HudWatermark extends HudElement{
     @Override
     public void onRender2D(Render2DEvent event){
         text = ChatFormatting.GOLD + WurstplusThree.MODNAME + ChatFormatting.RESET
-                + " v" + WurstplusThree.MODVER;
+                + " v" + WurstplusThree.INSTANCE.MODVER;
         HudUtil.drawHudString(text, getX(), getY(), HudEditor.INSTANCE.fontColor.getValue().hashCode());
     }
 }
