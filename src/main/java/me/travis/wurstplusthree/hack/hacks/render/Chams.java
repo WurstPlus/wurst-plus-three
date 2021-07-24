@@ -7,13 +7,14 @@ import me.travis.wurstplusthree.util.elements.Colour;
 //made by linus touch tips
 import java.util.Arrays;
 
+
 @Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER, isListening = false)
 public class Chams extends Hack {
     public static Chams INSTANCE;
     public Chams() {
         INSTANCE = this;
     }
-    public EnumSetting mode = new EnumSetting("Mode", "Wire", Arrays.asList("Model", "Wire", "Shine"), this);
+    public EnumSetting mode = new EnumSetting("Mode", "Wire", Arrays.asList("Model", "Wire", "Shine", "WireModel"), this);
     public DoubleSetting width = new DoubleSetting("Width", 2.0, 0.0, 5.0, this, v -> mode.is("Wire"));
     public BooleanSetting texture = new BooleanSetting("Texture", false, this);
     public BooleanSetting lighting = new BooleanSetting("Lighting", false, this);

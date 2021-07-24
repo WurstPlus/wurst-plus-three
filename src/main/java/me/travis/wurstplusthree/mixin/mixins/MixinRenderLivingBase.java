@@ -7,23 +7,15 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -36,7 +28,7 @@ public abstract class MixinRenderLivingBase {
     @Inject(method={"renderModel"}, at={@At(value="INVOKE", target="Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V")}, cancellable=true)
     private void renderModel(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo info) {
         Chams chams = Chams.INSTANCE;
-        if(!chams.isEnabled())return;
+        if (!chams.isEnabled()) return;
         if ((entityLivingBase instanceof EntityOtherPlayerMP && chams.players.getValue() || entityLivingBase instanceof EntityPlayerSP && chams.local.getValue() && chams.players.getValue() || (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) && chams.mobs.getValue() || EntityUtil.isHostileMob(entityLivingBase) && chams.monsters.getValue())) {
             if (!chams.texture.getValue()) {
                 info.cancel();
@@ -59,7 +51,7 @@ public abstract class MixinRenderLivingBase {
             if (chams.depth.getValue())
                 glDepthMask(false);
 
-            if (chams.mode.is("Wire")) {
+            if (chams.mode.is("Wire") || chams.mode.is("WireModel")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             } else if (chams.mode.is("Normal")) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -79,7 +71,12 @@ public abstract class MixinRenderLivingBase {
                 }
                 GL11.glDisable((int) 2929);
                 GL11.glEnable((int) 10754);
-                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);;
+                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                if (chams.mode.is("WireModel")) {
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                }
                 GL11.glEnable((int) 2929);
                 if (entityLivingBase instanceof EntityOtherPlayerMP || entityLivingBase instanceof EntityPlayerSP) {
                     ColorUtil.setColor(chams.highlightColorPlayer.getValue());
@@ -88,7 +85,12 @@ public abstract class MixinRenderLivingBase {
                 } else {
                     ColorUtil.setColor(chams.highlightColorMonster.getValue());
                 }
-                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);;
+                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                if (chams.mode.is("WireModel")) {
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                }
             } else {
                 GL11.glDisable((int) 2929);
                 GL11.glEnable((int) 10754);
@@ -99,8 +101,12 @@ public abstract class MixinRenderLivingBase {
                 } else {
                     ColorUtil.setColor(chams.highlightColorMonster.getValue());
                 }
-                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);;
-                GL11.glEnable((int) 2929);
+                mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                if (chams.mode.is("WireModel")) {
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                }
+                GL11.glEnable((int)2929);
             }
 
             if (chams.lighting.getValue())
