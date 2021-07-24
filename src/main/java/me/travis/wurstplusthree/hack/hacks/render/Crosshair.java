@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Hack.Registration(name = "Crosshair", description = "Renders a Crosshair like csgo", category = Hack.Category.RENDER, priority = HackPriority.Lowest)
 public class Crosshair extends Hack {
 
-    //TODO add move error and outerlines
 
     ParentSetting dot = new ParentSetting("Dot", this);
     BooleanSetting centerDot = new BooleanSetting("Center Dot", true, dot);
@@ -32,7 +31,7 @@ public class Crosshair extends Hack {
 
     ParentSetting linesInner = new ParentSetting("Inner Lines", this);
     BooleanSetting innerLines = new BooleanSetting("Inner Lines", false, linesInner);
-    BooleanSetting moveError = new BooleanSetting("Move Error", true, linesInner);
+    BooleanSetting moveError = new BooleanSetting("Move Error", true, linesInner, s -> innerLines.getValue());
     BooleanSetting innerLinesOutline = new BooleanSetting("Inner Lines Outline", true, linesInner, s -> innerLines.getValue());
     ColourSetting innerLineColor = new ColourSetting("Inner Line Color", new Colour(255,255,255), linesInner, s -> innerLines.getValue());
     ColourSetting innerOutlineColor = new ColourSetting("Inner Outline Color", new Colour(0, 0, 0), linesInner, s -> innerLines.getValue());
@@ -45,8 +44,8 @@ public class Crosshair extends Hack {
 
     @Override
     public void onTick(){
-        if(mc.player.motionX != 0 || mc.player.motionY != 0 || mc.player.motionZ != 0){
-            shouldMove = moveError.getValue();
+        if(moveError.getValue() && (mc.player.motionX > 0.1 || mc.player.motionY > 0.1 || mc.player.motionZ > 0.1 || mc.player.motionX < -0.1 || mc.player.motionY < -0.1 || mc.player.motionZ < -0.1)){
+            shouldMove = true;
         }else {
             shouldMove = false;
         }
