@@ -18,7 +18,7 @@ public class RotationManager implements Globals {
     private float spoofedYaw;
     private float spoofedPitch;
 
-    public void onPacketSend(SPacketPlayerPosLook p) {
+    public void onPacketReceive(SPacketPlayerPosLook p) {
         spoofedPitch = p.getPitch();
         spoofedYaw = p.getYaw();
         if (NoRotate.INSTANCE.isEnabled()) {
