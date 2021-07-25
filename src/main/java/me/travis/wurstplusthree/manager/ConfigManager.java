@@ -5,21 +5,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
-import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
-import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
-import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.WhitelistUtil;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
-import scala.reflect.io.Directory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -80,7 +76,6 @@ public class ConfigManager implements Globals {
             this.loadDrawn();
             this.loadFont();
             this.loadBurrowBlock();
-            this.loadHud();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,8 +103,6 @@ public class ConfigManager implements Globals {
             this.verifyDir(mainFolderPath);
             this.verifyDir(configsFolderPath);
             this.verifyDir(activeConfigFolderPath);
-
-            this.saveHud();
             this.saveEnemies();
             this.saveFriends();
             this.saveSettings();
@@ -281,7 +274,7 @@ public class ConfigManager implements Globals {
 
     private void clearSettings() {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
-            if (hack instanceof Gui || hack instanceof HudEditor) continue;
+            if (hack instanceof Gui) continue;
             hack.setHold(false);
             hack.setEnabled(false);
             hack.setBind(Keyboard.KEY_NONE);
@@ -338,32 +331,6 @@ public class ConfigManager implements Globals {
         br.close();
     }
 
-    private void saveHud() throws IOException {
-        FileWriter writer = new FileWriter(hudDir);
-        for (HudElement hudElement : WurstplusThree.HUD_MANAGER.getHudElements()) {
-            writer.write(hudElement.getName() + ":" + hudElement.getX() + ":" + hudElement.getY() + ":" + hudElement.isEnabled() + System.lineSeparator());
-        }
-        writer.close();
-    }
-
-    private void loadHud() throws IOException {
-        for (String hudElement : Files.readAllLines(hudPath).stream().distinct().collect(Collectors.toList())) {
-            try {
-                String trim = hudElement.trim();
-                String name = trim.split(":")[0];
-                int x = Integer.parseInt(trim.split(":")[1]);
-                int y = Integer.parseInt(trim.split(":")[2]);
-                boolean enabled = Boolean.parseBoolean(trim.split(":")[3]);
-                HudElement element = WurstplusThree.HUD_MANAGER.getElementByName(name);
-                if (element == null) continue;
-                element.setX(x);
-                element.setY(y);
-                element.setEnabled(enabled);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private void saveDrawn() throws IOException {
         FileWriter writer = new FileWriter(drawnDir);

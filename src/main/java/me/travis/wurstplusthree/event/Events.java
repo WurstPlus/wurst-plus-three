@@ -151,7 +151,6 @@ public class Events implements Globals {
             ScaledResolution resolution = new ScaledResolution(mc);
             Render2DEvent render2DEvent = new Render2DEvent(event.getPartialTicks(), resolution);
             WurstplusThree.HACKS.onRender2D(render2DEvent);
-            WurstplusThree.HUD_MANAGER.onRender2D(render2DEvent);
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -247,7 +246,6 @@ public class Events implements Globals {
                 if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
                     WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
-                    Chams.INSTANCE.onPopLol(new TotemPopEvent(player));
                     WurstplusThree.POP_MANAGER.onTotemPop(player);
                 }
             } catch (Exception ignored) {}

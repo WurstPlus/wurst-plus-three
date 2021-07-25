@@ -7,20 +7,14 @@ import me.travis.wurstplusthree.event.events.PacketEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.hack.hacks.chat.AutoEz;
 import me.travis.wurstplusthree.hack.hacks.chat.TotemPopCounter;
-import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.MathsUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.security.PublicKey;
-import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -76,6 +76,10 @@ public class Setting<T> {
             this.getParent().onSettingChange();
     }
 
+    public ParentSetting getParentSetting() {
+        return parentSetting;
+    }
+
     public boolean isChild() {
         return parentSetting != null;
     }

@@ -2,8 +2,6 @@ package me.travis.wurstplusthree.gui.component;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
-import me.travis.wurstplusthree.gui.hud.HudButton;
-import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.ColorUtil;
@@ -39,24 +37,13 @@ public class CategoryComponent implements Globals {
         this.dragX = 0;
         this.isOpen = true;
         this.isDragging = false;
-
-        int tY = this.height;
-        if(category.equals(Hack.Category.HUD)){
-            for(HudElement element : WurstplusThree.HUD_MANAGER.getHudElements()){
-                HudButton hudButton = new HudButton(element, this, tY);
-                components.add(hudButton);
-                tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-            }
-        }else {
-            for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
-                if (mod.getCategory().equals(category)) {
-                    HackButton moduleButton = new HackButton();
-                    moduleButton.init(mod, this, tY, false);
-                    this.components.add(moduleButton);
-                    tY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-                }
+        for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
+            if (mod.getCategory().equals(category)) {
+                HackButton moduleButton = new HackButton(mod);
+                this.components.add(moduleButton);
             }
         }
+
     }
 
     public float animationValue = 0;
@@ -86,21 +73,15 @@ public class CategoryComponent implements Globals {
         }
         if (this.isOpen) {
             if (!this.components.isEmpty()) {
-                int x = 0;
+                int offset = this.height;
                 for (Component component : components) {
-                    component.renderComponent(mouseX, mouseY);
-                    x++;
-                    if (component instanceof HackButton) {
-                        if (((HackButton) component).isOpen) {
-                            x += ((HackButton) component).subCompLength;
-                        }
-                    }
+                    component.renderComponent(mouseX, mouseY, x, y + offset);
+                    offset = offset + component.getHeight();
                 }
-                x *= WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 switch (Gui.INSTANCE.type.getValue()) {
                     case "Sin":
                         ColorUtil.type type = ColorUtil.type.SPECIAL;
-                        switch (Gui.INSTANCE.SinMode.getValue()){
+                        switch (Gui.INSTANCE.SinMode.getValue()) {
                             case "Special":
                                 type = ColorUtil.type.SPECIAL;
                                 break;
@@ -114,28 +95,20 @@ public class CategoryComponent implements Globals {
                                 type = ColorUtil.type.BRIGHTNESS;
                                 break;
                         }
-                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x,
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, offset - WurstplusGuiNew.HEIGHT,
                                 ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), 1000, 255, type).hashCode(),
                                 ColorUtil.getSinState(Gui.INSTANCE.buttonColor.getColor(), Gui.INSTANCE.rainbowDelay.getValue(), 255, type).hashCode());
                         break;
                     case "Rainbow":
-                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x,
+                        RenderUtil2D.drawVLineG(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, offset - WurstplusGuiNew.HEIGHT,
                                 ColorUtil.releasedDynamicRainbow(0, 255).hashCode(),
                                 ColorUtil.releasedDynamicRainbow(Gui.INSTANCE.rainbowDelay.getValue(), 255).hashCode());
                         break;
                     case "None":
-                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, x, Gui.INSTANCE.buttonColor.getValue().hashCode());
+                        RenderUtil2D.drawVLine(this.x + 4, this.y + 1 + WurstplusGuiNew.HEIGHT - 1, offset - WurstplusGuiNew.HEIGHT, Gui.INSTANCE.buttonColor.getValue().hashCode());
                         break;
                 }
             }
-        }
-    }
-
-    public void refresh() {
-        int off = this.height;
-        for (Component comp : components) {
-            comp.setOff(off);
-            off += comp.getHeight();
         }
     }
 
@@ -155,9 +128,6 @@ public class CategoryComponent implements Globals {
         this.y = newY;
     }
 
-    public int getWidth() {
-        return width;
-    }
 
     public void updatePosition(int mouseX, int mouseY) {
         if (this.isDragging) {

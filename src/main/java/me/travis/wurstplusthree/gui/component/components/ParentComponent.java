@@ -4,80 +4,139 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.component.HackButton;
+import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
-import me.travis.wurstplusthree.setting.type.ParentSetting;
+import me.travis.wurstplusthree.setting.Setting;
+import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ParentComponent extends Component {
-    private boolean hovered;
     private ParentSetting option;
-    private final HackButton parent;
-    private int offset;
+    public Hack mod;
+    private final ArrayList<Component> subcomponents = new ArrayList<>();
     private int x;
     private int y;
+    private int y2;
 
-    public ParentComponent(ParentSetting option, HackButton button, int offset) {
+    public ParentComponent(ParentSetting option, Hack hack) {
+        super(option);
+        this.mod = hack;
         this.option = option;
-        this.parent = button;
-        this.offset = offset;
-        this.x = button.parent.getX() + button.parent.getWidth();
-        this.y = button.parent.getY() + button.offset;
-        this.setShown(true);
+        for (Setting s : mod.getSettings()) {
+            if (!s.isChild()) continue;
+            if (s.getParentSetting() != option) continue;
+            if (s instanceof BooleanSetting) {
+                subcomponents.add(new BooleanComponent((BooleanSetting) s));
+            } else if (s instanceof ColourSetting) {
+                subcomponents.add(new ColorComponent((ColourSetting) s));
+            } else if (s instanceof IntSetting) {
+                subcomponents.add(new SliderComponent((IntSetting) s));
+            } else if (s instanceof DoubleSetting) {
+                subcomponents.add(new SliderComponent((DoubleSetting) s));
+            } else if (s instanceof KeySetting) {
+                subcomponents.add(new KeyBindComponent((KeySetting) s));
+            } else if (s instanceof ParentSetting) {
+                subcomponents.add(new ParentComponent((ParentSetting) s, mod));
+            } else if (s instanceof EnumSetting) {
+                subcomponents.add(new ModeComponent((EnumSetting) s));
+            }
+        }
     }
 
 
     @Override
-    public void renderComponent(int mouseX, int mouseY) {
-        if(!this.isShown())return;
-        RenderUtil2D.drawGradientRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2, this.hovered ? Gui.INSTANCE.groupHoverColor.getValue().hashCode(): Gui.INSTANCE.groupColor.getValue().hashCode(), this.hovered ? Gui.INSTANCE.groupHoverColor.getValue().hashCode(): Gui.INSTANCE.groupColor.getValue().hashCode(), isMouseOnButton(mouseX, mouseY));
-        WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT - 2, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_CHILDBUTTON());
+    public void renderComponent(int mouseX, int mouseY, int x, int y) {
+        this.x = x;
+        this.y = y;
+        RenderUtil2D.drawGradientRect(x + WurstplusGuiNew.SETTING_OFFSET, y , x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT  - 2, isMouseOnButton(mouseX, mouseY) ? Gui.INSTANCE.groupHoverColor.getValue().hashCode(): Gui.INSTANCE.groupColor.getValue().hashCode(), isMouseOnButton(mouseX, mouseY) ? Gui.INSTANCE.groupHoverColor.getValue().hashCode(): Gui.INSTANCE.groupColor.getValue().hashCode(), isMouseOnButton(mouseX, mouseY));
+        WurstplusGuiNew.drawRect(x + WurstplusGuiNew.SETTING_OFFSET, y  + WurstplusGuiNew.HEIGHT - 2, x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT , isMouseOnButton(mouseX, mouseY) ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_CHILDBUTTON());
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.option.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow((this.option.getValue() ? "-" : "+"), parent.parent.getX() + 90 + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.option.getName(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow((this.option.getValue() ? "-" : "+"), x + 90 + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(this.option.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
-            mc.fontRenderer.drawStringWithShadow((this.option.getValue() ? "-" : "+"), parent.parent.getX() + 90 + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow(this.option.getName(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow((this.option.getValue() ? "-" : "+"), x + 90 + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
+        }
+        if (this.option.getValue()) {
+            if (y2 != 0) {
+                y2--;
+                GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            }
+            int offset = WurstplusGuiNew.HEIGHT;
+            for (Component comp : this.subcomponents) {
+                if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
+                comp.renderComponent(mouseX, mouseY, x, y + offset - y2);
+                offset = offset + comp.getHeight();
+            }
+            if (y2 != 0) {
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            }
         }
     }
 
     @Override
-    public void setOff(int newOff) {
-        offset = newOff;
+    public void renderToolTip(int mouseX, int mouseY) {
+        if (this.option.getValue())
+            for (Component component : subcomponents) {
+                if (component.getSetting() != null && !component.getSetting().isShown()) continue;
+                component.renderToolTip(mouseX, mouseY);
+            }
     }
 
     @Override
-    public void updateComponent(int mouseX, int mouseY) {
-        this.hovered = isMouseOnButton(mouseX, mouseY);
-        this.y = parent.parent.getY() + offset;
-        this.x = parent.parent.getX();
-        boolean old = isShown();
-        setShown(this.option.isShown());
-        if(old != isShown()){
-            this.parent.init(parent.mod, parent.parent, parent.offset, true);
+    public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
+        if (this.option.getValue())
+            for (Component comp : this.subcomponents) {
+                if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
+                comp.mouseReleased(mouseX, mouseY, mouseButton);
+            }
+    }
+
+    @Override
+    public void keyTyped(char typedChar, int key) {
+        if (this.option.getValue())
+            for (Component comp : this.subcomponents) {
+                if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
+                comp.keyTyped(typedChar, key);
+            }
+    }
+
+
+    @Override
+    public int getHeight() {
+        if (this.option.getValue())
+            return getHeightTarget() + WurstplusGuiNew.HEIGHT - y2;
+        return WurstplusGuiNew.HEIGHT;
+    }
+
+    private int getHeightTarget() {
+        int val = 0;
+        for (Component c : subcomponents) {
+            if (c.getSetting() != null && !c.getSetting().isShown()) continue;
+            val = val + c.getHeight();
         }
+        return val;
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(!isShown())return;
-        if (isMouseOnButton(mouseX, mouseY) && (button == 0 || button == 1) && this.parent.isOpen) {
+        if (isMouseOnButton(mouseX, mouseY) && (button == 0 || button == 1)) {
             this.option.toggle();
+            y2 = getHeightTarget();
         }
+        if (this.option.getValue())
+            for (Component comp : this.subcomponents) {
+                if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
+                comp.mouseClicked(mouseX, mouseY, button);
+            }
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET && x < this.parent.parent.getX() + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET && y < this.parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
-    }
-
-    @Override
-    public HackButton getParent() {
-        return parent;
-    }
-
-    @Override
-    public int getOffset() {
-        return offset;
+        return x > this.x+ WurstplusGuiNew.SETTING_OFFSET && x < this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.y  && y < this.y + WurstplusGuiNew.HEIGHT ;
     }
 }

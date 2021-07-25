@@ -1,5 +1,8 @@
 package me.travis.wurstplusthree.gui.component;
 
+import me.travis.wurstplusthree.gui.WurstplusGuiNew;
+import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.Globals;
 
 /**
@@ -8,12 +11,27 @@ import me.travis.wurstplusthree.util.Globals;
  */
 
 public abstract class Component implements Globals {
-    private boolean shown;
-    public void renderComponent(int mouseX, int mouseY) {
+    private Hack hack;
+    private Setting setting;
+    public Component(Hack hack) {
+        this.hack = hack;
+        this.setting = null;
     }
 
+    public Component(Setting s) {
+        this.hack = null;
+        this.setting = s;
+    }
 
-    public void updateComponent(int mouseX, int mouseY) {
+    public Setting getSetting() {
+        return this.setting;
+    }
+
+    public Hack getHack() {
+        return this.hack;
+    }
+
+    public void renderComponent(int mouseX, int mouseY, int x, int y) {
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {
@@ -25,31 +43,15 @@ public abstract class Component implements Globals {
     public void keyTyped(char typedChar, int key) {
     }
 
-    public void setOff(int newOff) {
-    }
-
     public int getHeight() {
-        return 0;
+        return WurstplusGuiNew.HEIGHT;
     }
 
     public HackButton getParent() {
         return null;
     }
 
-    public int getOffset() {
-        return 0;
-    }
 
     public void renderToolTip(int mouseX, int mouseY){
     }
-
-    public boolean isShown() {
-        return this.shown;
-    }
-
-    public boolean setShown(boolean shown) {
-        this.shown = shown;
-        return this.shown;
-    }
-
 }

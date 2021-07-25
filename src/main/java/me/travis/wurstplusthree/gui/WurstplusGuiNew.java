@@ -28,11 +28,11 @@ import java.util.ArrayList;
  */
 
 public class WurstplusGuiNew extends GuiScreen {
-
+    int screenHeight;
+    int screenWidth;
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
     public static final int MODULE_WIDTH = 5;
-    public static final int MODULE_OFFSET = 0;
     public static final int SETTING_OFFSET = 5;
 
     public static final int FONT_HEIGHT = 4;
@@ -72,7 +72,7 @@ public class WurstplusGuiNew extends GuiScreen {
             CategoryComponent categoryComponent = new CategoryComponent(category);
             categoryComponent.setX(startX);
             categoryComponents.add(categoryComponent);
-            startX += categoryComponent.getWidth() + 10;
+            startX += WIDTH + 10;
             flag = false;
         }
     }
@@ -91,19 +91,15 @@ public class WurstplusGuiNew extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
         ScaledResolution sr = new ScaledResolution(mc);
+        screenHeight = sr.getScaledHeight();
+        screenWidth = sr.getScaledWidth();
         boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
         if (gradientShadow) {
             drawGradientRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Gui.INSTANCE.gradientStartColor.getValue().getRGB(), Gui.INSTANCE.gradientEndColor.getValue().getRGB());
         }
-        if(!flag && Gui.INSTANCE.animation.getValue()) {
-            animate(sr);
-        }
         for(CategoryComponent categoryComponent : categoryComponents){
             categoryComponent.renderFrame(mouseX, mouseY);
             categoryComponent.updatePosition(mouseX, mouseY);
-            for (Component comp : categoryComponent.getComponents()) {
-                comp.updateComponent(mouseX, mouseY);
-            }
         }
 
         for(CategoryComponent categoryComponent : categoryComponents){
@@ -200,39 +196,6 @@ public class WurstplusGuiNew extends GuiScreen {
         return categoryComponents;
     }
 
-    private void animate(ScaledResolution sr){
-        final int deltaTime = WurstplusThree.RENDER_UTIL_2D.getDeltaTime();
-        for(CategoryComponent c : categoryComponents) {
-            final float SEQUENCES = Gui.INSTANCE.animationStages.getValue();
-            final int y = 500;
-            if(c.animationValue < y){
-                c.animationValue += (y * ((float) (deltaTime) / SEQUENCES));
-            }
-
-            c.animationValue = constrainToRange(c.animationValue, 0, y);
-            final float newY = sr.getScaledHeight() - c.animationValue - 2;
-            c.setY((int) newY);
-        }
-        int i = 0;
-        for(CategoryComponent c : categoryComponents){
-            if(c.getY() <= 7.0){
-                i++;
-            }
-            else if(c.getY() <= 38 && mc.gameSettings.fullScreen){
-                i++;
-            }
-            else if(c.getY() <= 578 && mc.gameSettings.guiScale == 1){
-                i++;
-            }
-        }
-        if(i == categoryComponents.size()) {
-            flag = true;
-        }
-    }
-
-    private static float constrainToRange(float value, float min, float max) {
-        return Math.min(Math.max(value, min), max);
-    }
 
     @CommitEvent
     public void ColorCopyEvent(ColorCopyEvent event){

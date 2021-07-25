@@ -34,7 +34,7 @@ public abstract class MixinRenderLivingBase {
     private void renderModel(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo info) {
         Chams chams = Chams.INSTANCE;
         if (!chams.isEnabled()) return;
-        if (entityLivingBase instanceof EntityOtherPlayerMP && chams.players.getValue()  ||  entityLivingBase instanceof EntityPlayerSP  && chams.players.getValue() && chams.local.getValue() || (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) && chams.mobs.getValue() || EntityUtil.isHostileMob(entityLivingBase) && chams.monsters.getValue()) {
+        if (entityLivingBase instanceof EntityOtherPlayerMP && chams.players.getValue() ||  entityLivingBase instanceof EntityPlayerSP  && chams.players.getValue() && chams.local.getValue() || (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) && chams.mobs.getValue() || EntityUtil.isHostileMob(entityLivingBase) && chams.monsters.getValue()) {
             if (!chams.texture.getValue()) {
                 info.cancel();
             }
