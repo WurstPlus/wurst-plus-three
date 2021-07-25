@@ -66,18 +66,21 @@ public class HackButton extends Component {
             mc.fontRenderer.drawStringWithShadow(this.mod.getName(), x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         if (isOpen) {
+            boolean didScissor = false;
             if (y2 != 0) {
                 y2--;
+                GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
+                didScissor = true;
             }
-            GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
             int offset = WurstplusGuiNew.HEIGHT;
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.renderComponent(MouseX, MouseY, x, y + offset - y2);
                 offset = offset + comp.getHeight();
             }
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            if (didScissor)
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
         renderArrow();
     }

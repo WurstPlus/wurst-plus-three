@@ -62,10 +62,12 @@ public class ParentComponent extends Component {
             mc.fontRenderer.drawStringWithShadow((this.option.getValue() ? "-" : "+"), x + 90 + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         if (this.option.getValue()) {
+            boolean didScissor = false;
             if (y2 != 0) {
                 y2--;
                 GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
+                didScissor = true;
             }
             int offset = WurstplusGuiNew.HEIGHT;
             for (Component comp : this.subcomponents) {
@@ -73,7 +75,7 @@ public class ParentComponent extends Component {
                 comp.renderComponent(mouseX, mouseY, x, y + offset - y2);
                 offset = offset + comp.getHeight();
             }
-            if (y2 != 0) {
+            if (didScissor) {
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
             }
         }
