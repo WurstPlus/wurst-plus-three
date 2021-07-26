@@ -21,7 +21,7 @@ public class HackButton extends Component {
     public boolean isOpen = false;
     int x;
     int y;
-    int y2;
+    double y2;
 
     public HackButton(Hack mod) {
         super(mod);
@@ -67,7 +67,7 @@ public class HackButton extends Component {
         }
         boolean didScissor = false;
         if (y2 != 0) {
-            y2--;
+            y2 = Math.max(y2 - Gui.INSTANCE.animation.getValue(), 0);
             GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             didScissor = true;
@@ -76,14 +76,14 @@ public class HackButton extends Component {
             int offset = WurstplusGuiNew.HEIGHT;
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
-                comp.renderComponent(MouseX, MouseY, x, y + offset - y2);
+                comp.renderComponent(MouseX, MouseY, x, y + offset - (int) y2);
                 offset = offset + comp.getHeight();
             }
         } else if (didScissor) {
             int offset = WurstplusGuiNew.HEIGHT - getHeightTarget();
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
-                comp.renderComponent(MouseX, MouseY, x, y + offset + y2);
+                comp.renderComponent(MouseX, MouseY, x, y + offset + (int) y2);
                 offset = offset + comp.getHeight();
             }
         }
@@ -111,8 +111,8 @@ public class HackButton extends Component {
     @Override
     public int getHeight() {
         if (isOpen)
-            return getHeightTarget() + WurstplusGuiNew.HEIGHT - y2;
-        return WurstplusGuiNew.HEIGHT + y2;
+            return (int) (getHeightTarget() + WurstplusGuiNew.HEIGHT - y2);
+        return (int) (WurstplusGuiNew.HEIGHT + y2);
     }
 
     private int getHeightTarget() {

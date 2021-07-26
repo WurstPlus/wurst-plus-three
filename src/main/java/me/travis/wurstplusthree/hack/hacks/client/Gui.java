@@ -33,8 +33,7 @@ public class Gui extends Hack {
     public BooleanSetting gradient = new BooleanSetting("Enabled", false, gradientParent);
     public ColourSetting gradientStartColor = new ColourSetting("GradientStartColor", new Colour(255, 122, 5, 100), gradientParent);
     public ColourSetting gradientEndColor = new ColourSetting("GradientEndColor", new Colour(255, 122, 5, 100), gradientParent);
-    public BooleanSetting animation = new BooleanSetting("Animation", true, this);
-    public IntSetting animationStages = new IntSetting("AnimationStages", 250, 1, 1000, this);
+    public DoubleSetting animation = new DoubleSetting("AnimationSpeed", 1.0, 0.1, 5.0, this);
     public EnumSetting arrowType = new EnumSetting("ArrowType", "Off", Arrays.asList("Off", "Type1", "Type2"), this);
     public IntSetting mouseDelay = new IntSetting("MouseDelay", 250, 100, 300, this);
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);

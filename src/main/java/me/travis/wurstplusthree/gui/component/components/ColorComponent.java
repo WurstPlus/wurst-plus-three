@@ -30,7 +30,7 @@ public class ColorComponent extends Component {
     boolean pickingAlpha = false;
     int x;
     int y;
-    private int y2;
+    private double y2;
 
     public ColorComponent(ColourSetting value) {
         super(value);
@@ -54,21 +54,21 @@ public class ColorComponent extends Component {
         }
         boolean didScissor = false;
         if (y2 != 0) {
-            y2--;
+            y2 = Math.max(y2 - Gui.INSTANCE.animation.getValue(), 0);
             GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - WurstplusGuiNew.HEIGHT - y - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             didScissor = true;
         }
         if (isOpen || didScissor) {
-            WurstplusGuiNew.drawRect(this.x + WurstplusGuiNew.SETTING_OFFSET, y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
-            this.drawPicker(set, this.x + 7, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 100, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 7, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 72, mouseX, mouseY);
+            WurstplusGuiNew.drawRect(this.x + WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
+            this.drawPicker(set, this.x + 7, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 100, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 7, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 72, mouseX, mouseY);
             set.setValue(finalColor);
             RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 4  + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
-            RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 6  + booleanButtonOffset, this.x + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
+            RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 6  + booleanButtonOffset, this.x + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
             if (Gui.INSTANCE.customFont.getValue()) {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
             } else {
-                mc.fontRenderer.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
+                mc.fontRenderer.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
             }
             if (didScissor) {
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -241,8 +241,8 @@ public class ColorComponent extends Component {
     @Override
     public int getHeight() {
         if (isOpen) {
-            return WurstplusGuiNew.HEIGHT * 6 - y2;
-        } else return WurstplusGuiNew.HEIGHT + y2;
+            return WurstplusGuiNew.HEIGHT * 6 - (int) y2;
+        } else return WurstplusGuiNew.HEIGHT + (int) y2;
     }
 
     @Override

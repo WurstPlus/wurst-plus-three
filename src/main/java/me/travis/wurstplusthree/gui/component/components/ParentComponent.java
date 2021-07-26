@@ -20,7 +20,7 @@ public class ParentComponent extends Component {
     private final ArrayList<Component> subcomponents = new ArrayList<>();
     private int x;
     private int y;
-    private int y2;
+    private double y2;
 
     public ParentComponent(ParentSetting option, Hack hack) {
         super(option);
@@ -63,7 +63,7 @@ public class ParentComponent extends Component {
         }
         boolean didScissor = false;
         if (y2 != 0) {
-            y2--;
+            y2 = Math.max(y2 - Gui.INSTANCE.animation.getValue(), 0);
             GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             didScissor = true;
@@ -72,14 +72,14 @@ public class ParentComponent extends Component {
             int offset = WurstplusGuiNew.HEIGHT;
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
-                comp.renderComponent(mouseX, mouseY, x, y + offset - y2);
+                comp.renderComponent(mouseX, mouseY, x, (int) (y + offset - y2));
                 offset = offset + comp.getHeight();
             }
         } else if (didScissor) {
             int offset = WurstplusGuiNew.HEIGHT - getHeightTarget();
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
-                comp.renderComponent(mouseX, mouseY, x, y + offset + y2);
+                comp.renderComponent(mouseX, mouseY, x, (int) (y + offset + y2));
                 offset = offset + comp.getHeight();
             }
         }
@@ -118,8 +118,8 @@ public class ParentComponent extends Component {
     @Override
     public int getHeight() {
         if (this.option.getValue())
-            return getHeightTarget() + WurstplusGuiNew.HEIGHT - y2;
-        return WurstplusGuiNew.HEIGHT + y2;
+            return (int) (getHeightTarget() + WurstplusGuiNew.HEIGHT - y2);
+        return (int) (WurstplusGuiNew.HEIGHT + y2);
     }
 
     private int getHeightTarget() {
