@@ -9,6 +9,7 @@ public class DoubleSetting extends Setting<Double> {
 
     private final double min;
     private final double max;
+    private boolean open = false;
 
     public DoubleSetting(String name, Double value, Double min, Double max, Hack parent) {
         super(name, value, parent);
@@ -32,6 +33,14 @@ public class DoubleSetting extends Setting<Double> {
         super(name, value, parent, shown);
         this.min = min;
         this.max = max;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public Double getValue() {

@@ -9,14 +9,7 @@ import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
-/**
- * @author Madmegsox1
- * @since 29/04/2021
- */
-
 public class ModeComponent extends Component {
-
-    private boolean hovered;
     private final EnumSetting set;
     int y;
     int x;
@@ -32,7 +25,7 @@ public class ModeComponent extends Component {
     public void renderComponent(int mouseX, int mouseY, int x, int y) {
         this.x = x;
         this.y = y;
-        RenderUtil2D.drawRectMC(x + WurstplusGuiNew.SETTING_OFFSET, y , x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT , this.hovered ? WurstplusGuiNew.GUI_HOVERED_COLOR() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
+        RenderUtil2D.drawRectMC(x + WurstplusGuiNew.SETTING_OFFSET, y , x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT , isMouseOnButton(mouseX, mouseY) ? WurstplusGuiNew.GUI_HOVERED_COLOR() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
         if (Gui.INSTANCE.customFont.getValue()) {
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName() + ": " + set.getValue(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {

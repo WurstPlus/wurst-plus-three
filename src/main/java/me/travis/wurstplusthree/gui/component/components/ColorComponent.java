@@ -4,7 +4,6 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.ColorCopyEvent;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
-import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
@@ -12,13 +11,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-
-/**
- * @author Madmegsox1
- * @since 29/04/2021
- * @author wallhacks0
- * original picker was made by LinusTouchTips
- */
 
 public class ColorComponent extends Component {
     private final ColourSetting set;
@@ -42,15 +34,15 @@ public class ColorComponent extends Component {
     public void renderComponent(int mouseX, int mouseY, int x, int y) {
         this.x = x;
         this.y = y;
-        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET, this.y  , this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y  + WurstplusGuiNew.HEIGHT , Gui.INSTANCE.buttonColor.getValue().hashCode());
-        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y  , this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, this.y  + WurstplusGuiNew.HEIGHT , Gui.INSTANCE.buttonColor.getValue().hashCode());
-        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y  , this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y   + 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
-        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y  + WurstplusGuiNew.HEIGHT , this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y  + WurstplusGuiNew.HEIGHT  - 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
-        RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y   + 3, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y  + WurstplusGuiNew.HEIGHT  - 3, 1, this.set.getValue().hashCode(), this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), false);
+        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET, this.y, this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y + WurstplusGuiNew.HEIGHT, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, this.y + WurstplusGuiNew.HEIGHT, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y + 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y + WurstplusGuiNew.HEIGHT - 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
+        RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 95, this.y + 3, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET - 5, this.y + WurstplusGuiNew.HEIGHT - 3, 1, this.set.getValue().hashCode(), this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), false);
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y  + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(set.getName(), this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y  + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow(set.getName(), this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         boolean didScissor = false;
         if (y2 != 0) {
@@ -60,15 +52,15 @@ public class ColorComponent extends Component {
             didScissor = true;
         }
         if (isOpen || didScissor) {
-            WurstplusGuiNew.drawRect(this.x + WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
-            this.drawPicker(set, this.x + 7, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 100, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 7, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 72, mouseX, mouseY);
+            WurstplusGuiNew.drawRect(this.x + WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
+            this.drawPicker(set, this.x + 7, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 100, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 7, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 72, mouseX, mouseY);
             set.setValue(finalColor);
-            RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 4  + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y + (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
-            RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 6  + booleanButtonOffset, this.x + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT  - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
+            RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y + (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 4 + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y + (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT - 2 + booleanButtonOffset, 1, this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
+            RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 6 + booleanButtonOffset, this.x + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
             if (Gui.INSTANCE.customFont.getValue()) {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5 + booleanButtonOffset, Gui.INSTANCE.fontColor.getValue().hashCode());
             } else {
-                mc.fontRenderer.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, y + (int) (isOpen ? - y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5   + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
+                mc.fontRenderer.drawStringWithShadow("Rainbow", this.x + WurstplusGuiNew.SUB_FONT_SIZE, y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 5 + booleanButtonOffset, Gui.INSTANCE.fontColor.getValue().hashCode());
             }
             if (didScissor) {
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -77,14 +69,14 @@ public class ColorComponent extends Component {
     }
 
     @Override
-    public void renderToolTip(int mouseX, int mouseY){
-        if(isMouseOnButton(mouseX, mouseY) && Gui.INSTANCE.toolTips.getValue()){
-            String hex  = String.format("#%02x%02x%02x", set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue());
+    public void renderToolTip(int mouseX, int mouseY) {
+        if (isMouseOnButton(mouseX, mouseY) && Gui.INSTANCE.toolTips.getValue()) {
+            String hex = String.format("#%02x%02x%02x", set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue());
             String text = "R: " + set.getValue().getRed() + " G: " + set.getValue().getGreen() + " B: " + set.getValue().getBlue() + " A: " + set.getValue().getAlpha() + "  " + hex;
             int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
             int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
-            RenderUtil2D.drawRectMC(mouseX+1, mouseY+4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, mouseX + 3, mouseY + 8, new Color(255,255,255).hashCode());
+            RenderUtil2D.drawRectMC(mouseX + 1, mouseY + 4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, mouseX + 3, mouseY + 8, new Color(255, 255, 255).hashCode());
         }
     }
 
@@ -95,29 +87,29 @@ public class ColorComponent extends Component {
             y2 = WurstplusGuiNew.HEIGHT * 5 - y2;
         }
 
-        if(isMouseOnButton(mouseX, mouseY) && button == 0){
+        if (isMouseOnButton(mouseX, mouseY) && button == 0) {
             WurstplusThree.GUI2.colorClipBoard = set.getValue();
             ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.COPY);
             WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         }
 
-        if(isMouseOnButton(mouseX, mouseY) && button == 2){
+        if (isMouseOnButton(mouseX, mouseY) && button == 2) {
             this.set.setValue(WurstplusThree.GUI2.colorClipBoard);
             ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.PAST);
             WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         }
-        if (this.isOpen && mouseOver(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y  + 4  + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y  + WurstplusGuiNew.HEIGHT  - 2  + booleanButtonOffset, mouseX, mouseY)) {
+        if (this.isOpen && y2 == 0 && mouseOver(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y + 4 + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y + WurstplusGuiNew.HEIGHT - 2 + booleanButtonOffset, mouseX, mouseY)) {
             this.set.setRainbow(!this.set.getRainbow());
         }
     }
 
     public void drawPicker(ColourSetting subColor, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY, int mouseX, int mouseY) {
-        float[] color = new float[] {
+        float[] color = new float[]{
                 0, 0, 0, 0
         };
 
         try {
-            color = new float[] {
+            color = new float[]{
                     Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2], subColor.getColor().getAlpha() / 255f
             };
         } catch (Exception ignored) {
@@ -198,8 +190,8 @@ public class ColorComponent extends Component {
                 RenderUtil2D.drawGradientRect(x, y + step * (height / 6f), x + width, y + (step + 1) * (height / 6f), previousStep, nextStep, false);
                 step++;
             }
-            int sliderMinY = (int) (y + height*hue) - 4;
-            RenderUtil2D.drawRectMC(x, sliderMinY - 1, x + width, sliderMinY + 1,-1);
+            int sliderMinY = (int) (y + height * hue) - 4;
+            RenderUtil2D.drawRectMC(x, sliderMinY - 1, x + width, sliderMinY + 1, -1);
         } else {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
@@ -226,7 +218,7 @@ public class ColorComponent extends Component {
                     int minX = x + squareIndex + checkerBoardSquareSize;
                     int maxX = Math.min(x + width, x + squareIndex + checkerBoardSquareSize * 2);
                     RenderUtil2D.drawRectMC(minX, y, maxX, y + height, 0xFF909090);
-                    RenderUtil2D.drawRectMC(minX, y + checkerBoardSquareSize, maxX, y + height,0xFFFFFFFF);
+                    RenderUtil2D.drawRectMC(minX, y + checkerBoardSquareSize, maxX, y + height, 0xFFFFFFFF);
                 }
             }
 
@@ -253,15 +245,11 @@ public class ColorComponent extends Component {
     }
 
     public boolean isMouseOnButton(int x, int y) {
-        return x > this.x + WurstplusGuiNew.SETTING_OFFSET && x < this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.y   && y < this.y  + WurstplusGuiNew.HEIGHT ;
+        return x > this.x + WurstplusGuiNew.SETTING_OFFSET && x < this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
     }
 
     public void setOpen(boolean v) {
         this.isOpen = v;
-    }
-
-    public boolean isOpen() {
-        return this.isOpen;
     }
 
     public static boolean mouseOver(int minX, int minY, int maxX, int maxY, int mX, int mY) {

@@ -3,16 +3,9 @@ package me.travis.wurstplusthree.gui.component.components;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
-import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.RenderUtil2D;
-import org.lwjgl.opencl.AMDOfflineDevices;
-
-/**
- * @author BrownZombie
- * @since 29/04/2021
- */
 
 public class ShownComponent extends Component {
     private int x;

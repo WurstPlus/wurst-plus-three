@@ -133,7 +133,7 @@ public class HackButton extends Component {
             this.isOpen = !this.isOpen;
             y2 = getHeightTarget() - y2;
         }
-        if (this.isOpen)
+        if (this.isOpen && mouseY > this.y + WurstplusGuiNew.HEIGHT)
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.mouseClicked(mouseX, mouseY, button);

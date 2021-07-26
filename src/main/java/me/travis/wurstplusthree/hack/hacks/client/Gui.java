@@ -28,7 +28,6 @@ public class Gui extends Hack {
     public EnumSetting type = new EnumSetting("Type", "None", Arrays.asList("None", "Rainbow", "Sin"), this);
     public EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);
     public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
-    public BooleanSetting blur = new BooleanSetting("Blur", true, this);
     public ParentSetting gradientParent = new ParentSetting("Gradient", this);
     public BooleanSetting gradient = new BooleanSetting("Enabled", false, gradientParent);
     public ColourSetting gradientStartColor = new ColourSetting("GradientStartColor", new Colour(255, 122, 5, 100), gradientParent);

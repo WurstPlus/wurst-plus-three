@@ -3,7 +3,6 @@ package me.travis.wurstplusthree.gui.component.components;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
-import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
@@ -11,11 +10,10 @@ import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class ParentComponent extends Component {
-    private ParentSetting option;
+    private final ParentSetting option;
     public Hack mod;
     private final ArrayList<Component> subcomponents = new ArrayList<>();
     private int x;
@@ -137,7 +135,7 @@ public class ParentComponent extends Component {
             this.option.toggle();
             y2 = getHeightTarget() - y2;
         }
-        if (this.option.getValue())
+        if (this.option.getValue() && mouseY > this.y + WurstplusGuiNew.HEIGHT)
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.mouseClicked(mouseX, mouseY, button);

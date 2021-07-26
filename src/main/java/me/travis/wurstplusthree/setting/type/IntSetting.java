@@ -6,9 +6,9 @@ import me.travis.wurstplusthree.setting.Setting;
 import java.util.function.Predicate;
 
 public class IntSetting extends Setting<Integer> {
-
     private final int min;
     private final int max;
+    private boolean open = false;
 
     public IntSetting(String name, int value, int min, int max, Hack parent) {
         super(name, value, parent);
@@ -36,6 +36,14 @@ public class IntSetting extends Setting<Integer> {
 
         this.min = min;
         this.max = max;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public Integer getValue() {

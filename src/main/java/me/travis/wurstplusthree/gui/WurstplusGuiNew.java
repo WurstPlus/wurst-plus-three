@@ -24,9 +24,10 @@ import java.util.ArrayList;
 /**
  * @author Madmegsox1
  * @since 27/04/2021
- * -> swag gui :sunglasses:
+ * @author Wallhacks0
  */
 
+//I rewrote gui lol
 public class WurstplusGuiNew extends GuiScreen {
     int screenHeight;
     int screenWidth;
@@ -38,7 +39,6 @@ public class WurstplusGuiNew extends GuiScreen {
     public static final int FONT_HEIGHT = 4;
     public static final int MODULE_FONT_SIZE = 6;
     public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
-    public static final int COLOR_FONT_SIZE = 2 * SUB_FONT_SIZE;
 
     public Colour colorClipBoard;
     public ColorCopyEvent colorEvent;

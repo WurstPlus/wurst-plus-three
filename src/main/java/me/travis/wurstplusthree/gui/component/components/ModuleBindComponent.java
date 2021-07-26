@@ -3,19 +3,10 @@ package me.travis.wurstplusthree.gui.component.components;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
-import me.travis.wurstplusthree.gui.component.HackButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
-import me.travis.wurstplusthree.setting.Setting;
-import me.travis.wurstplusthree.setting.type.KeySetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import org.lwjgl.input.Keyboard;
-
-/**
- * @author Madmegsox1
- * @auther Wallhacks
- * @since 29/04/2021
- */
 
 public class ModuleBindComponent extends Component {
     private boolean isBinding;
