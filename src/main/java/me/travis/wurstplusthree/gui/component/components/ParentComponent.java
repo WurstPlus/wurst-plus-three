@@ -61,24 +61,30 @@ public class ParentComponent extends Component {
             mc.fontRenderer.drawStringWithShadow(this.option.getName(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
             mc.fontRenderer.drawStringWithShadow((this.option.getValue() ? "-" : "+"), x + 90 + WurstplusGuiNew.SUB_FONT_SIZE, y + 3 , Gui.INSTANCE.fontColor.getValue().hashCode());
         }
+        boolean didScissor = false;
+        if (y2 != 0) {
+            y2--;
+            GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            didScissor = true;
+        }
         if (this.option.getValue()) {
-            boolean didScissor = false;
-            if (y2 != 0) {
-                y2--;
-                GL11.glScissor(x * 2, (WurstplusThree.GUI2.height - y - WurstplusGuiNew.HEIGHT - getHeight()) * 2, WurstplusGuiNew.WIDTH * 2, getHeight() * 2);
-                GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                didScissor = true;
-            }
             int offset = WurstplusGuiNew.HEIGHT;
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.renderComponent(mouseX, mouseY, x, y + offset - y2);
                 offset = offset + comp.getHeight();
             }
-            if (didScissor) {
-                GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        } else if (didScissor) {
+            int offset = WurstplusGuiNew.HEIGHT - getHeightTarget();
+            for (Component comp : this.subcomponents) {
+                if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
+                comp.renderComponent(mouseX, mouseY, x, y + offset + y2);
+                offset = offset + comp.getHeight();
             }
         }
+        if (didScissor)
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
     @Override
@@ -113,7 +119,7 @@ public class ParentComponent extends Component {
     public int getHeight() {
         if (this.option.getValue())
             return getHeightTarget() + WurstplusGuiNew.HEIGHT - y2;
-        return WurstplusGuiNew.HEIGHT;
+        return WurstplusGuiNew.HEIGHT + y2;
     }
 
     private int getHeightTarget() {
@@ -129,7 +135,7 @@ public class ParentComponent extends Component {
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && (button == 0 || button == 1)) {
             this.option.toggle();
-            y2 = getHeightTarget();
+            y2 = getHeightTarget() - y2;
         }
         if (this.option.getValue())
             for (Component comp : this.subcomponents) {

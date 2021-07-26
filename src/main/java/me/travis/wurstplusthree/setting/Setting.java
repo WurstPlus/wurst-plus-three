@@ -85,9 +85,8 @@ public class Setting<T> {
     }
 
     public boolean isShown() {
-        boolean parent = parentSetting == null ? true : parentSetting.getValue();
         boolean shown =  this.shown == null ? true : this.shown.test(this.getValue());
-        if (parent && shown) {
+        if (shown) {
             return true;
         }
         return false;
