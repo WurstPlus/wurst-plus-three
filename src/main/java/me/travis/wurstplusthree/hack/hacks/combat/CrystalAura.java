@@ -185,7 +185,7 @@ public final class CrystalAura extends Hack {
 
     @CommitEvent(priority = EventPriority.HIGH)
     public final void onPacketReceive(@NotNull PacketEvent.Receive event) {
-
+        if (mc.world == null || mc.player == null) return;
         // crystal predict check
         SPacketSpawnObject spawnObjectPacket;
         if (event.getPacket() instanceof SPacketSpawnObject

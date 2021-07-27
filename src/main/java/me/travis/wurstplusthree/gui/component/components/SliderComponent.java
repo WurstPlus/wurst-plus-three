@@ -92,9 +92,18 @@ public class SliderComponent extends Component {
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()),
                 (Gui.INSTANCE.buttonColor.getValue().hashCode()), isMouseOnButton(mouseX, mouseY));
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + setI.getValue().toString().charAt(0) : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + setI.getValue().toString() : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + setI.getValue().toString().charAt(0) : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow(isInt() ? this.setI.getName() + " " + ChatFormatting.GRAY + setI.getValue().toString() : this.setD.getName() + " " + ChatFormatting.GRAY + this.setD.getValue(), x + WurstplusGuiNew.SUB_FONT_SIZE, y + 3, Gui.INSTANCE.fontColor.getValue().hashCode());
+        }
+        if (!open) {
+            RenderUtil2D.drawRect(x + 107, y + 5, x + 107 + 1.5f, y + 5 + 1.5f, -1);
+            RenderUtil2D.drawRect(x + 107, y + 7.25f, x + 107 + 1.5f, y + 7.25f + 1.5f, -1);
+            RenderUtil2D.drawRect(x + 107, y + 9.5f, x + 107 + 1.5f, y + 9.5f + 1.5f, -1);
+        } else {
+            RenderUtil2D.drawRect(x + 104.75f, y + 7.25f, x + 104.75f + 1.5f, y + 7.25f + 1.5f, -1);
+            RenderUtil2D.drawRect(x + 107, y + 7.25f, x + 107 + 1.5f, y + 7.25f + 1.5f, -1);
+            RenderUtil2D.drawRect(x + 109.25f, y + 7.25f, x + 109.25f + 1.5f, y + 7.25f + 1.5f, -1);
         }
         boolean didScissor = false;
         if (y2 != 0) {
@@ -106,9 +115,9 @@ public class SliderComponent extends Component {
         if (open || y2 != 0) {
             RenderUtil2D.drawBorderedRect(x + WurstplusGuiNew.SETTING_OFFSET, y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + WurstplusGuiNew.HEIGHT, x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + WurstplusGuiNew.HEIGHT * 2, 2, new Color(50, 50, 50, 250).hashCode(), (isChild ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR()), isMouseOnButton(mouseX, mouseY - WurstplusGuiNew.HEIGHT));
             if (Gui.INSTANCE.customFont.getValue()) {
-                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(typing ? typeString + getCaret() : (isInt() ? "" + ChatFormatting.GRAY + setI.getValue().toString().charAt(0) : "" + ChatFormatting.GRAY + this.setD.getValue()), x + WurstplusGuiNew.SUB_FONT_SIZE, (float) (y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + 5 + WurstplusGuiNew.HEIGHT), Gui.INSTANCE.fontColor.getValue().hashCode());
+                WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(typing ? typeString + getCaret() : (isInt() ? ChatFormatting.GRAY + setI.getValue().toString() : ChatFormatting.GRAY + this.setD.getValue().toString()), x + WurstplusGuiNew.SUB_FONT_SIZE, (float) (y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + 5 + WurstplusGuiNew.HEIGHT), Gui.INSTANCE.fontColor.getValue().hashCode());
             } else {
-                mc.fontRenderer.drawStringWithShadow(typing ? typeString + getCaret() : (isInt() ? "" + ChatFormatting.GRAY + setI.getValue().toString().charAt(0) : "" + ChatFormatting.GRAY + this.setD.getValue()), x + WurstplusGuiNew.SUB_FONT_SIZE, (float) (y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + 3 + WurstplusGuiNew.HEIGHT), Gui.INSTANCE.fontColor.getValue().hashCode());
+                mc.fontRenderer.drawStringWithShadow(typing ? typeString + getCaret() : (isInt() ? ChatFormatting.GRAY + setI.getValue().toString() : ChatFormatting.GRAY + this.setD.getValue().toString()), x + WurstplusGuiNew.SUB_FONT_SIZE, (float) (y + (open ? -y2 : y2 - WurstplusGuiNew.HEIGHT) + 3 + WurstplusGuiNew.HEIGHT), Gui.INSTANCE.fontColor.getValue().hashCode());
             }
         }
         if (didScissor)
@@ -124,10 +133,15 @@ public class SliderComponent extends Component {
     }
 
     @Override
+    public void onClose() {
+        this.typing = false;
+    }
+
+    @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY - WurstplusGuiNew.HEIGHT) && button == 0) {
             typing = true;
-            typeString = isInt() ? String.valueOf(setI.getValue().toString().charAt(0)) :  String.valueOf(setD.getValue());
+            typeString = isInt() ? setI.getValue().toString() : setD.getValue().toString();
         } else {
             typing = false;
         }

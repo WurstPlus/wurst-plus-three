@@ -171,6 +171,9 @@ public class WurstplusGuiNew extends GuiScreen {
     public void onGuiClosed() {
         WurstplusThree.CONFIG_MANAGER.saveConfig();
         WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
+        for (CategoryComponent comp : categoryComponents) {
+            comp.onClose();
+        }
     }
 
     private void scrollWheelCheck() {

@@ -128,6 +128,11 @@ public class CategoryComponent implements Globals {
         this.y = newY;
     }
 
+    public void onClose() {
+        for (Component comp : components) {
+            comp.onClose();
+        }
+    }
 
     public void updatePosition(int mouseX, int mouseY) {
         if (this.isDragging) {

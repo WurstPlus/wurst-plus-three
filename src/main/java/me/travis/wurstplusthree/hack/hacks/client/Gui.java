@@ -33,14 +33,12 @@ public class Gui extends Hack {
     public ColourSetting gradientStartColor = new ColourSetting("GradientStartColor", new Colour(255, 122, 5, 100), gradientParent);
     public ColourSetting gradientEndColor = new ColourSetting("GradientEndColor", new Colour(255, 122, 5, 100), gradientParent);
     public DoubleSetting animation = new DoubleSetting("AnimationSpeed", 1.0, 0.1, 5.0, this);
-    public EnumSetting arrowType = new EnumSetting("ArrowType", "Off", Arrays.asList("Off", "Type1", "Type2"), this);
     public IntSetting mouseDelay = new IntSetting("MouseDelay", 250, 100, 300, this);
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);
     public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     public ParentSetting toolTipsParent = new ParentSetting("ToolTips", this);
     public BooleanSetting toolTips = new BooleanSetting("Show ToolTips", true , toolTipsParent);
     public ColourSetting toolTipColor = new ColourSetting("ToolTipColour", new Colour(0,0,0,100), toolTipsParent);
-    //todo make a outline for the tooltips I think that would look sexy
 
     public Gui(){
         INSTANCE = this;

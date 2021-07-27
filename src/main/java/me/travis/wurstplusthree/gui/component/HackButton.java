@@ -65,6 +65,17 @@ public class HackButton extends Component {
         } else {
             mc.fontRenderer.drawStringWithShadow(this.mod.getName(), x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
+        if (!this.mod.getSettings().isEmpty()) {
+            if (!isOpen) {
+                RenderUtil2D.drawRect(x + 107, y + 5, x + 107 + 1.5f, y + 5 + 1.5f, -1);
+                RenderUtil2D.drawRect(x + 107, y + 7.25f, x + 107 + 1.5f, y + 7.25f + 1.5f, -1);
+                RenderUtil2D.drawRect(x + 107, y + 9.5f, x + 107 + 1.5f, y + 9.5f + 1.5f, -1);
+            } else {
+                RenderUtil2D.drawRect(x + 104.75f, y + 7.25f, x + 104.75f + 1.5f, y + 7.25f + 1.5f, -1);
+                RenderUtil2D.drawRect(x + 107, y + 7.25f, x + 107 + 1.5f, y + 7.25f + 1.5f, -1);
+                RenderUtil2D.drawRect(x + 109.25f, y + 7.25f, x + 109.25f + 1.5f,y + 7.25f +  1.5f, -1);
+            }
+        }
         boolean didScissor = false;
         if (y2 != 0) {
             y2 = Math.max(y2 - Gui.INSTANCE.animation.getValue(), 0);
@@ -89,7 +100,6 @@ public class HackButton extends Component {
         }
         if (didScissor)
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        renderArrow();
     }
 
     @Override
@@ -101,7 +111,7 @@ public class HackButton extends Component {
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(mod.getDescription(), mouseX + 8, mouseY + 11, new Color(255, 255, 255).hashCode());
         }
         for (Component component : subcomponents) {
-            if (this.isOpen) {
+            if (this.isOpen && y2 == 0) {
                 if (component.getSetting() != null && !component.getSetting().isShown()) continue;
                 component.renderToolTip(mouseX, mouseY);
             }
@@ -125,6 +135,13 @@ public class HackButton extends Component {
     }
 
     @Override
+    public void onClose() {
+        for (Component comp : subcomponents) {
+            comp.onClose();
+        }
+    }
+
+    @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && button == 0) {
             this.mod.toggle();
@@ -133,7 +150,7 @@ public class HackButton extends Component {
             this.isOpen = !this.isOpen;
             y2 = getHeightTarget() - y2;
         }
-        if (this.isOpen && mouseY > this.y + WurstplusGuiNew.HEIGHT)
+        if (this.isOpen && y2 == 0)
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.mouseClicked(mouseX, mouseY, button);
@@ -142,7 +159,7 @@ public class HackButton extends Component {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-        if (this.isOpen)
+        if (this.isOpen && y2 == 0)
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.mouseReleased(mouseX, mouseY, mouseButton);
@@ -151,39 +168,14 @@ public class HackButton extends Component {
 
     @Override
     public void keyTyped(char typedChar, int key) {
-        if (this.isOpen)
+        if (this.isOpen && y2 == 0)
             for (Component comp : this.subcomponents) {
                 if (comp.getSetting() != null && !comp.getSetting().isShown()) continue;
                 comp.keyTyped(typedChar, key);
             }
     }
 
-
     public boolean isMouseOnButton(int x, int y) {
         return x > this.x + WurstplusGuiNew.MODULE_WIDTH && x < this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.MODULE_WIDTH && y > this.y && y < this.y + WurstplusGuiNew.HEIGHT;
-    }
-
-    private void renderArrow() {
-        switch (Gui.INSTANCE.arrowType.getValue()) {
-            case "Type1":
-                if (this.isOpen) {
-                    RenderUtil.drawTriangleOutline(x + 105f, y + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
-                } else {
-                    RenderUtil.drawTriangleOutline(x + 105f, y + 12f, 5f, 1, 2, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
-                }
-                break;
-            case "Type2":
-                if (this.isOpen) {
-                    GL11.glPushMatrix();
-                    GL11.glTranslated(x + 102f, y + 12f, 0);
-                    GL11.glRotatef(-90f, 0f, 0f, 1f);
-                    GL11.glTranslated(-(x + 102f), -(y + 12f), 0);
-                    RenderUtil.drawTriangleOutline(x + 105f, y + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
-                    GL11.glPopMatrix();
-                } else {
-                    RenderUtil.drawTriangleOutline(x + 105f, y + 12f, 5f, 2, 1, 1, Gui.INSTANCE.fontColor.getValue().hashCode());
-                }
-                break;
-        }
     }
 }

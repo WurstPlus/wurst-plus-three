@@ -43,6 +43,9 @@ public abstract class Component implements Globals {
     public void keyTyped(char typedChar, int key) {
     }
 
+    public void onClose() {
+    }
+
     public int getHeight() {
         return WurstplusGuiNew.HEIGHT;
     }
