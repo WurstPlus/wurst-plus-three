@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
 /**
@@ -15,9 +16,15 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
 @Hack.Registration(name = "ViewModel", description = "makes you hand look cool", category = Hack.Category.RENDER)
 public class ViewModel extends Hack {
 
-    DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
-    DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);
-    DoubleSetting mainZ = new DoubleSetting("mainZ", -1.45, -5.0, 5.0, this);
+    public static ViewModel INSTANCE;
+
+    public ViewModel(){
+        INSTANCE = this;
+    }
+
+    public DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
+    public DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);
+    public DoubleSetting mainZ = new DoubleSetting("mainZ", -1.45, -5.0, 5.0, this);
     DoubleSetting offX = new DoubleSetting("offX", -1.2, -6.0, 0.0, this);
     DoubleSetting offY = new DoubleSetting("offY", -0.95, -3.0, 3.0, this);
     DoubleSetting offZ = new DoubleSetting("offZ", -1.45, -5.0, 5.0, this);
