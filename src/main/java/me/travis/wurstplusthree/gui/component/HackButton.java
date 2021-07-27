@@ -6,6 +6,8 @@ import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.components.*;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hud.HudComponent;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
 import me.travis.wurstplusthree.util.RenderUtil;
@@ -17,42 +19,66 @@ import java.util.ArrayList;
 
 public class HackButton extends Component {
     public Hack mod;
+    public HudComponent hudComponent;
     private final ArrayList<Component> subcomponents = new ArrayList<>();
     public boolean isOpen = false;
     int x;
     int y;
     double y2;
 
-    public HackButton(Hack mod) {
-        super(mod);
-        this.mod = mod;
-        for (Setting s : mod.getSettings()) {
-            if (s.isChild()) continue;
-            if (s instanceof BooleanSetting) {
-                subcomponents.add(new BooleanComponent((BooleanSetting) s));
-            } else if (s instanceof ColourSetting) {
-                subcomponents.add(new ColorComponent((ColourSetting) s));
-            } else if (s instanceof IntSetting) {
-                subcomponents.add(new SliderComponent((IntSetting) s));
-            } else if (s instanceof DoubleSetting) {
-                subcomponents.add(new SliderComponent((DoubleSetting) s));
-            } else if (s instanceof KeySetting) {
-                subcomponents.add(new KeyBindComponent((KeySetting) s));
-            } else if (s instanceof ParentSetting) {
-                subcomponents.add(new ParentComponent((ParentSetting) s, mod));
-            } else if (s instanceof EnumSetting) {
-                subcomponents.add(new ModeComponent((EnumSetting) s));
+    public HackButton(Feature feature) {
+        super(feature);
+        if (feature instanceof Hack) {
+            this.mod = (Hack) feature;
+            for (Setting s : mod.getSettings()) {
+                if (s.isChild()) continue;
+                if (s instanceof BooleanSetting) {
+                    subcomponents.add(new BooleanComponent((BooleanSetting) s));
+                } else if (s instanceof ColourSetting) {
+                    subcomponents.add(new ColorComponent((ColourSetting) s));
+                } else if (s instanceof IntSetting) {
+                    subcomponents.add(new SliderComponent((IntSetting) s));
+                } else if (s instanceof DoubleSetting) {
+                    subcomponents.add(new SliderComponent((DoubleSetting) s));
+                } else if (s instanceof KeySetting) {
+                    subcomponents.add(new KeyBindComponent((KeySetting) s));
+                } else if (s instanceof ParentSetting) {
+                    subcomponents.add(new ParentComponent((ParentSetting) s));
+                } else if (s instanceof EnumSetting) {
+                    subcomponents.add(new ModeComponent((EnumSetting) s));
+                }
+            }
+            subcomponents.add(new ShownComponent(this.mod));
+            subcomponents.add(new ModuleBindComponent(this.mod));
+        } else if (feature instanceof HudComponent){
+            hudComponent = (HudComponent) feature;
+            for (Setting s : hudComponent.getSettings()) {
+                this.hudComponent = (HudComponent) feature;
+                if (s.isChild()) continue;
+                if (s instanceof BooleanSetting) {
+                    subcomponents.add(new BooleanComponent((BooleanSetting) s));
+                } else if (s instanceof ColourSetting) {
+                    subcomponents.add(new ColorComponent((ColourSetting) s));
+                } else if (s instanceof IntSetting) {
+                    subcomponents.add(new SliderComponent((IntSetting) s));
+                } else if (s instanceof DoubleSetting) {
+                    subcomponents.add(new SliderComponent((DoubleSetting) s));
+                } else if (s instanceof KeySetting) {
+                    subcomponents.add(new KeyBindComponent((KeySetting) s));
+                } else if (s instanceof ParentSetting) {
+                    subcomponents.add(new ParentComponent((ParentSetting) s));
+                } else if (s instanceof EnumSetting) {
+                    subcomponents.add(new ModeComponent((EnumSetting) s));
+                }
             }
         }
-        subcomponents.add(new ShownComponent(this.mod));
-        subcomponents.add(new ModuleBindComponent(this.mod));
     }
 
     @Override
     public void renderComponent(int MouseX, int MouseY, int x, int y) {
         this.x = x;
         this.y = y;
-        if (mod.isEnabled()) {
+        if ((mod != null && mod.isEnabled()) || (hudComponent != null && hudComponent.isEnabled())) {
             RenderUtil2D.drawGradientRect(x + WurstplusGuiNew.MODULE_WIDTH, y,
                     x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.MODULE_WIDTH, y + WurstplusGuiNew.HEIGHT,
                     (Gui.INSTANCE.buttonColor.getValue().hashCode()),
@@ -60,12 +86,13 @@ public class HackButton extends Component {
         } else {
             RenderUtil2D.drawRectMC(x + WurstplusGuiNew.MODULE_WIDTH, y, x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.MODULE_WIDTH, y + WurstplusGuiNew.HEIGHT, isMouseOnButton(MouseX, MouseY) ? WurstplusGuiNew.GUI_HOVERED_COLOR() : WurstplusGuiNew.GUI_MODULECOLOR());
         }
+        String name = this.mod == null ? this.hudComponent.getName() : this.mod.getName();
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(this.mod.getName(), x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(this.mod.getName(), x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
-        if (!this.mod.getSettings().isEmpty()) {
+        if ((mod != null && !this.mod.getSettings().isEmpty()) || (hudComponent != null && !hudComponent.getSettings().isEmpty())) {
             if (!isOpen) {
                 RenderUtil2D.drawRect(x + 107, y + 5, x + 107 + 1.5f, y + 5 + 1.5f, -1);
                 RenderUtil2D.drawRect(x + 107, y + 7.25f, x + 107 + 1.5f, y + 7.25f + 1.5f, -1);
@@ -104,6 +131,7 @@ public class HackButton extends Component {
 
     @Override
     public void renderToolTip(int mouseX, int mouseY) {
+        if (mod == null) return;
         if (isMouseOnButton(mouseX, mouseY) && Gui.INSTANCE.toolTips.getValue()) {
             int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(mod.getDescription());
             int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
@@ -144,7 +172,10 @@ public class HackButton extends Component {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (isMouseOnButton(mouseX, mouseY) && button == 0) {
-            this.mod.toggle();
+            if (mod != null)
+                this.mod.toggle();
+            if (hudComponent != null)
+                this.hudComponent.toggle();
         }
         if (isMouseOnButton(mouseX, mouseY) && button == 1) {
             this.isOpen = !this.isOpen;

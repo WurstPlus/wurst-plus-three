@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.setting.type;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class EnumSetting extends Setting<String> {
 
     private final List<String> modes;
 
-    public EnumSetting(String name, String value, List<String> modes, Hack parent) {
+    public EnumSetting(String name, String value, List<String> modes, Feature parent) {
         super(name, value, parent);
 
         this.modes = modes;
@@ -22,7 +23,7 @@ public class EnumSetting extends Setting<String> {
         this.modes = modes;
     }
 
-    public EnumSetting(String name, String value, List<String> modes, Hack parent, Predicate shown) {
+    public EnumSetting(String name, String value, List<String> modes, Feature parent, Predicate shown) {
         super(name, value, parent, shown);
 
         this.modes = modes;
@@ -40,8 +41,10 @@ public class EnumSetting extends Setting<String> {
 
     public void setValue(String value) {
         this.value = (this.modes.contains(value) ? value : this.value);
-        if (this.getParent().isEnabled())
-            this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     public boolean is(String name) {

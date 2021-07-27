@@ -21,7 +21,6 @@ public final class Hacks implements Globals {
     private final List<Hack> drawnHacks = new ArrayList<>();
 
     public Hacks() {
-
         try {
             ArrayList<Class<?>> modClasses = ReflectionUtil.getClassesForPackage("me.travis.wurstplusthree.hack.hacks");
             modClasses.spliterator().forEachRemaining(aClass -> {

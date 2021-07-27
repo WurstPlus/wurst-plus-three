@@ -34,11 +34,12 @@ public class Settings {
     public List<Setting> getSettingFromHack(String hack) {
         List<Setting> settings = new ArrayList<>();
         for (Setting setting : this.settings) {
-            if(setting.getParent().getName().equalsIgnoreCase(hack)) {
-                settings.add(setting);
+            if (setting.getParent() instanceof Hack) {
+                if (((Hack) setting.getParent()).getName().equalsIgnoreCase(hack)) {
+                    settings.add(setting);
+                }
             }
         }
         return settings;
     }
-
 }

@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.setting.type;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 
 import java.util.function.Predicate;
@@ -11,7 +12,7 @@ public class DoubleSetting extends Setting<Double> {
     private final double max;
     private boolean open = false;
 
-    public DoubleSetting(String name, Double value, Double min, Double max, Hack parent) {
+    public DoubleSetting(String name, Double value, Double min, Double max, Feature parent) {
         super(name, value, parent);
         this.min = min;
         this.max = max;
@@ -23,7 +24,7 @@ public class DoubleSetting extends Setting<Double> {
         this.max = max;
     }
 
-    public DoubleSetting(String name, Double value, Double min, Double max, Hack parent, Predicate shown) {
+    public DoubleSetting(String name, Double value, Double min, Double max, Feature parent, Predicate shown) {
         super(name, value, parent, shown);
         this.min = min;
         this.max = max;
@@ -61,8 +62,10 @@ public class DoubleSetting extends Setting<Double> {
 
     public void setNumber(double value) {
         this.value = value;
-        if (this.getParent().isEnabled())
-          this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     public Float getAsFloat(){

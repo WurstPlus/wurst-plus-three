@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.Hacks;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.*;
@@ -14,17 +15,15 @@ import java.util.ArrayList;
 
 public class ParentComponent extends Component {
     private final ParentSetting option;
-    public Hack mod;
     private final ArrayList<Component> subcomponents = new ArrayList<>();
     private int x;
     private int y;
     private double y2;
 
-    public ParentComponent(ParentSetting option, Hack hack) {
+    public ParentComponent(ParentSetting option) {
         super(option);
-        this.mod = hack;
         this.option = option;
-        for (Setting s : mod.getSettings()) {
+        for (Setting s : WurstplusThree.SETTINGS.getSettings()) {
             if (!s.isChild()) continue;
             if (s.getParentSetting() != option) continue;
             if (s instanceof BooleanSetting) {
@@ -37,8 +36,6 @@ public class ParentComponent extends Component {
                 subcomponents.add(new SliderComponent((DoubleSetting) s));
             } else if (s instanceof KeySetting) {
                 subcomponents.add(new KeyBindComponent((KeySetting) s));
-            } else if (s instanceof ParentSetting) {
-                subcomponents.add(new ParentComponent((ParentSetting) s, mod));
             } else if (s instanceof EnumSetting) {
                 subcomponents.add(new ModeComponent((EnumSetting) s));
             }

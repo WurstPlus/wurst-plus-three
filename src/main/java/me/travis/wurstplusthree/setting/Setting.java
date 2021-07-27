@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.setting;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hud.HudComponent;
 import me.travis.wurstplusthree.setting.type.ParentSetting;
 
 import java.util.function.Predicate;
@@ -9,14 +10,14 @@ import java.util.function.Predicate;
 public class Setting<T> {
 
     private final String name;
-    private final Hack parent;
+    private final Feature parent;
     private final ParentSetting parentSetting;
     public T value;
     public Predicate<T> shown;
     public T defaultValue;
 
 
-    public Setting(String name, T value, Hack parent) {
+    public Setting(String name, T value, Feature parent) {
         this.name = name;
         this.value = value;
         this.defaultValue = value;
@@ -34,7 +35,7 @@ public class Setting<T> {
         WurstplusThree.SETTINGS.addSetting(this);
     }
 
-    public Setting(String name, T value, Hack parent, Predicate<T> shown) {
+    public Setting(String name, T value, Feature parent, Predicate<T> shown) {
         this.name = name;
         this.value = value;
         this.defaultValue = value;
@@ -66,14 +67,19 @@ public class Setting<T> {
     	return "";
     }
 
-    public Hack getParent() {
+    public Feature getParent() {
         return this.parent;
     }
 
     public void setValue(T value) {
         this.value = value;
-        if (this.getParent().isEnabled())
-            this.getParent().onSettingChange();
+        if (parent instanceof Hack) {
+            if (((Hack) parent).isEnabled())
+                ((Hack) parent).onSettingChange();
+        }
+        if (parent instanceof HudComponent) {
+            //todo moment
+        }
     }
 
     public ParentSetting getParentSetting() {

@@ -151,6 +151,7 @@ public class Events implements Globals {
             ScaledResolution resolution = new ScaledResolution(mc);
             Render2DEvent render2DEvent = new Render2DEvent(event.getPartialTicks(), resolution);
             WurstplusThree.HACKS.onRender2D(render2DEvent);
+            WurstplusThree.HUD.onRender2D(render2DEvent);
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }

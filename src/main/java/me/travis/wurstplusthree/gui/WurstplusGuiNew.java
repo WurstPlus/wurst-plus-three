@@ -82,9 +82,6 @@ public class WurstplusGuiNew extends GuiScreen {
         WurstplusThree.EVENT_PROCESSOR.addEventListener(this);
         shouldShow = false;
         flag = false;
-        for(CategoryComponent c : categoryComponents){
-            c.animationValue = 0;
-        }
     }
 
     @Override

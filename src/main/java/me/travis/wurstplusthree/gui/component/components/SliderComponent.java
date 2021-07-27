@@ -163,7 +163,7 @@ public class SliderComponent extends Component {
     @Override
     public void keyTyped(char typedChar, int key) {
         if (!typing) return;
-        if (Character.isDigit(typedChar) || key == 52) {
+        if (Character.isDigit(typedChar) || (key == 52 && !isInt() && !typeString.contains("."))) {
             typeString += typedChar;
         } else if (key == 14) {
             typeString = StringUtils.chop(typeString);

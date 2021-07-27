@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.setting.type;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import org.lwjgl.input.Keyboard;
 
@@ -13,7 +14,7 @@ import java.util.function.Predicate;
 
 public class KeySetting extends Setting<Integer> {
 
-    public KeySetting(String name, int value, Hack parent) {
+    public KeySetting(String name, int value, Feature parent) {
         super(name, value, parent);
     }
 
@@ -21,7 +22,7 @@ public class KeySetting extends Setting<Integer> {
         super(name, value, parent);
     }
 
-    public KeySetting(String name, int value, Hack parent, Predicate shown) {
+    public KeySetting(String name, int value, Feature parent, Predicate shown) {
         super(name, value, parent, shown);
     }
 
@@ -35,8 +36,10 @@ public class KeySetting extends Setting<Integer> {
 
     public void setKey(int key) {
         this.value = key;
-        if (this.getParent().isEnabled())
-            this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     public boolean isDown() {

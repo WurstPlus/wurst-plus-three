@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hud.HudComponent;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.RenderUtil2D;
@@ -15,9 +16,8 @@ import java.util.ArrayList;
  * @since 27/04/2021
  */
 
-public class CategoryComponent implements Globals {
+public class HudListComponent implements Globals {
     public ArrayList<Component> components;
-    public Hack.Category category;
     private final int width;
     private final int height;
     public int x;
@@ -27,8 +27,7 @@ public class CategoryComponent implements Globals {
     public int dragX;
     public int dragY;
 
-    public CategoryComponent(Hack.Category cat) {
-        this.category = cat;
+    public HudListComponent() {
         this.components = new ArrayList<>();
         this.width = WurstplusGuiNew.WIDTH;
         this.height = WurstplusGuiNew.HEIGHT;
@@ -37,14 +36,14 @@ public class CategoryComponent implements Globals {
         this.dragX = 0;
         this.isOpen = true;
         this.isDragging = false;
-        for (Hack mod : WurstplusThree.HACKS.getHacksAlp()) {
-            if (mod.getCategory().equals(category)) {
-                HackButton moduleButton = new HackButton(mod);
-                this.components.add(moduleButton);
-            }
+        for (HudComponent component : WurstplusThree.HUD.getComponents()) {
+            HackButton moduleButton = new HackButton(component);
+            this.components.add(moduleButton);
         }
 
     }
+
+    public float animationValue = 0;
 
     public ArrayList<Component> getComponents() {
         return components;
@@ -65,9 +64,9 @@ public class CategoryComponent implements Globals {
     public void renderFrame(int mouseX, int mouseY) {
         RenderUtil2D.drawGradientRect(this.x + 4, this.y, this.x + width - 5, this.y + height, (Gui.INSTANCE.headButtonColor.getValue().hashCode()), (Gui.INSTANCE.headButtonColor.getValue().hashCode()), false);
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Components", this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(category.getName(), this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow("Components", this.x + WurstplusGuiNew.MODULE_FONT_SIZE, this.y + (this.height / 2f) - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         if (this.isOpen) {
             if (!this.components.isEmpty()) {

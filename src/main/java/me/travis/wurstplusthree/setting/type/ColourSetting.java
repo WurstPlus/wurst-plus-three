@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.setting.type;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
@@ -11,7 +12,7 @@ public class ColourSetting extends Setting<Colour> {
 
     private boolean rainbow;
 
-    public ColourSetting(String name, Colour value, Hack parent) {
+    public ColourSetting(String name, Colour value, Feature parent) {
         super(name, value, parent);
     }
 
@@ -19,7 +20,7 @@ public class ColourSetting extends Setting<Colour> {
         super(name, value, parent);
     }
 
-    public ColourSetting(String name, Colour value, Hack parent, Predicate shown) {
+    public ColourSetting(String name, Colour value, Feature parent, Predicate shown) {
         super(name, value, parent, shown);
     }
 
@@ -43,14 +44,18 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setValue(Color value) {
         this.value = new Colour(value);
-        if (this.getParent().isEnabled())
-          this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     public void setValue(int red, int green, int blue, int alpha) {
         this.value = new Colour(red, green, blue, alpha);
-        if (this.getParent().isEnabled())
-            this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     public Color getColor() {
@@ -63,8 +68,10 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
-        if (this.getParent().isEnabled())
-          this.getParent().onSettingChange();
+        if (getParent() instanceof Hack) {
+            if (((Hack) getParent()).isEnabled())
+                ((Hack) getParent()).onSettingChange();
+        }
     }
 
     @Override

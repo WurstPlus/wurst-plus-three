@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.gui.component;
 
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.Globals;
 
@@ -11,9 +12,9 @@ import me.travis.wurstplusthree.util.Globals;
  */
 
 public abstract class Component implements Globals {
-    private Hack hack;
+    private Feature hack;
     private Setting setting;
-    public Component(Hack hack) {
+    public Component(Feature hack) {
         this.hack = hack;
         this.setting = null;
     }
@@ -27,7 +28,7 @@ public abstract class Component implements Globals {
         return this.setting;
     }
 
-    public Hack getHack() {
+    public Feature getHack() {
         return this.hack;
     }
 

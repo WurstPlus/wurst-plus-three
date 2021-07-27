@@ -4,6 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
+import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
@@ -17,7 +18,7 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hack implements Globals {
+public class Hack extends Feature {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Registration {
@@ -52,11 +53,6 @@ public class Hack implements Globals {
     public void onDisable() {
     }
 
-    public void onToggle() {
-    }
-
-    public void onLoad() {
-    }
 
     public void onTick() {
     }
