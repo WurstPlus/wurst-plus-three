@@ -26,9 +26,9 @@ public class BooleanComponent extends Component {
         this.x = x;
         this.y = y;
         if (option.getValue() && x2 != 7) {
-            x2 = (float) Math.min((x2 + Gui.INSTANCE.animation.getValue() / 3), 7);
+            x2 = (float) Math.min((x2 + Gui.INSTANCE.animation.getValue() / 6), 7);
         } else if (!option.getValue() && x2 != 0) {
-            x2 = (float) Math.max((x2 - Gui.INSTANCE.animation.getValue() / 3), 0);
+            x2 = (float) Math.max((x2 - Gui.INSTANCE.animation.getValue() / 6), 0);
         }
         WurstplusGuiNew.drawRect(x + WurstplusGuiNew.SETTING_OFFSET, y  , x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT , isMouseOnButton(mouseX, mouseY) ? WurstplusGuiNew.GUI_HOVERED_COLOR() : this.option.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
         RenderUtil2D.drawBorderedRect(x + WurstplusGuiNew.SETTING_OFFSET + 85, y + 3 , x + 115 - WurstplusGuiNew.SETTING_OFFSET, y + WurstplusGuiNew.HEIGHT  - 3, 1, !this.option.getValue() ? WurstplusGuiNew.GUI_COLOR() : Gui.INSTANCE.buttonColor.getValue().hashCode(), new Color(0, 0, 0, 200).hashCode(), isMouseOnButton(mouseX, mouseY));
