@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-@Hack.Registration(name = "Custom Chat", description = "lets you customise chat", category = Hack.Category.CHAT, priority = HackPriority.Low)
+@Hack.Registration(name = "CustomChat", description = "lets you customise chat", category = Hack.Category.CHAT, priority = HackPriority.Low)
 public class CustomChat extends Hack {
 
     public static CustomChat INSTANCE;

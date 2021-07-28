@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@Hack.Registration(name = "Auto Ez", description = "lets people know ur clouted", category = Hack.Category.CHAT, priority = HackPriority.Lowest)
+@Hack.Registration(name = "AutoEz", description = "lets people know ur clouted", category = Hack.Category.CHAT, priority = HackPriority.Lowest)
 public class AutoEz extends Hack {
     public static AutoEz INSTANCE;
     public AutoEz() {

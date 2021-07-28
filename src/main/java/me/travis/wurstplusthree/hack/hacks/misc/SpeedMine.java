@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * Then it will instant mine once the block is mined!
  */
 
-@Hack.Registration(name = "Speed Mine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
+@Hack.Registration(name = "SpeedMine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
 public final class SpeedMine extends Hack {
 
     private final ParentSetting packetMine = new ParentSetting("Packet Mine", this);
@@ -72,14 +72,14 @@ public final class SpeedMine extends Hack {
     private final BooleanSetting noDesync = new BooleanSetting("NoDesync", false, switch0, v -> switchMode.is("Silent"));
 
     private final ParentSetting parentInstant = new ParentSetting("Instant", this);
-    private final BooleanSetting instant = new BooleanSetting("Instant Mine", false, parentInstant);
+    private final BooleanSetting instant = new BooleanSetting("InstantMine", false, parentInstant);
     private final IntSetting instantPacketLoop = new IntSetting("InstantPackets", 2, 2, 25, parentInstant, s -> instant.getValue());
     private final IntSetting instantDelay = new IntSetting("InstantDelay", 0, 0, 120, parentInstant, s -> instant.getValue());
 
     private final ParentSetting parentCombat = new ParentSetting("Combat", this);
     private final BooleanSetting packetCity = new BooleanSetting("Packet City", false, parentCombat);
     private final BooleanSetting packetBurrow = new BooleanSetting("Packet Burrow", false, parentCombat);
-    private final IntSetting cityRange = new IntSetting("Combat Range", 5, 1, 15, parentCombat, s -> (packetCity.getValue() || packetBurrow.getValue()));
+    private final IntSetting cityRange = new IntSetting("CombatRange", 5, 1, 15, parentCombat, s -> (packetCity.getValue() || packetBurrow.getValue()));
 
     private final ParentSetting parentRender = new ParentSetting("Render", this);
     private final BooleanSetting render = new BooleanSetting("Render", true, parentRender);

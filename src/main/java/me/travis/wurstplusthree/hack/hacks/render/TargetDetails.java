@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Hack.Registration(name = "Target Details", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "TargetDetails", description = "shows status of dude", category = Hack.Category.RENDER, isListening = false)
 public class TargetDetails extends Hack {
 
     BooleanSetting showFucked = new BooleanSetting("Fucked", true, this);

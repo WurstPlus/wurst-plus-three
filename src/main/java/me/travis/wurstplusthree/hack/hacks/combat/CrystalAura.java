@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.IntStream;
 
-@Hack.Registration(name = "Crystal Aura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "CrystalAura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public final class CrystalAura extends Hack {
 
     public static CrystalAura INSTANCE;
@@ -45,10 +45,10 @@ public final class CrystalAura extends Hack {
 
     //ranges
     private final ParentSetting ranges = new ParentSetting("Ranges", this);
-    private final DoubleSetting breakRange = new DoubleSetting("Break Range", 5.0, 0.0, 6.0, ranges);
-    private final DoubleSetting placeRange = new DoubleSetting("Place Range", 5.0, 0.0, 6.0, ranges);
-    private final DoubleSetting breakRangeWall = new DoubleSetting("Break Range Wall", 3.0, 0.0, 6.0, ranges);
-    private final DoubleSetting placeRangeWall = new DoubleSetting("Place Range Wall", 3.0, 0.0, 6.0, ranges);
+    private final DoubleSetting breakRange = new DoubleSetting("BreakRange", 5.0, 0.0, 6.0, ranges);
+    private final DoubleSetting placeRange = new DoubleSetting("PlaceRange", 5.0, 0.0, 6.0, ranges);
+    private final DoubleSetting breakRangeWall = new DoubleSetting("BreakRangeWall", 3.0, 0.0, 6.0, ranges);
+    private final DoubleSetting placeRangeWall = new DoubleSetting("PlaceRangeWall", 3.0, 0.0, 6.0, ranges);
     private final DoubleSetting targetRange = new DoubleSetting("Target Range", 15.0, 0.0, 20.0, ranges);
 
     //delay
@@ -58,7 +58,7 @@ public final class CrystalAura extends Hack {
 
     //Damages
     private final ParentSetting damages = new ParentSetting("Damages", this);
-    private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self", false, damages);
+    private final BooleanSetting ignoreSelfDamage = new BooleanSetting("IgnoreSelf", false, damages);
     private final IntSetting minPlace = new IntSetting("MinPlace", 9, 0, 36, damages);
     private final IntSetting maxSelfPlace = new IntSetting("MaxSelfPlace", 5, 0, 36, damages, s -> !ignoreSelfDamage.getValue());
     private final IntSetting minBreak = new IntSetting("MinBreak", 9, 0, 36, damages);
@@ -72,30 +72,30 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting raytrace = new BooleanSetting("Raytrace", false, general);
     private final EnumSetting fastMode = new EnumSetting("Fast", "Ignore", Arrays.asList("Off", "Ignore", "Ghost", "Sound"), general);
     public final EnumSetting autoSwitch = new EnumSetting("Switch", "None", Arrays.asList("Allways", "NoGap", "None", "Silent"), general);
-    private final BooleanSetting silentSwitchHand = new BooleanSetting("Hand Activation", true, general, s -> autoSwitch.is("Silent"));
-    private final BooleanSetting antiWeakness = new BooleanSetting("Anti Weakness", true, general);
+    private final BooleanSetting silentSwitchHand = new BooleanSetting("HandActivation", true, general, s -> autoSwitch.is("Silent"));
+    private final BooleanSetting antiWeakness = new BooleanSetting("AntiWeakness", true, general);
     private final IntSetting maxCrystals = new IntSetting("MaxCrystal", 1, 1, 4, general);
-    private final BooleanSetting ignoreTerrain = new BooleanSetting("Terrain Trace", true, general);
+    private final BooleanSetting ignoreTerrain = new BooleanSetting("TerrainTrace", true, general);
     private final EnumSetting crystalLogic = new EnumSetting("Placements", "Damage", Arrays.asList("Damage", "Nearby", "Safe"), general);
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
-    private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
-    private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Player", "CPS"), general);
+    private final BooleanSetting packetSafe = new BooleanSetting("PacketSafe", true, general);
+    private final EnumSetting arrayListMode = new EnumSetting("ArrayList", "Latency", Arrays.asList("Latency", "Player", "CPS"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
     //misc
     private final ParentSetting misc = new ParentSetting("Misc", this);
     private final BooleanSetting threaded = new BooleanSetting("Threaded", false, misc);
-    private final BooleanSetting antiStuck = new BooleanSetting("Anti Stuck", false, misc);
-    private final IntSetting maxAntiStuckDamage = new IntSetting("Stuck Self Damage", 8, 0, 36, misc, v -> antiStuck.getValue());
+    private final BooleanSetting antiStuck = new BooleanSetting("AntiStuck", false, misc);
+    private final IntSetting maxAntiStuckDamage = new IntSetting("StuckSelfDamage", 8, 0, 36, misc, v -> antiStuck.getValue());
 
     //predict
     private final ParentSetting predict = new ParentSetting("Predict", this);
-    private final BooleanSetting predictCrystal = new BooleanSetting("Predict Crystal", true, predict);
-    private final BooleanSetting predictBlock = new BooleanSetting("Predict Block", true, predict);
-    private final EnumSetting predictTeleport = new EnumSetting("P Teleport", "Sound", Arrays.asList("Sound", "Packet", "None"), predict);
-    private final BooleanSetting entityPredict = new BooleanSetting("Entity Predict", true, predict, v -> rotateMode.is("Off"));
-    private final IntSetting predictedTicks = new IntSetting("Predict Ticks", 2, 0, 5, predict, s -> entityPredict.getValue() && rotateMode.is("Off"));
+    private final BooleanSetting predictCrystal = new BooleanSetting("PredictCrystal", true, predict);
+    private final BooleanSetting predictBlock = new BooleanSetting("PredictBlock", true, predict);
+    private final EnumSetting predictTeleport = new EnumSetting("PTeleport", "Sound", Arrays.asList("Sound", "Packet", "None"), predict);
+    private final BooleanSetting entityPredict = new BooleanSetting("EntityPredict", true, predict, v -> rotateMode.is("Off"));
+    private final IntSetting predictedTicks = new IntSetting("PredictTicks", 2, 0, 5, predict, s -> entityPredict.getValue() && rotateMode.is("Off"));
 
     //feet obi stuff
     private final ParentSetting FeetObi = new ParentSetting("ObifeetMode", this);

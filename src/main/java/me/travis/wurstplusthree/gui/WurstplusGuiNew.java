@@ -104,10 +104,6 @@ public class WurstplusGuiNew extends GuiScreen {
                 component.renderToolTip(mouseX, mouseY);
             }
         }
-
-        if(shouldShow && colorEvent != null){
-
-        }
     }
 
     @Override

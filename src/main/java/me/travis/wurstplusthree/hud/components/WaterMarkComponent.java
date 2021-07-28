@@ -7,12 +7,12 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.network.play.client.CPacketPlayer;
 
-@HudComponent.Registration(name = "ServerIp")
-public class IpComponent extends HudComponent {
-    private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
-    private BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+@HudComponent.Registration(name = "WaterMark")
+public class WaterMarkComponent extends HudComponent {
+    private final ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
+    private final BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    private final BooleanSetting version = new BooleanSetting("Version", true, this);
     private String renderString;
 
     @Override
@@ -31,9 +31,9 @@ public class IpComponent extends HudComponent {
 
     @Override
     public void renderComponent() {
-        renderString = "Server: " + (mc.getCurrentServerData().serverIP != null ? mc.getCurrentServerData().serverIP : "NONE");
+        renderString = WurstplusThree.MODNAME + " " + (version.getValue() ? WurstplusThree.MODVER : "");
         if (customFont.getValue())
-            WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode(), false);
+            WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 2, color.getValue().hashCode(), false);
         else
             mc.fontRenderer.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode());
     }

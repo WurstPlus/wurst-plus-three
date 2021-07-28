@@ -27,7 +27,7 @@ import java.util.List;
  * @since 19/07/2021
  */
 
-@Hack.Registration(name = "Item Tracer", category = Hack.Category.RENDER, description = "Draws shit", priority = HackPriority.Lowest)
+@Hack.Registration(name = "ItemTracer", category = Hack.Category.RENDER, description = "Draws shit", priority = HackPriority.Lowest)
 public class ItemTracer extends Hack {
 
     ParentSetting pearl = new ParentSetting("Pearl", this);

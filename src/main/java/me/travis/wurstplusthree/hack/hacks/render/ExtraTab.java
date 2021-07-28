@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.IntSetting;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 
-@Hack.Registration(name = "Extra Tab", description = "this one doesnt crash ur game promise", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "ExtraTab", description = "this one doesnt crash ur game promise", category = Hack.Category.RENDER, isListening = false)
 public class ExtraTab extends Hack {
 
     public static ExtraTab INSTANCE;

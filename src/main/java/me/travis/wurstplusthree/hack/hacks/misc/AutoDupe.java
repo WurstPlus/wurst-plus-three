@@ -34,13 +34,13 @@ import java.util.Arrays;
  * @author Madmegsox1
  * @since 10/07/2021
  */
-@Hack.Registration(name = "Auto Dupe", category = Hack.Category.MISC, description = "Dupes for u", priority = HackPriority.Low)
+@Hack.Registration(name = "AutoDupe", category = Hack.Category.MISC, description = "Dupes for u", priority = HackPriority.Low)
 public final class AutoDupe extends Hack {
     EnumSetting server = new EnumSetting("Server", "Wurst.Plus", Arrays.asList("Wurst.Plus"), this);
     EnumSetting modes = new EnumSetting("Mode", "Main", Arrays.asList("Main", "Slave"), this, s -> server.is("Wurst.Plus"));
-    BooleanSetting sendChantMessage = new BooleanSetting("Chat Message", true, this, s -> server.is("Wurst.Plus"));
-    BooleanSetting waitItems = new BooleanSetting("Wait For Items", true, this, s -> server.is("Wurst.Plus"));
-    IntSetting delay = new IntSetting("Dupe Delay", 1, 0, 25, this);
+    BooleanSetting sendChantMessage = new BooleanSetting("ChatMessage", true, this, s -> server.is("Wurst.Plus"));
+    BooleanSetting waitItems = new BooleanSetting("WaitForItems", true, this, s -> server.is("Wurst.Plus"));
+    IntSetting delay = new IntSetting("Delay", 1, 0, 25, this);
     BooleanSetting rotations = new BooleanSetting("Rotations", false, this);
     EnumSetting swing = new EnumSetting("Swing", "Mainhand", Arrays.asList("Mainhand", "Offhand", "None"), this);
 

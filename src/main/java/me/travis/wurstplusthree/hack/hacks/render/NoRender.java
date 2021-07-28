@@ -11,7 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateBossInfo;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Hack.Registration(name = "No Render", description = "stops rendering things", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "NoRender", description = "stops rendering things", category = Hack.Category.RENDER, isListening = false)
 public class NoRender extends Hack {
 
     public static NoRender INSTANCE;
@@ -24,11 +24,11 @@ public class NoRender extends Hack {
     public BooleanSetting fire = new BooleanSetting("Fire", true, this);
     public BooleanSetting blind = new BooleanSetting("Blind", true, this);
     public BooleanSetting nausea = new BooleanSetting("Nausea", true, this);
-    public BooleanSetting hurtcam = new BooleanSetting("Hurt Cam", true, this);
-    public BooleanSetting skylight = new BooleanSetting("Sky Light", false, this);
+    public BooleanSetting hurtcam = new BooleanSetting("HurtCam", true, this);
+    public BooleanSetting skylight = new BooleanSetting("SkyLight", false, this);
     public BooleanSetting bossbar = new BooleanSetting("Bossbar", false, this);
     public BooleanSetting weather = new BooleanSetting("Weather", false, this);
-    public BooleanSetting time = new BooleanSetting("Change Time", false, this);
+    public BooleanSetting time = new BooleanSetting("ChangeTime", false, this);
     public BooleanSetting block = new BooleanSetting("Block", true , this);
     public BooleanSetting water = new BooleanSetting("Water", true, this);
     public IntSetting newTime = new IntSetting("Time", 0, 0, 23000, this, s -> time.getValue());

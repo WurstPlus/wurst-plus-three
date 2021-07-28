@@ -19,7 +19,7 @@ import net.minecraft.item.ItemSword;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "Kill Aura", description = "hits people", category = Hack.Category.COMBAT, priority = HackPriority.Low)
+@Hack.Registration(name = "KillAura", description = "hits people", category = Hack.Category.COMBAT, priority = HackPriority.Low)
 public class KillAura extends Hack {
 
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);

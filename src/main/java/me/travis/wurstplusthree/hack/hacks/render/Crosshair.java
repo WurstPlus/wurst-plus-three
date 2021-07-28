@@ -22,22 +22,22 @@ public class Crosshair extends Hack {
 
 
     ParentSetting dot = new ParentSetting("Dot", this);
-    BooleanSetting centerDot = new BooleanSetting("Center Dot", true, dot);
-    BooleanSetting dotOutline = new BooleanSetting("Dot Outline", true, dot, s -> centerDot.getValue());
-    IntSetting dotSize = new IntSetting("Dot Size", 2, 1, 5, dot, s -> centerDot.getValue());
-    IntSetting dotOutlineSize = new IntSetting("Dot Outline Width", 1, 1, 5, dot, s -> centerDot.getValue() && dotOutline.getValue());
-    ColourSetting dotColor = new ColourSetting("Dot Color", new Colour(255,255,255),  dot, s -> centerDot.getValue());
-    ColourSetting dotOutlineColor = new ColourSetting("Dot Outline Color", new Colour(0, 0, 0), dot, s -> centerDot.getValue() && dotOutline.getValue());
+    BooleanSetting centerDot = new BooleanSetting("CenterDot", true, dot);
+    BooleanSetting dotOutline = new BooleanSetting("DotOutline", true, dot, s -> centerDot.getValue());
+    IntSetting dotSize = new IntSetting("DotSize", 2, 1, 5, dot, s -> centerDot.getValue());
+    IntSetting dotOutlineSize = new IntSetting("DotOutlineWidth", 1, 1, 5, dot, s -> centerDot.getValue() && dotOutline.getValue());
+    ColourSetting dotColor = new ColourSetting("DotColor", new Colour(255,255,255),  dot, s -> centerDot.getValue());
+    ColourSetting dotOutlineColor = new ColourSetting("DotOutlineColor", new Colour(0, 0, 0), dot, s -> centerDot.getValue() && dotOutline.getValue());
 
-    ParentSetting linesInner = new ParentSetting("Inner Lines", this);
-    BooleanSetting innerLines = new BooleanSetting("Inner Lines", false, linesInner);
-    BooleanSetting moveError = new BooleanSetting("Move Error", true, linesInner, s -> innerLines.getValue());
-    BooleanSetting innerLinesOutline = new BooleanSetting("Inner Lines Outline", true, linesInner, s -> innerLines.getValue());
-    ColourSetting innerLineColor = new ColourSetting("Inner Line Color", new Colour(255,255,255), linesInner, s -> innerLines.getValue());
-    ColourSetting innerOutlineColor = new ColourSetting("Inner Outline Color", new Colour(0, 0, 0), linesInner, s -> innerLines.getValue());
-    IntSetting innerLineLength = new IntSetting("Inner Length", 5, 1, 8, linesInner, s -> innerLines.getValue());
-    IntSetting innerLineOffset = new IntSetting("Inner Offset", 1, 0, 8, linesInner, s -> innerLines.getValue());
-    IntSetting innerLineWidth = new IntSetting("Inner Width", 2, 1, 5, linesInner, s -> innerLines.getValue());
+    ParentSetting linesInner = new ParentSetting("InnerLines", this);
+    BooleanSetting innerLines = new BooleanSetting("InnerLines", false, linesInner);
+    BooleanSetting moveError = new BooleanSetting("MoveError", true, linesInner, s -> innerLines.getValue());
+    BooleanSetting innerLinesOutline = new BooleanSetting("InnerLinesOutline", true, linesInner, s -> innerLines.getValue());
+    ColourSetting innerLineColor = new ColourSetting("InnerLineColor", new Colour(255,255,255), linesInner, s -> innerLines.getValue());
+    ColourSetting innerOutlineColor = new ColourSetting("InnerOutlineColor", new Colour(0, 0, 0), linesInner, s -> innerLines.getValue());
+    IntSetting innerLineLength = new IntSetting("InnerLength", 5, 1, 8, linesInner, s -> innerLines.getValue());
+    IntSetting innerLineOffset = new IntSetting("InnerOffset", 1, 0, 8, linesInner, s -> innerLines.getValue());
+    IntSetting innerLineWidth = new IntSetting("InnerWidth", 2, 1, 5, linesInner, s -> innerLines.getValue());
     IntSetting innerLinesOutlineWidth = new IntSetting("Inner Outline Width", 1, 1, 5, linesInner, s -> innerLines.getValue() && innerLinesOutline.getValue());
 
     boolean shouldMove = false;

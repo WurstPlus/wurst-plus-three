@@ -7,10 +7,10 @@ import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.client.Minecraft;
 
-@HudComponent.Registration(name = "ServerIp")
-public class IpComponent extends HudComponent {
+@HudComponent.Registration(name = "FPS")
+public class FPSComponent extends HudComponent {
     private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
     private BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     private String renderString;
@@ -31,9 +31,9 @@ public class IpComponent extends HudComponent {
 
     @Override
     public void renderComponent() {
-        renderString = "Server: " + (mc.getCurrentServerData().serverIP != null ? mc.getCurrentServerData().serverIP : "NONE");
+        renderString = "FPS: " + Minecraft.getDebugFPS() * 2;
         if (customFont.getValue())
-            WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode(), false);
+            WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 2, color.getValue().hashCode(), false);
         else
             mc.fontRenderer.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode());
     }

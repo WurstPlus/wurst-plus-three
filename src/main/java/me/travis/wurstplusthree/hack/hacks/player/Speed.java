@@ -17,9 +17,9 @@ import java.util.Arrays;
 public class Speed extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);
-    DoubleSetting yPortSpeed = new DoubleSetting("YPort Speed", 0.06, 0.01, 0.15, this, s -> mode.is("YPort"));
-    DoubleSetting jumpHeight = new DoubleSetting("Jump Height", 0.41, 0.0, 1.0, this, s -> mode.is("Strafe"));
-    DoubleSetting timerVal = new DoubleSetting("Timer Speed", 1.15, 1.0, 1.5, this, s -> mode.is("Strafe"));
+    DoubleSetting yPortSpeed = new DoubleSetting("YPortSpeed", 0.06, 0.01, 0.15, this, s -> mode.is("YPort"));
+    DoubleSetting jumpHeight = new DoubleSetting("JumpHeight", 0.41, 0.0, 1.0, this, s -> mode.is("Strafe"));
+    DoubleSetting timerVal = new DoubleSetting("TimerSpeed", 1.15, 1.0, 1.5, this, s -> mode.is("Strafe"));
 
     private boolean slowdown;
     private double playerSpeed;

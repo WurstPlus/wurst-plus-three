@@ -27,9 +27,9 @@ public class Surround extends Hack {
     BooleanSetting hybrid = new BooleanSetting("Hybrid", true, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);
     BooleanSetting center = new BooleanSetting("Center", true, this);
-    BooleanSetting blockHead = new BooleanSetting("Block Face", false, this);
-    IntSetting tickForPlace = new IntSetting("Blocks Per Tick", 2, 1, 8, this);
-    IntSetting timeoutTicks = new IntSetting("Timeout Ticks", 20, 0, 50, this);
+    BooleanSetting blockHead = new BooleanSetting("BlockFace", false, this);
+    IntSetting tickForPlace = new IntSetting("BlocksPerTick", 2, 1, 8, this);
+    IntSetting timeoutTicks = new IntSetting("TimeoutTicks", 20, 0, 50, this);
 
     private int yLevel = 0;
     private final Timer timer = new Timer();

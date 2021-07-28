@@ -14,7 +14,6 @@ import java.awt.*;
 
 public class ColorComponent extends Component {
     private final ColourSetting set;
-    private Color finalColor;
     private boolean isOpen;
     private final int booleanButtonOffset = 80;
     boolean pickingColor = false;
@@ -54,7 +53,6 @@ public class ColorComponent extends Component {
         if (isOpen || didScissor) {
             WurstplusGuiNew.drawRect(this.x + WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT, this.x + WurstplusGuiNew.WIDTH - WurstplusGuiNew.SETTING_OFFSET, y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
             this.drawPicker(set, this.x + 7, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 100, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 19, this.x + 7, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 72, mouseX, mouseY);
-            set.setValue(finalColor);
             RenderUtil2D.drawBorderedRect(this.x + WurstplusGuiNew.SETTING_OFFSET + 85, this.y + (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 4 + booleanButtonOffset, this.x + 115 - WurstplusGuiNew.SETTING_OFFSET, this.y + (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT - 2 + booleanButtonOffset, 1, this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
             RenderUtil2D.drawRectMC(this.x + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + 6 + booleanButtonOffset, this.x + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, this.y + (int) (isOpen ? -y2 : y2 - WurstplusGuiNew.HEIGHT * 5) + WurstplusGuiNew.HEIGHT - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
             if (Gui.INSTANCE.customFont.getValue()) {
@@ -119,7 +117,7 @@ public class ColorComponent extends Component {
         int pickerWidth = 90;
         int pickerHeight = 51;
         int hueSliderWidth = 10;
-        int hueSliderHeight = 59;
+        int hueSliderHeight = 64;
         int alphaSliderHeight = 10;
         int alphaSliderWidth = 90;
         if (!pickingColor && !pickingHue && !pickingAlpha) {
@@ -132,9 +130,9 @@ public class ColorComponent extends Component {
         }
 
         if (pickingHue) {
-            float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
+            float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight - 1);
             color[0] = (restrictedY - (float) hueSliderY) / hueSliderHeight;
-            color[0] = (float) Math.min(0.97, color[0]);
+            color[0] = (float) Math.max(0, color[0]);
         }
 
         if (pickingAlpha) {
@@ -147,8 +145,8 @@ public class ColorComponent extends Component {
             float restrictedY = (float) Math.min(Math.max(pickerY, mouseY), pickerY + pickerHeight);
             color[1] = (restrictedX - (float) pickerX) / pickerWidth;
             color[2] = 1 - (restrictedY - (float) pickerY) / pickerHeight;
-            color[2] = (float) Math.max(0.04000002, color[2]);
-            color[1] = (float) Math.max(0.022222223, color[1]);
+            color[2] = (float) Math.max(0, color[2]);
+            color[1] = (float) Math.max(0, color[1]);
         }
 
         int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
@@ -166,9 +164,9 @@ public class ColorComponent extends Component {
 
         RenderUtil2D.drawRectMC(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
 
-        finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), color[3]);
+        this.set.setValue(alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), color[3]));
 
-        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, finalColor.getRed() / 255f, finalColor.getGreen() / 255f, finalColor.getBlue() / 255f, color[3]);
+        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, set.getValue().getRed() / 255f, set.getValue().getGreen() / 255f, set.getValue().getBlue() / 255f, color[3]);
     }
 
     public static Color alphaIntegrate(Color color, float alpha) {
@@ -180,29 +178,18 @@ public class ColorComponent extends Component {
 
     public void drawHueSlider(int x, int y, int width, int height, float hue) {
         int step = 0;
-        if (height > width) {
-            RenderUtil2D.drawRectMC(x, y, x + width, y + 4, 0xFFFF0000);
-            y += 4;
+        RenderUtil2D.drawRectMC(x, y, x + width, y + 4, 0xFFFF0000);
+        y += 4;
 
-            for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
-                int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
-                int nextStep = Color.HSBtoRGB((float) (step + 1) / 6, 1.0f, 1.0f);
-                RenderUtil2D.drawGradientRect(x, y + step * (height / 6f), x + width, y + (step + 1) * (height / 6f), previousStep, nextStep, false);
-                step++;
-            }
-            int sliderMinY = (int) (y + height * hue) - 4;
-            RenderUtil2D.drawRectMC(x, sliderMinY - 1, x + width, sliderMinY + 1, -1);
-        } else {
-            for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
-                int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
-                int nextStep = Color.HSBtoRGB((float) (step + 1) / 6, 1.0f, 1.0f);
-                RenderUtil2D.gradient(x + step * (width / 6), y, x + (step + 1) * (width / 6), y + height, previousStep, nextStep, true);
-                step++;
-            }
-
-            int sliderMinX = (int) (x + (width * hue));
-            RenderUtil2D.drawRectMC(sliderMinX - 1, y, sliderMinX + 1, y + height, -1);
+        for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
+            int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
+            int nextStep = Color.HSBtoRGB((float) (step + 1) / 6, 1.0f, 1.0f);
+            RenderUtil2D.drawGradientRect(x, y + step * (height / 6f), x + width, y + (step + 1) * (height / 6f), previousStep, nextStep, false);
+            step++;
         }
+        int sliderMinY = (int) (y + height * hue) - 4;
+        WurstplusGuiNew.drawRect(x, y + 59, x + width, y + height, set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
+        RenderUtil2D.drawRectMC(x, sliderMinY - 1, x + width, sliderMinY + 1, -1);
     }
 
     public void drawAlphaSlider(int x, int y, int width, int height, float red, float green, float blue, float alpha) {

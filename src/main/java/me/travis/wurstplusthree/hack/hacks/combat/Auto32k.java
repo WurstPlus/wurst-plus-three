@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.*;
 
-@Hack.Registration(name = "Auto 32K", description = "places some blocks and pulls out a sword", category = Hack.Category.COMBAT, priority = HackPriority.High)
+@Hack.Registration(name = "Auto32K", description = "places some blocks and pulls out a sword", category = Hack.Category.COMBAT, priority = HackPriority.High)
 public class Auto32k extends Hack {
     //original module by TrvsF
     //redone by wallhacks

@@ -19,11 +19,11 @@ public class Gui extends Hack {
     public static Gui INSTANCE;
 
     public ParentSetting colors = new ParentSetting("Colours", this);
-    public ColourSetting headButtonColor = new ColourSetting("Head Button", new Colour(255, 150, 90, 255), colors);
+    public ColourSetting headButtonColor = new ColourSetting("HeadButton", new Colour(255, 150, 90, 255), colors);
     public ColourSetting buttonColor = new ColourSetting("Button", new Colour(224, 156, 96, 255), colors);
     public ColourSetting fontColor = new ColourSetting("Font", new Colour(255,255,255, 255), colors);
-    public ColourSetting groupColor= new ColourSetting("Group Setting", new Colour(45,45,45,255), colors);
-    public ColourSetting groupHoverColor = new ColourSetting("Group Hover Color", new Colour(32, 32, 32, 255), colors);
+    public ColourSetting groupColor= new ColourSetting("GroupSetting", new Colour(45,45,45,255), colors);
+    public ColourSetting groupHoverColor = new ColourSetting("GroupHoverColor", new Colour(32, 32, 32, 255), colors);
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
     public EnumSetting type = new EnumSetting("Type", "None", Arrays.asList("None", "Rainbow", "Sin"), this);
     public EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);

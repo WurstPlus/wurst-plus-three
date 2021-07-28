@@ -30,8 +30,8 @@ public final class Velocity extends Hack {
     IntSetting h = new IntSetting("Horizontal", 0, 0, 100, this);
 
     BooleanSetting explosions = new BooleanSetting("Explosions", true ,this);
-    BooleanSetting fishHook = new BooleanSetting("Fish Hook", true, this);
-    public BooleanSetting noPush = new BooleanSetting("No Push", true, this);
+    BooleanSetting fishHook = new BooleanSetting("FishHook", true, this);
+    public BooleanSetting noPush = new BooleanSetting("NoPush", true, this);
 
 
     @CommitEvent

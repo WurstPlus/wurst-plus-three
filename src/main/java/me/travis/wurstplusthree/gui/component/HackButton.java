@@ -88,9 +88,9 @@ public class HackButton extends Component {
         }
         String name = this.mod == null ? this.hudComponent.getName() : this.mod.getName();
         if (Gui.INSTANCE.customFont.getValue()) {
-            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE + 2, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
-            mc.fontRenderer.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
+            mc.fontRenderer.drawStringWithShadow(name, x + WurstplusGuiNew.MODULE_FONT_SIZE + 2, y + WurstplusGuiNew.HEIGHT / 2f - WurstplusGuiNew.FONT_HEIGHT, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         if ((mod != null && !this.mod.getSettings().isEmpty()) || (hudComponent != null && !hudComponent.getSettings().isEmpty())) {
             if (!isOpen) {
