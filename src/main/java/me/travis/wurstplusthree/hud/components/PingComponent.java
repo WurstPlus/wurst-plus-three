@@ -25,7 +25,12 @@ public class PingComponent extends HudComponent {
 
     @Override
     public void renderComponent() {
-        renderString = "Ping: " + (!mc.isSingleplayer() ? mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : -1);
-        WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode(), false);
+        try {
+            renderString = "Ping: " + (!mc.isSingleplayer() ? mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : -1);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            renderString = "Nullpointer";
+        }
+            WurstplusThree.GUI_FONT_MANAGER.drawString(renderString, getX() + 2, getY() + 3, color.getValue().hashCode(), false);
     }
 }

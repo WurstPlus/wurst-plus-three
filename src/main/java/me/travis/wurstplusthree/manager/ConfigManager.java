@@ -5,9 +5,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
+import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
+import me.travis.wurstplusthree.hack.hacks.combat.CrystalAura;
+import me.travis.wurstplusthree.hud.HudComponent;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
@@ -24,7 +27,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
@@ -43,8 +49,6 @@ public class ConfigManager implements Globals {
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
     private final String IRCtoken = "IRCtoken.dat";
-    private final String hudFile = "hud.txt";
-    private final String coordsFile = "playersCoords.txt";
 
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
@@ -52,8 +56,6 @@ public class ConfigManager implements Globals {
     private final String IRCdir = mainFolder + IRCtoken;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
-    private final String hudDir = mainFolder + hudFile;
-    private final String coordsDir = mainFolder + coordsFile;
 
     // FOLDER PATHS
     private final Path mainFolderPath = Paths.get(mainFolder);
@@ -64,8 +66,7 @@ public class ConfigManager implements Globals {
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
     private final Path IRCpath = Paths.get(IRCdir);
-    private final Path hudPath = Paths.get(hudDir);
-    private final Path coordsPath = Paths.get(coordsDir);
+
 
     public void loadConfig() {
         try {
@@ -73,6 +74,7 @@ public class ConfigManager implements Globals {
             this.loadFriends();
             this.loadSettings();
             this.loadBinds();
+            this.loadHud();
             this.loadDrawn();
             this.loadFont();
             this.loadBurrowBlock();
@@ -85,6 +87,7 @@ public class ConfigManager implements Globals {
         try {
             this.loadSettings();
             this.loadBinds();
+            this.loadHud();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,6 +110,7 @@ public class ConfigManager implements Globals {
             this.saveFriends();
             this.saveSettings();
             this.saveBinds();
+            this.saveHud();
             this.saveDrawn();
             this.saveFont();
             this.saveBurrowBlock();
@@ -134,6 +138,9 @@ public class ConfigManager implements Globals {
         String bindsFile = "binds.txt";
         String bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
+        String HudFile = "Hud.txt";
+        String HudDir = currentConfigDir + HudFile;
+        Paths.get(HudDir);
         if (!Files.exists(Paths.get(configsFolder + folder))) {
             this.clearSettings();
         }
@@ -157,13 +164,13 @@ public class ConfigManager implements Globals {
         Gson gson = new Gson();
         Reader reader = Files.newBufferedReader(Paths.get(friendsDir));
 
-        WurstplusThree.FRIEND_MANAGER.setFriends(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>(){}.getType()));
+        WurstplusThree.FRIEND_MANAGER.setFriends(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>() {
+        }.getType()));
 
         reader.close();
     }
 
     // LOAD & SAVE ENEMIES
-
     private void saveEnemies() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(WurstplusThree.ENEMY_MANAGER.getEnemies());
@@ -179,7 +186,8 @@ public class ConfigManager implements Globals {
         Gson gson = new Gson();
         Reader reader = Files.newBufferedReader(Paths.get(enemiesDir));
 
-        WurstplusThree.ENEMY_MANAGER.setEnemies(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>(){}.getType()));
+        WurstplusThree.ENEMY_MANAGER.setEnemies(gson.fromJson(reader, new TypeToken<ArrayList<WurstplusPlayer>>() {
+        }.getType()));
 
         reader.close();
     }
@@ -192,22 +200,43 @@ public class ConfigManager implements Globals {
             Path filePath = Paths.get(fileName);
             this.deleteFile(fileName);
             verifyFile(filePath);
-
             File file = new File(fileName);
             BufferedWriter br = new BufferedWriter(new FileWriter(file));
-
             for (Setting setting : hack.getSettings()) {
                 if (setting instanceof ColourSetting) {
                     ColourSetting color = (ColourSetting) setting;
                     br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
                             + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
                             + color.getRainbow() + "\r\n");
-                }
-                else if(setting instanceof KeySetting){
+                } else if (setting instanceof KeySetting) {
                     KeySetting key = (KeySetting) setting;
-                    br.write(setting.getName()+ ":" + key.getKey() + "\r\n");
+                    br.write(setting.getName() + ":" + key.getKey() + "\r\n");
+                } else {
+                    br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
                 }
-                else {
+            }
+
+            br.close();
+        }
+        for (HudComponent component : WurstplusThree.HUD.getComponents()) {
+            String fileName = activeConfigFolder + component.getName() + ".txt";
+            Path filePath = Paths.get(fileName);
+            this.deleteFile(fileName);
+            verifyFile(filePath);
+
+            File file = new File(fileName);
+            BufferedWriter br = new BufferedWriter(new FileWriter(file));
+
+            for (Setting setting : component.getSettings()) {
+                if (setting instanceof ColourSetting) {
+                    ColourSetting color = (ColourSetting) setting;
+                    br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
+                            + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
+                            + color.getRainbow() + "\r\n");
+                } else if (setting instanceof KeySetting) {
+                    KeySetting key = (KeySetting) setting;
+                    br.write(setting.getName() + ":" + key.getKey() + "\r\n");
+                } else {
                     br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
                 }
             }
@@ -270,6 +299,55 @@ public class ConfigManager implements Globals {
 
             br.close();
         }
+        for (HudComponent component : WurstplusThree.HUD.getComponents()) {
+            String file_name = activeConfigFolder + component.getName() + ".txt";
+            File file = new File(file_name);
+            if (!file.exists()) continue;
+            FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream di_stream = new DataInputStream(fi_stream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String colune = line.trim();
+                String name = colune.split(":")[0];
+                String value = colune.split(":")[1];
+                Setting setting = component.getSettingByName(name);
+                if (setting == null) continue;
+                switch (setting.getType()) {
+                    case "boolean":
+                        setting.setValue(Boolean.parseBoolean(value));
+                        break;
+                    case "colour":
+                        try {
+                            ColourSetting colourSetting = (ColourSetting) setting;
+                            int red = Integer.parseInt(value);
+                            int green = Integer.parseInt(colune.split(":")[2]);
+                            int blue = Integer.parseInt(colune.split(":")[3]);
+                            int alpha = Integer.parseInt(colune.split(":")[4]);
+                            boolean rainbow = Boolean.parseBoolean(colune.split(":")[5]);
+                            colourSetting.setRainbow(rainbow);
+                            colourSetting.setValue(red, green, blue, alpha);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "double":
+                        setting.setValue(Double.parseDouble(value));
+                        break;
+                    case "enum":
+                        setting.setValue(value);
+                        break;
+                    case "int":
+                        setting.setValue(Integer.parseInt(value));
+                        break;
+                    case "key":
+                        KeySetting key = (KeySetting) setting;
+                        key.setKey(Integer.parseInt(value));
+                        break;
+                }
+            }
+            br.close();
+        }
     }
 
     private void clearSettings() {
@@ -326,11 +404,108 @@ public class ConfigManager implements Globals {
                     hack.setEnabled(Boolean.parseBoolean(active));
                 }
 
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         br.close();
     }
 
+    private void saveHud() throws IOException {
+        final String file_name = activeConfigFolder + "Hud.txt";
+        final Path file_path = Paths.get(file_name);
+        this.deleteFile(file_name);
+        this.verifyFile(file_path);
+        final File file = new File(file_name);
+        final BufferedWriter br = new BufferedWriter(new FileWriter(file));
+        ArrayList<HudComponent> ignoreComponents = new ArrayList<>();
+        int i = 0;
+        for (HudComponent component : WurstplusThree.HUD.RULIST) {
+            ignoreComponents.add(component);
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + "RU" + ":" + i + "\r\n");
+            i++;
+        }
+        i = 0;
+        for (HudComponent component : WurstplusThree.HUD.RDLIST) {
+            ignoreComponents.add(component);
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + "RD" + ":" + i + "\r\n");
+            i++;
+        }
+        i = 0;
+        for (HudComponent component : WurstplusThree.HUD.LULIST) {
+            ignoreComponents.add(component);
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + "LU" + ":" + i + "\r\n");
+            i++;
+        }
+        i = 0;
+        for (HudComponent component : WurstplusThree.HUD.LDLIST) {
+            ignoreComponents.add(component);
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + "LD" + ":" + i + "\r\n");
+            i++;
+        }
+        for (HudComponent component : WurstplusThree.HUD.getComponents()) {
+            if (ignoreComponents.contains(component)) continue;
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + component.getX() + ":" + component.getY() + "\r\n");
+        }
+        br.close();
+    }
+
+    private void loadHud() throws IOException {
+        WurstplusThree.HUD.RULIST.clear();
+        WurstplusThree.HUD.RDLIST.clear();
+        WurstplusThree.HUD.LULIST.clear();
+        WurstplusThree.HUD.LDLIST.clear();
+        final String file_name = activeConfigFolder + "Hud.txt";
+        final File file = new File(file_name);
+        final FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());
+        final DataInputStream di_stream = new DataInputStream(fi_stream);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(di_stream));
+        String line;
+        ArrayList<sortClass> RU = new ArrayList<>();
+        ArrayList<sortClass> RD = new ArrayList<>();
+        ArrayList<sortClass> LU = new ArrayList<>();
+        ArrayList<sortClass> LD = new ArrayList<>();
+        while ((line = br.readLine()) != null) {
+            try {
+                final String colune = line.trim();
+                final String name = colune.split(":")[0];
+                final String enabled = colune.split(":")[1];
+                final String coord1 = colune.split(":")[2];
+                final String coord2 = colune.split(":")[3];
+                HudComponent component = WurstplusThree.HUD.getComponentByName(name);
+                component.setEnabled(Boolean.parseBoolean(enabled));
+                if (coord1.equals("RU")) {
+                    RU.add(new sortClass(Integer.parseInt(coord2), component));
+                } else if (coord1.equals("RD")) {
+                    RD.add(new sortClass(Integer.parseInt(coord2), component));
+                } else if (coord1.equals("LU")) {
+                    LU.add(new sortClass(Integer.parseInt(coord2), component));
+                } else if (coord1.equals("LD")) {
+                    LD.add(new sortClass(Integer.parseInt(coord2), component));
+                } else {
+                    component.setX(Integer.parseInt(coord1));
+                    component.setY(Integer.parseInt(coord2));
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        RU.sort(new Comparator1());
+        RD.sort(new Comparator1());
+        LU.sort(new Comparator1());
+        LD.sort(new Comparator1());
+        for (sortClass s : RU) {
+            WurstplusThree.HUD.RULIST.add(s.c);
+        }
+        for (sortClass s : RD) {
+            WurstplusThree.HUD.RDLIST.add(s.c);
+        }
+        for (sortClass s : LU) {
+            WurstplusThree.HUD.LULIST.add(s.c);
+        }
+        for (sortClass s : LD) {
+            WurstplusThree.HUD.LDLIST.add(s.c);
+        }
+        br.close();
+    }
 
     private void saveDrawn() throws IOException {
         FileWriter writer = new FileWriter(drawnDir);
@@ -369,16 +544,6 @@ public class ConfigManager implements Globals {
         WurstplusThree.GUI_FONT_MANAGER.setFont();
     }
 
-    public void saveCoords(String coords) throws IOException {
-        FileWriter fw = new FileWriter(coordsDir, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy -- HH:mm:ss");
-        Date date = new Date();
-        bw.write("[" + formatter.format(date) + "] " + coords);
-        bw.newLine();
-        bw.close();
-    }
-
     public void saveBurrowBlock() throws IOException {
         FileWriter writer = new FileWriter(burrowDir);
         //Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
@@ -388,7 +553,7 @@ public class ConfigManager implements Globals {
     }
 
     private void loadBurrowBlock() throws IOException {
-        for (String l : Files.readAllLines(burrowPath)){
+        for (String l : Files.readAllLines(burrowPath)) {
             Burrow a = (Burrow) WurstplusThree.HACKS.getHackByName("Burrow");
             new WhitelistUtil();
             a.setBlock(WhitelistUtil.findBlock(l));
@@ -398,13 +563,13 @@ public class ConfigManager implements Globals {
 
     public void saveIRCtoken(String token) throws IOException {
         FileWriter writer = new FileWriter(IRCdir);
-        writer.append( mc.player.getName()+":"+mc.player.getUniqueID()+":"+token);
+        writer.append(mc.player.getName() + ":" + mc.player.getUniqueID() + ":" + token);
         writer.close();
     }
 
     public String loadIRCtoken() throws IOException {
-        String line="";
-        for (String l : Files.readAllLines(IRCpath)){
+        String line = "";
+        for (String l : Files.readAllLines(IRCpath)) {
             line = l;
             break;
         }
@@ -429,4 +594,27 @@ public class ConfigManager implements Globals {
         }
     }
 
+    static class Comparator1 implements Comparator<sortClass> {
+        @Override
+        public int compare(sortClass a, sortClass b) {
+            if (a.i > b.i) {
+                return 1;
+            } else if (a.i < b.i){
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    class sortClass {
+        public sortClass(int i, HudComponent c) {
+            this.i = i;
+            this.c = c;
+        }
+        int i;
+        HudComponent c;
+    }
 }
+
+

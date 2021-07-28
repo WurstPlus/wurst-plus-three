@@ -3,6 +3,7 @@ package me.travis.wurstplusthree.hud;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.HudEditor;
 import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.ReflectionUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
@@ -16,10 +17,10 @@ public class HudManager implements Globals {
     private int dragY;
     private HudComponent dragComponent;
     private final List<HudComponent> components = new ArrayList<>();
-    ArrayList<HudComponent> RULIST = new ArrayList<>();
-    ArrayList<HudComponent> RDLIST = new ArrayList<>();
-    ArrayList<HudComponent> LULIST = new ArrayList<>();
-    ArrayList<HudComponent> LDLIST = new ArrayList<>();
+    public ArrayList<HudComponent> RULIST = new ArrayList<>();
+    public ArrayList<HudComponent> RDLIST = new ArrayList<>();
+    public ArrayList<HudComponent> LULIST = new ArrayList<>();
+    public ArrayList<HudComponent> LDLIST = new ArrayList<>();
 
     public HudManager() {
         try {
@@ -133,5 +134,12 @@ public class HudManager implements Globals {
         return components;
     }
 
-
+    public final HudComponent getComponentByName(String name) {
+        for (HudComponent c : components) {
+            if (c.getName().equalsIgnoreCase(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
 }
