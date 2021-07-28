@@ -21,10 +21,10 @@ public class ViewModel extends Hack {
     public ViewModel(){
         INSTANCE = this;
     }
-
-    public DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
-    public DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);
-    public DoubleSetting mainZ = new DoubleSetting("mainZ", -1.45, -5.0, 5.0, this);
+    public BooleanSetting fixEating = new BooleanSetting("Fix Eating", true, this);
+    DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
+    DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);
+    DoubleSetting mainZ = new DoubleSetting("mainZ", -1.45, -5.0, 5.0, this);
     DoubleSetting offX = new DoubleSetting("offX", -1.2, -6.0, 0.0, this);
     DoubleSetting offY = new DoubleSetting("offY", -0.95, -3.0, 3.0, this);
     DoubleSetting offZ = new DoubleSetting("offZ", -1.45, -5.0, 5.0, this);

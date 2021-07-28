@@ -7,9 +7,8 @@ import me.travis.wurstplusthree.hack.hacks.render.ViewModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,39 +27,10 @@ public abstract class MixinItemRenderer {
         }
     }
 
-    @Inject(
-            method = "transformEatFirstPerson",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-
-    private void renderEating(float y, EnumHandSide hand, ItemStack stack, CallbackInfo ci){
-        if(ViewModel.INSTANCE.isEnabled()) {
-            float f = (float) this.mc.player.getItemInUseCount() - y + 1.0F;
-            float f1 = f / (float) stack.getMaxItemUseDuration();
-
-            if (f1 < 0.8F) {
-                float f2 = MathHelper.abs(MathHelper.cos(f / 4.0F * (float) Math.PI) * 0.1F);
-                GlStateManager.translate(0.0F, f2, 0.0F);
-            }
-
-            float f3 = 1.0F - (float) Math.pow(f1, 27.0D);
-            int i = hand == EnumHandSide.RIGHT ? 1 : -1;
-            GlStateManager.translate(
-                    f3 * 0.6F * (float) i * ViewModel.INSTANCE.mainX.getValue(),
-                    f3 * -0.5F * -ViewModel.INSTANCE.mainY.getValue(),
-                    f3 * 0.0F * ViewModel.INSTANCE.mainZ.getValue()
-            );
-            GlStateManager.rotate((float) i * f3 * 90.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(f3 * 10.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate((float) i * f3 * 30.0F, 0.0F, 0.0F, 1.0F);
-            ci.cancel();
-        }
-    }
-
     @Redirect(
             method = "renderItemInFirstPerson(Lnet/minecraft/client/entity/AbstractClientPlayer;FFLnet/minecraft/util/EnumHand;FLnet/minecraft/item/ItemStack;F)V",
-            at = @At(value = "INVOKE",
+            at = @At(
+                    value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/ItemRenderer;transformSideFirstPerson(Lnet/minecraft/util/EnumHandSide;F)V"
             )
     )
@@ -73,7 +43,11 @@ public abstract class MixinItemRenderer {
         );
         WurstplusThree.EVENT_PROCESSOR.postEvent(event);
         if (hand == EnumHandSide.RIGHT) {
-            GlStateManager.translate(event.getMainX(), event.getMainY(), event.getMainZ());
+            GlStateManager.translate(
+                    (!(mc.player.isHandActive() && mc.player.getItemInUseCount() > 0 && mc.player.getActiveHand() == EnumHand.MAIN_HAND && ViewModel.INSTANCE.fixEating.getValue())) ? event.getMainX() : 1 * 0.56F,
+                    event.getMainY(),
+                    (!(mc.player.isHandActive() && mc.player.getItemInUseCount() > 0 && mc.player.getActiveHand() == EnumHand.MAIN_HAND && ViewModel.INSTANCE.fixEating.getValue())) ? event.getMainZ() : -0.72F
+            );
             GlStateManager.scale(event.getMainHandScaleX(), event.getMainHandScaleY(), event.getMainHandScaleZ());
             GlStateManager.rotate((float) event.getMainRAngel(), (float) event.getMainRx(), (float) event.getMainRy(), (float) event.getMainRz());
         } else {
