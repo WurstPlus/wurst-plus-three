@@ -120,8 +120,8 @@ public class RenderUtil2D {
     public static void drawBorderedRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor, boolean hover) {
         if (hover) {
             borderColor = ColorUtil.shadeColour(borderColor, -20);
+            insideColor = ColorUtil.shadeColour(insideColor, -20);
         }
-        insideColor = ColorUtil.shadeColour(insideColor, -20);
         drawRectBase(left + borderWidth, top + borderWidth, right - borderWidth, bottom - borderWidth, insideColor);
         drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, borderColor);
         drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, borderColor);

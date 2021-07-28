@@ -98,7 +98,7 @@ public class HudEditor extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         component.setDrag(false);
-        WurstplusThree.HUD.onMouseReleased();
+        WurstplusThree.HUD.onMouseReleased(mouseX, mouseY, state);
         if (component.isOpen()) {
             if (!component.getComponents().isEmpty()) {
                 for (Component component : component.getComponents()) {

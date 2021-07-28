@@ -24,7 +24,6 @@ public class HudComponent extends Feature {
         boolean enabled() default false;
         int x() default 20;
         int y() default 50;
-        SnapPoint snapPoint() default SnapPoint.NONE;
     }
 
     private Registration getComponent(){
@@ -33,7 +32,6 @@ public class HudComponent extends Feature {
 
     private final String name = getComponent().name();
     private boolean isEnabled = getComponent().enabled();
-    private SnapPoint snapPoint = getComponent().snapPoint();
     private int x = getComponent().x();
     private int y = getComponent().y();
 
@@ -72,14 +70,6 @@ public class HudComponent extends Feature {
     }
 
     public void onDisable() {
-    }
-
-    public SnapPoint getSnapPoint() {
-        return snapPoint;
-    }
-
-    public void setSnapPoint(SnapPoint snapPoint) {
-        this.snapPoint = snapPoint;
     }
 
     public boolean isEnabled() {

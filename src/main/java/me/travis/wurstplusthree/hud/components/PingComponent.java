@@ -8,8 +8,8 @@ import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
 
-@HudComponent.Registration(name = "ServerIp")
-public class IpComponent extends HudComponent {
+@HudComponent.Registration(name = "Ping")
+public class PingComponent extends HudComponent {
     private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
     private String renderString;
 
@@ -25,7 +25,7 @@ public class IpComponent extends HudComponent {
 
     @Override
     public void renderComponent() {
-        renderString = "Server: " + (mc.getCurrentServerData().serverIP != null ? mc.getCurrentServerData().serverIP : "NONE");
+        renderString = "Ping: " + (!mc.isSingleplayer() ? mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : -1);
         WurstplusThree.GUI_FONT_MANAGER.drawString(renderString , getX() + 2, getY() + 3, color.getValue().hashCode(), false);
     }
 }
