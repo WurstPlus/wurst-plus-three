@@ -205,14 +205,14 @@ public class ConfigManager implements Globals {
             for (Setting setting : hack.getSettings()) {
                 if (setting instanceof ColourSetting) {
                     ColourSetting color = (ColourSetting) setting;
-                    br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
+                    br.write(setting.getName().replace(" ", "") + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
                             + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
                             + color.getRainbow() + "\r\n");
                 } else if (setting instanceof KeySetting) {
                     KeySetting key = (KeySetting) setting;
-                    br.write(setting.getName() + ":" + key.getKey() + "\r\n");
+                    br.write(setting.getName().replace(" ", "") + ":" + key.getKey() + "\r\n");
                 } else {
-                    br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
+                    br.write(setting.getName().replace(" ", "") + ":" + setting.getValue() + "\r\n");
                 }
             }
 
@@ -230,14 +230,14 @@ public class ConfigManager implements Globals {
             for (Setting setting : component.getSettings()) {
                 if (setting instanceof ColourSetting) {
                     ColourSetting color = (ColourSetting) setting;
-                    br.write(setting.getName() + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
+                    br.write(setting.getName().replace(" ", "") + ":" + color.getValue().getRed() + ":" + color.getValue().getGreen()
                             + ":" + color.getValue().getBlue() + ":" + color.getValue().getAlpha() + ":"
                             + color.getRainbow() + "\r\n");
                 } else if (setting instanceof KeySetting) {
                     KeySetting key = (KeySetting) setting;
-                    br.write(setting.getName() + ":" + key.getKey() + "\r\n");
+                    br.write(setting.getName().replace(" ", "") + ":" + key.getKey() + "\r\n");
                 } else {
-                    br.write(setting.getName() + ":" + setting.getValue() + "\r\n");
+                    br.write(setting.getName().replace(" ", "") + ":" + setting.getValue() + "\r\n");
                 }
             }
 
@@ -258,7 +258,7 @@ public class ConfigManager implements Globals {
             while ((line = br.readLine()) != null) {
 
                 String colune = line.trim();
-                String name = colune.split(":")[0];
+                String name = colune.split(":")[0].replace(" ", "");
                 String value = colune.split(":")[1];
 
                 Setting setting = hack.getSettingByName(name);
@@ -374,7 +374,7 @@ public class ConfigManager implements Globals {
         final BufferedWriter br = new BufferedWriter(new FileWriter(file));
         br.write(Commands.prefix + "\r\n");
         for (Hack module : WurstplusThree.HACKS.getHacks()) {
-            br.write(module.getName() + ":" + module.getBind() + ":" + module.isEnabled() + ":" + module.isHold() + "\r\n");
+            br.write(module.getName().replace(" ", "") + ":" + module.getBind() + ":" + module.isEnabled() + ":" + module.isHold() + "\r\n");
         }
         br.close();
     }
@@ -393,7 +393,7 @@ public class ConfigManager implements Globals {
                     Commands.prefix = line;
                     flag = false;
                 } else {
-                    final String colune = line.trim();
+                    final String colune = line.trim().replace(" ", "");
                     final String tag = colune.split(":")[0];
                     final String bind = colune.split(":")[1];
                     final String active = colune.split(":")[2];
@@ -421,7 +421,7 @@ public class ConfigManager implements Globals {
         int i = 0;
         for (HudComponent component : WurstplusThree.HUD.RULIST) {
             ignoreComponents.add(component);
-            br.write(component.getName() + ":" + component.isEnabled() + ":" + "RU" + ":" + i + "\r\n");
+            br.write(component.getName().replace(" ", "") + ":" + component.isEnabled() + ":" + "RU" + ":" + i + "\r\n");
             i++;
         }
         i = 0;
@@ -466,7 +466,7 @@ public class ConfigManager implements Globals {
         ArrayList<sortClass> LD = new ArrayList<>();
         while ((line = br.readLine()) != null) {
             try {
-                final String colune = line.trim();
+                final String colune = line.trim().replace(" ", "");;
                 final String name = colune.split(":")[0];
                 final String enabled = colune.split(":")[1];
                 final String coord1 = colune.split(":")[2];
