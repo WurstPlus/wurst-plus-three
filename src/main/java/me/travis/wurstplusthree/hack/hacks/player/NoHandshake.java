@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
  * @since 07/05/2005
  */
 
-@Hack.Registration(name = "NoHandshake", description = "Do not shake hand", category = Hack.Category.PLAYER, priority = HackPriority.Low)
+@Hack.Registration(name = "NoHandshake", description = "Do not shake hand", category = Hack.Category.PLAYER, priority = HackPriority.Low, color = 0x099F93)
 public class NoHandshake extends Hack {
 
     @CommitEvent(priority = EventPriority.LOW)

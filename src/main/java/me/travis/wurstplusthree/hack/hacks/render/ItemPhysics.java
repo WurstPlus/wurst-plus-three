@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
  * @author Madmegsox1
  * @since 03/05/2021
  */
-@Hack.Registration(name = "ItemPhysics", description = "Apply physics to items", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "ItemPhysics", description = "Apply physics to items", category = Hack.Category.RENDER, isListening = false, color = 0x936741)
 public class ItemPhysics extends Hack{
     public static ItemPhysics INSTANCE;
 

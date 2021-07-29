@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author Madmegsox1
  * @since 22/07/2021
  */
-@Hack.Registration(name = "Crosshair", description = "Renders a Crosshair like csgo", category = Hack.Category.RENDER, priority = HackPriority.Lowest)
+@Hack.Registration(name = "Crosshair", description = "Renders a Crosshair like csgo", category = Hack.Category.RENDER, priority = HackPriority.Lowest, color = 0xAEFADC)
 public class Crosshair extends Hack {
 
 

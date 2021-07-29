@@ -26,7 +26,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-@Hack.Registration(name = "Esp", description = "draws box around shit", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Esp", description = "draws box around shit", category = Hack.Category.RENDER, isListening = false, color = 0xB7F0E4)
 public class Esp extends Hack {
 
     public static Esp INSTANCE;

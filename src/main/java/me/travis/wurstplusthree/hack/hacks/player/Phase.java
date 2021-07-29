@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 21/07/2021
  */
 
-@Hack.Registration(name = "Phase", description = "bots use this", category = Hack.Category.PLAYER, priority = HackPriority.Highest)
+@Hack.Registration(name = "Phase", description = "bots use this", category = Hack.Category.PLAYER, priority = HackPriority.Highest, color = 0x462398)
 public class Phase extends Hack {
 
     DoubleSetting loops = new DoubleSetting("Loops", 0.5, 0.0, 5.0, this);

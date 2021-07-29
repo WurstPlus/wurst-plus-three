@@ -32,7 +32,7 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Hack.Registration(name = "Nametags", description = "makes name above player", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Nametags", description = "makes name above player", category = Hack.Category.RENDER, isListening = false, color = 0x35B2E9)
 public class Nametags extends Hack {
 
     public static Nametags INSTANCE;

@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Hack.Registration(name = "AutoArmour", description = "automates ur armour", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "AutoArmour", description = "automates ur armour", category = Hack.Category.PLAYER, color = 0xF2A409)
 public class ArmourMend extends Hack {
 
     IntSetting delay = new IntSetting("Delay", 50, 0, 500, this);

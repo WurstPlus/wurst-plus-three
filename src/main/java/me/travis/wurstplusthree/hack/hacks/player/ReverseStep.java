@@ -4,7 +4,7 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
-@Hack.Registration(name = "ReverseStep", description = "pulls u down down down", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "ReverseStep", description = "pulls u down down down", category = Hack.Category.PLAYER, color = 0x3BB49E)
 public class ReverseStep extends Hack {
 
     DoubleSetting height = new DoubleSetting("Height", 2.0, 0.0, 10.0, this);

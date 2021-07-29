@@ -18,7 +18,7 @@ import net.minecraft.network.play.server.SPacketSetPassengers;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
-@Hack.Registration(name = "Freecam", description = "lets u see freely", category = Hack.Category.PLAYER, priority = HackPriority.Low)
+@Hack.Registration(name = "Freecam", description = "lets u see freely", category = Hack.Category.PLAYER, priority = HackPriority.Low, color = 0x115486)
 public class Freecam extends Hack {
 
     public DoubleSetting speed = new DoubleSetting("Speed", 0.5, 0.1, 5.0, this);

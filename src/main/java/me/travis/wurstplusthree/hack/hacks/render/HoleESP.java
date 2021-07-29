@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Hack.Registration(name = "HoleESP", description = "shows holes", category = Hack.Category.RENDER, priority = HackPriority.Low)
+@Hack.Registration(name = "HoleESP", description = "shows holes", category = Hack.Category.RENDER, priority = HackPriority.Low, color = 0x4F3709)
 public class HoleESP extends Hack {
 
     IntSetting range = new IntSetting("Range", 5, 1, 20, this);

@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER, isListening = false, color = 0x0557E1)
 public class Chams extends Hack {
     public static Chams INSTANCE;
 

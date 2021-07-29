@@ -13,7 +13,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
  *  -> This is dumb as well but its the only way i think you can do it lol
  */
 
-@Hack.Registration(name = "ViewModel", description = "makes you hand look cool", category = Hack.Category.RENDER)
+@Hack.Registration(name = "ViewModel", description = "makes you hand look cool", category = Hack.Category.RENDER, color = 0xFB6DDF)
 public class ViewModel extends Hack {
 
     public static ViewModel INSTANCE;

@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Arrays;
 import java.util.List;
 
-@Hack.Registration(name = "VoidEsp", description = "see where the void is", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "VoidEsp", description = "see where the void is", category = Hack.Category.RENDER, isListening = false, color = 0x56CE9D)
 public class VoidESP extends Hack {
 
     IntSetting range = new IntSetting("Range", 10, 0, 50, this);

@@ -18,7 +18,7 @@ import net.minecraft.network.play.server.SPacketExplosion;
  * @author Madmegsox1
  * @since 23/07/2021
  */
-@Hack.Registration(name = "Velocity", description = "Anti KB", category = Hack.Category.PLAYER, priority = HackPriority.Low)
+@Hack.Registration(name = "Velocity", description = "Anti KB", category = Hack.Category.PLAYER, priority = HackPriority.Low, color = 0x9900A5)
 public final class Velocity extends Hack {
 
     public static Velocity INSTANCE;

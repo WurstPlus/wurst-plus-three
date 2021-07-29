@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
-@Hack.Registration(name = "Step", description = "steps up things", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "Step", description = "steps up things", category = Hack.Category.PLAYER, color = 0x0A9849)
 public class Step extends Hack {
 
     BooleanSetting vanilla = new BooleanSetting("Vanilla", false, this);

@@ -12,7 +12,7 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
  *  -> src from prism
  */
 
-@Hack.Registration(name = "Aspect", description = "Does aspect shit", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Aspect", description = "Does aspect shit", category = Hack.Category.RENDER, isListening = false, color = 0xCB8229)
 public class Aspect extends Hack{
     DoubleSetting aspect = new DoubleSetting("Aspect",  mc.displayWidth / mc.displayHeight + 0.0, 0.0 ,3.0, this);
 

@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 
-@Hack.Registration(name = "XCarry", description = "carrys stuff", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "XCarry", description = "carrys stuff", category = Hack.Category.PLAYER, color = 0xFC2C56)
 public class XCarry extends Hack {
 
     @CommitEvent(priority = EventPriority.LOW)

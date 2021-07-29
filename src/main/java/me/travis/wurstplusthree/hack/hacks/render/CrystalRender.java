@@ -19,7 +19,7 @@ import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Hack.Registration(name = "CrystalRender", description = "changes how crystal renders", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "CrystalRender", description = "changes how crystal renders", category = Hack.Category.RENDER, isListening = false, color = 0xE1C0C4)
 public class CrystalRender extends Hack {
 
     public static CrystalRender INSTANCE;

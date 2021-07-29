@@ -13,7 +13,7 @@ import net.minecraft.init.MobEffects;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "Speed", description = "makes u go faster", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "Speed", description = "makes u go faster", category = Hack.Category.PLAYER, color = 0x4351DB)
 public class Speed extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Strafe", Arrays.asList("Strafe", "Fake", "YPort"), this);

@@ -7,7 +7,7 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "Sprint", description = "sprints automatically", category = Hack.Category.PLAYER)
+@Hack.Registration(name = "Sprint", description = "sprints automatically", category = Hack.Category.PLAYER, color = 0xAC57C9)
 public class Sprint extends Hack {
 
     public EnumSetting mode = new EnumSetting("Mode", "Legit", Arrays.asList("legit", "Rage"), this);

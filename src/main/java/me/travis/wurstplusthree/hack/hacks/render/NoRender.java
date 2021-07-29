@@ -11,7 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateBossInfo;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Hack.Registration(name = "NoRender", description = "stops rendering things", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "NoRender", description = "stops rendering things", category = Hack.Category.RENDER, isListening = false, color = 0xCD9CBE)
 public class NoRender extends Hack {
 
     public static NoRender INSTANCE;

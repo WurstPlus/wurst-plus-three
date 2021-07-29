@@ -16,7 +16,7 @@ import org.lwjgl.input.Keyboard;
  * @author Madmegsox1
  * @since 23/07/2021
  */
-@Hack.Registration(name = "NoSlow", description = "Lets you move freely", category = Hack.Category.PLAYER, priority = HackPriority.Low)
+@Hack.Registration(name = "NoSlow", description = "Lets you move freely", category = Hack.Category.PLAYER, priority = HackPriority.Low, color = 0xBEAB3B)
 public class NoSlow extends Hack {
     BooleanSetting inventoryMove = new BooleanSetting("InventoryMove", true, this);
     BooleanSetting noInput = new BooleanSetting("NoInputGUIs", true, this);
