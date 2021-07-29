@@ -17,7 +17,7 @@ import java.util.Map;
 public class Replenish extends Hack {
 
     IntSetting threshold = new IntSetting("Threshold", 32, 0, 63, this);
-    IntSetting tickDelay = new IntSetting("Tick Delay", 2, 0, 10, this);
+    IntSetting tickDelay = new IntSetting("Delay", 2, 0, 10, this);
 
     private int delayStep = 0;
 

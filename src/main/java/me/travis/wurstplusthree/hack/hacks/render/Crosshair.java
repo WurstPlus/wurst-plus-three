@@ -38,7 +38,7 @@ public class Crosshair extends Hack {
     IntSetting innerLineLength = new IntSetting("InnerLength", 5, 1, 8, linesInner, s -> innerLines.getValue());
     IntSetting innerLineOffset = new IntSetting("InnerOffset", 1, 0, 8, linesInner, s -> innerLines.getValue());
     IntSetting innerLineWidth = new IntSetting("InnerWidth", 2, 1, 5, linesInner, s -> innerLines.getValue());
-    IntSetting innerLinesOutlineWidth = new IntSetting("Inner Outline Width", 1, 1, 5, linesInner, s -> innerLines.getValue() && innerLinesOutline.getValue());
+    IntSetting innerLinesOutlineWidth = new IntSetting("InnerOutlineWidth", 1, 1, 5, linesInner, s -> innerLines.getValue() && innerLinesOutline.getValue());
 
     boolean shouldMove = false;
 

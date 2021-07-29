@@ -12,7 +12,7 @@ public class TotemPopCounter extends Hack {
         INSTANCE = this;
     }
 
-    public BooleanSetting kdMessages = new BooleanSetting("KD Messages", true, this);
+    public BooleanSetting kdMessages = new BooleanSetting("KDMessages", true, this);
 
     @Override
     public void onUpdate() {

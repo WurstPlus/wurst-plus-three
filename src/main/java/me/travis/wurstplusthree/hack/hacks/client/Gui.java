@@ -26,7 +26,7 @@ public class Gui extends Hack {
     public ColourSetting groupHoverColor = new ColourSetting("GroupHoverColor", new Colour(32, 32, 32, 255), colors);
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
     public EnumSetting type = new EnumSetting("Type", "None", Arrays.asList("None", "Rainbow", "Sin"), this);
-    public EnumSetting SinMode = new EnumSetting("Sine Mode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);
+    public EnumSetting SinMode = new EnumSetting("SineMode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);
     public IntSetting scrollSpeed = new IntSetting("ScrollSpeed", 15, 1, 100, this);
     public ParentSetting gradientParent = new ParentSetting("Gradient", this);
     public BooleanSetting gradient = new BooleanSetting("Enabled", false, gradientParent);
@@ -37,7 +37,7 @@ public class Gui extends Hack {
     public BooleanSetting customScreen = new BooleanSetting("CustomMenu", true, this);
     public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     public ParentSetting toolTipsParent = new ParentSetting("ToolTips", this);
-    public BooleanSetting toolTips = new BooleanSetting("Show ToolTips", true , toolTipsParent);
+    public BooleanSetting toolTips = new BooleanSetting("ShowToolTips", true , toolTipsParent);
     public ColourSetting toolTipColor = new ColourSetting("ToolTipColour", new Colour(0,0,0,100), toolTipsParent);
 
     public Gui(){

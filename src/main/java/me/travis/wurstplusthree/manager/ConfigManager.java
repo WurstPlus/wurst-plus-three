@@ -197,8 +197,11 @@ public class ConfigManager implements Globals {
     private void saveSettings() throws IOException {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
             String fileName = activeConfigFolder + hack.getName().replace(" ", "") + ".txt";
+            String fufkcedName = activeConfigFolder + hack.getName() + ".txt";
+            File deletefile = new File(fufkcedName);
+            deletefile.delete();
             Path filePath = Paths.get(fileName);
-            this.deleteFile(fileName);
+            this.deleteFile(fufkcedName);
             verifyFile(filePath);
             File file = new File(fileName);
             BufferedWriter br = new BufferedWriter(new FileWriter(file));
@@ -258,10 +261,10 @@ public class ConfigManager implements Globals {
             while ((line = br.readLine()) != null) {
 
                 String colune = line.trim();
-                String name = colune.split(":")[0].replace(" ", "");
+                String name = colune.split(":")[0];
                 String value = colune.split(":")[1];
 
-                Setting setting = hack.getSettingByName(name);
+                Setting setting = hack.getSettingByName(name.replace(" ", ""));
                 if (setting == null) continue;
                 switch (setting.getType()) {
                     case "boolean":
@@ -367,7 +370,6 @@ public class ConfigManager implements Globals {
     private void saveBinds() throws IOException {
         final String file_name = activeConfigFolder + "BINDS.txt";
         final Path file_path = Paths.get(file_name);
-
         this.deleteFile(file_name);
         this.verifyFile(file_path);
         final File file = new File(file_name);
@@ -393,12 +395,12 @@ public class ConfigManager implements Globals {
                     Commands.prefix = line;
                     flag = false;
                 } else {
-                    final String colune = line.trim().replace(" ", "");
+                    final String colune = line.trim();
                     final String tag = colune.split(":")[0];
                     final String bind = colune.split(":")[1];
                     final String active = colune.split(":")[2];
                     final String hold = colune.split(":")[3];
-                    Hack hack = WurstplusThree.HACKS.getHackByName(tag);
+                    Hack hack = WurstplusThree.HACKS.getHackByName(tag.replace(" ", ""));
                     hack.setBind(Integer.parseInt(bind));
                     hack.setHold(Boolean.parseBoolean(hold));
                     hack.setEnabled(Boolean.parseBoolean(active));
@@ -421,7 +423,7 @@ public class ConfigManager implements Globals {
         int i = 0;
         for (HudComponent component : WurstplusThree.HUD.RULIST) {
             ignoreComponents.add(component);
-            br.write(component.getName().replace(" ", "") + ":" + component.isEnabled() + ":" + "RU" + ":" + i + "\r\n");
+            br.write(component.getName() + ":" + component.isEnabled() + ":" + "RU" + ":" + i + "\r\n");
             i++;
         }
         i = 0;

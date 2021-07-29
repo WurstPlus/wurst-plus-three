@@ -53,8 +53,8 @@ public final class CrystalAura extends Hack {
 
     //delay
     private final ParentSetting delays = new ParentSetting("Delays", this);
-    private final IntSetting placeDelay = new IntSetting("Place Delay", 0, 0, 10, delays);
-    private final IntSetting breakDelay = new IntSetting("Break Delay", 0, 0, 10, delays);
+    private final IntSetting placeDelay = new IntSetting("PlaceDelay", 0, 0, 10, delays);
+    private final IntSetting breakDelay = new IntSetting("BreakDelay", 0, 0, 10, delays);
 
     //Damages
     private final ParentSetting damages = new ParentSetting("Damages", this);

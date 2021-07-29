@@ -31,11 +31,11 @@ public class CustomChat extends Hack {
         INSTANCE = this;
     }
 
-    public BooleanSetting customFont = new BooleanSetting("Custom Font", true, this);
+    public BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     public BooleanSetting rainbow = new BooleanSetting("Rainbow", false, this);
-    public BooleanSetting nameHighlight = new BooleanSetting("Name Highlight", true, this);
-    public BooleanSetting timeStamps = new BooleanSetting("Time Stamps", true, this);
-    public BooleanSetting colourTimeStamps = new BooleanSetting("Rainbow Time", true, this, s -> timeStamps.getValue());
+    public BooleanSetting nameHighlight = new BooleanSetting("NameHighlight", true, this);
+    public BooleanSetting timeStamps = new BooleanSetting("TimeStamps", true, this);
+    public BooleanSetting colourTimeStamps = new BooleanSetting("RainbowTime", true, this, s -> timeStamps.getValue());
     public BooleanSetting suffix = new BooleanSetting("Suffix", false, this);
     public BooleanSetting infinite = new BooleanSetting("Infinite", true, this);
     public BooleanSetting smoothChat = new BooleanSetting("SmoothChat", false, this);

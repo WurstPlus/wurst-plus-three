@@ -20,7 +20,7 @@ import java.util.Arrays;
  * @author Madmegsox1
  * @since 21/07/2021
  */
-@Hack.Registration(name = "Surround Rewrite", description = "Hole maker", category = Hack.Category.COMBAT)
+@Hack.Registration(name = "SurroundRewrite", description = "Hole maker", category = Hack.Category.COMBAT)
 public class SurroundRewrite extends Hack {
     BooleanSetting smart = new BooleanSetting("Smart", true, this);
     BooleanSetting center = new BooleanSetting("Center", true, this);
