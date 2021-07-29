@@ -70,6 +70,10 @@ public class PlayerUtil implements Globals {
         return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }
 
+    public static BlockPos getPlayerPos(double pY) {
+        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY + pY), Math.floor(mc.player.posZ));
+    }
+
     public static double[] forward(final double speed) {
         float forward = mc.player.movementInput.moveForward;
         float side = mc.player.movementInput.moveStrafe;

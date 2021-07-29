@@ -29,6 +29,14 @@ import java.awt.*;
 @Hack.Registration(name = "Esp", description = "draws box around shit", category = Hack.Category.RENDER, isListening = false)
 public class Esp extends Hack {
 
+    public static Esp INSTANCE;
+
+    public Esp(){
+        INSTANCE = this;
+    }
+
+    public BooleanSetting hideOnBlock = new BooleanSetting("Hide On Block", false, this);
+    public IntSetting alpha = new IntSetting("Alpha", 10, 0, 255, this, s -> hideOnBlock.getValue());
     BooleanSetting items = new BooleanSetting("Items", true, this);
     BooleanSetting orbs = new BooleanSetting("Orbs", true, this);
     BooleanSetting bottles = new BooleanSetting("Bottles", true, this);
