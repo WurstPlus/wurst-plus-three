@@ -196,7 +196,7 @@ public class ConfigManager implements Globals {
 
     private void saveSettings() throws IOException {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
-            String fileName = activeConfigFolder + hack.getName() + ".txt";
+            String fileName = activeConfigFolder + hack.getName().replace(" ", "") + ".txt";
             Path filePath = Paths.get(fileName);
             this.deleteFile(fileName);
             verifyFile(filePath);
@@ -247,7 +247,7 @@ public class ConfigManager implements Globals {
 
     private void loadSettings() throws IOException {
         for (Hack hack : WurstplusThree.HACKS.getHacks()) {
-            String file_name = activeConfigFolder + hack.getName() + ".txt";
+            String file_name = activeConfigFolder + hack.getName().replace(" ", "") + ".txt";
             File file = new File(file_name);
             if (!file.exists()) continue;
             FileInputStream fi_stream = new FileInputStream(file.getAbsolutePath());

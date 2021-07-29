@@ -7,6 +7,8 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.ReflectionUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.gui.ScaledResolution;
 
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class HudManager implements Globals {
             OFFSET+=component.getHeight();
         }
         OFFSET = 0;
+        if (mc.ingameGUI.getChatGUI().getChatOpen()) OFFSET = 15;
         for (HudComponent component : RDLIST) {
             if (!component.isEnabled()) continue;
             component.setX(0);
