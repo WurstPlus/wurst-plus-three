@@ -22,7 +22,7 @@ import org.lwjgl.input.Mouse;
  * @since 30/04/2021
  */
 
-@Hack.Registration(name = "Silent Xp", description = "uses exp with packets", category = Hack.Category.COMBAT, priority = HackPriority.Lowest)
+@Hack.Registration(name = "Silent Xp", description = "uses exp with packets", category = Hack.Category.COMBAT, priority = HackPriority.Lowest, color = 0x2F0A77)
 public class PacketXP extends Hack{
 
     KeySetting bind = new KeySetting("PacketBind", Keyboard.KEY_NONE, this);

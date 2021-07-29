@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
+import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
@@ -31,6 +32,7 @@ public class Hack extends Feature {
         boolean enabled() default false;
         boolean shown() default true;
         boolean hold() default false;
+        int color() default -1;
     }
 
     private Registration getMod(){
@@ -46,8 +48,13 @@ public class Hack extends Feature {
     private boolean notification = getMod().shown();
     private boolean isEnabled = getMod().enabled();
     private int isListening = (getMod().isListening() ? 0 : 1);
+    private int color = getMod().color();
 
     public void onEnable() {
+    }
+
+    public int getModuleColor() {
+        return color;
     }
 
     public void onDisable() {
@@ -183,7 +190,7 @@ public class Hack extends Feature {
     }
 
     public String getFullArrayString() {
-        return this.name + (this.getDisplayInfo() != null ? ChatFormatting.GOLD + "[" + this.getDisplayInfo().toUpperCase() + "]" : "");
+        return this.getDisplayInfo() != null ?  "[" + this.getDisplayInfo() + "]" : "";
     }
 
     public Setting getSettingByName(String name) {

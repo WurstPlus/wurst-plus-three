@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * Then it will instant mine once the block is mined!
  */
 
-@Hack.Registration(name = "SpeedMine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest)
+@Hack.Registration(name = "SpeedMine", description = "break shit fast idfk", category = Hack.Category.MISC, priority = HackPriority.Highest, color = 0x2D41BB)
 public final class SpeedMine extends Hack {
 
     private final ParentSetting packetMine = new ParentSetting("Packet Mine", this);

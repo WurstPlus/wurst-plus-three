@@ -1,10 +1,6 @@
 package me.travis.wurstplusthree.hud;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.event.events.Render2DEvent;
-import me.travis.wurstplusthree.event.events.Render3DEvent;
-import me.travis.wurstplusthree.gui.component.components.BooleanComponent;
 import me.travis.wurstplusthree.setting.Feature;
 import me.travis.wurstplusthree.setting.Setting;
 import net.minecraftforge.common.MinecraftForge;

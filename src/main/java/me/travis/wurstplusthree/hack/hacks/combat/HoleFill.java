@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-@Hack.Registration(name = "HoleFill", description = "fills holes", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "HoleFill", description = "fills holes", category = Hack.Category.COMBAT, priority = HackPriority.Highest, color = 0x2324D5)
 public class HoleFill extends Hack {
 
     IntSetting range = new IntSetting("Range", 3, 1, 6, this);

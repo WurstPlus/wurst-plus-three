@@ -28,7 +28,7 @@ import java.util.List;
  * @since 03/05/2021
  */
 
-@Hack.Registration(name = "AutoWeb", description = "webs ppl coz its crazy annoying", category = Hack.Category.COMBAT, priority = HackPriority.High)
+@Hack.Registration(name = "AutoWeb", description = "webs ppl coz its crazy annoying", category = Hack.Category.COMBAT, priority = HackPriority.High, color = 0x01A6CF)
 public class AutoWeb extends Hack {
 
     DoubleSetting range = new DoubleSetting("Range", 5.0, 1.0, 8.0, this);

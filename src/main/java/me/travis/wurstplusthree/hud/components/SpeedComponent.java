@@ -2,19 +2,12 @@ package me.travis.wurstplusthree.hud.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hud.HudComponent;
-import me.travis.wurstplusthree.manager.PositionManager;
-import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.MathsUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
-import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 
-import javax.swing.text.html.parser.Entity;
 import java.text.DecimalFormat;
 
 @HudComponent.Registration(name = "Speed")

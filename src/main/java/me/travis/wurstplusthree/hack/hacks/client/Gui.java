@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @since 29/04/2021
  */
 
-@Hack.Registration(name = "Gui", description = "swag custom gui", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_RSHIFT)
+@Hack.Registration(name = "Gui", description = "swag custom gui", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_RSHIFT, color = 0x4893AB)
 public class Gui extends Hack {
     
     public static Gui INSTANCE;

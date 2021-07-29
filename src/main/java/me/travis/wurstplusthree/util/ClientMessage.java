@@ -27,7 +27,7 @@ public class ClientMessage implements Globals {
                 if (hack.getName().equalsIgnoreCase("gui")) return;
                 ChatFormatting open = (enabled ? ChatFormatting.GREEN : ChatFormatting.RED);
                 boolean compact = ToggleMessages.INSTANCE.compact.getValue();
-                if (hack.getName().equalsIgnoreCase("crystal aura")) {
+                if (hack.getName().equalsIgnoreCase("crystalaura")) {
                     if (open == ChatFormatting.GREEN) {
                         sendMessage("we " + open + "gaming", !compact);
                     } else {

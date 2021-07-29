@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "SelfTrap", description = "when all else fails u can self trap", category = Hack.Category.COMBAT, isListening = false)
+@Hack.Registration(name = "SelfTrap", description = "when all else fails u can self trap", category = Hack.Category.COMBAT, isListening = false, color = 0x97AA5C)
 public class SelfTrap extends Hack {
     /*
      * k3b skidded this all by himself :D

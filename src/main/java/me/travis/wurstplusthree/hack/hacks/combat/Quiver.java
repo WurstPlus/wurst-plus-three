@@ -20,7 +20,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-@Hack.Registration(name = "Quiver", description = "shoots arrows like brr", category = Hack.Category.COMBAT, isListening = false)
+@Hack.Registration(name = "Quiver", description = "shoots arrows like brr", category = Hack.Category.COMBAT, color = 0x231ADF)
 public class Quiver extends Hack {
     private int timer = 0;
     private int stage = 1;

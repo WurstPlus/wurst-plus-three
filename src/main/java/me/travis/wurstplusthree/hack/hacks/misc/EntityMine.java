@@ -6,7 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 
-@Hack.Registration(name = "EntityMine", description = "mines through entities", category = Hack.Category.MISC)
+@Hack.Registration(name = "EntityMine", description = "mines through entities", category = Hack.Category.MISC, color = 0x10DF9E)
 public class EntityMine extends Hack {
 
     private boolean focus = false;

@@ -11,7 +11,7 @@ import net.minecraft.world.GameType;
 
 import java.util.UUID;
 
-@Hack.Registration(name = "FakePlayer", description = "spawns a dripped out fake player", category = Hack.Category.MISC, priority = HackPriority.Lowest)
+@Hack.Registration(name = "FakePlayer", description = "spawns a dripped out fake player", category = Hack.Category.MISC, priority = HackPriority.Lowest, color = 0x1C1930)
 public class FakePlayer extends Hack {
 
     final private ItemStack[] armour = new ItemStack[] {

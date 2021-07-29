@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
  * @since 01/05/2021
  */
 
-@Hack.Registration(name = "Cosmetics", description = "Renders swag stuff on sawg ppl", category = Hack.Category.CLIENT, priority = HackPriority.Lowest)
+@Hack.Registration(name = "Cosmetics", description = "Renders swag stuff on sawg ppl", category = Hack.Category.CLIENT, priority = HackPriority.Lowest, color = 0x4893AB)
 public class Cosmetics extends Hack {
 
     @SubscribeEvent

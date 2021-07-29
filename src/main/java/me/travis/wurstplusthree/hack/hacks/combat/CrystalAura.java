@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.IntStream;
 
-@Hack.Registration(name = "CrystalAura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "CrystalAura", description = "the goods", category = Hack.Category.COMBAT, priority = HackPriority.Highest, color = 0x5536B7)
 public final class CrystalAura extends Hack {
 
     public static CrystalAura INSTANCE;

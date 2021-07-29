@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-@Hack.Registration(name = "Replenish", description = "replenishes items in ur hotbar", category = Hack.Category.MISC)
+@Hack.Registration(name = "Replenish", description = "replenishes items in ur hotbar", category = Hack.Category.MISC, color = 0xEB5B79)
 public class Replenish extends Hack {
 
     IntSetting threshold = new IntSetting("Threshold", 32, 0, 63, this);

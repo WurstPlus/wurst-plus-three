@@ -17,7 +17,7 @@ import org.lwjgl.input.Keyboard;
  * @since 04/05/2021
  */
 
-@Hack.Registration(name = "AntiWeb", description = "stops faggots from trapping you in webs", category = Hack.Category.MISC, priority = HackPriority.High)
+@Hack.Registration(name = "AntiWeb", description = "stops faggots from trapping you in webs", category = Hack.Category.MISC, color = 0xB11001, priority = HackPriority.High)
 public class AntiWeb extends Hack {
 
     BooleanSetting disableBB = new BooleanSetting("AddBB", true, this);

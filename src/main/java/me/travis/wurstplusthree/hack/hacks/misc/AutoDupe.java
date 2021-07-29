@@ -34,7 +34,7 @@ import java.util.Arrays;
  * @author Madmegsox1
  * @since 10/07/2021
  */
-@Hack.Registration(name = "AutoDupe", category = Hack.Category.MISC, description = "Dupes for u", priority = HackPriority.Low)
+@Hack.Registration(name = "AutoDupe", category = Hack.Category.MISC, description = "Dupes for u", priority = HackPriority.Low, color = 0x703831)
 public final class AutoDupe extends Hack {
     EnumSetting server = new EnumSetting("Server", "Wurst.Plus", Arrays.asList("Wurst.Plus"), this);
     EnumSetting modes = new EnumSetting("Mode", "Main", Arrays.asList("Main", "Slave"), this, s -> server.is("Wurst.Plus"));

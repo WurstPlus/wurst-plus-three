@@ -16,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
  * @since 05/05/2021
  */
 
-@Hack.Registration(name = "BowAim", description = "Aimbot for minecraft", category = Hack.Category.COMBAT, priority = HackPriority.Lowest)
+@Hack.Registration(name = "BowAim", description = "Aimbot for minecraft", category = Hack.Category.COMBAT, priority = HackPriority.Lowest, color = 0xFA33C7)
 public class BowAim extends Hack {
 
     @Override

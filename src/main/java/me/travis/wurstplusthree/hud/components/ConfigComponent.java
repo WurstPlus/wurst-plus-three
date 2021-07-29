@@ -2,13 +2,9 @@ package me.travis.wurstplusthree.hud.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.hud.HudComponent;
-import me.travis.wurstplusthree.manager.ConfigManager;
-import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
-import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.client.Minecraft;
 
 @HudComponent.Registration(name = "CurrentConfig")
 public class ConfigComponent extends HudComponent {

@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Hack.Registration(name = "Surround", description = "surrounds u", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "Surround", description = "surrounds u", category = Hack.Category.COMBAT, priority = HackPriority.Highest, color = 0x625692)
 public class Surround extends Hack {
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

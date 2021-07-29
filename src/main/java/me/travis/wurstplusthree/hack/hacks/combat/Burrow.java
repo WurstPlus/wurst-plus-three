@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-@Hack.Registration(name = "Burrow", description = "fills ur lower-half with a block", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "Burrow", description = "fills ur lower-half with a block", category = Hack.Category.COMBAT, priority = HackPriority.Highest, color = 0xB4D297)
 public class Burrow extends Hack {
 
     BooleanSetting rotate = new BooleanSetting("Rotate", true, this);

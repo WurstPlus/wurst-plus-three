@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "Offhand", description = "puts things in ur offhand", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
+@Hack.Registration(name = "Offhand", description = "puts things in ur offhand", category = Hack.Category.COMBAT, priority = HackPriority.Highest, color = 0x9B93EB)
 public class Offhand extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Totem", Arrays.asList("Totem", "Crystal", "Gapple"), this);

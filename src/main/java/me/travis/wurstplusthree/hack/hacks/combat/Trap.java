@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Hack.Registration(name = "AutoTrap", description = "traps people", category = Hack.Category.COMBAT, priority = HackPriority.High)
+@Hack.Registration(name = "AutoTrap", description = "traps people", category = Hack.Category.COMBAT, priority = HackPriority.High, color = 0xFDC399)
 public class Trap extends Hack {
 
     EnumSetting mode = new EnumSetting("Mode", "Extra", Arrays.asList("Extra", "Face", "Normal", "Feet", "Sand"),this);

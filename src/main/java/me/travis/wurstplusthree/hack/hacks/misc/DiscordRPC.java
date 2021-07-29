@@ -5,7 +5,7 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
 
 
-@Hack.Registration(name = "DiscordRPC", description = "It is discordrpc !", category = Hack.Category.MISC, priority = HackPriority.Lowest)
+@Hack.Registration(name = "DiscordRPC", description = "It is discordrpc !", category = Hack.Category.MISC, priority = HackPriority.Lowest, color = 0x492D79)
 public class DiscordRPC extends Hack {
 
 

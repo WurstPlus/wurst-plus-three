@@ -6,7 +6,7 @@ import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 import org.lwjgl.input.Keyboard;
 
-@Hack.Registration(name = "HudEditor", description = "sxcy hud by wallhacks_", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_BACKSLASH)
+@Hack.Registration(name = "HudEditor", description = "sxcy hud by wallhacks_", category = Hack.Category.CLIENT, isListening = true, bind = Keyboard.KEY_BACKSLASH, color = 0x4893AB)
 public class HudEditor extends Hack {
     public static HudEditor INSTANCE;
     public ColourSetting backGround = new ColourSetting("BackGround", new Colour(0, 0, 0, 20), this);

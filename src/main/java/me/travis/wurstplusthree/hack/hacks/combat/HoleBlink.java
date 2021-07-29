@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 
-@Hack.Registration(name = "HoleBlink", description = "walks to hole", category = Hack.Category.COMBAT, priority = HackPriority.High)
+@Hack.Registration(name = "HoleBlink", description = "walks to hole", category = Hack.Category.COMBAT, priority = HackPriority.High, color = 0x23C505)
 public class HoleBlink extends Hack {
     private BooleanSetting blink = new BooleanSetting("Blink", true, this);
     private DoubleSetting range = new DoubleSetting("MaxRange", 2.0, 0.0, 20.0, this);

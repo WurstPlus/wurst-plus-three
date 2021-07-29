@@ -13,7 +13,7 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 
 import java.util.Objects;
 
-@Hack.Registration(name = "Crits", description = "does critical hits", category = Hack.Category.COMBAT, priority = HackPriority.Low)
+@Hack.Registration(name = "Crits", description = "does critical hits", category = Hack.Category.COMBAT, priority = HackPriority.Low, color = 0x88DCC4)
 public class Crits extends Hack {
 
     IntSetting packets = new IntSetting("Packets", 2, 1, 4, this);

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.input.Mouse;
 
-@Hack.Registration(name = "MCF", description = "middleclick adds friend", category = Hack.Category.MISC, priority = HackPriority.Lowest)
+@Hack.Registration(name = "MCF", description = "middleclick adds friend", category = Hack.Category.MISC, priority = HackPriority.Lowest, color = 0x68C195)
 public class MCF extends Hack {
 
     private boolean isButtonDown = false;
