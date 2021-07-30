@@ -114,7 +114,7 @@ public class HudManager implements Globals {
                 RULIST.add(dragComponent);
             } else if (dragComponent.getX() < 100 && dragComponent.getY() + dragComponent.getHeight() > scaledResolution.getScaledHeight() - 100) {
                 RDLIST.add(dragComponent);
-            } else if (dragComponent.getX() + dragComponent.getWidth() > scaledResolution.getScaledWidth() - 100 && mouseY < 100) {
+            } else if (dragComponent.getX() + dragComponent.getWidth() > scaledResolution.getScaledWidth() - 100 && dragComponent.getY() < 100) {
                 LULIST.add(dragComponent);
             } else if (dragComponent.getX() + dragComponent.getWidth() > scaledResolution.getScaledWidth() - 100 && dragComponent.getY() + dragComponent.getHeight() > scaledResolution.getScaledHeight() - 100) {
                 LDLIST.add(dragComponent);
