@@ -110,13 +110,13 @@ public class HudManager implements Globals {
     public void onMouseReleased(int mouseX, int mouseY, int mouseButton) {
         ScaledResolution scaledResolution = new ScaledResolution(mc);
         if (dragComponent != null) {
-            if (mouseX < 100 && mouseY < 100) {
+            if (dragComponent.getX() < 100 && dragComponent.getY() < 100) {
                 RULIST.add(dragComponent);
-            } else if (mouseX < 100 && mouseY > scaledResolution.getScaledHeight() - 100) {
+            } else if (dragComponent.getX() < 100 && dragComponent.getY() + dragComponent.getHeight() > scaledResolution.getScaledHeight() - 100) {
                 RDLIST.add(dragComponent);
-            } else if (mouseX > scaledResolution.getScaledWidth() - 100 && mouseY < 100) {
+            } else if (dragComponent.getX() + dragComponent.getWidth() > scaledResolution.getScaledWidth() - 100 && mouseY < 100) {
                 LULIST.add(dragComponent);
-            } else if (mouseX > scaledResolution.getScaledWidth() - 100 && mouseY > scaledResolution.getScaledHeight() - 100) {
+            } else if (dragComponent.getX() + dragComponent.getWidth() > scaledResolution.getScaledWidth() - 100 && dragComponent.getY() + dragComponent.getHeight() > scaledResolution.getScaledHeight() - 100) {
                 LDLIST.add(dragComponent);
             }
         }
