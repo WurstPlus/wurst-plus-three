@@ -12,6 +12,7 @@ public class CoordsComponent extends HudComponent {
     private final ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
     private final BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
     private final BooleanSetting dimensional = new BooleanSetting("Dimensional", false, this);
+    private BooleanSetting backGround = new BooleanSetting("BackGround", true, this);
     private String renderString;
 
     @Override

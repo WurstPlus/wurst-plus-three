@@ -3,12 +3,14 @@ package me.travis.wurstplusthree.hud.components;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.gui.font.CustomFont;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hud.HudComponent;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.util.ColorUtil;
+import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.text.TextFormatting;
@@ -24,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ArrayList extends HudComponent {
     private EnumSetting mode = new EnumSetting("Mode", "Rainbow", Arrays.asList("AlphaStep", "Rainbow", "Normal", "ModuleColor"), this);
     private BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    private BooleanSetting backGround = new BooleanSetting("BackGround", true, this);
     private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this, v -> !mode.is("Rainbow"));
     private DoubleSetting speed = new DoubleSetting("RainbowSpeed", 20.0D, 1.0D, 100.0D, this, v -> mode.is("Rainbow"));
     private DoubleSetting saturation = new DoubleSetting("RainbowSaturation", 0.8D, 0.0D, 1.0D, this, v -> mode.is("Rainbow"));
@@ -58,17 +61,20 @@ public class ArrayList extends HudComponent {
                 largestwidth.set(modWidth);
             }
             String modText = hack.getName() + TextFormatting.WHITE + hack.getFullArrayString();
-
             if (getX() + (width / 2) < (screenWidth / 2)) {
+                if (backGround.getValue())
+                RenderUtil2D.drawBorderedRect(getX(), getY() + ((customFont.getValue() ? WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2 : mc.fontRenderer.FONT_HEIGHT + 2) * count), getX() + modWidth + 4, getY() + ((customFont.getValue() ? WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2 : mc.fontRenderer.FONT_HEIGHT + 2) * (count + 1)), 1, HudEditor.INSTANCE.backGround.getValue().hashCode(), me.travis.wurstplusthree.hack.hacks.client.HudEditor.INSTANCE.outLine.getValue().hashCode(), false);
                 if (customFont.getValue())
-                    WurstplusThree.GUI_FONT_MANAGER.drawString(modText, getX() + 3, getY() + ((WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2)* count) + 2, getColor(hack), false);
+                    WurstplusThree.GUI_FONT_MANAGER.drawString(modText, getX() + 2, getY() + ((WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2)* count) + 2, getColor(hack), false);
                 else
-                    mc.fontRenderer.drawString(modText, getX() + 3, getY() + ((mc.fontRenderer.FONT_HEIGHT + 2)* count) + 2, getColor(hack));
+                    mc.fontRenderer.drawString(modText, getX() + 2, getY() + ((mc.fontRenderer.FONT_HEIGHT + 2)* count) + 2, getColor(hack));
             } else {
+                if (backGround.getValue())
+                RenderUtil2D.drawBorderedRect(getX() + width - modWidth - 4, getY() + ((customFont.getValue() ? WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2 : mc.fontRenderer.FONT_HEIGHT + 2) * count), getX() + width, getY() + ((customFont.getValue() ? WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2 : mc.fontRenderer.FONT_HEIGHT + 2) * (count + 1)), 1, HudEditor.INSTANCE.backGround.getValue().hashCode(), me.travis.wurstplusthree.hack.hacks.client.HudEditor.INSTANCE.outLine.getValue().hashCode(), false);
                 if (customFont.getValue())
-                    WurstplusThree.GUI_FONT_MANAGER.drawString(modText, getX() - 3 - modWidth + width, getY() + ((WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2)* count) + 2, getColor(hack), false);
+                    WurstplusThree.GUI_FONT_MANAGER.drawString(modText, getX() - 2 - modWidth + width, getY() + ((WurstplusThree.GUI_FONT_MANAGER.getTextHeight() + 2)* count) + 2, getColor(hack), false);
                 else
-                mc.fontRenderer.drawString(modText, getX() - 3 - modWidth + width, getY() + ((mc.fontRenderer.FONT_HEIGHT + 2)* count) + 2, getColor(hack));
+                mc.fontRenderer.drawString(modText, getX() - 2 - modWidth + width, getY() + ((mc.fontRenderer.FONT_HEIGHT + 2)* count) + 2, getColor(hack));
             }
 
             count++;

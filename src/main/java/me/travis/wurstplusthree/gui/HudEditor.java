@@ -6,6 +6,7 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.component.HudListComponent;
+import me.travis.wurstplusthree.gui.particles.ParticleSystem;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -33,6 +34,7 @@ public class HudEditor extends GuiScreen {
     public static final int WIDTH = 120;
     public static final int HEIGHT = 16;
     public boolean shouldShow;
+    public ParticleSystem particleSystem;
 
     private static HudListComponent component;
 
@@ -51,6 +53,10 @@ public class HudEditor extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (particleSystem != null)
+            particleSystem.render(mouseX, mouseY);
+        else
+            this.particleSystem = new ParticleSystem(new ScaledResolution(mc));
         WurstplusThree.HUD.onGuiRender(mouseX, mouseY, partialTicks);
         ScaledResolution sr = new ScaledResolution(mc);
         screenHeight = sr.getScaledHeight();
@@ -118,5 +124,11 @@ public class HudEditor extends GuiScreen {
     @Override
     public boolean doesGuiPauseGame() {
         return false;
+    }
+
+    @Override
+    public void updateScreen() {
+        if (particleSystem != null)
+            particleSystem.update();
     }
 }

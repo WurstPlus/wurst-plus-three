@@ -23,6 +23,12 @@ public class PVPResources extends HudComponent {
     private BooleanSetting gaps = new BooleanSetting("Gaps", true, this);
     private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
     private BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    private BooleanSetting background = new BooleanSetting("Background", true, this);
+
+    @Override
+    public boolean shouldDrawBackground()  {
+        return background.getValue();
+    }
 
 
     @Override

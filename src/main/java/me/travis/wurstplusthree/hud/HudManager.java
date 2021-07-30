@@ -45,9 +45,12 @@ public class HudManager implements Globals {
     public void onRender2D(Render2DEvent event) {
         if (mc.currentScreen instanceof HudEditor) return;
         sortComponents();
-        for (HudComponent component : components) {
-            if (component.isEnabled())
-                component.renderComponent(event.scaledResolution.getScaledHeight(), event.scaledResolution.getScaledWidth());
+        for (HudComponent comp : components) {
+            if (comp.isEnabled()) {
+                if (comp.shouldDrawBackground())
+                    RenderUtil2D.drawBorderedRect(comp.getX(), comp.getY(), comp.getX() + comp.getWidth(), comp.getY() + comp.getHeight(), 1, me.travis.wurstplusthree.hack.hacks.client.HudEditor.INSTANCE.backGround.getValue().hashCode(), me.travis.wurstplusthree.hack.hacks.client.HudEditor.INSTANCE.outLine.getValue().hashCode(), false);
+                comp.renderComponent(event.scaledResolution.getScaledHeight(), event.scaledResolution.getScaledWidth());
+            }
         }
     }
 

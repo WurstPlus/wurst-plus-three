@@ -61,6 +61,10 @@ public class HudComponent extends Feature {
     public void renderComponent() {
     }
 
+    public boolean shouldDrawBackground() {
+        return false;
+    }
+
     public void renderComponent(int height, int width) {
         this.renderComponent();
     }

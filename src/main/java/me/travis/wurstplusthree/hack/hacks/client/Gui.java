@@ -24,6 +24,9 @@ public class Gui extends Hack {
     public ColourSetting fontColor = new ColourSetting("Font", new Colour(255,255,255, 255), colors);
     public ColourSetting groupColor= new ColourSetting("GroupSetting", new Colour(45,45,45,255), colors);
     public ColourSetting groupHoverColor = new ColourSetting("GroupHoverColor", new Colour(32, 32, 32, 255), colors);
+    public BooleanSetting particles = new BooleanSetting("Particles", true, this);
+    public ColourSetting particleColor = new ColourSetting("ParticleColor", new Colour(120, 20, 200, 200), colors, v -> particles.getValue());
+    public IntSetting particleLength = new IntSetting("MaxParticleLength", 100, 0, 300, this, v -> particles.getValue());
     public IntSetting rainbowDelay = new IntSetting("RainbowDelay", 100, 0, 5000, this);
     public EnumSetting type = new EnumSetting("Type", "None", Arrays.asList("None", "Rainbow", "Sin"), this);
     public EnumSetting SinMode = new EnumSetting("SineMode", "Special", Arrays.asList("Special", "Hue", "Saturation", "Brightness"),this);

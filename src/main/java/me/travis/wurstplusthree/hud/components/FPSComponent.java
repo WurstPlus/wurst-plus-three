@@ -11,7 +11,13 @@ import net.minecraft.client.Minecraft;
 public class FPSComponent extends HudComponent {
     private ColourSetting color = new ColourSetting("Color", new Colour(30, 200, 100), this);
     private BooleanSetting customFont = new BooleanSetting("CustomFont", true, this);
+    private BooleanSetting background = new BooleanSetting("Background", true, this);
     private String renderString;
+
+    @Override
+    public boolean shouldDrawBackground()  {
+        return background.getValue();
+    }
 
     @Override
     public int getHeight() {

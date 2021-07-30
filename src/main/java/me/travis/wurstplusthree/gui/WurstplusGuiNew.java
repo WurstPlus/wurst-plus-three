@@ -5,6 +5,7 @@ import me.travis.wurstplusthree.event.events.ColorCopyEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.component.CategoryComponent;
 import me.travis.wurstplusthree.gui.component.Component;
+import me.travis.wurstplusthree.gui.particles.ParticleSystem;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.util.elements.Colour;
@@ -35,11 +36,11 @@ public class WurstplusGuiNew extends GuiScreen {
     public static final int HEIGHT = 16;
     public static final int MODULE_WIDTH = 5;
     public static final int SETTING_OFFSET = 5;
-
     public static final int FONT_HEIGHT = 4;
     public static final int MODULE_FONT_SIZE = 6;
     public static final int SUB_FONT_SIZE = 2 * MODULE_FONT_SIZE;
 
+    public ParticleSystem particleSystem;
     public Colour colorClipBoard;
     public ColorCopyEvent colorEvent;
     public boolean shouldShow;
@@ -88,6 +89,10 @@ public class WurstplusGuiNew extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scrollWheelCheck();
         ScaledResolution sr = new ScaledResolution(mc);
+        if (particleSystem != null)
+            particleSystem.render(mouseX, mouseY);
+        else
+            this.particleSystem = new ParticleSystem(new ScaledResolution(mc));
         screenHeight = sr.getScaledHeight();
         screenWidth = sr.getScaledWidth();
         boolean gradientShadow = Gui.INSTANCE.gradient.getValue();
@@ -104,6 +109,7 @@ public class WurstplusGuiNew extends GuiScreen {
                 component.renderToolTip(mouseX, mouseY);
             }
         }
+
     }
 
     @Override
@@ -199,4 +205,9 @@ public class WurstplusGuiNew extends GuiScreen {
         this.shouldShow = true;
     }
 
+    @Override
+    public void updateScreen() {
+        if (particleSystem != null)
+            particleSystem.update();
+    }
 }
