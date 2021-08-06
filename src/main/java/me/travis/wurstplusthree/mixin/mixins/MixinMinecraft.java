@@ -33,10 +33,6 @@ public abstract class MixinMinecraft {
         }
     }
 
-    @Inject(method={"getLimitFramerate"}, at={@At(value="HEAD")}, cancellable=true)
-    public void getLimitFramerateHook(CallbackInfoReturnable<Integer> callbackInfoReturnable) {
-    }
-
 
     @Inject(method = "runGameLoop", at = @At("HEAD"))
     private void runGameLoop(final CallbackInfo callbackInfo) {
@@ -53,9 +49,6 @@ public abstract class MixinMinecraft {
     }
 
 
-    @Redirect(method={"runGameLoop"}, at=@At(value="INVOKE", target="Lorg/lwjgl/opengl/Display;sync(I)V", remap=false))
-    public void syncHook(int maxFps) {
-    }
 
     @Inject(method={"runTick()V"}, at={@At(value="RETURN")})
     private void runTick(CallbackInfo callbackInfo) {

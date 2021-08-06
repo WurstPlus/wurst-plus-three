@@ -17,6 +17,7 @@
     "MixinGuiNewChat",
     "MixinGuiPlayerTabOverlay",
     "MixinGuiScreen",
+    "MixinItemBow",
     "MixinItemRenderer",
     "MixinItemStack",
     "MixinKeyBinding",

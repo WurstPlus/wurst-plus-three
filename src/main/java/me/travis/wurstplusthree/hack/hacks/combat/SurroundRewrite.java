@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.hack.hacks.combat;
 
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.util.BlockUtil;
@@ -20,7 +21,7 @@ import java.util.Arrays;
  * @author Madmegsox1
  * @since 21/07/2021
  */
-@Hack.Registration(name = "Surround Rewrite", description = "Hole maker", category = Hack.Category.COMBAT)
+@Hack.Registration(name = "Surround Rewrite", description = "Hole maker", category = Hack.Category.COMBAT, priority = HackPriority.Highest)
 public class SurroundRewrite extends Hack {
     BooleanSetting smart = new BooleanSetting("Smart", true, this);
     BooleanSetting center = new BooleanSetting("Center", true, this);
@@ -121,7 +122,7 @@ public class SurroundRewrite extends Hack {
         }
     }
 
-    private BlockPos addPos (@NotNull final BlockPos pos){
+    private BlockPos addPos(@NotNull final BlockPos pos){
         final BlockPos pPos = PlayerUtil.getPlayerPos(0.2);
         return new BlockPos(pPos.getX() + pos.getX(), pPos.getY() + pos.getY(), pPos.getZ() + pos.getZ());
     }

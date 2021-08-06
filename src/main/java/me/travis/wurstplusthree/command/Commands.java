@@ -13,6 +13,7 @@ public class Commands implements Globals {
 
     public static String prefix = ".";
     private final List<Command> commands = new ArrayList<>();
+    private String nextArgument = "";
 
     // TODO : SETTINGS COMMAND
     // TODO : CLEAR CHAT COMMAND
@@ -84,5 +85,30 @@ public class Commands implements Globals {
         }
         return null;
     }
+
+    public String getNextArgument() {
+        return nextArgument;
+    }
+    /*
+    public void getNextArgument(String... text){
+        int size = text.length;
+        for(Command command : commands){
+            List<List<String>> args = command.getArguments();
+            for(int i=0; i<size; i++){
+                List<String> path = args.get(i);
+                for(String possible : path){
+                    if(possible.equals(text[i])){
+                        break;
+                    }
+                    if(possible.contains(text[i])){
+                        nextArgument = possible;
+                    }
+                }
+            }
+        }
+
+       nextArgument = "";
+    }
+     */
 
 }
