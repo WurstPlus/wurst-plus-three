@@ -37,6 +37,7 @@
     "accessors.IC00Handshake",
     "accessors.IChunkProviderClient",
     "accessors.IContainer",
+    "accessors.IMinecraft",
     "accessors.IServerAddress",
     "accessors.ISPacketSetSlot"
   ]
