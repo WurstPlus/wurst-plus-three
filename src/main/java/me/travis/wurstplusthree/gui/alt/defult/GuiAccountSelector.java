@@ -64,10 +64,10 @@ public class GuiAccountSelector extends GuiScreen {
             String content = IOUtils.toString(new URL("https://api.mojang.com/users/profiles/minecraft/" + username), StandardCharsets.UTF_8);
             String uuid = (new JsonParser()).parse(content).getAsJsonObject().get("id").getAsString();
             Session session = new Session(username, UUID.fromString(uuid.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5")).toString(), token, "mojang");
-            //Field field = Minecraft.class.getDeclaredField("field_71449_j");
-            //field.setAccessible(true);
-            ((IMinecraft)Minecraft.getMinecraft().session).setSession(session);
-            //field.set(Minecraft.getMinecraft(), session);
+            Field field = Minecraft.class.getDeclaredField("field_71449_j");
+            field.setAccessible(true);
+            //((IMinecraft)Minecraft.getMinecraft().session).setSession(session);
+            field.set(Minecraft.getMinecraft(), session);
         }
         catch (Exception e) { e.printStackTrace(); }
     }
