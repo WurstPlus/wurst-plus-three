@@ -34,7 +34,7 @@ public abstract class MixinRenderLivingBase {
     private void renderModel(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo info) {
         Chams chams = Chams.INSTANCE;
         if (!chams.isEnabled()) return;
-        if (entityLivingBase instanceof EntityOtherPlayerMP && chams.players.getValue() && !chams.pops.containsKey(entityLivingBase.getEntityId()) ||  entityLivingBase instanceof EntityPlayerSP  && chams.players.getValue() && chams.local.getValue() || (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) && chams.mobs.getValue() || EntityUtil.isHostileMob(entityLivingBase) && chams.monsters.getValue()) {
+        if (entityLivingBase instanceof EntityOtherPlayerMP && chams.players.getValue()||  entityLivingBase instanceof EntityPlayerSP  && chams.players.getValue() && chams.local.getValue() || (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) && chams.mobs.getValue() || EntityUtil.isHostileMob(entityLivingBase) && chams.monsters.getValue()) {
             if (!chams.texture.getValue()) {
                 info.cancel();
             }
@@ -128,32 +128,6 @@ public abstract class MixinRenderLivingBase {
 
             glPopAttrib();
             glPopMatrix();
-        } else if (chams.pops.containsKey(entityLivingBase.getEntityId())) {
-            if (chams.pops.get(entityLivingBase.getEntityId()) == 0) {
-                Minecraft.getMinecraft().world.removeEntityFromWorld(entityLivingBase.entityId);
-            } else if (chams.pops.get(entityLivingBase.getEntityId()) < 0) {
-                //this is retarted but it doesnt instantly stop rendering sorry for messy code dont remove this
-                if (chams.pops.get(entityLivingBase.getEntityId()) < -5)
-                    chams.pops.remove(entityLivingBase.getEntityId());
-                return;
-            }
-            info.cancel();
-            GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
-            glPushMatrix();
-            glPushAttrib(GL_ALL_ATTRIB_BITS);
-            glDisable(GL_TEXTURE_2D);
-            glEnable(GL_LINE_SMOOTH);
-            glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-            GL11.glDisable((int) 2929);
-            GL11.glEnable((int) 10754);
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            ColorUtil.setColor(new Color(chams.popChamsColors.getValue().getRed(), chams.popChamsColors.getValue().getGreen(), chams.popChamsColors.getValue().getBlue(), chams.pops.get(entityLivingBase.getEntityId())));
-            mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            GL11.glEnable((int)2929);
-            glEnable(GL_TEXTURE_2D);
-            glPopAttrib();
-            glPopMatrix();
-            chams.pops.computeIfPresent(entityLivingBase.getEntityId(), (key, oldValue) -> oldValue - 1);
         }
     }
 }
