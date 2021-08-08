@@ -59,6 +59,7 @@ public final class EventProcessor {
      * @return if the event was posted or not at a boolean
      */
     public final boolean postEvent(final @NotNull Event event) {
+        if(events.isEmpty())return false;
         events.spliterator().forEachRemaining(listener -> {
             if(listener.event == event.getClass()){
                 listener.method.setAccessible(true);

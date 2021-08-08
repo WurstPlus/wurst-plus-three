@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui.alt.defult;
 
 import com.google.gson.JsonParser;
+import me.travis.wurstplusthree.mixin.mixins.accessors.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -59,12 +60,15 @@ public class GuiAccountSelector extends GuiScreen {
     }
 
     private void login(String username, String token) {
-        try { String content = IOUtils.toString(new URL("https://api.mojang.com/users/profiles/minecraft/" + username), StandardCharsets.UTF_8);
+        try {
+            String content = IOUtils.toString(new URL("https://api.mojang.com/users/profiles/minecraft/" + username), StandardCharsets.UTF_8);
             String uuid = (new JsonParser()).parse(content).getAsJsonObject().get("id").getAsString();
             Session session = new Session(username, UUID.fromString(uuid.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5")).toString(), token, "mojang");
             Field field = Minecraft.class.getDeclaredField("field_71449_j");
             field.setAccessible(true);
-            field.set(Minecraft.getMinecraft(), session); }
+            //((IMinecraft)Minecraft.getMinecraft().session).setSession(session);
+            field.set(Minecraft.getMinecraft(), session);
+        }
         catch (Exception e) { e.printStackTrace(); }
     }
 

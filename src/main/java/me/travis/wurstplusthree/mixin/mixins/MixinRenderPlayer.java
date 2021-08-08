@@ -1,9 +1,9 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
-import me.travis.wurstplusthree.hack.hacks.render.HandColour;
-import me.travis.wurstplusthree.hack.hacks.render.Nametags;
-import me.travis.wurstplusthree.hack.hacks.render.Pitbull;
+import me.travis.wurstplusthree.hack.hacks.render.*;
+import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -99,6 +99,9 @@ public class MixinRenderPlayer {
         }
     }
 
+    /**
+     * @author Madmegsox1
+     */
     @Overwrite
     public ResourceLocation getEntityTexture(AbstractClientPlayer entity){
         if(PlayerSpoofer.INSTANCE.isEnabled() && entity == Minecraft.getMinecraft().player){
@@ -110,7 +113,13 @@ public class MixinRenderPlayer {
             return new ResourceLocation("textures/pitbull.png");
         }
         else {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            if(Esp.INSTANCE.isEnabled() && Esp.INSTANCE.hideOnBlock.getValue() && entity != Minecraft.getMinecraft().player){
+                if(EntityUtil.getFlooredPos(entity).equals(PlayerUtil.getPlayerPos())){
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, Esp.INSTANCE.alpha.getValue()/255f);
+                }
+            }else {
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            }
             return entity.getLocationSkin();
         }
     }
