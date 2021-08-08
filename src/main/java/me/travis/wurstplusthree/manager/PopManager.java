@@ -19,7 +19,7 @@ public class PopManager implements Globals {
     public final List<String> toAnnouce = new ArrayList<>();
 
     @CommitEvent
-    public void onMove(TotemPopEvent event) {
+    public void onPop(TotemPopEvent event) {
         EntityPlayer player = event.getEntity();
         this.popTotem(player);
         if (!player.equals(mc.player) && player.isEntityAlive()) {
