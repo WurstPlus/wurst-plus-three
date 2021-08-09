@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
-import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.HudUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import me.travis.wurstplusthree.util.elements.Colour;

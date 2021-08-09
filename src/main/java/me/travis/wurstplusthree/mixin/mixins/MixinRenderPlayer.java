@@ -1,7 +1,10 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.hack.hacks.player.PlayerSpoofer;
-import me.travis.wurstplusthree.hack.hacks.render.*;
+import me.travis.wurstplusthree.hack.hacks.render.Esp;
+import me.travis.wurstplusthree.hack.hacks.render.HandColour;
+import me.travis.wurstplusthree.hack.hacks.render.Nametags;
+import me.travis.wurstplusthree.hack.hacks.render.Pitbull;
 import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.SkinStorageManipulationer;

@@ -11,10 +11,8 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.DamageUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemSword;
 
 import java.util.Arrays;

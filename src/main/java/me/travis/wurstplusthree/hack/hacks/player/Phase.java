@@ -9,7 +9,6 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.HackPriority;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
-import me.travis.wurstplusthree.util.EntityUtil;
 import me.travis.wurstplusthree.util.elements.Timer;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.network.play.client.CPacketConfirmTeleport;

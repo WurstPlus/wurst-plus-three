@@ -1,29 +1,10 @@
 package me.travis.wurstplusthree.hack.hacks.render;
 
-import com.mojang.authlib.GameProfile;
-import me.travis.wurstplusthree.event.events.TotemPopEvent;
-import me.travis.wurstplusthree.event.processor.CommitEvent;
-import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.*;
-import me.travis.wurstplusthree.util.ClientMessage;
-import me.travis.wurstplusthree.util.EntityUtil;
-import me.travis.wurstplusthree.util.InventoryUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerInteractionManager;
-import net.minecraft.world.GameType;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
-//made by linus touch tips
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @Hack.Registration(name = "Chams", description = "draws people as colours/through walls", category = Hack.Category.RENDER)

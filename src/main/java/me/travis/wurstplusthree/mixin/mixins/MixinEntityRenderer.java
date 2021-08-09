@@ -7,7 +7,6 @@ import me.travis.wurstplusthree.hack.hacks.render.CameraClip;
 import me.travis.wurstplusthree.hack.hacks.render.NoRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;

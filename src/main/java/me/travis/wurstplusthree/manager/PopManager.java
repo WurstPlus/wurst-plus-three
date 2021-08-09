@@ -2,9 +2,10 @@ package me.travis.wurstplusthree.manager;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.event.events.MoveEvent;
+import me.travis.wurstplusthree.event.events.DeathEvent;
 import me.travis.wurstplusthree.event.events.TotemPopEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
+import me.travis.wurstplusthree.hack.hacks.render.PopChams;
 import me.travis.wurstplusthree.util.Globals;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -24,10 +25,13 @@ public class PopManager implements Globals {
         this.popTotem(player);
         if (!player.equals(mc.player) && player.isEntityAlive()) {
             this.toAnnouce.add(this.getPopString(player, this.getTotemPops(player)));
+            PopChams.INSTANCE.poppedPlayers.put(player, 0);
         }
     }
 
-    public void onDeath(EntityPlayer player) {
+    @CommitEvent
+    public void onEntityDeath(DeathEvent event) {
+        EntityPlayer player = event.player;
         if (this.getTotemPops(player) != 0 && !player.equals(mc.player)) {
             this.toAnnouce.add(this.getDeathString(player, this.getTotemPops(player)));
         }

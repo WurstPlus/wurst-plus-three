@@ -8,8 +8,6 @@ import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.setting.type.ParentSetting;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 
-import java.awt.*;
-
 public class ParentComponent extends Component {
     private boolean hovered;
     private ParentSetting option;

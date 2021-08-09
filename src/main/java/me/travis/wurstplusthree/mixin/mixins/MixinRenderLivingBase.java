@@ -1,10 +1,8 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.hack.hacks.render.Chams;
-import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.ColorUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
@@ -17,13 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import scala.collection.parallel.ParIterableLike;
-
-
-import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 @Mixin(value={RenderLivingBase.class})
 public abstract class MixinRenderLivingBase {
@@ -74,15 +67,15 @@ public abstract class MixinRenderLivingBase {
                 } else {
                     ColorUtil.setColor(chams.xqzColorMonster.getValue());
                 }
-                GL11.glDisable((int) 2929);
-                GL11.glEnable((int) 10754);
+                GL11.glDisable(2929);
+                GL11.glEnable(10754);
                 mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                 if (chams.mode.is("WireModel")) {
                     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                     mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
                 }
-                GL11.glEnable((int) 2929);
+                GL11.glEnable(2929);
                 if (entityLivingBase instanceof EntityOtherPlayerMP || entityLivingBase instanceof EntityPlayerSP) {
                     ColorUtil.setColor(chams.highlightColorPlayer.getValue());
                 } else if (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) {
@@ -97,8 +90,8 @@ public abstract class MixinRenderLivingBase {
                     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
                 }
             } else {
-                GL11.glDisable((int) 2929);
-                GL11.glEnable((int) 10754);
+                GL11.glDisable(2929);
+                GL11.glEnable(10754);
                 if (entityLivingBase instanceof EntityOtherPlayerMP || entityLivingBase instanceof EntityPlayerSP) {
                     ColorUtil.setColor(chams.highlightColorPlayer.getValue());
                 } else if (EntityUtil.isPassiveMob(entityLivingBase) || EntityUtil.isNeutralMob(entityLivingBase)) {
@@ -111,7 +104,7 @@ public abstract class MixinRenderLivingBase {
                     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                     mainModel.render(entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
                 }
-                GL11.glEnable((int)2929);
+                GL11.glEnable(2929);
             }
 
             if (chams.lighting.getValue())

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Hack.Registration(name = "Logout Spots", description = "shows ez logs", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "Logout Spots", description = "shows ez logs", category = Hack.Category.RENDER)
 public class LogSpots extends Hack {
 
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 255, 255, 255), this);

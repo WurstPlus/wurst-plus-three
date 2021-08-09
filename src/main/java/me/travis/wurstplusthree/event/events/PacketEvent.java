@@ -2,7 +2,6 @@ package me.travis.wurstplusthree.event.events;
 
 import me.travis.wurstplusthree.event.EventStage;
 import me.travis.wurstplusthree.util.Globals;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 

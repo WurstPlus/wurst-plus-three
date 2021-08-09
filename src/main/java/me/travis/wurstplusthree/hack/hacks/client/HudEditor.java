@@ -8,8 +8,6 @@ import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.setting.type.ParentSetting;
 import me.travis.wurstplusthree.util.elements.Colour;
 
-import java.lang.reflect.Parameter;
-
 @Hack.Registration(name = "Hud Editor", description = "swag custom Hud editor", category = Hack.Category.CLIENT, isListening = true)
 public class HudEditor extends Hack {
     public static HudEditor INSTANCE;
