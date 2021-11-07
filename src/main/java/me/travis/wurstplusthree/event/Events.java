@@ -8,6 +8,7 @@ import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
 import me.travis.wurstplusthree.hack.hacks.combat.CrystalAura;
+import me.travis.wurstplusthree.hack.hacks.render.Chams;
 import me.travis.wurstplusthree.manager.RotationManager;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
@@ -238,7 +239,7 @@ public class Events implements Globals {
         }
         WurstplusThree.SERVER_MANAGER.onPacketReceived();
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
-            WurstplusThree.ROTATION_MANAGER.onPacketSend((SPacketPlayerPosLook) event.getPacket());
+            WurstplusThree.ROTATION_MANAGER.onPacketReceive((SPacketPlayerPosLook) event.getPacket());
         }
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
@@ -246,6 +247,7 @@ public class Events implements Globals {
                 if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
                     WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
+                    Chams.INSTANCE.onPopLol(new TotemPopEvent(player));
                     WurstplusThree.POP_MANAGER.onTotemPop(player);
                 }
             } catch (Exception ignored) {}
