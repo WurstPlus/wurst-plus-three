@@ -58,6 +58,7 @@ public final class CrystalAura extends Hack {
 
     //Damages
     private final ParentSetting damages = new ParentSetting("Damages", this);
+    private final BooleanSetting sortBlocks = new BooleanSetting("Sort Blocks", true, damages);
     private final BooleanSetting ignoreSelfDamage = new BooleanSetting("Ignore Self", false, damages);
     private final IntSetting minPlace = new IntSetting("MinPlace", 9, 0, 36, damages);
     private final IntSetting maxSelfPlace = new IntSetting("MaxSelfPlace", 5, 0, 36, damages, s -> !ignoreSelfDamage.getValue());
@@ -80,6 +81,7 @@ public final class CrystalAura extends Hack {
     private final BooleanSetting thirteen = new BooleanSetting("1.13", false, general);
     private final BooleanSetting attackPacket = new BooleanSetting("AttackPacket", true, general);
     private final BooleanSetting packetSafe = new BooleanSetting("Packet Safe", true, general);
+    private final BooleanSetting noBreakCalcs = new BooleanSetting("No Break Calcs", false, general);
     private final EnumSetting arrayListMode = new EnumSetting("Array List Mode", "Latency", Arrays.asList("Latency", "Player", "CPS"), general);
     private final BooleanSetting debug = new BooleanSetting("Debug", false, general);
 
@@ -286,11 +288,15 @@ public final class CrystalAura extends Hack {
             if (debug.getValue()) {
                 ClientMessage.sendMessage("Attempting break");
             }
-            if (antiStuck.getValue() && stuckCrystal != null) {
-                this.breakCrystal(stuckCrystal);
-                stuckCrystal = null;
-            } else {
-                this.breakCrystal(null);
+            if(noBreakCalcs.getValue()){
+                breakCrystalNoCalcs();
+            }else {
+                if (antiStuck.getValue() && stuckCrystal != null) {
+                    this.breakCrystal(stuckCrystal);
+                    stuckCrystal = null;
+                } else {
+                    this.breakCrystal(null);
+                }
             }
         }
 
@@ -398,6 +404,58 @@ public final class CrystalAura extends Hack {
         }
     }
 
+
+    private void breakCrystalNoCalcs(){
+        for (final Entity e : mc.world.loadedEntityList) {
+            if (!(e instanceof EntityEnderCrystal)) continue;
+            if(e.isDead)continue;
+            if(mc.player.getDistance(e) > breakRange.getValue())continue;
+            if(!mc.player.canEntityBeSeen(e)){
+                if(raytrace.getValue())continue;
+                if(mc.player.getDistance(e) > breakRangeWall.getValue())continue;
+            }
+
+            if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
+                boolean shouldWeakness = true;
+                if (mc.player.isPotionActive(MobEffects.STRENGTH)) {
+                    if (Objects.requireNonNull(mc.player.getActivePotionEffect(MobEffects.STRENGTH)).getAmplifier() == 2) {
+                        shouldWeakness = false;
+                    }
+                }
+                if (shouldWeakness) {
+                    if (!alreadyAttacking) {
+                        this.alreadyAttacking = true;
+                    }
+                    int newSlot = -1;
+                    for (int i = 0; i < 9; i++) {
+                        final ItemStack stack = mc.player.inventory.getStackInSlot(i);
+                        if (stack.getItem() instanceof ItemSword || stack.getItem() instanceof ItemTool) {
+                            newSlot = i;
+                            mc.playerController.updateController();
+                            break;
+                        }
+                    }
+                    if (newSlot != -1) {
+                        mc.player.inventory.currentItem = newSlot;
+                    }
+                }
+            }
+            EntityEnderCrystal crystal = (EntityEnderCrystal) e;
+            if (setYawPitch(crystal)) {
+                EntityUtil.attackEntity(crystal, this.attackPacket.getValue());
+                if (!this.swing.is("None")) {
+                    BlockUtil.swingArm(swing);
+                }
+                if (debug.getValue()) {
+                    ClientMessage.sendMessage("breaking");
+                }
+                breakDelayCounter = 0;
+            } else if (debug.getValue()) {
+                ClientMessage.sendMessage("doing yawstep on break");
+            }
+        }
+    }
+
     private void breakCrystal(EntityEnderCrystal overwriteCrystal) {
         EntityEnderCrystal crystal;
         if (threaded.getValue()) {
@@ -456,12 +514,12 @@ public final class CrystalAura extends Hack {
         }
     }
 
-    public final EntityEnderCrystal getBestCrystal() {
+    public EntityEnderCrystal getBestCrystal() {
         double bestDamage = 0;
         EntityEnderCrystal bestCrystal = null;
         for (Entity e : mc.world.loadedEntityList) {
             if (!(e instanceof EntityEnderCrystal)) continue;
-            EntityEnderCrystal crystal = (EntityEnderCrystal) e;
+            final EntityEnderCrystal crystal = (EntityEnderCrystal) e;
             for (EntityPlayer target : new ArrayList<>(mc.world.playerEntities)) {
                 if (mc.player.getDistanceSq(target) > MathsUtil.square(targetRange.getValue().floatValue())) continue;
                 if (entityPredict.getValue() && rotateMode.is("Off")) {
@@ -492,7 +550,7 @@ public final class CrystalAura extends Hack {
     }
 
 
-    public final ArrayList<BlockPos> getBestBlocks() {
+    private ArrayList<BlockPos> getBestBlocks() {
         ArrayList<RenderPos> posArrayList = new ArrayList<>();
         if (getBestCrystal() != null && fastMode.is("Off")) {
             placeTimeoutFlag = true;
@@ -520,15 +578,15 @@ public final class CrystalAura extends Hack {
         }
 
         //sorting all place positions
-        posArrayList.sort(new DamageComparator());
+        if(sortBlocks.getValue())posArrayList.sort(new DamageComparator());
 
         //making sure all positions are placeble and wont block each other
         if (maxCrystals.getValue() > 1) {
-            List<BlockPos> blockedPosList = new ArrayList<>();
-            List<RenderPos> toRemove = new ArrayList<>();
+            final List<BlockPos> blockedPosList = new ArrayList<>();
+            final List<RenderPos> toRemove = new ArrayList<>();
             for (RenderPos test : posArrayList) {
                 boolean blocked = false;
-                for (BlockPos blockPos : blockedPosList) {
+                for (final BlockPos blockPos : blockedPosList) {
                     if (blockPos.getX() == test.pos.getX() && blockPos.getY() == test.pos.getY() && blockPos.getZ() == test.pos.getZ()) {
                         blocked = true;
                     }
@@ -549,7 +607,8 @@ public final class CrystalAura extends Hack {
         if (facePlacing && noMP.getValue()) {
             maxCrystals = 1;
         }
-        ArrayList<BlockPos> finalArrayList = new ArrayList<>();
+
+        final ArrayList<BlockPos> finalArrayList = new ArrayList<>();
         IntStream.range(0, Math.min(maxCrystals, posArrayList.size())).forEachOrdered(n -> {
             RenderPos pos = posArrayList.get(n);
             if (when.is("Both") || when.is("Place")) {
@@ -561,7 +620,7 @@ public final class CrystalAura extends Hack {
         return finalArrayList;
     }
 
-    private ArrayList<BlockPos> getBlockedPositions(BlockPos pos) {
+    private ArrayList<BlockPos> getBlockedPositions(final BlockPos pos) {
         ArrayList<BlockPos> list = new ArrayList<>();
         list.add(pos.add(1, -1, 1));
         list.add(pos.add(1, -1, -1));
@@ -590,7 +649,7 @@ public final class CrystalAura extends Hack {
         return list;
     }
 
-    private double isCrystalGood(@NotNull EntityEnderCrystal crystal, @NotNull EntityPlayer target) {
+    private double isCrystalGood(final @NotNull EntityEnderCrystal crystal, final @NotNull EntityPlayer target) {
         if (this.isPlayerValid(target)) {
             if (mc.player.canEntityBeSeen(crystal)) {
                 if (mc.player.getDistanceSq(crystal) > MathsUtil.square(this.breakRange.getValue().floatValue())) {
