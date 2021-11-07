@@ -96,7 +96,7 @@ public class Commands implements Globals {
             List<List<String>> args = command.getArguments();
             for(int i=0; i<size; i++){
                 List<String> path = args.get(i);
-                for(String possible : path){
+                for(Strin   g possible : path){
                     if(possible.equals(text[i])){
                         break;
                     }

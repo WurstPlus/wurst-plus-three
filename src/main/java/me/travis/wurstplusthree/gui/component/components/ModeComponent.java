@@ -74,7 +74,7 @@ public class ModeComponent extends Component {
     }
 
     public void deincrement() {
-        set.setValue(set.getModes().get(((set.getModes().indexOf(set.value) + 1) % set.getModes().size())));
+        set.setValue(set.getModes().get(((set.getModes().indexOf(set.value) - 1) % set.getModes().size())));
     }
 
     public boolean isMouseOnButton(int x, int y) {
