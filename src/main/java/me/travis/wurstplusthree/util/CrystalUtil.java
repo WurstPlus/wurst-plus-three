@@ -170,12 +170,7 @@ public class CrystalUtil implements Globals {
         double distanceToSize = entityPosition.distanceTo(explosionPosition) / explosionPower;
         double blockDensity = 0.0;
         // Offset to "fake position"
-        AxisAlignedBB bbox;
-        try {
-            bbox = targetEntity.getEntityBoundingBox().offset(targetEntity.getPositionVector().subtract(entityPosition));
-        } catch (Exception e) {
-            return 0f;
-        }
+        AxisAlignedBB bbox = targetEntity.getEntityBoundingBox().offset(targetEntity.getPositionVector().subtract(entityPosition));
         Vec3d bboxDelta = new Vec3d(
                 1.0 / ((bbox.maxX - bbox.minX) * 2.0 + 1.0),
                 1.0 / ((bbox.maxY - bbox.minY) * 2.0 + 1.0),

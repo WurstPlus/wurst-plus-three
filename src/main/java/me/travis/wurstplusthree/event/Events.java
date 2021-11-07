@@ -239,7 +239,7 @@ public class Events implements Globals {
         }
         WurstplusThree.SERVER_MANAGER.onPacketReceived();
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
-            WurstplusThree.ROTATION_MANAGER.onPacketReceive(event.getPacket());
+            WurstplusThree.ROTATION_MANAGER.onPacketReceive((SPacketPlayerPosLook) event.getPacket());
         }
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
@@ -247,6 +247,8 @@ public class Events implements Globals {
                 if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
                     WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
+                    Chams.INSTANCE.onPopLol(new TotemPopEvent(player));
+                    WurstplusThree.POP_MANAGER.onTotemPop(player);
                 }
             } catch (Exception ignored) {}
         } else if (event.getPacket() instanceof SPacketPlayerListItem && !nullCheck() && this.logoutTimer.passedS(1.0)) {
