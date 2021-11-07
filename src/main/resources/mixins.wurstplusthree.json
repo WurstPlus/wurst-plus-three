@@ -17,6 +17,7 @@
     "MixinGuiNewChat",
     "MixinGuiPlayerTabOverlay",
     "MixinGuiScreen",
+    "MixinItemBow",
     "MixinItemRenderer",
     "MixinItemStack",
     "MixinKeyBinding",
@@ -38,5 +39,8 @@
     "accessors.IContainer",
     "accessors.IServerAddress",
     "accessors.ISPacketSetSlot"
+  ],
+  "client": [
+    "MixinGuiTextField"
   ]
 }
