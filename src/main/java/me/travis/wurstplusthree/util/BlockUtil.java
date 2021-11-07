@@ -16,7 +16,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.*;
+import net.minecraft.network.play.client.CPacketEntityAction.Action;
 
 import java.util.ArrayList;
 import java.util.Arrays;

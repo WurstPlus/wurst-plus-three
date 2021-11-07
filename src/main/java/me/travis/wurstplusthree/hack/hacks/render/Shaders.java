@@ -4,8 +4,9 @@ import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.util.ResourceLocation;
-
 import java.util.Arrays;
+
+
 import java.util.Locale;
 
 @Hack.Registration(name = "Shaders", description = "huge module", category = Hack.Category.RENDER)

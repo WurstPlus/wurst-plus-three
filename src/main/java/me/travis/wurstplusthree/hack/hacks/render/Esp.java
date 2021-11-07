@@ -10,6 +10,8 @@ import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockSourceImpl;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;

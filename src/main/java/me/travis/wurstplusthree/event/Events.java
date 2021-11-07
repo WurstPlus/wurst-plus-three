@@ -7,6 +7,9 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.combat.CrystalAura;
+import me.travis.wurstplusthree.hack.hacks.render.Chams;
+import me.travis.wurstplusthree.manager.RotationManager;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
@@ -53,6 +56,19 @@ public class Events implements Globals {
         MinecraftForge.EVENT_BUS.unregister(this);
         WurstplusThree.EVENT_PROCESSOR.removeEventListener(this);
     }
+
+    /*
+    @SubscribeEvent
+    public void onKeyPress(InputEvent.KeyInputEvent org.madmeg.wurstplus.event) {
+        for(Hack hack : WurstplusThree.HACKS.getHacks()){
+            if (hack.getBind() <= -1 || hack.getBind() == Keyboard.KEY_NONE) continue;
+            if(Keyboard.isKeyDown(hack.getBind())){
+                hack.toggle();
+            }
+        }
+    }
+    */
+
 
     @SubscribeEvent
     public void onMousePress(InputEvent.MouseInputEvent event){
@@ -230,11 +246,9 @@ public class Events implements Globals {
             try {
                 if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
-                    WurstplusThree.EVENT_PROCESSOR.postEvent(new TotemPopEvent(player));
+                    WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception ignored) {}
         } else if (event.getPacket() instanceof SPacketPlayerListItem && !nullCheck() && this.logoutTimer.passedS(1.0)) {
             SPacketPlayerListItem packet = event.getPacket();
             if (!SPacketPlayerListItem.Action.ADD_PLAYER.equals(packet.getAction()) && !SPacketPlayerListItem.Action.REMOVE_PLAYER.equals(packet.getAction())) {
@@ -245,17 +259,17 @@ public class Events implements Globals {
                 switch (packet.getAction()) {
                     case ADD_PLAYER: {
                         String name = data.getProfile().getName();
-                        WurstplusThree.EVENT_PROCESSOR.postEvent(new ConnectionEvent(0, id, name));
+                        WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(0, id, name));
                         break;
                     }
                     case REMOVE_PLAYER: {
                         EntityPlayer entity = mc.world.getPlayerEntityByUUID(id);
                         if (entity != null) {
                             String logoutName = entity.getName();
-                            WurstplusThree.EVENT_PROCESSOR.postEvent(new ConnectionEvent(1, entity, id, logoutName));
+                            WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(1, entity, id, logoutName));
                             break;
                         }
-                        WurstplusThree.EVENT_PROCESSOR.postEvent(new ConnectionEvent(2, id, null));
+                        WurstplusThree.EVENT_PROCESSOR.addEventListener(new ConnectionEvent(2, id, null));
                     }
                     default:
                         break;

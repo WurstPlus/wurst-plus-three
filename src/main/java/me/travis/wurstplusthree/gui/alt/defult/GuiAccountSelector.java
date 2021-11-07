@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui.alt.defult;
 
 import com.google.gson.JsonParser;
+import me.travis.wurstplusthree.mixin.mixins.accessors.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
