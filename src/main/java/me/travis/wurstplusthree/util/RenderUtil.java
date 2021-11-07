@@ -1169,7 +1169,6 @@ public class RenderUtil implements Globals {
         }
     }
 
-
     public static void drawCircleVertices(AxisAlignedBB bb, float radius, Colour colour) {
         float r = (float) colour.getRed() / 255.0f;
         float g = (float) colour.getGreen() / 255.0f;
