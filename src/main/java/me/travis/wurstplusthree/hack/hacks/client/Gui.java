@@ -20,6 +20,10 @@ public class Gui extends Hack {
 
     public ParentSetting colors = new ParentSetting("Colours", this);
     public ColourSetting headButtonColor = new ColourSetting("Head Button", new Colour(255, 150, 90, 255), colors);
+    public ColourSetting modColor = new ColourSetting("Mod Color", new Colour(45, 45, 45, 255), colors);
+    //public ColourSetting modColorHover = new ColourSetting("Mod Color Hover", new Colour(45, 45, 45, 255), colors);
+    public ColourSetting settingColor = new ColourSetting("Setting Color", new Colour(25,25,25, 255), colors);
+    public ColourSetting settingColorHover = new ColourSetting("Setting Color Hover", new Colour(20,20,20, 255), colors);
     public ColourSetting buttonColor = new ColourSetting("Button", new Colour(224, 156, 96, 255), colors);
     public ColourSetting fontColor = new ColourSetting("Font", new Colour(255,255,255, 255), colors);
     public ColourSetting groupColor= new ColourSetting("Group Setting", new Colour(45,45,45,255), colors);
