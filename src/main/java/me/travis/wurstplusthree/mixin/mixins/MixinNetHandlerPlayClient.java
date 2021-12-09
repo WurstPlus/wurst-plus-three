@@ -22,6 +22,9 @@ public class MixinNetHandlerPlayClient {
                 && (player = (EntityPlayer)entity).getHealth() <= 0.0f) {
             WurstplusThree.EVENT_PROCESSOR.postEvent(new DeathEvent(player));
             WurstplusThree.POP_MANAGER.onDeath(player);
+            if (player.getName().equalsIgnoreCase(Globals.mc.player.getName())) {
+                WurstplusThree.KD_MANAGER.addDeath();
+            }
         }
     }
 }

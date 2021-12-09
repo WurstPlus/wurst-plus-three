@@ -4,9 +4,14 @@ import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
+import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.elements.Colour;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockSourceImpl;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
@@ -15,6 +20,7 @@ import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -27,10 +33,15 @@ public class Esp extends Hack {
     BooleanSetting orbs = new BooleanSetting("Orbs", true, this);
     BooleanSetting bottles = new BooleanSetting("Bottles", true, this);
     BooleanSetting pearl = new BooleanSetting("Pearl", true, this);
+    BooleanSetting sources = new BooleanSetting("Sources", false, this);
+    IntSetting sourceRange = new IntSetting("Range", 7, 1, 25, this, s -> sources.getValue());
     ColourSetting colour = new ColourSetting("Colour", new Colour(255, 50, 50, 150), this);
+    ColourSetting colour2 = new ColourSetting("SourceColour", new Colour(100, 50, 200, 150), this);
+
 
     @Override
     public void onRender3D(Render3DEvent event) {
+        if(nullCheck())return;
         AxisAlignedBB bb;
         Vec3d interp;
         int i;
@@ -140,6 +151,13 @@ public class Esp extends Hack {
                 RenderUtil.drawBlockOutline(bb, new Color(this.colour.getValue().getRed(), this.colour.getValue().getGreen(), this.colour.getValue().getBlue(), this.colour.getValue().getAlpha()), 1.0f);
                 if (++i < 50) continue;
                 break;
+            }
+        }
+        if(sources.getValue()) {
+            for (BlockPos pos : EntityUtil.getSphere(PlayerUtil.getPlayerPos(), sourceRange.getValue(), sourceRange.getValue(), false, true, 0)) {
+                if (mc.world.getBlockState(pos).getBlock().getMetaFromState(mc.world.getBlockState(pos)) == 0 && mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid) {
+                    RenderUtil.drawBoxESP(pos, colour2.getColor(), colour2.getColor(), 1.0f, true, true, false);
+                }
             }
         }
     }

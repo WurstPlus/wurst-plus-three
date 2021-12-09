@@ -1,9 +1,13 @@
 package me.travis.wurstplusthree.manager;
 
+import me.travis.wurstplusthree.event.events.PacketEvent;
+import me.travis.wurstplusthree.hack.hacks.misc.NoRotate;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.MathsUtil;
 import me.travis.wurstplusthree.util.RotationUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -11,6 +15,25 @@ public class RotationManager implements Globals {
 
     private float yaw;
     private float pitch;
+    private float spoofedYaw;
+    private float spoofedPitch;
+
+    public void onPacketReceive(SPacketPlayerPosLook p) {
+        spoofedPitch = p.getPitch();
+        spoofedYaw = p.getYaw();
+        if (NoRotate.INSTANCE.isEnabled()) {
+            p.pitch = pitch;
+            p.yaw = yaw;
+        }
+    }
+
+    public float getSpoofedYaw() {
+        return MathsUtil.wrapDegrees(spoofedYaw);
+    }
+
+    public float getSpoofedPitch() {
+        return spoofedPitch;
+    }
 
     public void updateRotations() {
         this.yaw = mc.player.rotationYaw;
@@ -52,6 +75,13 @@ public class RotationManager implements Globals {
     public void lookAtEntity(Entity entity) {
         float[] angle = MathsUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), entity.getPositionEyes(mc.getRenderPartialTicks()));
         this.setPlayerRotations(angle[0], angle[1]);
+    }
+
+    public void onPacketSend(PacketEvent event) {
+        if (event.getPacket() instanceof CPacketPlayer.Rotation || event.getPacket() instanceof CPacketPlayer.PositionRotation) {
+            spoofedPitch = ((CPacketPlayer) event.getPacket()).getPitch(0);
+            spoofedYaw = ((CPacketPlayer) event.getPacket()).getYaw(0);
+        }
     }
 
     public void setPlayerPitch(float pitch) {

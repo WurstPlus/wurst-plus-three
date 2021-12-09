@@ -12,6 +12,7 @@ import me.travis.wurstplusthree.util.RenderUtil;
 import me.travis.wurstplusthree.util.RenderUtil2D;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -60,46 +61,53 @@ public class HackButton extends Component {
         if (WurstplusThree.SETTINGS.getSettingFromHack(mod) != null) {
             for (Setting s : WurstplusThree.SETTINGS.getSettingFromHack(mod)) {
                 if (s instanceof BooleanSetting) {
-                    if (!((BooleanSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new BooleanComponent((BooleanSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof EnumSetting) {
-                    if (!((EnumSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new ModeComponent((EnumSetting) s, this, mod, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof IntSetting) {
-                    if (!((IntSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new SliderComponent((IntSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof DoubleSetting) {
-                    if (!((DoubleSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new SliderComponent((DoubleSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof ColourSetting) {
-                    if (!((ColourSetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new ColorComponent((ColourSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 } else if (s instanceof KeySetting) {
-                    if (!((KeySetting) s).isShown()) {
+                    if (!s.isShown()) {
                         this.notInitSettings.add(s);
                         continue;
                     }
                     this.subcomponents.add(new KeyBindComponent((KeySetting) s, this, opY));
+                    opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
+                } else if (s instanceof ParentSetting) {
+                    if (!s.isShown()) {
+                        this.notInitSettings.add(s);
+                        continue;
+                    }
+                    this.subcomponents.add(new ParentComponent((ParentSetting) s, this, opY));
                     opY += WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET;
                 }
             }
@@ -160,6 +168,19 @@ public class HackButton extends Component {
     }
 
     @Override
+    public void renderToolTip(int mouseX, int mouseY){
+        if(isHovered && Gui.INSTANCE.toolTips.getValue()){
+            int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(mod.getDescription());
+            int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+            RenderUtil2D.drawRectMC(mouseX + 6, mouseY + 9, mouseX + length + 10, mouseY + height + 13, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(mod.getDescription(), mouseX + 8, mouseY + 11, new Color(255,255,255).hashCode());
+        }
+        for(Component component : subcomponents){
+            component.renderToolTip(mouseX, mouseY);
+        }
+    }
+
+    @Override
     public int getHeight() {
         if (this.isOpen) {
             int val = 0;
@@ -189,49 +210,15 @@ public class HackButton extends Component {
         if (!this.notInitSettings.isEmpty()) {
             if (oldVals.isEmpty()) {
                 for (Setting s : this.notInitSettings) {
-                    if (s instanceof BooleanSetting) {
-                        this.oldVals.add(((BooleanSetting) s).isShown());
-                    } else if (s instanceof EnumSetting) {
-                        this.oldVals.add(((EnumSetting) s).isShown());
-                    } else if (s instanceof IntSetting) {
-                        this.oldVals.add(((IntSetting) s).isShown());
-                    } else if (s instanceof DoubleSetting) {
-                        this.oldVals.add(((DoubleSetting) s).isShown());
-                    } else if (s instanceof ColourSetting) {
-                        this.oldVals.add(((ColourSetting) s).isShown());
-                    } else if (s instanceof KeySetting) {
-                        this.oldVals.add(((KeySetting) s).isShown());
-                    }
+                    this.oldVals.add(s.isShown());
                 }
             } else {
                 int index = 0;
                 for (Setting s : this.notInitSettings) {
                     boolean old = oldVals.get(index);
                     boolean init = false;
-                    if (s instanceof BooleanSetting) {
-                        if (((BooleanSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof EnumSetting) {
-                        if (((EnumSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof IntSetting) {
-                        if (((IntSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof DoubleSetting) {
-                        if (((DoubleSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof ColourSetting) {
-                        if (((ColourSetting) s).isShown() != old) {
-                            init = true;
-                        }
-                    } else if (s instanceof KeySetting) {
-                        if (((KeySetting) s).isShown() != old) {
-                            init = true;
-                        }
+                    if (s.isShown() != old) {
+                        init = true;
                     }
                     index++;
                     if (init) {

@@ -4,20 +4,13 @@ import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.event.events.Render2DEvent;
 import me.travis.wurstplusthree.event.events.Render3DEvent;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
-import me.travis.wurstplusthree.hack.hacks.chat.*;
-import me.travis.wurstplusthree.hack.hacks.client.Cosmetics;
-import me.travis.wurstplusthree.hack.hacks.client.Gui;
-import me.travis.wurstplusthree.hack.hacks.client.Hud;
-import me.travis.wurstplusthree.hack.hacks.combat.*;
-import me.travis.wurstplusthree.hack.hacks.misc.*;
-import me.travis.wurstplusthree.hack.hacks.player.*;
-import me.travis.wurstplusthree.hack.hacks.render.*;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.ReflectionUtil;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,20 +79,26 @@ public final class Hacks implements Globals {
     }
 
     public final boolean ishackEnabled(String name) {
-        return this.getHackByName(name).isEnabled();
+        try {
+            return this.getHackByName(name).isEnabled();
+        } catch (NullPointerException error) {
+            return false;
+        }
     }
 
     public final void onUpdate() {
         this.hacks.stream().filter(Hack::isEnabled).spliterator().forEachRemaining(Hack::onUpdate);
-        for (Hack hack : hacks) {
-            if (hack.isHold() && hack.getBind() >= 0) {
-                if (Keyboard.isKeyDown(hack.getBind())) {
-                    if (!hack.isEnabled()) {
-                        hack.enable();
-                    }
-                } else {
-                    if (hack.isEnabled()) {
-                        hack.disable();
+        if (mc.currentScreen == null) {
+            for (Hack hack : hacks) {
+                if (hack.isHold() && hack.getBind() >= 0) {
+                    if (Keyboard.isKeyDown(hack.getBind())) {
+                        if (!hack.isEnabled()) {
+                            hack.enable();
+                        }
+                    } else {
+                        if (hack.isEnabled()) {
+                            hack.disable();
+                        }
                     }
                 }
             }
@@ -189,13 +188,25 @@ public final class Hacks implements Globals {
 
     public final List<Hack> getSortedHacks(boolean reverse, boolean customFont) {
         if (customFont) {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
-                    WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString())
-                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+            if (reverse) {
+                List<Hack> list = this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+                Collections.reverse(list);
+                return list;
+            }  else {
+                return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        WurstplusThree.GUI_FONT_MANAGER.getTextWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+            }
         } else {
-            return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
-                    mc.fontRenderer.getStringWidth(hack.getFullArrayString())
-                            * (reverse ? -1 : 1))).collect(Collectors.toList());
+            if (reverse) {
+                List<Hack> list = this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        mc.fontRenderer.getStringWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+                Collections.reverse(list);
+                return list;
+            }  else {
+                return this.getEnabledHacks().stream().sorted(Comparator.comparing(hack ->
+                        mc.fontRenderer.getStringWidth(hack.getFullArrayString()))).collect(Collectors.toList());
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class VoidESP extends Hack {
 
     IntSetting range = new IntSetting("Range", 10, 0, 50, this);
-    IntSetting yLevel = new IntSetting("Slef Y", 20, 0, 255, this);
+    IntSetting yLevel = new IntSetting("SlefY", 20, 0, 255, this);
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
     ColourSetting colour = new ColourSetting("Colour", new Colour(200, 255, 200, 100), this);
 
@@ -28,6 +28,7 @@ public class VoidESP extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         voidHoles.clear();
 
         if (mc.player.dimension == 1) {

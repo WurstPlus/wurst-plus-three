@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -72,8 +71,7 @@ public final class ReflectionUtil {
      * @throws IOException
      *             if it can't correctly read from the jar file.
      */
-    private static void checkJarFile(@NotNull JarURLConnection connection,
-                                     @NotNull String pckgname, @NotNull ArrayList<Class<?>> classes)
+    private static void checkJarFile(@NotNull JarURLConnection connection, @NotNull String pckgname, @NotNull ArrayList<Class<?>> classes)
             throws ClassNotFoundException, IOException {
         final JarFile jarFile = connection.getJarFile();
         final Enumeration<JarEntry> entries = jarFile.entries();
@@ -87,7 +85,11 @@ public final class ReflectionUtil {
                 name = name.substring(0, name.length() - 6).replace('/', '.');
 
                 if (name.contains(pckgname)) {
-                    classes.add(Class.forName(name));
+                    try {
+                        classes.add(Class.forName(name));
+                    } catch (NoClassDefFoundError reee) {
+                        //It wont add the HoleBlink module now cus no baritone was found
+                    }
                 }
             }
         }

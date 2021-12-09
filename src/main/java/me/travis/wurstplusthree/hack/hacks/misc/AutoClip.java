@@ -34,7 +34,7 @@ public class AutoClip extends Hack {
     }
 
     DoubleSetting delay = new DoubleSetting("Delay", 2.0, 0.0, 20.0, this);
-    BooleanSetting test = new BooleanSetting("Test Bind", false, this);
+    BooleanSetting test = new BooleanSetting("TestBind", false, this);
 
     private int delayCount;
     private boolean shouldClip;

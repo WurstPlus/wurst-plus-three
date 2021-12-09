@@ -2,6 +2,7 @@ package me.travis.wurstplusthree.manager;
 
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.util.elements.Timer;
+import net.minecraft.util.math.MathHelper;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -16,6 +17,13 @@ public class ServerManager extends Hack {
     private float TPS = 20.0f;
     private long lastUpdate = -1L;
     private String serverBrand = "";
+    private final float[] tickRates = new float[20];
+    private int nextIndex = 0;
+
+    public ServerManager(){
+        this.nextIndex = 0;
+        Arrays.fill(this.tickRates, 0.0F);
+    }
 
     public void onPacketReceived() {
         this.timer.reset();
@@ -37,6 +45,11 @@ public class ServerManager extends Hack {
             this.lastUpdate = currentTime;
             return;
         }
+
+        float timeElapsed = (float) (currentTime - this.lastUpdate) / 1000.0F;
+        this.tickRates[(this.nextIndex % this.tickRates.length)] = MathHelper.clamp(20.0F / timeElapsed, 0.0F, 20.0F);
+        this.nextIndex += 1;
+
         long timeDiff = currentTime - this.lastUpdate;
         float tickTime = (float) timeDiff / 20.0f;
         if (tickTime == 0.0f) {
@@ -88,6 +101,18 @@ public class ServerManager extends Hack {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public float getTickRate() {
+        float numTicks = 0.0F;
+        float sumTickRates = 0.0F;
+        for (float tickRate : this.tickRates) {
+            if (tickRate > 0.0F) {
+                sumTickRates += tickRate;
+                numTicks += 1.0F;
+            }
+        }
+        return MathHelper.clamp(sumTickRates / numTicks, 0.0F, 20.0F);
     }
 
 }

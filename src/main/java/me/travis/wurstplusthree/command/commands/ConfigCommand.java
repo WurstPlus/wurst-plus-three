@@ -15,7 +15,7 @@ public class ConfigCommand extends Command {
     public void execute(String[] message) {
         String folder = message[0].replaceAll("_", " ") + "/";
         if (folder.equalsIgnoreCase("/")) {
-            ClientMessage.sendErrorMessage("Invalid Folder");
+            ClientMessage.sendMessage("Current config is " + WurstplusThree.CONFIG_MANAGER.configName);
             return;
         }
         WurstplusThree.CONFIG_MANAGER.setActiveConfigFolder(folder);

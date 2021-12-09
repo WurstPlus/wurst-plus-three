@@ -40,6 +40,9 @@ public abstract class Component implements Globals {
         return 0;
     }
 
+    public void renderToolTip(int mouseX, int mouseY){
+    }
+
     public boolean isShown() {
         return this.shown;
     }

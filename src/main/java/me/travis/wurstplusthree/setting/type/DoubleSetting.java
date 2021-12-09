@@ -16,7 +16,19 @@ public class DoubleSetting extends Setting<Double> {
         this.max = max;
     }
 
-    public DoubleSetting(String name, Double value, Double min, Double max, Hack parent, Predicate<Double> shown) {
+    public DoubleSetting(String name, Double value, Double min, Double max, ParentSetting parent) {
+        super(name, value, parent);
+        this.min = min;
+        this.max = max;
+    }
+
+    public DoubleSetting(String name, Double value, Double min, Double max, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+        this.min = min;
+        this.max = max;
+    }
+
+    public DoubleSetting(String name, Double value, Double min, Double max, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
         this.min = min;
         this.max = max;
@@ -40,6 +52,12 @@ public class DoubleSetting extends Setting<Double> {
 
     public void setNumber(double value) {
         this.value = value;
+        if (this.getParent().isEnabled())
+          this.getParent().onSettingChange();
+    }
+
+    public Float getAsFloat(){
+        return (float) (double) this.value;
     }
 
     public double getMaximumValue() {
@@ -54,12 +72,6 @@ public class DoubleSetting extends Setting<Double> {
         return 2;
     }
 
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
-    }
 
     @Override
     public String getType() {

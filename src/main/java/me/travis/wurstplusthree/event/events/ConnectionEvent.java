@@ -5,8 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.UUID;
 
-public class ConnectionEvent
-        extends EventStage {
+public class ConnectionEvent extends EventStage {
     private final UUID uuid;
     private final EntityPlayer entity;
     private final String name;

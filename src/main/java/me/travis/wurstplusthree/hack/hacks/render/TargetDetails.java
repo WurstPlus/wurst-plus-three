@@ -24,8 +24,8 @@ public class TargetDetails extends Hack {
     BooleanSetting onePointT = new BooleanSetting("1.13+", false, this);
     BooleanSetting showBurrow = new BooleanSetting("Burrowed", true, this);
 
-    ColourSetting fuckedColour = new ColourSetting("Fucked Colour", new Colour(255, 20, 20, 150), this, s -> showFucked.getValue());
-    ColourSetting burrowedColour = new ColourSetting("Burrowed Colour", new Colour(20, 255, 255, 150), this, s -> showBurrow.getValue());
+    ColourSetting fuckedColour = new ColourSetting("FuckedColour", new Colour(255, 20, 20, 150), this, s -> showFucked.getValue());
+    ColourSetting burrowedColour = new ColourSetting("BurrowedColour", new Colour(20, 255, 255, 150), this, s -> showBurrow.getValue());
     EnumSetting mode = new EnumSetting("Render","Pretty",  Arrays.asList("Pretty", "Solid", "Outline"), this);
 
     private final ArrayList<BlockPos> fuckedBlocks = new ArrayList<>();
@@ -47,14 +47,14 @@ public class TargetDetails extends Hack {
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        if (showFucked.getValue()) {
-            if (!this.fuckedBlocks.isEmpty()) {
-                this.fuckedBlocks.forEach(this::renderFuckedBlock);
-            }
-        }
+        if(nullCheck())return;
         if (showBurrow.getValue()) {
             if (!this.burrowedBlocks.isEmpty()) {
                 this.burrowedBlocks.forEach(this::renderBurrowedBlock);
+            }
+        } else if (showFucked.getValue()) {
+            if (!this.fuckedBlocks.isEmpty()) {
+                this.fuckedBlocks.forEach(this::renderFuckedBlock);
             }
         }
     }

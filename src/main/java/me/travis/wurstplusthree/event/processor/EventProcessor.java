@@ -16,7 +16,7 @@ import java.util.List;
 
 public final class EventProcessor {
 
-    private List<Listener> events;
+    private final List<Listener> events;
 
     public EventProcessor() {
         events = new ArrayList<>();
@@ -26,22 +26,22 @@ public final class EventProcessor {
      * @param object the class that the events are in
      * @throws IllegalArgumentException
      */
-    public final void addEventListener(@NotNull Object object) throws IllegalArgumentException {
+    public final void addEventListener(final @NotNull Object object) throws IllegalArgumentException {
         getEvents(object);
     }
 
-    public final void removeEventListener(@NotNull Object object) {
+    public final void removeEventListener(final @NotNull Object object) {
         events.removeIf(listener -> listener.object == object);
     }
 
     /**
      * @param object takes the class where the events are committed
      */
-    private void getEvents(@NotNull Object object) {
-        Class<?> clazz = object.getClass();
+    private void getEvents(final @NotNull Object object) {
+        final Class<?> clazz = object.getClass();
         Arrays.stream(clazz.getDeclaredMethods()).spliterator().forEachRemaining(method -> {
             if (method.isAnnotationPresent(CommitEvent.class)) {
-                Class<?>[] prams = method.getParameterTypes();
+                final Class<?>[] prams = method.getParameterTypes();
                 if (prams.length != 1) {
                     throw new IllegalArgumentException("Method " + method + " doesnt have any event parameters");
                 }
@@ -58,7 +58,7 @@ public final class EventProcessor {
      * @param event the event that you are listening for
      * @return if the event was posted or not at a boolean
      */
-    public final boolean postEvent(@NotNull Event event) {
+    public final boolean postEvent(final @NotNull Event event) {
         events.spliterator().forEachRemaining(listener -> {
             if(listener.event == event.getClass()){
                 listener.method.setAccessible(true);
@@ -72,7 +72,7 @@ public final class EventProcessor {
         return true;
     }
 
-    private EventPriority getPriority(@NotNull Method method) {
+    private EventPriority getPriority(final @NotNull Method method) {
         return method.getAnnotation(CommitEvent.class).priority();
     }
 }

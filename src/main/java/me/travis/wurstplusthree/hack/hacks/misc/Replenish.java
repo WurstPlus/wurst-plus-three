@@ -23,6 +23,7 @@ public class Replenish extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (mc.currentScreen instanceof GuiContainer) return;
 
         if (delayStep < tickDelay.getValue()) {

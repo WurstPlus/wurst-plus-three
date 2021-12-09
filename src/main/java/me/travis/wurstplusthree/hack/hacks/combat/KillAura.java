@@ -11,8 +11,11 @@ import me.travis.wurstplusthree.setting.type.EnumSetting;
 import me.travis.wurstplusthree.setting.type.IntSetting;
 import me.travis.wurstplusthree.util.DamageUtil;
 import me.travis.wurstplusthree.util.EntityUtil;
+import me.travis.wurstplusthree.util.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemSword;
 
 import java.util.Arrays;
 
@@ -20,12 +23,13 @@ import java.util.Arrays;
 public class KillAura extends Hack {
 
     public EnumSetting mode = new EnumSetting("Mode", "Normal", Arrays.asList("Normal", "32k"), this);
+    public EnumSetting switch0 = new EnumSetting("Switch", "None", Arrays.asList("None", "Auto", "SwordOnly"), this);
     public EnumSetting targetMode = new EnumSetting("Target", "Focus", Arrays.asList("Focus", "Closest", "Health"), this);
     public DoubleSetting range = new DoubleSetting("Range", 4.5, 0.0, 7.0, this);
     public BooleanSetting rotate = new BooleanSetting("Rotate", false, this);
     public BooleanSetting raytrace = new BooleanSetting("Walls", true, this);
     public BooleanSetting swingArm = new BooleanSetting("Swing", true, this);
-    public IntSetting ttkDelay = new IntSetting("32k Delay", 3, 0, 10, this, s -> mode.is("32k"));
+    public IntSetting ttkDelay = new IntSetting("32kDelay", 3, 0, 10, this, s -> mode.is("32k"));
 
     private Entity target;
     private int ticksPassed;
@@ -57,6 +61,24 @@ public class KillAura extends Hack {
     private void doKA() {
         this.target = this.getTarget();
         if (this.target == null) return;
+        switch (switch0.getValue()) {
+            case "Auto":
+                for (int I = 0; I < 9; ++I)
+                {
+                    if (mc.player.inventory.getStackInSlot(I).getItem() instanceof ItemSword)
+                    {
+                        if (EntityUtil.is32k(mc.player.inventory.getStackInSlot(I)) || mode.is("Normal")) {
+                            mc.player.inventory.currentItem = I;
+                            mc.playerController.updateController();
+                            break;
+                        }
+                    }
+                }
+            case "SwordOnly":
+                if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword)) {
+                    return;
+                }
+        }
         if (this.mode.is("32k")) {
             if (EntityUtil.holding32k(mc.player) && this.ticksPassed >= this.ttkDelay.getValue()) {
                 this.ticksPassed = 0;

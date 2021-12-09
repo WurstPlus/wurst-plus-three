@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
  */
 
 public class BlockCollisionBoundingBoxEvent extends EventStage {
-    private BlockPos pos;
+    private final BlockPos pos;
     private AxisAlignedBB _boundingBox;
 
     public BlockCollisionBoundingBoxEvent(BlockPos pos)

@@ -15,7 +15,15 @@ public class ColourSetting extends Setting<Colour> {
         super(name, value, parent);
     }
 
-    public ColourSetting(String name, Colour value, Hack parent, Predicate<Colour> shown) {
+    public ColourSetting(String name, Colour value, ParentSetting parent) {
+        super(name, value, parent);
+    }
+
+    public ColourSetting(String name, Colour value, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+    }
+
+    public ColourSetting(String name, Colour value, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
     }
 
@@ -35,10 +43,14 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setValue(Color value) {
         this.value = new Colour(value);
+        if (this.getParent().isEnabled())
+          this.getParent().onSettingChange();
     }
 
     public void setValue(int red, int green, int blue, int alpha) {
         this.value = new Colour(red, green, blue, alpha);
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public Color getColor() {
@@ -51,13 +63,8 @@ public class ColourSetting extends Setting<Colour> {
 
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
-    }
-
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
+        if (this.getParent().isEnabled())
+          this.getParent().onSettingChange();
     }
 
     @Override

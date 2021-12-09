@@ -5,21 +5,30 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.command.Commands;
+import me.travis.wurstplusthree.gui.hud.element.HudElement;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.client.HudEditor;
 import me.travis.wurstplusthree.hack.hacks.combat.Burrow;
 import me.travis.wurstplusthree.setting.Setting;
 import me.travis.wurstplusthree.setting.type.ColourSetting;
 import me.travis.wurstplusthree.setting.type.KeySetting;
+import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.WhitelistUtil;
 import me.travis.wurstplusthree.util.elements.WurstplusPlayer;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Keyboard;
+import scala.reflect.io.Directory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class ConfigManager implements Globals {
@@ -29,14 +38,17 @@ public class ConfigManager implements Globals {
     private final String mainFolder = "Wurstplus3/";
     private final String configsFolder = mainFolder + "configs/";
     private String activeConfigFolder = configsFolder + "default/";
+    public final String pluginFolder = mainFolder + "plugins/";
+    public String configName = "default";
 
     private final String drawnFile = "drawn.txt";
     private final String enemiesFile = "enemies.json";
     private final String friendsFile = "friends.json";
-    private final String bindsFile = "binds.txt";
     private final String fontFile = "font.txt";
     private final String burrowFile = "burrowBlocks.txt";
     private final String IRCtoken = "IRCtoken.dat";
+    private final String hudFile = "hud.txt";
+    private final String coordsFile = "playersCoords.txt";
 
     private final String drawnDir = mainFolder + drawnFile;
     private final String fontDir = mainFolder + fontFile;
@@ -44,9 +56,8 @@ public class ConfigManager implements Globals {
     private final String IRCdir = mainFolder + IRCtoken;
     private final String enemiesDir = mainFolder + enemiesFile;
     private final String friendsDir = mainFolder + friendsFile;
-
-    private String currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
-    private String bindsDir = currentConfigDir + bindsFile;
+    private final String hudDir = mainFolder + hudFile;
+    private final String coordsDir = mainFolder + coordsFile;
 
     // FOLDER PATHS
     private final Path mainFolderPath = Paths.get(mainFolder);
@@ -57,6 +68,8 @@ public class ConfigManager implements Globals {
     private final Path fontPath = Paths.get(fontDir);
     private final Path burrowPath = Paths.get(burrowDir);
     private final Path IRCpath = Paths.get(IRCdir);
+    private final Path hudPath = Paths.get(hudDir);
+    private final Path coordsPath = Paths.get(coordsDir);
 
     public void loadConfig() {
         try {
@@ -67,6 +80,7 @@ public class ConfigManager implements Globals {
             this.loadDrawn();
             this.loadFont();
             this.loadBurrowBlock();
+            this.loadHud();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,12 +95,21 @@ public class ConfigManager implements Globals {
         }
     }
 
+    public void onLogin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        String serverIP = "@" + mc.getCurrentServerData().serverIP;
+        Path path = Paths.get(configsFolder + serverIP + "/");
+        if (Files.exists(path)) {
+            setActiveConfigFolder(serverIP + "/");
+        }
+    }
+
     public void saveConfig() {
         try {
             this.verifyDir(mainFolderPath);
             this.verifyDir(configsFolderPath);
             this.verifyDir(activeConfigFolderPath);
 
+            this.saveHud();
             this.saveEnemies();
             this.saveFriends();
             this.saveSettings();
@@ -99,21 +122,28 @@ public class ConfigManager implements Globals {
         }
     }
 
+
+    public String getActiveConfigFolder() {
+        return this.activeConfigFolder;
+    }
+    // CHANGES ACTIVE CONFIG FOLDER
+
     public boolean setActiveConfigFolder(String folder) {
         if (folder.equals(this.activeConfigFolder)) {
             return false;
         }
         this.saveConfig();
-
+        this.configName = folder.replace("/", "");
         this.activeConfigFolder = configsFolder + folder;
         this.activeConfigFolderPath = Paths.get(activeConfigFolder);
-
-        this.currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
+        String currentConfigDir = mainFolder + configsFolder + activeConfigFolder;
         Paths.get(currentConfigDir);
-
-        this.bindsDir = currentConfigDir + bindsFile;
+        String bindsFile = "binds.txt";
+        String bindsDir = currentConfigDir + bindsFile;
         Paths.get(bindsDir);
-
+        if (!Files.exists(Paths.get(configsFolder + folder))) {
+            this.clearSettings();
+        }
         this.reloadConfig();
         return true;
     }
@@ -249,6 +279,18 @@ public class ConfigManager implements Globals {
         }
     }
 
+    private void clearSettings() {
+        for (Hack hack : WurstplusThree.HACKS.getHacks()) {
+            if (hack instanceof Gui || hack instanceof HudEditor) continue;
+            hack.setHold(false);
+            hack.setEnabled(false);
+            hack.setBind(Keyboard.KEY_NONE);
+            for (Setting setting : hack.getSettings()) {
+                setting.setValue(setting.defaultValue);
+            }
+        }
+    }
+
     // LOAD & SAVE BINDS
 
     private void saveBinds() throws IOException {
@@ -296,6 +338,33 @@ public class ConfigManager implements Globals {
         br.close();
     }
 
+    private void saveHud() throws IOException {
+        FileWriter writer = new FileWriter(hudDir);
+        for (HudElement hudElement : WurstplusThree.HUD_MANAGER.getHudElements()) {
+            writer.write(hudElement.getName() + ":" + hudElement.getX() + ":" + hudElement.getY() + ":" + hudElement.isEnabled() + System.lineSeparator());
+        }
+        writer.close();
+    }
+
+    private void loadHud() throws IOException {
+        for (String hudElement : Files.readAllLines(hudPath).stream().distinct().collect(Collectors.toList())) {
+            try {
+                String trim = hudElement.trim();
+                String name = trim.split(":")[0];
+                int x = Integer.parseInt(trim.split(":")[1]);
+                int y = Integer.parseInt(trim.split(":")[2]);
+                boolean enabled = Boolean.parseBoolean(trim.split(":")[3]);
+                HudElement element = WurstplusThree.HUD_MANAGER.getElementByName(name);
+                if (element == null) continue;
+                element.setX(x);
+                element.setY(y);
+                element.setEnabled(enabled);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void saveDrawn() throws IOException {
         FileWriter writer = new FileWriter(drawnDir);
         for (Hack hack : WurstplusThree.HACKS.getDrawnHacks()) {
@@ -331,6 +400,16 @@ public class ConfigManager implements Globals {
             }
         }
         WurstplusThree.GUI_FONT_MANAGER.setFont();
+    }
+
+    public void saveCoords(String coords) throws IOException {
+        FileWriter fw = new FileWriter(coordsDir, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy -- HH:mm:ss");
+        Date date = new Date();
+        bw.write("[" + formatter.format(date) + "] " + coords);
+        bw.newLine();
+        bw.close();
     }
 
     public void saveBurrowBlock() throws IOException {

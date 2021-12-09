@@ -88,10 +88,10 @@ public class MixinRenderPlayer {
     @Inject(method={"renderLeftArm"}, at={@At(value="RETURN")}, cancellable=true)
     public void renderLeftArmReturn(AbstractClientPlayer clientPlayer, CallbackInfo ci) {
         if (clientPlayer == Minecraft.getMinecraft().player && HandColour.INSTANCE.isEnabled()) {
-            GL11.glEnable((int)3042);
-            GL11.glEnable((int)2896);
-            GL11.glEnable((int)3553);
-            GL11.glEnable((int)3008);
+            GL11.glEnable(3042);
+            GL11.glEnable(2896);
+            GL11.glEnable(3553);
+            GL11.glEnable(3008);
             GL11.glPopAttrib();
         }
         else if(clientPlayer == Minecraft.getMinecraft().player && PlayerSpoofer.INSTANCE.isEnabled()){

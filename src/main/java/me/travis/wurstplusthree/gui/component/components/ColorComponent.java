@@ -1,6 +1,7 @@
 package me.travis.wurstplusthree.gui.component.components;
 
 import me.travis.wurstplusthree.WurstplusThree;
+import me.travis.wurstplusthree.event.events.ColorCopyEvent;
 import me.travis.wurstplusthree.gui.WurstplusGuiNew;
 import me.travis.wurstplusthree.gui.component.Component;
 import me.travis.wurstplusthree.gui.component.HackButton;
@@ -45,23 +46,35 @@ public class ColorComponent extends Component {
         RenderUtil2D.drawRectMC(parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.buttonColor.getValue().hashCode());
         RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
         RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, Gui.INSTANCE.buttonColor.getValue().hashCode());
-        RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, 1, this.set.getValue().hashCode(), WurstplusGuiNew.GUI_COLOR(), false);
+        RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 95, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + 3, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET - 5, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 3, 1, this.set.getValue().hashCode(), this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), false);
         if (Gui.INSTANCE.customFont.getValue()) {
             WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         } else {
             mc.fontRenderer.drawStringWithShadow(set.getName(), parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 3 + WurstplusGuiNew.MODULE_OFFSET, Gui.INSTANCE.fontColor.getValue().hashCode());
         }
         if (this.isOpen) {
-            WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, WurstplusGuiNew.GUI_COLOR());
+            WurstplusGuiNew.drawRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.MODULE_OFFSET + WurstplusGuiNew.HEIGHT, parent.parent.getX() + parent.parent.getWidth() - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR());
             this.drawPicker(set, parent.parent.getX() + 7, parent.parent.getY() + offset + 19, parent.parent.getX() + 100, parent.parent.getY() + offset + 19, parent.parent.getX() + 7, parent.parent.getY() + offset + 72, mouseX, mouseY);
             set.setValue(finalColor);
-            RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
+            RenderUtil2D.drawBorderedRect(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + 85, parent.parent.getY() + offset + 4 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + 115 - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 2  + booleanButtonOffset, 1,this.set.getRainbow() ? new Color(set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue(), 255).hashCode() : this.set.isChild() ? WurstplusGuiNew.GUI_CHILDBUTTON() : WurstplusGuiNew.GUI_COLOR(), new Color(0, 0, 0, 200).hashCode(), false);
             RenderUtil2D.drawRectMC(parent.parent.getX() + WurstplusGuiNew.SETTING_OFFSET + (this.set.getRainbow() ? 95 : 88), parent.parent.getY() + offset + 6 + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset, parent.parent.getX() + (this.set.getRainbow() ? 112 : 105) - WurstplusGuiNew.SETTING_OFFSET, parent.parent.getY() + offset + WurstplusGuiNew.HEIGHT + WurstplusGuiNew.MODULE_OFFSET - 4 + booleanButtonOffset, new Color(50, 50, 50, 255).hashCode());
             if (Gui.INSTANCE.customFont.getValue()) {
                 WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow("Rainbow", parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 5  + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
             } else {
                 mc.fontRenderer.drawStringWithShadow("Rainbow", parent.parent.getX() + WurstplusGuiNew.SUB_FONT_SIZE, parent.parent.getY() + offset + 5  + WurstplusGuiNew.MODULE_OFFSET + booleanButtonOffset , Gui.INSTANCE.fontColor.getValue().hashCode());
             }
+        }
+    }
+
+    @Override
+    public void renderToolTip(int mouseX, int mouseY){
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && Gui.INSTANCE.toolTips.getValue()){
+            String hex  = String.format("#%02x%02x%02x", set.getValue().getRed(), set.getValue().getGreen(), set.getValue().getBlue());
+            String text = "R: " + set.getValue().getRed() + " G: " + set.getValue().getGreen() + " B: " + set.getValue().getBlue() + " A: " + set.getValue().getAlpha() + "  " + hex;
+            int length = WurstplusThree.GUI_FONT_MANAGER.getTextWidth(text);
+            int height = WurstplusThree.GUI_FONT_MANAGER.getTextHeight();
+            RenderUtil2D.drawRectMC(mouseX+1, mouseY+4, mouseX + length + 5, mouseY + height + 8, Gui.INSTANCE.toolTipColor.getValue().hashCode());
+            WurstplusThree.GUI_FONT_MANAGER.drawStringWithShadow(text, mouseX + 3, mouseY + 8, new Color(255,255,255).hashCode());
         }
     }
 
@@ -92,6 +105,19 @@ public class ColorComponent extends Component {
             setOpen(!isOpen);
             this.parent.parent.refresh();
         }
+
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 0){
+            WurstplusThree.GUI2.colorClipBoard = set.getValue();
+            ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.COPY);
+            WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        }
+
+        if(isMouseOnButton(mouseX, mouseY) && parent.isOpen && button == 2){
+            this.set.setValue(WurstplusThree.GUI2.colorClipBoard);
+            ColorCopyEvent event = new ColorCopyEvent(set.getValue(), this, ColorCopyEvent.EventType.PAST);
+            WurstplusThree.EVENT_PROCESSOR.postEvent(event);
+        }
+
         if (!this.isOpen && !this.firstTimeOpen) {
             this.firstTimeOpen = true;
         }

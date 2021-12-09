@@ -79,6 +79,9 @@ public class Hack implements Globals {
     public void onUnload() {
     }
 
+    public void onSettingChange() {
+    }
+
     public boolean isEnabled() {
         return this.isEnabled;
     }

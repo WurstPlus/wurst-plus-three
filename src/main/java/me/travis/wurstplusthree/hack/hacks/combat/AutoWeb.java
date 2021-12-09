@@ -37,7 +37,7 @@ public class AutoWeb extends Hack {
     IntSetting delayTick = new IntSetting("Delay", 1, 0, 10, this);
     //BooleanSetting PredictPlace = new BooleanSetting("Predict", false, this);
     BooleanSetting packet = new BooleanSetting("Packet", true, this);
-    BooleanSetting lowFeet = new BooleanSetting("Low Feet", false, this);
+    BooleanSetting lowFeet = new BooleanSetting("LowFeet", false, this);
     BooleanSetting legs = new BooleanSetting("Legs", true, this);
     BooleanSetting chest = new BooleanSetting("Chest", true, this, s -> legs.getValue());
     BooleanSetting head = new BooleanSetting("Head", false , this, s -> legs.getValue() && chest.getValue());

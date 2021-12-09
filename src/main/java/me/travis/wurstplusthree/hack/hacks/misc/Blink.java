@@ -29,8 +29,8 @@ public class Blink extends Hack {
 
     public EnumSetting mode = new EnumSetting("mode", "Manual", Arrays.asList("Manual", "Time", "Distance", "Packets"), this);
     public BooleanSetting cPacketPlayer = new BooleanSetting("CPacketPlayer", true, this);
-    public IntSetting timeLimit = new IntSetting("Time Limit", 20, 1, 500, this, s -> mode.is("Time"));
-    public IntSetting packetLimit = new IntSetting("Packet Limit", 20, 1, 500, this, s -> mode.is("Packets"));
+    public IntSetting timeLimit = new IntSetting("TimeLimit", 20, 1, 500, this, s -> mode.is("Time"));
+    public IntSetting packetLimit = new IntSetting("PacketLimit", 20, 1, 500, this, s -> mode.is("Packets"));
     public DoubleSetting distance = new DoubleSetting("Distance", 10.0, 1.0, 100.0, this, s -> mode.is("Distance"));
 
     private final Timer timer = new Timer();

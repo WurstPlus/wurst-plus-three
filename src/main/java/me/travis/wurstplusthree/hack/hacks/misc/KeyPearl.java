@@ -53,7 +53,7 @@ public class KeyPearl extends Hack {
     private void pearl() {
         oldSlot = mc.player.inventory.currentItem;
         slot = InventoryUtil.findHotbarBlock(ItemEnderPearl.class);
-        if(slot == -1)return;
+        if(slot == -1) return;
         mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
         mc.player.connection.sendPacket(new CPacketHeldItemChange(oldSlot));

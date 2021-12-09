@@ -4,6 +4,7 @@ import me.travis.wurstplusthree.event.events.RenderItemEvent;
 import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.event.processor.EventPriority;
 import me.travis.wurstplusthree.hack.Hack;
+import me.travis.wurstplusthree.setting.type.BooleanSetting;
 import me.travis.wurstplusthree.setting.type.DoubleSetting;
 
 /**
@@ -12,9 +13,15 @@ import me.travis.wurstplusthree.setting.type.DoubleSetting;
  *  -> This is dumb as well but its the only way i think you can do it lol
  */
 
-@Hack.Registration(name = "ViewModel", description = "makes you hand look cool", category = Hack.Category.RENDER, isListening = false)
+@Hack.Registration(name = "View Model", description = "makes you hand look cool", category = Hack.Category.RENDER)
 public class ViewModel extends Hack {
+    public static ViewModel INSTANCE;
 
+    public ViewModel(){
+        INSTANCE = this;
+    }
+
+    public BooleanSetting fixEating = new BooleanSetting("Fix Eating", true, this);
     DoubleSetting mainX = new DoubleSetting("mainX", 1.2, 0.0, 6.0, this);
     DoubleSetting mainY = new DoubleSetting("mainY", -0.95, -3.0, 3.0, this);
     DoubleSetting mainZ = new DoubleSetting("mainZ", -1.45, -5.0, 5.0, this);
@@ -40,6 +47,7 @@ public class ViewModel extends Hack {
 
     @CommitEvent(priority = EventPriority.LOW)
     public void onItemRender(RenderItemEvent event) {
+        if(nullCheck())return;
         event.setMainX(mainX.getValue());
         event.setMainY(mainY.getValue());
         event.setMainZ(mainZ.getValue());

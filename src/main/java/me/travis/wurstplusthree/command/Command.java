@@ -10,6 +10,8 @@ public abstract class Command implements Globals {
 
     protected List<String> names;
 
+    protected List<List<String>> arguments;
+
     public Command(String name) {
         this.names = Collections.singletonList(name);
     }
@@ -18,10 +20,18 @@ public abstract class Command implements Globals {
         this.names = Arrays.asList(names.clone());
     }
 
+    public Command(List<List<String>> arguments){
+        this.arguments = arguments;
+    }
+
     public abstract void execute(String[] message);
 
     public List<String> getNames() {
         return this.names;
+    }
+
+    public List<List<String>> getArguments(){
+        return this.arguments;
     }
 
     public boolean isName(String name) {

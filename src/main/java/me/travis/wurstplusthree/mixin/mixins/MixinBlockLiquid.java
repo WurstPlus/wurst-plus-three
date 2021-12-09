@@ -5,7 +5,6 @@ import me.travis.wurstplusthree.event.events.JesusEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,9 +30,5 @@ extends Block {
         }
     }
 
-    @Inject(method={"canCollideCheck"}, at={@At(value="HEAD")}, cancellable=true)
-    public void canCollideCheckHook(IBlockState blockState, boolean hitIfLiquid, CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(hitIfLiquid && (Integer)blockState.getValue((IProperty)BlockLiquid.LEVEL) == 0);
-    }
 }
 

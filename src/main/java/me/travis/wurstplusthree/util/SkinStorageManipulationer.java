@@ -15,7 +15,7 @@ import java.io.File;
 
 public class SkinStorageManipulationer {
     public static ResourceLocation getTexture() {
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
         try {
             bufferedImage = ImageIO.read(new File("Wurstplus3/tmp/skin.png"));
         } catch (Exception e) {

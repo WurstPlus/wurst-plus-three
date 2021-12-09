@@ -22,6 +22,7 @@ public class Sprint extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (mode.is("Legit")) {
             if (mc.gameSettings.keyBindForward.isKeyDown()) {
                 mc.player.setSprinting(true);

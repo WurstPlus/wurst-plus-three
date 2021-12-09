@@ -7,6 +7,9 @@ import me.travis.wurstplusthree.event.processor.CommitEvent;
 import me.travis.wurstplusthree.gui.alt.defult.GuiAltButton;
 import me.travis.wurstplusthree.hack.Hack;
 import me.travis.wurstplusthree.hack.hacks.client.Gui;
+import me.travis.wurstplusthree.hack.hacks.combat.CrystalAura;
+import me.travis.wurstplusthree.hack.hacks.render.Chams;
+import me.travis.wurstplusthree.manager.RotationManager;
 import me.travis.wurstplusthree.util.ClientMessage;
 import me.travis.wurstplusthree.util.Globals;
 import me.travis.wurstplusthree.util.elements.GLUProjection;
@@ -19,15 +22,18 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.network.play.server.SPacketPlayerListItem;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -61,7 +67,8 @@ public class Events implements Globals {
             }
         }
     }
-     */
+    */
+
 
     @SubscribeEvent
     public void onMousePress(InputEvent.MouseInputEvent event){
@@ -88,9 +95,31 @@ public class Events implements Globals {
     }
 
     @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onAttackEntity(event);
+        }
+    }
+
+    @CommitEvent
+    public void onSendAttackPacket(PacketEvent.Send event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onSendAttackPacket(event);
+        }
+    }
+
+    @CommitEvent
+    public void onEntityDeath(DeathEvent event) {
+        if (!nullCheck()) {
+            WurstplusThree.KD_MANAGER.onEntityDeath(event);
+        }
+    }
+    @SubscribeEvent
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (!nullCheck() && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
             WurstplusThree.HACKS.onUpdate();
+            WurstplusThree.HELP_MANAGER.onUpdate();
+            WurstplusThree.KD_MANAGER.onUpdate();
         }
     }
 
@@ -102,7 +131,7 @@ public class Events implements Globals {
     }
 
     @CommitEvent(priority = me.travis.wurstplusthree.event.processor.EventPriority.HIGH)
-    public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
+    public void onUpdateWalkingPlayerPost(UpdateWalkingPlayerEvent event) {
         if (nullCheck()) {
             return;
         }
@@ -122,6 +151,7 @@ public class Events implements Globals {
             ScaledResolution resolution = new ScaledResolution(mc);
             Render2DEvent render2DEvent = new Render2DEvent(event.getPartialTicks(), resolution);
             WurstplusThree.HACKS.onRender2D(render2DEvent);
+            WurstplusThree.HUD_MANAGER.onRender2D(render2DEvent);
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -174,6 +204,8 @@ public class Events implements Globals {
     @SubscribeEvent
     public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         WurstplusThree.HACKS.onLogin();
+        if(mc.world == null || !mc.world.isRemote)return;
+        WurstplusThree.CONFIG_MANAGER.onLogin(event);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -195,18 +227,27 @@ public class Events implements Globals {
         }
     }
 
+    @CommitEvent(priority = me.travis.wurstplusthree.event.processor.EventPriority.HIGH)
+    public final void onPacketSend(@NotNull PacketEvent.Send event) {
+        WurstplusThree.ROTATION_MANAGER.onPacketSend(event);
+    }
+
     @CommitEvent
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getStage() != 0) {
             return;
         }
         WurstplusThree.SERVER_MANAGER.onPacketReceived();
+        if (event.getPacket() instanceof SPacketPlayerPosLook) {
+            WurstplusThree.ROTATION_MANAGER.onPacketReceive((SPacketPlayerPosLook) event.getPacket());
+        }
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packet = event.getPacket();
             try {
                 if (packet.getOpCode() == 0x23 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
                     WurstplusThree.EVENT_PROCESSOR.addEventListener(new TotemPopEvent(player));
+                    Chams.INSTANCE.onPopLol(new TotemPopEvent(player));
                     WurstplusThree.POP_MANAGER.onTotemPop(player);
                 }
             } catch (Exception ignored) {}

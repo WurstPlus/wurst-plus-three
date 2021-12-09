@@ -17,7 +17,21 @@ public class IntSetting extends Setting<Integer> {
         this.max = max;
     }
 
-    public IntSetting(String name, int value, int min, int max, Hack parent, Predicate<Integer> shown) {
+    public IntSetting(String name, int value, int min, int max, ParentSetting parent) {
+        super(name, value, parent);
+
+        this.min = min;
+        this.max = max;
+    }
+
+    public IntSetting(String name, int value, int min, int max, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+
+        this.min = min;
+        this.max = max;
+    }
+
+    public IntSetting(String name, int value, int min, int max, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
 
         this.min = min;
@@ -42,6 +56,8 @@ public class IntSetting extends Setting<Integer> {
 
     public void setNumber(double value) {
         this.value = Math.toIntExact(Math.round(value));
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public double getMaximumValue() {
@@ -56,12 +72,6 @@ public class IntSetting extends Setting<Integer> {
         return 0;
     }
 
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
-    }
 
     @Override
     public String getType() {

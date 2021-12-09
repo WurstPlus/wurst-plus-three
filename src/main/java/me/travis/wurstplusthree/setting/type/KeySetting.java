@@ -17,7 +17,15 @@ public class KeySetting extends Setting<Integer> {
         super(name, value, parent);
     }
 
-    public KeySetting(String name, int value, Hack parent, Predicate<Integer> shown) {
+    public KeySetting(String name, int value, ParentSetting parent) {
+        super(name, value, parent);
+    }
+
+    public KeySetting(String name, int value, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+    }
+
+    public KeySetting(String name, int value, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
     }
 
@@ -27,6 +35,8 @@ public class KeySetting extends Setting<Integer> {
 
     public void setKey(int key) {
         this.value = key;
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public boolean isDown() {
@@ -36,13 +46,6 @@ public class KeySetting extends Setting<Integer> {
 
     public String getKeyName() {
         return Keyboard.getKeyName(this.getKey());
-    }
-
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
     }
 
     @Override

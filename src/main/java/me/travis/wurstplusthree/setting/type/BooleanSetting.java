@@ -11,23 +11,26 @@ public class BooleanSetting extends Setting<Boolean> {
         super(name, value, parent);
     }
 
-    public BooleanSetting(String name, boolean value, Hack parent, Predicate<Boolean> shown) {
+    public BooleanSetting(String name, Boolean value, ParentSetting parent) {
+        super(name, value, parent);
+    }
+
+    public BooleanSetting(String name, Boolean value, Hack parent, Predicate shown) {
+        super(name, value, parent, shown);
+    }
+
+    public BooleanSetting(String name, Boolean value, ParentSetting parent, Predicate shown) {
         super(name, value, parent, shown);
     }
 
     public void toggle() {
         value = !value;
+        if (this.getParent().isEnabled())
+            this.getParent().onSettingChange();
     }
 
     public Boolean getValue() {
         return value;
-    }
-
-    public boolean isShown(){
-        if(shown == null){
-            return true;
-        }
-        return shown.test(this.getValue());
     }
 
     @Override

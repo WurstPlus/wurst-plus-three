@@ -35,6 +35,7 @@ public class CustomChat extends Hack {
     public BooleanSetting rainbow = new BooleanSetting("Rainbow", false, this);
     public BooleanSetting nameHighlight = new BooleanSetting("Name Highlight", true, this);
     public BooleanSetting timeStamps = new BooleanSetting("Time Stamps", true, this);
+    public BooleanSetting colourTimeStamps = new BooleanSetting("Rainbow Time", true, this, s -> timeStamps.getValue());
     public BooleanSetting suffix = new BooleanSetting("Suffix", false, this);
     public BooleanSetting infinite = new BooleanSetting("Infinite", true, this);
     public BooleanSetting smoothChat = new BooleanSetting("SmoothChat", false, this);
@@ -44,6 +45,7 @@ public class CustomChat extends Hack {
     public DoubleSetting vLength = new DoubleSetting("VLength",10.0, 5.0, 100.0, this);
     public DoubleSetting vIncrements = new DoubleSetting("VIncrements", 1.0, 1.0, 5.0, this);
     public EnumSetting type = new EnumSetting("Type", "Horizontal",Arrays.asList("Horizontal", "Vertical"), this);
+    public BooleanSetting help = new BooleanSetting("HelpMessages", true, this);
 
     public static GuiChat guiChatSmooth;
     public static GuiNewChat guiChat;
@@ -100,7 +102,7 @@ public class CustomChat extends Hack {
     private String getTimeString(String message) {
         if (timeStamps.getValue()) {
             String date = new SimpleDateFormat("k:mm").format(new Date());
-            return  "[" + date + "] " + message;
+            return  "[" + date + "] " + (colourTimeStamps.getValue() ? ChatFormatting.RESET + message : message);
         }
         return message;
     }

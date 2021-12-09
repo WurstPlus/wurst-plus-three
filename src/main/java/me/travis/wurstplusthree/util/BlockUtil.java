@@ -1,6 +1,5 @@
 package me.travis.wurstplusthree.util;
 
-import me.travis.wurstplusthree.WurstplusThree;
 import me.travis.wurstplusthree.setting.type.EnumSetting;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -17,7 +16,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.*;
+import net.minecraft.network.play.client.CPacketEntityAction.Action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -321,8 +322,44 @@ public class BlockUtil implements Globals {
             }
 
         }
-
         return false;
+    }
+
+    public static EnumFacing getPlaceableSide(BlockPos pos) {
+
+        for (EnumFacing side : EnumFacing.values()) {
+
+            BlockPos neighbour = pos.offset(side);
+
+            if (!mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false)) {
+                continue;
+            }
+
+            IBlockState blockState = mc.world.getBlockState(neighbour);
+            if (!blockState.getMaterial().isReplaceable()) {
+                return side;
+            }
+        }
+
+        return null;
+    }
+
+
+    public static void openBlock(BlockPos pos)
+    {
+        EnumFacing[] facings = EnumFacing.values();
+
+        for (EnumFacing f : facings)
+        {
+            Block neighborBlock = mc.world.getBlockState(pos.offset(f)).getBlock();
+
+            if (emptyBlocks.contains(neighborBlock))
+            {
+                mc.playerController.processRightClickBlock(mc.player, mc.world, pos, f.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
+
+                return;
+            }
+        }
     }
 
     public static boolean isBlockEmpty(BlockPos pos) {
@@ -386,19 +423,13 @@ public class BlockUtil implements Globals {
         float speedMultiplier = stack.getDestroySpeed(block.getDefaultState());
         float damage;
 
-        if (!mc.player.onGround) {
-            speedMultiplier /= 5;
-        }
-
         if (stack.canHarvestBlock(block.getDefaultState())) {
             damage = speedMultiplier / block.blockHardness / 30;
         } else {
             damage = speedMultiplier / block.blockHardness / 100;
         }
 
-        float ticks = (float) Math.ceil(1 / damage);
-
-        return ticks / WurstplusThree.SERVER_MANAGER.getTPS();
+        return (float) Math.ceil(1 / damage);
     }
 
 }

@@ -14,16 +14,36 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("gradle.plugin.de.fuerstenau:BuildConfigPlugin:1.1.4")
     }
 }
+
+
+def getGitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'kotlin'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'de.fuerstenau.buildconfig'
 
-version "0.6.1"
+version "0.7.0+${getGitHash()}"
 group project.modGroup
+
+buildConfig {
+    buildConfigField "String", "GitHash", "${getGitHash()}"
+}
+
+sourceSets.main.java.srcDirs += "build/gen/buildconfig/src/main"
+
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -44,6 +64,14 @@ repositories {
         name = 'spongepowered-repo'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
     jcenter()
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 }
@@ -51,6 +79,8 @@ repositories {
 dependencies {
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
+    compile 'com.github.cabaletta:baritone:1.2.14'
+    compile 'cabaletta:baritone-api:1.2'
     compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
 
         exclude module: 'launchwrapper'
@@ -114,7 +144,8 @@ jar {
                 'FMLCorePluginContainsFMLMod': 'true',
                 'FMLCorePlugin': 'me.travis.wurstplusthree.mixin.MixinLoader',
                 'ForceLoadAsMod': 'true',
-                'FMLAT': 'wurstplusthree_at.cfg'
+                'FMLAT': 'wurstplusthree_at.cfg',
+                'Githash': getGitHash()
         )
     }
 }
@@ -130,3 +161,4 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+

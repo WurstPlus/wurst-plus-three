@@ -1,7 +1,6 @@
 package me.travis.wurstplusthree.mixin.mixins;
 
 import me.travis.wurstplusthree.WurstplusThree;
-import me.travis.wurstplusthree.hack.hacks.chat.ClearChatbox;
 import me.travis.wurstplusthree.hack.hacks.chat.CustomChat;
 import me.travis.wurstplusthree.util.elements.Rainbow;
 import net.minecraft.client.gui.ChatLine;
@@ -22,13 +21,6 @@ extends Gui {
     @Shadow
     @Final
     public List<ChatLine> drawnChatLines;
-
-    @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V", ordinal = 0))
-    private void overrideChatBackgroundColour(int left, int top, int right, int bottom, int color) {
-        if (!ClearChatbox.INSTANCE.isEnabled()) {
-            Gui.drawRect(left, top, right, bottom, color);
-        }
-    }
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawStringWithShadow(Ljava/lang/String;FFI)I"))
     private int drawStringWithShadowMaybe(FontRenderer fontRenderer, String message, float x, float y, int color) {

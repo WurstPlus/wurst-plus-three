@@ -100,6 +100,7 @@ public class Burrow extends Hack {
 
     @Override
     public void onUpdate() {
+        if(nullCheck())return;
         if (type.is("Normal")) {
             if (mc.player.posY > (oldPos.getY() + 1.04)) {
                 int old = mc.player.inventory.currentItem;
