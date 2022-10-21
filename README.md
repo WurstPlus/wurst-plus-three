@@ -14,18 +14,6 @@ On first run ensure your voices volume is maxed ;)
 
 [CoC](CODE_OF_CONDUCT.md)
 
-## Donations
-
-Join the discord for more infomation.
-
-2 Boosts in discord OR $5 for 1 month 'cool dudes' cape.
-
-10 boosts in discord OR $15 for lifetime custom cape.
-
-To donate use link above and make sure your discord tag is included in the comments, then DM travis#0001 on discord.
-
-Nitro boosts capes will be given ASAP.
-
 ## Credits
 
 the usual suspects are here, [phobos](https://github.com/Hqrion/Phobos-1.9.0-BUILDABLE-SRC), [gamesense](https://github.com/IUDevman/gamesense-client), some [xulu](https://github.com/Elementars/Xulu-v1.5.2), and other misc stuff. if you want better credit dm me on discord travis#0001
